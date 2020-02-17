@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use ElasticScoutDriverPlus\Tests\app\Author;
-use ElasticScoutDriverPlus\Tests\app\Book;
+use ElasticScoutDriverPlus\Tests\App\Author;
+use ElasticScoutDriverPlus\Tests\App\Book;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
