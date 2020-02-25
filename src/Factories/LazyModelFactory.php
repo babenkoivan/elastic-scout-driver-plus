@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class LazyModelFactory implements LazyModelFactoryInterface
+class LazyModelFactory
 {
     /**
      * @var Model

@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Unit\Output;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
-use ElasticScoutDriverPlus\Factories\LazyModelFactoryInterface;
+use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Output\Match;
 use ElasticScoutDriverPlus\Output\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -29,7 +29,7 @@ final class SearchResultTest extends TestCase
     {
         parent::setUp();
 
-        $this->factory = $this->createMock(LazyModelFactoryInterface::class);
+        $this->factory = $this->createMock(LazyModelFactory::class);
     }
 
     public function test_matches_can_be_received(): void

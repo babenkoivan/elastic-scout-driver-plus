@@ -30,7 +30,7 @@ final class LazyModelFactoryTest extends TestCase
 
     public function test_model_can_be_lazy_made_from_not_empty_search_response(): void
     {
-        $target = factory(Book::class, rand(2, 10))->create([
+        $models = factory(Book::class, rand(2, 10))->create([
             'author_id' => factory(Author::class)->create()->getKey(),
         ]);
 
@@ -38,8 +38,8 @@ final class LazyModelFactoryTest extends TestCase
 
         $factory = new LazyModelFactory(new Book(), new SearchResponse([
             'hits' => [
-                'total' => ['value' => $target->count()],
-                'hits' => $target->map(function (Model $model) {
+                'total' => ['value' => $models->count()],
+                'hits' => $models->map(function (Model $model) {
                     return [
                         '_id' => (string)$model->getKey(),
                         '_source' => [],
@@ -49,7 +49,7 @@ final class LazyModelFactoryTest extends TestCase
         ]));
 
         // assert that related to search response models are returned
-        $target->each(function (Model $model) use ($factory) {
+        $models->each(function (Model $model) use ($factory) {
             $this->assertEquals($model->toArray(), $factory->makeById($model->getKey())->toArray());
         });
 

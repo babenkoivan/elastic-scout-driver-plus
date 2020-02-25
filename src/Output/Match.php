@@ -5,13 +5,13 @@ namespace ElasticScoutDriverPlus\Output;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
-use ElasticScoutDriverPlus\Factories\LazyModelFactoryInterface;
+use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Database\Eloquent\Model;
 
 final class Match
 {
     /**
-     * @var LazyModelFactoryInterface
+     * @var LazyModelFactory
      */
     private $lazyModelFactory;
     /**
@@ -24,7 +24,7 @@ final class Match
     private $highlight;
 
     public function __construct(
-        LazyModelFactoryInterface $lazyModelFactory,
+        LazyModelFactory $lazyModelFactory,
         Document $document,
         ?Highlight $highlight = null
     ) {
