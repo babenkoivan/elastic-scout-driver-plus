@@ -62,19 +62,20 @@ final class RawSearchRequestBuilderTest extends TestCase
             ]
         ];
 
-        $searchRequest = (new SearchRequest($this->matchAllQuery))
+        $expected = (new SearchRequest($this->matchAllQuery))
             ->setHighlight($highlight);
 
-        $this->builder
+        $actual = $this->builder
             ->query($this->matchAllQuery)
-            ->highlightRaw($highlight);
+            ->highlightRaw($highlight)
+            ->buildSearchRequest();
 
-        $this->assertEquals($searchRequest, $this->builder->buildSearchRequest());
+        $this->assertEquals($expected, $actual);
     }
 
     public function test_search_request_with_highlight_can_be_built(): void
     {
-        $searchRequest = (new SearchRequest($this->matchAllQuery))
+        $expected = (new SearchRequest($this->matchAllQuery))
             ->setHighlight([
                 'fields' => [
                     'body' => new stdClass(),
@@ -82,12 +83,13 @@ final class RawSearchRequestBuilderTest extends TestCase
                 ]
             ]);
 
-        $this->builder
+        $actual = $this->builder
             ->query($this->matchAllQuery)
             ->highlight('body')
-            ->highlight('blog.title', ['number_of_fragments' => 0]);
+            ->highlight('blog.title', ['number_of_fragments' => 0])
+            ->buildSearchRequest();
 
-        $this->assertEquals($searchRequest, $this->builder->buildSearchRequest());
+        $this->assertEquals($expected, $actual);
     }
 
     public function test_search_request_with_raw_sort_can_be_built(): void
@@ -99,57 +101,61 @@ final class RawSearchRequestBuilderTest extends TestCase
             '_score'
         ];
 
-        $searchRequest = (new SearchRequest($this->matchAllQuery))
+        $expected = (new SearchRequest($this->matchAllQuery))
             ->setSort($sort);
 
-        $this->builder
+        $actual = $this->builder
             ->query($this->matchAllQuery)
-            ->sortRaw($sort);
+            ->sortRaw($sort)
+            ->buildSearchRequest();
 
-        $this->assertEquals($searchRequest, $this->builder->buildSearchRequest());
+        $this->assertEquals($expected, $actual);
     }
 
     public function test_search_request_with_sort_can_be_built(): void
     {
-        $searchRequest = (new SearchRequest($this->matchAllQuery))
+        $expected = (new SearchRequest($this->matchAllQuery))
             ->setSort([
                 ['post_date' => 'asc'],
                 ['name' => 'desc'],
             ]);
 
-        $this->builder
+        $actual = $this->builder
             ->query($this->matchAllQuery)
             ->sort('post_date')
-            ->sort('name', 'desc');
+            ->sort('name', 'desc')
+            ->buildSearchRequest();
 
-        $this->assertEquals($searchRequest, $this->builder->buildSearchRequest());
+        $this->assertEquals($expected, $actual);
     }
 
     public function test_search_request_with_from_can_be_built(): void
     {
         $from = rand(2, 1000);
 
-        $searchRequest = (new SearchRequest($this->matchAllQuery))
+        $expected = (new SearchRequest($this->matchAllQuery))
             ->setFrom($from);
 
-        $this->builder
+        $actual = $this->builder
             ->query($this->matchAllQuery)
-            ->from($from);
+            ->from($from)
+            ->buildSearchRequest();
 
-        $this->assertEquals($searchRequest, $this->builder->buildSearchRequest());
+        $this->assertEquals($expected, $actual);
     }
 
     public function test_search_request_with_size_can_be_built(): void
     {
         $size = rand(2, 1000);
 
-        $searchRequest = (new SearchRequest($this->matchAllQuery))
+        $expected = (new SearchRequest($this->matchAllQuery))
             ->setSize($size);
 
-        $this->builder
+        $actual = $this->builder
             ->query($this->matchAllQuery)
-            ->size($size);
+            ->size($size)
+            ->buildSearchRequest();
 
-        $this->assertEquals($searchRequest, $this->builder->buildSearchRequest());
+        $this->assertEquals($expected, $actual);
     }
 }
