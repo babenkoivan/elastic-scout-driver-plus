@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\Exceptions\SearchRequestBuilderException;
+use Illuminate\Support\Arr;
 use stdClass;
 
 final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
@@ -45,10 +46,9 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
         return $this;
     }
 
-    public function must(string $type, array $query = null): self
+    public function must(string $type, array $query = []): self
     {
-        $this->must[] = [$type => $query ?? new stdClass()];
-        return $this;
+        return $this->addQuery($this->must, $type, $query);
     }
 
     public function mustRaw(array $must): self
@@ -57,10 +57,9 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
         return $this;
     }
 
-    public function mustNot(string $type, array $query = null): self
+    public function mustNot(string $type, array $query = []): self
     {
-        $this->mustNot[] = [$type => $query ?? new stdClass()];
-        return $this;
+        return $this->addQuery($this->mustNot, $type, $query);
     }
 
     public function mustNotRaw(array $mustNot): self
@@ -69,10 +68,9 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
         return $this;
     }
 
-    public function should(string $type, array $query = null): self
+    public function should(string $type, array $query = []): self
     {
-        $this->should[] = [$type => $query ?? new stdClass()];
-        return $this;
+        return $this->addQuery($this->should, $type, $query);
     }
 
     public function shouldRaw(array $should): self
@@ -87,10 +85,9 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
         return $this;
     }
 
-    public function filter(string $type, array $query = null): self
+    public function filter(string $type, array $query = []): self
     {
-        $this->filter[] = [$type => $query ?? new stdClass()];
-        return $this;
+        return $this->addQuery($this->filter, $type, $query);
     }
 
     public function filterRaw(array $filter): self
@@ -119,9 +116,9 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
             $bool['filter'] = $this->filter;
 
             if (isset($this->softDeleted)) {
-                $bool['filter'][] = [
-                    'term' => ['__soft_deleted' => $this->softDeleted]
-                ];
+                $this->addQuery($bool['filter'], 'term', [
+                    '__soft_deleted' => $this->softDeleted
+                ]);
             }
         }
 
@@ -136,5 +133,20 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
         }
 
         return compact('bool');
+    }
+
+    private function addQuery(array &$context, string $type, array $query = []): self
+    {
+        if (Arr::isAssoc($context)) {
+            $context = array_map(function ($query, $type) {
+                return [$type => $query];
+            }, $context, array_keys($context));
+        }
+
+        $context[] = [
+            $type => count($query) > 0 ? $query : new stdClass()
+        ];
+
+        return $this;
     }
 }

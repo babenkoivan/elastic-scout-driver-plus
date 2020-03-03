@@ -113,6 +113,28 @@ final class BoolSearchRequestBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_search_request_with_consecutive_usage_of_must_and_must_raw_can_be_built(): void
+    {
+        $expected = new SearchRequest([
+            'bool' => [
+                'must' => [
+                    ['term' => ['year' => 2019]],
+                    ['term' => ['year' => 2020]],
+                ],
+                'filter' => [
+                    ['term' => ['__soft_deleted' => 0]],
+                ]
+            ]
+        ]);
+
+        $actual = $this->builder
+            ->mustRaw(['term' => ['year' => 2019]])
+            ->must('term', ['year' => 2020])
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
     public function test_search_request_with_must_not_can_be_built(): void
     {
         $expected = new SearchRequest([
@@ -246,7 +268,7 @@ final class BoolSearchRequestBuilderTest extends TestCase
         $expected = new SearchRequest([
             'bool' => [
                 'filter' => [
-                    'term' => ['year' => 2020],
+                    ['term' => ['year' => 2020]],
                     ['term' => ['__soft_deleted' => 0]],
                 ]
             ]

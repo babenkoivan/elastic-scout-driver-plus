@@ -48,13 +48,13 @@ abstract class AbstractSearchRequestBuilder implements SearchRequestBuilderInter
         return $this;
     }
 
-    public function highlight(string $field, array $parameters = null): self
+    public function highlight(string $field, array $parameters = []): self
     {
         if (!isset($this->highlight['fields'])) {
             $this->highlight['fields'] = [];
         }
 
-        $this->highlight['fields'][$field] = $parameters ?? new stdClass();
+        $this->highlight['fields'][$field] = count($parameters) > 0 ? $parameters : new stdClass();
         return $this;
     }
 
