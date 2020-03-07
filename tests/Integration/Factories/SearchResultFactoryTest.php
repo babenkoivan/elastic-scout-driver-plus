@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Output\Match
  * @uses   \ElasticScoutDriverPlus\Output\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
  */
 final class SearchResultFactoryTest extends TestCase
 {
