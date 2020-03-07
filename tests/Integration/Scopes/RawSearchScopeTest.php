@@ -24,7 +24,9 @@ final class RawSearchScopeTest extends TestCase
     public function test_models_can_be_found_using_raw_query(): void
     {
         // additional mixin
-        factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
+        factory(Book::class, rand(2, 10))
+            ->state('belongs_to_author')
+            ->create();
 
         $target = factory(Book::class)
             ->state('belongs_to_author')

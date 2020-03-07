@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\Exceptions\SearchRequestBuilderException;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use stdClass;
 
@@ -112,14 +113,22 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
             $bool['should'] = $this->should;
         }
 
-        if (count($this->filter) > 0 || isset($this->softDeleted)) {
+        if (count($this->filter) > 0) {
             $bool['filter'] = $this->filter;
+        }
 
-            if (isset($this->softDeleted)) {
-                $this->addQuery($bool['filter'], 'term', [
-                    '__soft_deleted' => $this->softDeleted
-                ]);
+        if (
+            in_array(SoftDeletes::class, class_uses_recursive(get_class($this->model))) &&
+            config('scout.soft_delete', false) &&
+            isset($this->softDeleted)
+        ) {
+            if (!isset($bool['filter'])) {
+                $bool['filter'] = [];
             }
+
+            $this->addQuery($bool['filter'], 'term', [
+                '__soft_deleted' => $this->softDeleted
+            ]);
         }
 
         if (count($bool) === 0) {

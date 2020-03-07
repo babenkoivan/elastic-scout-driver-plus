@@ -1,18 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\Builders;
+namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder;
 use ElasticScoutDriverPlus\Exceptions\SearchRequestBuilderException;
-use Illuminate\Database\Eloquent\Model;
-use PHPUnit\Framework\TestCase;
+use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder
  * @uses   \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
+ * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
  */
 final class BoolSearchRequestBuilderTest extends TestCase
 {
@@ -25,8 +26,7 @@ final class BoolSearchRequestBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $model = $this->createMock(Model::class);
-        $this->builder = new BoolSearchRequestBuilder($model);
+        $this->builder = new BoolSearchRequestBuilder(new Book());
     }
 
     public function test_exception_is_thrown_when_none_of_the_clauses_are_specified(): void
@@ -58,6 +58,8 @@ final class BoolSearchRequestBuilderTest extends TestCase
 
     public function test_request_with_only_trashed_can_be_built(): void
     {
+        $this->app['config']->set('scout.soft_delete', true);
+
         $expected = new SearchRequest([
             'bool' => [
                 'filter' => [
@@ -79,9 +81,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
             'bool' => [
                 'must' => [
                     ['term' => ['year' => 2020]],
-                ],
-                'filter' => [
-                    ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
         ]);
@@ -99,9 +98,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
             'bool' => [
                 'must' => [
                     'term' => ['year' => 2020],
-                ],
-                'filter' => [
-                    ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
         ]);
@@ -120,9 +116,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
                 'must' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
-                ],
-                'filter' => [
-                    ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
         ]);
@@ -141,9 +134,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
             'bool' => [
                 'must_not' => [
                     ['term' => ['year' => 2020]],
-                ],
-                'filter' => [
-                    ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
         ]);
@@ -161,9 +151,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
             'bool' => [
                 'must_not' => [
                     'term' => ['year' => 2020],
-                ],
-                'filter' => [
-                    ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
         ]);
@@ -182,9 +169,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
                 'should' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
-                ],
-                'filter' => [
-                    ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
         ]);
@@ -204,9 +188,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
                 'should' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
-                ],
-                'filter' => [
-                    ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
         ]);
@@ -229,9 +210,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
                 ],
-                'filter' => [
-                    ['term' => ['__soft_deleted' => 0]],
-                ],
                 'minimum_should_match' => 1
             ]
         ]);
@@ -251,7 +229,6 @@ final class BoolSearchRequestBuilderTest extends TestCase
             'bool' => [
                 'filter' => [
                     ['term' => ['year' => 2020]],
-                    ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
         ]);
@@ -265,6 +242,25 @@ final class BoolSearchRequestBuilderTest extends TestCase
 
     public function test_search_request_with_raw_filter_can_be_built(): void
     {
+        $expected = new SearchRequest([
+            'bool' => [
+                'filter' => [
+                    'term' => ['year' => 2020],
+                ]
+            ]
+        ]);
+
+        $actual = $this->builder
+            ->filterRaw(['term' => ['year' => 2020]])
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_raw_filter_and_soft_deletes_can_be_built(): void
+    {
+        $this->app['config']->set('scout.soft_delete', true);
+
         $expected = new SearchRequest([
             'bool' => [
                 'filter' => [
