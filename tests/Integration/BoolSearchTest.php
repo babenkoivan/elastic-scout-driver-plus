@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use ElasticScoutDriverPlus\Tests\App\Book;
 
 /**
- * @covers \ElasticScoutDriverPlus\ComplexSearch
+ * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @covers \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder

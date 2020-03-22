@@ -9,7 +9,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\ComplexSearch
+ * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @covers \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Builders\RawSearchRequestBuilder

@@ -6,7 +6,7 @@ namespace ElasticScoutDriverPlus;
 use ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder;
 use ElasticScoutDriverPlus\Builders\RawSearchRequestBuilder;
 
-trait ComplexSearch
+trait CustomSearch
 {
     public static function boolSearch(): BoolSearchRequestBuilder
     {

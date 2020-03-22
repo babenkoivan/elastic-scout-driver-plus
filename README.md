@@ -32,12 +32,12 @@ the installation steps described [here](https://github.com/babenkoivan/elastic-s
 Elastic Scout Driver Plus doesn't replace or modify default `search` method provided by Laravel Scout. Instead, it
 introduces a list of advanced query builders, which allow you to make complex search requests.
 
-To get started with the builders you need to add `ComplexSearch` trait to your model:
+To get started with the builders you need to add `CustomSearch` trait to your model:
 
 ```php
 class MyModel
 {
-    use \ElasticScoutDriverPlus\ComplexSearch;
+    use \ElasticScoutDriverPlus\CustomSearch;
 }
 ```
 
