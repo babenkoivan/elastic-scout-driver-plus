@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Output;
+namespace ElasticScoutDriverPlus;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;

@@ -1,23 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration\Scopes;
+namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use Carbon\Carbon;
 use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\Scopes\BoolSearchScope
+ * @covers \ElasticScoutDriverPlus\ComplexSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
- * @uses   \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
- * @uses   \ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\Output\Match
- * @uses   \ElasticScoutDriverPlus\Output\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Match
+ * @uses   \ElasticScoutDriverPlus\SearchResult
  */
-final class BoolSearchScopeTest extends TestCase
+final class BoolSearchTest extends TestCase
 {
     public function test_models_can_be_found_using_must(): void
     {
@@ -30,7 +29,7 @@ final class BoolSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('test')]);
 
-        $found = Book::boolSearchQuery()
+        $found = Book::boolSearch()
             ->must('match', ['title' => $target->title])
             ->execute();
 
@@ -48,7 +47,7 @@ final class BoolSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::boolSearchQuery()
+        $found = Book::boolSearch()
             ->mustNot('match', ['title' => $mixin->title])
             ->execute();
 
@@ -68,7 +67,7 @@ final class BoolSearchScopeTest extends TestCase
             return $model->published->year > 2003;
         });
 
-        $found = Book::boolSearchQuery()
+        $found = Book::boolSearch()
             ->should('term', ['published' => '2018-04-23'])
             ->should('term', ['published' => '2020-03-07'])
             ->minimumShouldMatch(1)
@@ -93,7 +92,7 @@ final class BoolSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create(['published' => Carbon::create(2020, 6, 7)]);
 
-        $found = Book::boolSearchQuery()
+        $found = Book::boolSearch()
             ->filter('term', ['published' => '2020-06-07'])
             ->execute();
 
@@ -115,7 +114,7 @@ final class BoolSearchScopeTest extends TestCase
             $model->delete();
         });
 
-        $found = Book::boolSearchQuery()->execute();
+        $found = Book::boolSearch()->execute();
 
         $this->assertCount(1, $found->models());
         $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
@@ -132,7 +131,7 @@ final class BoolSearchScopeTest extends TestCase
         // soft delete some models
         $target->first()->delete();
 
-        $found = Book::boolSearchQuery()
+        $found = Book::boolSearch()
             ->must('match_all')
             ->withTrashed()
             ->execute();
@@ -156,7 +155,7 @@ final class BoolSearchScopeTest extends TestCase
         $target = $source->first();
         $target->delete();
 
-        $found = Book::boolSearchQuery()
+        $found = Book::boolSearch()
             ->onlyTrashed()
             ->execute();
 

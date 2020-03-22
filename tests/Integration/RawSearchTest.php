@@ -1,25 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration\Scopes;
+namespace ElasticScoutDriverPlus\Tests\Integration;
 
-use ElasticScoutDriverPlus\Output\Match;
-use ElasticScoutDriverPlus\Output\SearchResult;
+use ElasticScoutDriverPlus\Match;
+use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\Scopes\RawSearchScope
+ * @covers \ElasticScoutDriverPlus\ComplexSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
- * @uses   \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
- * @uses   \ElasticScoutDriverPlus\Builders\RawSearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\RawSearchRequestBuilder
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\Output\Match
- * @uses   \ElasticScoutDriverPlus\Output\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Match
+ * @uses   \ElasticScoutDriverPlus\SearchResult
  */
-final class RawSearchScopeTest extends TestCase
+final class RawSearchTest extends TestCase
 {
     public function test_models_can_be_found_using_raw_query(): void
     {
@@ -32,7 +31,7 @@ final class RawSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('test')]);
 
-        $found = Book::rawSearchQuery()
+        $found = Book::rawSearch()
             ->query([
                 'match' => [
                     'title' => $target->title
@@ -50,7 +49,7 @@ final class RawSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('test')]);
 
-        $found = Book::rawSearchQuery()
+        $found = Book::rawSearch()
             ->query([
                 'match' => [
                     'title' => $target->first()->title
@@ -76,7 +75,7 @@ final class RawSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearchQuery()
+        $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
             ->sort('price')
             ->execute();
@@ -91,7 +90,7 @@ final class RawSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearchQuery()
+        $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
             ->from(5)
             ->execute();
@@ -106,7 +105,7 @@ final class RawSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearchQuery()
+        $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
             ->size(2)
             ->execute();
@@ -121,7 +120,7 @@ final class RawSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearchQuery()
+        $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
             ->execute();
 
@@ -134,7 +133,7 @@ final class RawSearchScopeTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearchQuery()
+        $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
             ->raw();
 

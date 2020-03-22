@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\Output;
+namespace ElasticScoutDriverPlus\Tests\Unit;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
-use ElasticScoutDriverPlus\Output\Match;
+use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\Output\Match
+ * @covers \ElasticScoutDriverPlus\Match
  */
 final class MatchTest extends TestCase
 {

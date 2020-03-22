@@ -5,8 +5,8 @@ namespace ElasticScoutDriverPlus\Factories;
 
 use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchResponse;
-use ElasticScoutDriverPlus\Output\Match;
-use ElasticScoutDriverPlus\Output\SearchResult;
+use ElasticScoutDriverPlus\Match;
+use ElasticScoutDriverPlus\SearchResult;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 

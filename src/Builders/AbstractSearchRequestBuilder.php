@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Decorators\EngineDecorator;
-use ElasticScoutDriverPlus\Output\SearchResult;
+use ElasticScoutDriverPlus\SearchResult;
 use Illuminate\Database\Eloquent\Model;
 use stdClass;
 

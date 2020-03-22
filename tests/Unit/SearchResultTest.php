@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\Output;
+namespace ElasticScoutDriverPlus\Tests\Unit;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
-use ElasticScoutDriverPlus\Output\Match;
-use ElasticScoutDriverPlus\Output\SearchResult;
+use ElasticScoutDriverPlus\Match;
+use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -15,8 +15,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\Output\SearchResult
- * @uses   \ElasticScoutDriverPlus\Output\Match
+ * @covers \ElasticScoutDriverPlus\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Match
  */
 final class SearchResultTest extends TestCase
 {

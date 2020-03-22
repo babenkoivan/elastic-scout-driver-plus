@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace ElasticScoutDriverPlus\Tests\App;
 
 use Carbon\Carbon;
-use ElasticScoutDriverPlus\Scopes\BoolSearchScope;
-use ElasticScoutDriverPlus\Scopes\RawSearchScope;
+use ElasticScoutDriverPlus\ComplexSearch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +22,7 @@ use Laravel\Scout\Searchable;
  */
 class Book extends Model
 {
-    use Searchable, SoftDeletes, RawSearchScope, BoolSearchScope;
+    use Searchable, ComplexSearch, SoftDeletes;
 
     public $timestamps = false;
 

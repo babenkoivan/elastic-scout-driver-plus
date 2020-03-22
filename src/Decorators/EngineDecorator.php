@@ -9,7 +9,7 @@ use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriver\Engine;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilderInterface;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
-use ElasticScoutDriverPlus\Output\SearchResult;
+use ElasticScoutDriverPlus\SearchResult;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\ForwardsCalls;
 

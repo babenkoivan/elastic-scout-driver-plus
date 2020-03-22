@@ -1,6 +1,14 @@
 {
     "name": "babenkoivan/elastic-scout-driver-plus",
-    "description": "Extension for babenkoivan/elastic-scout-driver",
+    "description": "Extension for Elastic Scout Driver",
+    "keywords": [
+        "scout",
+        "elastic",
+        "elasticsearch",
+        "laravel",
+        "driver",
+        "php"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [

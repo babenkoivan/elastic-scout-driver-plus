@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Factories;
 
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
-use ElasticScoutDriverPlus\Output\SearchResult;
+use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @covers \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
- * @uses   \ElasticScoutDriverPlus\Output\Match
- * @uses   \ElasticScoutDriverPlus\Output\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Match
+ * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
  */
 final class SearchResultFactoryTest extends TestCase
