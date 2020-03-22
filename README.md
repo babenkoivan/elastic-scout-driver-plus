@@ -80,7 +80,7 @@ MyModel::boolSearch()
 
 ### Raw Search
 
-Use `rawSearch` method to make custom search request:
+Use `rawSearch` method to make a custom search request:
 
 ```php
 MyModel::rawSearch()
@@ -103,7 +103,7 @@ MyModel::rawSearch()
 
 ### Search Result
 
-Whenever you preform a search request, `SearchResult` is returned: 
+Whenever you preform a search request, `SearchResult` instance is returned: 
 
 ```php
 $searchResult = MyModel::boolSearch()
@@ -119,7 +119,7 @@ $searchResult->documents();
 $searchResult->highlights();
 ```
 
-and of course the total amount of matches:
+And of course the total amount of matches:
               
 ```php
 $searchResult->total();
