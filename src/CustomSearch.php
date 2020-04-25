@@ -3,18 +3,19 @@ declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus;
 
-use ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder;
-use ElasticScoutDriverPlus\Builders\RawSearchRequestBuilder;
+use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
+use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
+use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 
 trait CustomSearch
 {
-    public static function boolSearch(): BoolSearchRequestBuilder
+    public static function boolSearch(): SearchRequestBuilder
     {
-        return new BoolSearchRequestBuilder(new static());
+        return new SearchRequestBuilder(new static(), new BoolQueryBuilder(new static()));
     }
 
-    public static function rawSearch(): RawSearchRequestBuilder
+    public static function rawSearch(): SearchRequestBuilder
     {
-        return new RawSearchRequestBuilder(new static());
+        return new SearchRequestBuilder(new static(), new RawQueryBuilder());
     }
 }

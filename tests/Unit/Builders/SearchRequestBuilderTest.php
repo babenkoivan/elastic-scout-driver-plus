@@ -4,20 +4,20 @@ declare(strict_types=1);
 namespace ElasticScoutDriverPlus\Tests\Unit\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
-use ElasticScoutDriverPlus\Builders\RawSearchRequestBuilder;
-use ElasticScoutDriverPlus\Exceptions\SearchRequestBuilderException;
+use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
+use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 use Illuminate\Database\Eloquent\Model;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\RawSearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  */
-final class RawSearchRequestBuilderTest extends TestCase
+final class SearchRequestBuilderTest extends TestCase
 {
     /**
-     * @var RawSearchRequestBuilder
+     * @var SearchRequestBuilder
      */
     private $builder;
     /**
@@ -31,15 +31,8 @@ final class RawSearchRequestBuilderTest extends TestCase
 
         $model = $this->createMock(Model::class);
 
-        $this->builder = new RawSearchRequestBuilder($model);
+        $this->builder = new SearchRequestBuilder($model, new RawQueryBuilder());
         $this->matchAllQuery = ['match_all' => new stdClass()];
-    }
-
-    public function test_exception_is_thrown_when_query_is_not_specified(): void
-    {
-        $this->expectException(SearchRequestBuilderException::class);
-
-        $this->builder->buildSearchRequest();
     }
 
     public function test_search_request_can_be_built_when_query_is_specified(): void

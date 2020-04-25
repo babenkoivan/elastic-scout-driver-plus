@@ -7,10 +7,13 @@ use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Decorators\EngineDecorator;
 use ElasticScoutDriverPlus\SearchResult;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\ForwardsCalls;
 use stdClass;
 
-abstract class AbstractSearchRequestBuilder implements SearchRequestBuilderInterface
+final class SearchRequestBuilder implements SearchRequestBuilderInterface
 {
+    use ForwardsCalls;
+
     /**
      * @var Model
      */
@@ -19,6 +22,10 @@ abstract class AbstractSearchRequestBuilder implements SearchRequestBuilderInter
      * @var EngineDecorator
      */
     protected $engine;
+    /**
+     * @var QueryBuilderInterface
+     */
+    private $queryBuilder;
     /**
      * @var array
      */
@@ -36,10 +43,11 @@ abstract class AbstractSearchRequestBuilder implements SearchRequestBuilderInter
      */
     protected $size;
 
-    public function __construct(Model $model)
+    public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
         $this->model = $model;
         $this->engine = $this->model->searchableUsing();
+        $this->queryBuilder = $queryBuilder;
     }
 
     public function highlightRaw(array $highlight): self
@@ -84,7 +92,7 @@ abstract class AbstractSearchRequestBuilder implements SearchRequestBuilderInter
 
     public function buildSearchRequest(): SearchRequest
     {
-        $searchRequest = new SearchRequest($this->buildQuery());
+        $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
 
         if (count($this->highlight) > 0) {
             $searchRequest->setHighlight($this->highlight);
@@ -115,5 +123,9 @@ abstract class AbstractSearchRequestBuilder implements SearchRequestBuilderInter
         return $this->engine->rawSearchRequest($this->model, $this);
     }
 
-    abstract protected function buildQuery(): array;
+    public function __call($method, $parameters): self
+    {
+        $this->forwardCallTo($this->queryBuilder, $method, $parameters);
+        return $this;
+    }
 }

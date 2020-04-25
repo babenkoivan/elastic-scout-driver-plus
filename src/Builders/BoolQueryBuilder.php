@@ -3,13 +3,18 @@ declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Exceptions\SearchRequestBuilderException;
+use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use stdClass;
 
-final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
+final class BoolQueryBuilder implements QueryBuilderInterface
 {
+    /**
+     * @var Model
+     */
+    protected $model;
     /**
      * @var int|null
      */
@@ -35,6 +40,11 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
      */
     private $filter = [];
 
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
+
     public function withTrashed(): self
     {
         $this->softDeleted = null;
@@ -49,7 +59,7 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
 
     public function must(string $type, array $query = []): self
     {
-        return $this->addQuery($this->must, $type, $query);
+        return $this->addClause($this->must, $type, $query);
     }
 
     public function mustRaw(array $must): self
@@ -60,7 +70,7 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
 
     public function mustNot(string $type, array $query = []): self
     {
-        return $this->addQuery($this->mustNot, $type, $query);
+        return $this->addClause($this->mustNot, $type, $query);
     }
 
     public function mustNotRaw(array $mustNot): self
@@ -71,7 +81,7 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
 
     public function should(string $type, array $query = []): self
     {
-        return $this->addQuery($this->should, $type, $query);
+        return $this->addClause($this->should, $type, $query);
     }
 
     public function shouldRaw(array $should): self
@@ -88,7 +98,7 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
 
     public function filter(string $type, array $query = []): self
     {
-        return $this->addQuery($this->filter, $type, $query);
+        return $this->addClause($this->filter, $type, $query);
     }
 
     public function filterRaw(array $filter): self
@@ -97,7 +107,7 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
         return $this;
     }
 
-    protected function buildQuery(): array
+    public function buildQuery(): array
     {
         $bool = [];
 
@@ -126,13 +136,13 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
                 $bool['filter'] = [];
             }
 
-            $this->addQuery($bool['filter'], 'term', [
+            $this->addClause($bool['filter'], 'term', [
                 '__soft_deleted' => $this->softDeleted
             ]);
         }
 
         if (count($bool) === 0) {
-            throw new SearchRequestBuilderException(
+            throw new QueryBuilderException(
                 'At least one of the clauses has to be specified: must, must_not, should or filter'
             );
         }
@@ -144,7 +154,7 @@ final class BoolSearchRequestBuilder extends AbstractSearchRequestBuilder
         return compact('bool');
     }
 
-    private function addQuery(array &$context, string $type, array $query = []): self
+    private function addClause(array &$context, string $type, array $query = []): self
     {
         if (Arr::isAssoc($context)) {
             $context = array_map(function ($query, $type) {

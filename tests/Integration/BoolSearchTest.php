@@ -9,8 +9,8 @@ use ElasticScoutDriverPlus\Tests\App\Book;
 /**
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
- * @covers \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match

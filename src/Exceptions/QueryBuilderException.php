@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus\Exceptions;
 
 use RuntimeException;
 
-final class SearchRequestBuilderException extends RuntimeException
+final class QueryBuilderException extends RuntimeException
 {
 
 }

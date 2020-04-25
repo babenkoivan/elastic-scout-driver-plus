@@ -11,8 +11,8 @@ use stdClass;
 /**
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
- * @covers \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\Builders\RawSearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match

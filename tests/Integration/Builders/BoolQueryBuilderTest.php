@@ -3,22 +3,19 @@ declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
 
-use ElasticAdapter\Search\SearchRequest;
-use ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder;
-use ElasticScoutDriverPlus\Exceptions\SearchRequestBuilderException;
+use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
+use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\BoolSearchRequestBuilder
- * @uses   \ElasticScoutDriverPlus\Builders\AbstractSearchRequestBuilder
- * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  */
-final class BoolSearchRequestBuilderTest extends TestCase
+final class BoolQueryBuilderTest extends TestCase
 {
     /**
-     * @var BoolSearchRequestBuilder
+     * @var BoolQueryBuilder
      */
     private $builder;
 
@@ -26,185 +23,185 @@ final class BoolSearchRequestBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $this->builder = new BoolSearchRequestBuilder(new Book());
+        $this->builder = new BoolQueryBuilder(new Book());
     }
 
-    public function test_exception_is_thrown_when_none_of_the_clauses_are_specified(): void
+    public function test_exception_is_thrown_when_building_query_with_empty_clauses(): void
     {
-        $this->expectException(SearchRequestBuilderException::class);
+        $this->expectException(QueryBuilderException::class);
 
         $this->builder
             ->withTrashed()
-            ->buildSearchRequest();
+            ->buildQuery();
     }
 
-    public function test_request_with_trashed_can_be_built(): void
+    public function test_query_with_trashed_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'must' => [
                     ['match_all' => new stdClass()],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->withTrashed()
             ->must('match_all')
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_request_with_only_trashed_can_be_built(): void
+    public function test_query_with_only_trashed_can_be_built(): void
     {
         $this->app['config']->set('scout.soft_delete', true);
 
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'filter' => [
                     ['term' => ['__soft_deleted' => 1]],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->onlyTrashed()
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_must_can_be_built(): void
+    public function test_query_with_must_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'must' => [
                     ['term' => ['year' => 2020]],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->must('term', ['year' => 2020])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_raw_must_can_be_built(): void
+    public function test_query_with_raw_must_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'must' => [
                     'term' => ['year' => 2020],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->mustRaw(['term' => ['year' => 2020]])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_consecutive_usage_of_must_and_must_raw_can_be_built(): void
+    public function test_query_with_consecutive_usage_of_must_and_must_raw_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'must' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->mustRaw(['term' => ['year' => 2019]])
             ->must('term', ['year' => 2020])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_must_not_can_be_built(): void
+    public function test_query_with_must_not_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'must_not' => [
                     ['term' => ['year' => 2020]],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->mustNot('term', ['year' => 2020])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_raw_must_not_can_be_built(): void
+    public function test_query_with_raw_must_not_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'must_not' => [
                     'term' => ['year' => 2020],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->mustNotRaw(['term' => ['year' => 2020]])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_should_can_be_built(): void
+    public function test_query_with_should_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'should' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->should('term', ['year' => 2019])
             ->should('term', ['year' => 2020])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_raw_should_can_be_built(): void
+    public function test_query_with_raw_should_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'should' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->shouldRaw([
                 ['term' => ['year' => 2019]],
                 ['term' => ['year' => 2020]],
             ])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_minimum_should_match_can_be_built(): void
+    public function test_query_with_minimum_should_match_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'should' => [
                     ['term' => ['year' => 2019]],
@@ -212,67 +209,67 @@ final class BoolSearchRequestBuilderTest extends TestCase
                 ],
                 'minimum_should_match' => 1
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->should('term', ['year' => 2019])
             ->should('term', ['year' => 2020])
             ->minimumShouldMatch(1)
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_filter_can_be_built(): void
+    public function test_query_with_filter_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'filter' => [
                     ['term' => ['year' => 2020]],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->filter('term', ['year' => 2020])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_raw_filter_can_be_built(): void
+    public function test_query_with_raw_filter_can_be_built(): void
     {
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'filter' => [
                     'term' => ['year' => 2020],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->filterRaw(['term' => ['year' => 2020]])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_raw_filter_and_soft_deletes_can_be_built(): void
+    public function test_query_with_raw_filter_and_soft_deletes_can_be_built(): void
     {
         $this->app['config']->set('scout.soft_delete', true);
 
-        $expected = new SearchRequest([
+        $expected = [
             'bool' => [
                 'filter' => [
                     ['term' => ['year' => 2020]],
                     ['term' => ['__soft_deleted' => 0]],
                 ]
             ]
-        ]);
+        ];
 
         $actual = $this->builder
             ->filterRaw(['term' => ['year' => 2020]])
-            ->buildSearchRequest();
+            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }

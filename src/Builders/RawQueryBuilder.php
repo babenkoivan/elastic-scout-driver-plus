@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Exceptions\SearchRequestBuilderException;
+use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
 
-final class RawSearchRequestBuilder extends AbstractSearchRequestBuilder
+final class RawQueryBuilder implements QueryBuilderInterface
 {
     /**
      * @var array|null
@@ -18,10 +18,10 @@ final class RawSearchRequestBuilder extends AbstractSearchRequestBuilder
         return $this;
     }
 
-    protected function buildQuery(): array
+    public function buildQuery(): array
     {
         if (is_null($this->query)) {
-            throw new SearchRequestBuilderException('Query is not specified');
+            throw new QueryBuilderException('Query is not specified');
         }
 
         return $this->query;
