@@ -11,7 +11,7 @@ MYSQL_USER := test
 MYSQL_PASSWORD := test
 
 ## elasticsearch config
-ES_CONTAINER_IMAGE := elasticsearch:7.5.0
+ES_CONTAINER_IMAGE := elasticsearch:7.6.0
 ES_CONTAINER_NAME := elastic-scout-driver-plus-elasticsearch
 ES_HOST_PORT := 29200
 ES_DISCOVERY_TYPE := single-node
