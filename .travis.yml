@@ -10,10 +10,19 @@ language: php
 php:
   - 7.2
   - 7.3
+  - 7.4
+
+env:
+  - ES_VERSION=7.0.0 TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^8.0
+  - ES_VERSION=7.6.2 TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^8.0
+  - ES_VERSION=7.6.2 TESTBENCH_VERSION=^4.0 SCOUT_VERSION=^8.0
+  - ES_VERSION=7.6.2 TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^8.0
+  - ES_VERSION=7.6.2 TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^7.0
+  - ES_VERSION=7.6.2 TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^8.0
 
 before_script:
   - composer global require --no-interaction --prefer-dist --update-no-dev hirak/prestissimo
-  - composer install --no-interaction --prefer-dist
+  - composer require --no-interaction --prefer-dist orchestra/testbench:$TESTBENCH_VERSION laravel/scout:$SCOUT_VERSION
 
 script:
-  - make up wait test
+  - ES_VERSION=$ES_VERSION make up wait test

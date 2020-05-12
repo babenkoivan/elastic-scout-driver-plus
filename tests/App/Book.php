@@ -34,7 +34,9 @@ class Book extends Model
         'published',
     ];
 
-    protected $dateFormat = 'Y-m-d';
+    protected $casts = [
+        'published' => 'date:Y-m-d',
+    ];
 
     /**
      * {@inheritDoc}
