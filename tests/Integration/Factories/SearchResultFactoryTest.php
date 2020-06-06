@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ElasticScoutDriverPlus\Tests\Integration\Factories;
 
 use ElasticAdapter\Search\SearchResponse;
+use ElasticAdapter\Search\Suggestion;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Author;
@@ -40,13 +41,25 @@ final class SearchResultFactoryTest extends TestCase
 
         $searchResult = $this->factory->makeFromSearchResponseForModel(new SearchResponse([
             'hits' => [
-                'total' => ['value' => $models->count()],
+                'total' => [
+                    'value' => $models->count()
+                ],
                 'hits' => $models->map(function (Model $model) {
                     return [
                         '_id' => (string)$model->getKey(),
                         '_source' => [],
                     ];
                 })->all(),
+            ],
+            'suggest' => [
+                'title_suggest' => [
+                    [
+                        'text' => 'bar',
+                        'offset' => 0,
+                        'length' => 3,
+                        'options' => []
+                    ]
+                ]
             ]
         ]), new Book());
 
@@ -57,5 +70,16 @@ final class SearchResultFactoryTest extends TestCase
         $this->assertCount(0, $searchResult->highlights());
         $this->assertSame($models->count(), $searchResult->total());
         $this->assertEquals($models->toArray(), $searchResult->models()->toArray());
+
+        $this->assertEquals(collect([
+            'title_suggest' => collect([
+                new Suggestion([
+                    'text' => 'bar',
+                    'offset' => 0,
+                    'length' => 3,
+                    'options' => []
+                ])
+            ])
+        ]), $searchResult->suggestions());
     }
 }

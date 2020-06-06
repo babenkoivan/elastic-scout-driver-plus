@@ -17,11 +17,11 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     /**
      * @var Model
      */
-    protected $model;
+    private $model;
     /**
      * @var EngineDecorator
      */
-    protected $engine;
+    private $engine;
     /**
      * @var QueryBuilderInterface
      */
@@ -29,19 +29,23 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     /**
      * @var array
      */
-    protected $highlight = [];
+    private $highlight = [];
     /**
      * @var array
      */
-    protected $sort = [];
+    private $sort = [];
     /**
      * @var int|null
      */
-    protected $from;
+    private $from;
     /**
      * @var int|null
      */
-    protected $size;
+    private $size;
+    /**
+     * @var array
+     */
+    private $suggest = [];
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
@@ -90,6 +94,18 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
+    public function suggestRaw(array $suggest): self
+    {
+        $this->suggest = $suggest;
+        return $this;
+    }
+
+    public function suggest(string $suggestion, array $parameters): self
+    {
+        $this->suggest[$suggestion] = $parameters;
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
         $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
@@ -108,6 +124,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
         if (isset($this->size)) {
             $searchRequest->setSize($this->size);
+        }
+
+        if (count($this->suggest) > 0) {
+            $searchRequest->setSuggest($this->suggest);
         }
 
         return $searchRequest;

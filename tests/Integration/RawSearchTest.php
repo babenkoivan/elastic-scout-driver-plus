@@ -139,4 +139,33 @@ final class RawSearchTest extends TestCase
 
         $this->assertIsArray($found);
     }
+
+    public function test_terms_can_be_suggested(): void
+    {
+        $target = collect(['world', 'word'])->map(function (string $title) {
+            return factory(Book::class)
+                ->state('belongs_to_author')
+                ->create(compact('title'));
+        });
+
+        $found = Book::rawSearch()
+            ->query(['match_none' => new stdClass()])
+            ->suggest('title', [
+                'text' => 'wirld',
+                'term' => [
+                    'field' => 'title'
+                ]
+            ])
+            ->execute();
+
+        $suggestionOptions = $found->suggestions()
+            ->get('title')
+            ->first()
+            ->getOptions();
+
+        $this->assertSame(
+            $target->pluck('title')->sort()->values()->toArray(),
+            collect($suggestionOptions)->pluck('text')->sort()->values()->toArray()
+        );
+    }
 }

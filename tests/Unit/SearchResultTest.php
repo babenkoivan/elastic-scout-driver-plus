@@ -5,6 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Unit;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
+use ElasticAdapter\Search\Suggestion;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
@@ -39,7 +40,7 @@ final class SearchResultTest extends TestCase
             new Match($this->factory, new Document('2', ['title' => 'test 2'])),
         ]);
 
-        $searchResult = new SearchResult($matches, $matches->count());
+        $searchResult = new SearchResult($matches, $matches->count(), collect());
 
         $this->assertSame($searchResult->matches(), $matches);
     }
@@ -62,7 +63,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, new Document((string)$model->getScoutKey(), $model->toSearchableArray()));
         });
 
-        $searchResult = new SearchResult($matches, $matches->count());
+        $searchResult = new SearchResult($matches, $matches->count(), collect());
 
         $this->assertEquals($searchResult->models()->toArray(), $models->toArray());
     }
@@ -79,7 +80,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, $document);
         });
 
-        $searchResult = new SearchResult($matches, $matches->count());
+        $searchResult = new SearchResult($matches, $matches->count(), collect());
 
         $this->assertEquals($searchResult->documents(), $documents);
     }
@@ -96,7 +97,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, new Document((string)$index, []), $highlight);
         });
 
-        $searchResult = new SearchResult($matches, $matches->count());
+        $searchResult = new SearchResult($matches, $matches->count(), collect());
 
         $this->assertEquals($searchResult->highlights(), $highlights->filter()->values());
     }
@@ -105,8 +106,20 @@ final class SearchResultTest extends TestCase
     {
         $total = rand(2, 100);
 
-        $searchResult = new SearchResult(collect(), $total);
+        $searchResult = new SearchResult(collect(), $total, collect());
 
         $this->assertSame($total, $searchResult->total());
+    }
+
+    public function test_suggestions_can_be_received(): void
+    {
+        $suggestions = collect([
+            new Suggestion(['text' => 'foo', 'offset' => 0, 'length' => 3, 'options' => []]),
+            new Suggestion(['text' => 'bar', 'offset' => 4, 'length' => 3, 'options' => []]),
+        ]);
+
+        $searchResult = new SearchResult(collect(), 0, $suggestions);
+
+        $this->assertSame($suggestions, $searchResult->suggestions());
     }
 }

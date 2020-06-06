@@ -87,6 +87,9 @@ MyModel::boolSearch()
     // pagination
     ->from(0)
     ->size(20)
+    // suggest
+    ->suggest('title_suggest', ['text' => 'incrediple', 'term' => ['field' => 'title']])
+    ->suggestRaw(['title_suggest' => ['text' => 'incrediple', 'term' => ['field' => 'title']]])
     // execute request and return array result
     ->raw()
     // execute request and return SearchResult instance (see below for more details)
@@ -110,6 +113,9 @@ MyModel::rawSearch()
     // pagination
     ->from(0)
     ->size(20)
+    // suggest
+    ->suggest('title_suggest', ['text' => 'incrediple', 'term' => ['field' => 'title']])
+    ->suggestRaw(['title_suggest' => ['text' => 'incrediple', 'term' => ['field' => 'title']]])
     // execute request and return array result
     ->raw()
     // execute request and return SearchResult instance (see below for more details)
@@ -126,12 +132,13 @@ $searchResult = MyModel::boolSearch()
     ->execute();
 ```
 
-With `SearchResult` you can quickly get access to collection of models, documents or highlights:
+With `SearchResult` you can quickly get access to collection of models, documents, highlights and suggestions:
 
 ```php
 $searchResult->models();
 $searchResult->documents();    
 $searchResult->highlights();
+$searchResult->suggestions();
 ```
 
 And of course the total amount of matches:

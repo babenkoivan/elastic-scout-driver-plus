@@ -24,6 +24,10 @@ final class SearchRequestBuilderTest extends TestCase
      * @var array
      */
     private $matchAllQuery;
+    /**
+     * @var array
+     */
+    private $matchNoneQuery;
 
     protected function setUp(): void
     {
@@ -33,6 +37,7 @@ final class SearchRequestBuilderTest extends TestCase
 
         $this->builder = new SearchRequestBuilder($model, new RawQueryBuilder());
         $this->matchAllQuery = ['match_all' => new stdClass()];
+        $this->matchNoneQuery = ['match_none' => new stdClass()];
     }
 
     public function test_search_request_can_be_built_when_query_is_specified(): void
@@ -147,6 +152,65 @@ final class SearchRequestBuilderTest extends TestCase
         $actual = $this->builder
             ->query($this->matchAllQuery)
             ->size($size)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_raw_suggest_can_be_built(): void
+    {
+        $suggest = [
+            'color_suggestion' => [
+                'text' => 'red',
+                'term' => [
+                    'field' => 'color'
+                ]
+            ]
+        ];
+
+        $expected = (new SearchRequest($this->matchNoneQuery))
+            ->setSuggest($suggest);
+
+        $actual = $this->builder
+            ->query($this->matchNoneQuery)
+            ->suggestRaw($suggest)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_suggest_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchNoneQuery))
+            ->setSuggest([
+                'color_suggestion' => [
+                    'text' => 'red',
+                    'term' => [
+                        'field' => 'color'
+                    ]
+                ],
+                'shape_suggestion' => [
+                    'text' => 'square',
+                    'term' => [
+                        'field' => 'shape'
+                    ]
+                ]
+            ]);
+
+        $actual = $this->builder
+            ->query($this->matchNoneQuery)
+            ->suggest('color_suggestion', [
+                'text' => 'red',
+                'term' => [
+                    'field' => 'color'
+                ]
+            ])
+            ->suggest('shape_suggestion', [
+                'text' => 'square',
+                'term' => [
+                    'field' => 'shape'
+                ]
+            ])
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);
