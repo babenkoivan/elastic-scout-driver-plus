@@ -35,8 +35,7 @@
         "orchestra/testbench": "^5.2",
         "babenkoivan/elastic-migrations": "^1.0",
         "babenkoivan/elastic-scout-driver": "^1.0",
-        "laravel/scout": "^8.0",
-        "babenkoivan/elastic-adapter": "dev-feature-suggesters as 1.1.0"
+        "laravel/scout": "^8.0"
     },
     "config": {
         "bin-dir": "bin"
