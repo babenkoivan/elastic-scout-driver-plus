@@ -46,6 +46,14 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
      * @var array
      */
     private $suggest = [];
+    /**
+     * @var bool|string|array|null
+     */
+    private $source;
+    /**
+     * @var array
+     */
+    private $collapse = [];
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
@@ -106,6 +114,34 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
+    /**
+     * @param  bool|string|array  $source
+     * @return self
+     */
+    public function sourceRaw($source): self
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+    public function source(array $fields): self
+    {
+        $this->source = $fields;
+        return $this;
+    }
+
+    public function collapseRaw(array $collapse): self
+    {
+        $this->collapse = $collapse;
+        return $this;
+    }
+
+    public function collapse(string $field): self
+    {
+        $this->collapse = ['field' => $field];
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
         $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
@@ -128,6 +164,14 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
         if (count($this->suggest) > 0) {
             $searchRequest->setSuggest($this->suggest);
+        }
+
+        if (isset($this->source)) {
+            $searchRequest->setSource($this->source);
+        }
+
+        if (count($this->collapse) > 0) {
+            $searchRequest->setCollapse($this->collapse);
         }
 
         return $searchRequest;

@@ -215,4 +215,62 @@ final class SearchRequestBuilderTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_search_request_with_raw_source_can_be_built(): void
+    {
+        $source = false;
+
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setSource($source);
+
+        $actual = $this->builder
+            ->query($this->matchAllQuery)
+            ->sourceRaw($source)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_source_can_be_built(): void
+    {
+        $source = ['title', 'description'];
+
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setSource($source);
+
+        $actual = $this->builder
+            ->query($this->matchAllQuery)
+            ->source($source)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_raw_collapse_can_be_built(): void
+    {
+        $collapse = ['field' => 'user'];
+
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setCollapse($collapse);
+
+        $actual = $this->builder
+            ->query($this->matchAllQuery)
+            ->collapseRaw($collapse)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_collapse_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setCollapse(['field' => 'user']);
+
+        $actual = $this->builder
+            ->query($this->matchAllQuery)
+            ->collapse('user')
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
