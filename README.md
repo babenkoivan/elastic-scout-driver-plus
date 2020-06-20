@@ -90,6 +90,12 @@ MyModel::boolSearch()
     // suggest
     ->suggest('title_suggest', ['text' => 'incrediple', 'term' => ['field' => 'title']])
     ->suggestRaw(['title_suggest' => ['text' => 'incrediple', 'term' => ['field' => 'title']]])
+    // source filtering
+    ->source(['title', 'description'])
+    ->sourceRaw(false)
+    // field collapsing
+    ->collapse('user')
+    ->collapseRaw(['field' => 'user'])
     // execute request and return array result
     ->raw()
     // execute request and return SearchResult instance (see below for more details)
@@ -116,6 +122,12 @@ MyModel::rawSearch()
     // suggest
     ->suggest('title_suggest', ['text' => 'incrediple', 'term' => ['field' => 'title']])
     ->suggestRaw(['title_suggest' => ['text' => 'incrediple', 'term' => ['field' => 'title']]])
+    // source filtering
+    ->source(['title', 'description'])
+    ->sourceRaw(false)
+    // field collapsing
+    ->collapse('user')
+    ->collapseRaw(['field' => 'user'])
     // execute request and return array result
     ->raw()
     // execute request and return SearchResult instance (see below for more details)

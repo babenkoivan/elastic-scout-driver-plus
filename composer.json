@@ -35,8 +35,7 @@
         "orchestra/testbench": "^5.2",
         "babenkoivan/elastic-migrations": "^1.0",
         "babenkoivan/elastic-scout-driver": "^1.0",
-        "laravel/scout": "^8.0",
-        "babenkoivan/elastic-adapter": "dev-feature-source-and-collapse as 1.2.0"
+        "laravel/scout": "^8.0"
     },
     "config": {
         "bin-dir": "bin"
