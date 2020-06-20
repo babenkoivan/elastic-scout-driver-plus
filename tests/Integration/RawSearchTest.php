@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
+use Carbon\Carbon;
+use ElasticAdapter\Documents\Document;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -167,5 +169,101 @@ final class RawSearchTest extends TestCase
             $target->pluck('title')->sort()->values()->toArray(),
             collect($suggestionOptions)->pluck('text')->sort()->values()->toArray()
         );
+    }
+
+    public function test_document_fields_can_be_filtered_using_raw_source(): void
+    {
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->sourceRaw(false)
+            ->execute();
+
+        $this->assertCount(1, $found->documents());
+
+        $this->assertEquals(
+            new Document((string)$target->id, []),
+            $found->documents()->first()
+        );
+    }
+
+    public function test_document_fields_can_be_filtered_using_source(): void
+    {
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->source(['title', 'description'])
+            ->execute();
+
+        $this->assertCount(1, $found->documents());
+
+        $this->assertEquals(
+            new Document((string)$target->id, [
+                'title' => $target->title,
+                'description' => $target->description
+            ]),
+            $found->documents()->first()
+        );
+    }
+
+    public function test_models_can_be_found_using_raw_field_collapsing(): void
+    {
+        $firstTarget = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['price' => 100]);
+
+        $secondTarget = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['price' => 200]);
+
+        // additional mixin
+        factory(Book::class, 10)->create([
+            'price' => function () {
+                return random_int(500, 1000);
+            },
+            'author_id' => $firstTarget->author_id
+        ]);
+
+        // find the cheapest books by author
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->collapseRaw(['field' => 'author_id'])
+            ->sort('price', 'asc')
+            ->execute();
+
+        $this->assertCount(2, $found->models());
+        $this->assertEquals($firstTarget->toArray(), $found->models()->first()->toArray());
+        $this->assertEquals($secondTarget->toArray(), $found->models()->last()->toArray());
+    }
+
+    public function test_models_can_be_found_using_field_collapsing(): void
+    {
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['published' => Carbon::createFromFormat('Y-m-d', '2020-06-20')]);
+
+        // additional mixin
+        factory(Book::class, 10)->create([
+            'published' => function() use ($target) {
+                return $target->published->subDays(rand(1, 10));
+            },
+            'author_id' => $target->author_id
+        ]);
+
+        // find the most recent book of the author
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->collapse('author_id')
+            ->sort('published', 'desc')
+            ->execute();
+
+        $this->assertCount(1, $found->models());
+        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
     }
 }
