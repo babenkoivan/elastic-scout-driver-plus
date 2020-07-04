@@ -40,7 +40,7 @@ final class SearchResultTest extends TestCase
             new Match($this->factory, new Document('2', ['title' => 'test 2'])),
         ]);
 
-        $searchResult = new SearchResult($matches, $matches->count(), collect());
+        $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
 
         $this->assertSame($searchResult->matches(), $matches);
     }
@@ -63,7 +63,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, new Document((string)$model->getScoutKey(), $model->toSearchableArray()));
         });
 
-        $searchResult = new SearchResult($matches, $matches->count(), collect());
+        $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
 
         $this->assertEquals($searchResult->models()->toArray(), $models->toArray());
     }
@@ -80,7 +80,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, $document);
         });
 
-        $searchResult = new SearchResult($matches, $matches->count(), collect());
+        $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
 
         $this->assertEquals($searchResult->documents(), $documents);
     }
@@ -97,7 +97,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, new Document((string)$index, []), $highlight);
         });
 
-        $searchResult = new SearchResult($matches, $matches->count(), collect());
+        $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
 
         $this->assertEquals($searchResult->highlights(), $highlights->filter()->values());
     }
@@ -106,7 +106,7 @@ final class SearchResultTest extends TestCase
     {
         $total = rand(2, 100);
 
-        $searchResult = new SearchResult(collect(), $total, collect());
+        $searchResult = new SearchResult(collect(), $total, collect(), collect());
 
         $this->assertSame($total, $searchResult->total());
     }
@@ -114,12 +114,27 @@ final class SearchResultTest extends TestCase
     public function test_suggestions_can_be_received(): void
     {
         $suggestions = collect([
-            new Suggestion(['text' => 'foo', 'offset' => 0, 'length' => 3, 'options' => []]),
-            new Suggestion(['text' => 'bar', 'offset' => 4, 'length' => 3, 'options' => []]),
+            'title' => collect([
+                new Suggestion(['text' => 'foo', 'offset' => 0, 'length' => 3, 'options' => []]),
+                new Suggestion(['text' => 'bar', 'offset' => 4, 'length' => 3, 'options' => []]),
+            ])
         ]);
 
-        $searchResult = new SearchResult(collect(), 0, $suggestions);
+        $searchResult = new SearchResult(collect(), 0, $suggestions, collect());
 
         $this->assertSame($suggestions, $searchResult->suggestions());
+    }
+
+    public function test_aggregations_can_be_received(): void
+    {
+        $aggregations = collect([
+            'max_price' => [
+                'value' => 100
+            ]
+        ]);
+
+        $searchResult = new SearchResult(collect(), 0, collect(), $aggregations);
+
+        $this->assertSame($aggregations, $searchResult->aggregations());
     }
 }

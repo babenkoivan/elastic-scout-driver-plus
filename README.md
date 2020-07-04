@@ -96,6 +96,9 @@ MyModel::boolSearch()
     // field collapsing
     ->collapse('user')
     ->collapseRaw(['field' => 'user'])
+    // aggregations
+    ->aggregate('max_price', ['max' => ['field' => 'price']])
+    ->aggregateRaw(['max_price' => ['max' => ['field' => 'price']]])
     // execute request and return array result
     ->raw()
     // execute request and return SearchResult instance (see below for more details)
@@ -128,6 +131,9 @@ MyModel::rawSearch()
     // field collapsing
     ->collapse('user')
     ->collapseRaw(['field' => 'user'])
+    // aggregations
+    ->aggregate('max_price', ['max' => ['field' => 'price']])
+    ->aggregateRaw(['max_price' => ['max' => ['field' => 'price']]])
     // execute request and return array result
     ->raw()
     // execute request and return SearchResult instance (see below for more details)
@@ -144,13 +150,14 @@ $searchResult = MyModel::boolSearch()
     ->execute();
 ```
 
-With `SearchResult` you can quickly get access to collection of models, documents, highlights and suggestions:
+With `SearchResult` you can quickly get access to collection of models, documents, highlights, suggestions and aggregations:
 
 ```php
 $searchResult->models();
 $searchResult->documents();    
 $searchResult->highlights();
 $searchResult->suggestions();
+$searchResult->aggregations();
 ```
 
 And of course the total amount of matches:

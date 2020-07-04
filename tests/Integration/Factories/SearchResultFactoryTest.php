@@ -60,6 +60,11 @@ final class SearchResultFactoryTest extends TestCase
                         'options' => []
                     ]
                 ]
+            ],
+            'aggregations' => [
+                'max_price' => [
+                    'value' => 100
+                ]
             ]
         ]), new Book());
 
@@ -81,5 +86,11 @@ final class SearchResultFactoryTest extends TestCase
                 ])
             ])
         ]), $searchResult->suggestions());
+
+        $this->assertEquals(collect([
+            'max_price' => [
+                'value' => 100
+            ]
+        ]), $searchResult->aggregations());
     }
 }

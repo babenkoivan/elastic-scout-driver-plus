@@ -250,7 +250,7 @@ final class RawSearchTest extends TestCase
 
         // additional mixin
         factory(Book::class, 10)->create([
-            'published' => function() use ($target) {
+            'published' => function () use ($target) {
                 return $target->published->subDays(rand(1, 10));
             },
             'author_id' => $target->author_id
@@ -265,5 +265,54 @@ final class RawSearchTest extends TestCase
 
         $this->assertCount(1, $found->models());
         $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+    }
+
+    public function test_document_data_can_be_analyzed_using_raw_aggregations(): void
+    {
+        $source = factory(Book::class, rand(5, 10))
+            ->state('belongs_to_author')
+            ->create();
+
+        $minPrice = $source->min('price');
+        $maxPrice = $source->max('price');
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->aggregateRaw([
+                'min_price' => [
+                    'min' => [
+                        'field' => 'price'
+                    ]
+                ],
+                'max_price' => [
+                    'max' => [
+                        'field' => 'price'
+                    ]
+                ]
+            ])
+            ->size(0)
+            ->execute();
+
+        $this->assertEquals($minPrice, $found->aggregations()->get('min_price')['value']);
+        $this->assertEquals($maxPrice, $found->aggregations()->get('max_price')['value']);
+    }
+
+    public function test_document_data_can_be_analyzed_using_aggregations(): void
+    {
+        $source = factory(Book::class, rand(2, 5))
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->aggregate('max_price', [
+                'max' => [
+                    'field' => 'price'
+                ]
+            ])
+            ->size(0)
+            ->execute();
+
+        $this->assertEquals($source->max('price'), $found->aggregations()->get('max_price')['value']);
     }
 }

@@ -54,6 +54,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
      * @var array
      */
     private $collapse = [];
+    /**
+     * @var array
+     */
+    private $aggregations = [];
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
@@ -142,6 +146,18 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
+    public function aggregateRaw(array $aggregations): self
+    {
+        $this->aggregations = $aggregations;
+        return $this;
+    }
+
+    public function aggregate(string $aggregation, array $parameters): self
+    {
+        $this->aggregations[$aggregation] = $parameters;
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
         $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
@@ -172,6 +188,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
         if (count($this->collapse) > 0) {
             $searchRequest->setCollapse($this->collapse);
+        }
+
+        if (count($this->aggregations) > 0) {
+            $searchRequest->setAggregations($this->aggregations);
         }
 
         return $searchRequest;

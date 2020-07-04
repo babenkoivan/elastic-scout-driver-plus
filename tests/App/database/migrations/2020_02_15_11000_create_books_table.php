@@ -14,7 +14,7 @@ class CreateBooksTable extends Migration
             $table->unsignedBigInteger('author_id');
             $table->string('title');
             $table->text('description');
-            $table->float('price');
+            $table->integer('price');
             $table->date('published');
             $table->softDeletes();
 

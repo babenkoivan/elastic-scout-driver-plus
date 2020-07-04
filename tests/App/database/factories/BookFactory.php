@@ -12,7 +12,7 @@ $factory->define(Book::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence(5),
         'description' => $faker->realText(),
-        'price' => $faker->randomFloat(2, 1, 1000),
+        'price' => $faker->randomNumber(3),
         'published' => Carbon::createFromFormat('Y-m-d', $faker->date('Y-m-d')),
     ];
 });

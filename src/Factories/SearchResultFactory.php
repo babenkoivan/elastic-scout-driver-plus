@@ -20,8 +20,9 @@ final class SearchResultFactory
         );
 
         $suggestions = $this->makeSuggestions($searchResponse->getSuggestions());
+        $aggregations = $this->makeAggregations($searchResponse->getAggregations());
 
-        return new SearchResult($matches, $searchResponse->getHitsTotal(), $suggestions);
+        return new SearchResult($matches, $searchResponse->getHitsTotal(), $suggestions, $aggregations);
     }
 
     private function makeMatches(array $hits, LazyModelFactory $lazyModelFactory): Collection {
@@ -35,5 +36,10 @@ final class SearchResultFactory
         return collect($suggestions)->mapWithKeys(function (array $entries, string $suggestion) {
             return [$suggestion => collect($entries)];
         });
+    }
+
+    private function makeAggregations(array $aggregations): Collection
+    {
+        return collect($aggregations);
     }
 }

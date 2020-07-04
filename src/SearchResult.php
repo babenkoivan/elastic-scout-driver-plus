@@ -20,15 +20,21 @@ final class SearchResult
      * @var BaseCollection
      */
     private $suggestions;
+    /**
+     * @var BaseCollection
+     */
+    private $aggregations;
 
     public function __construct(
         BaseCollection $matches,
         int $total,
-        BaseCollection $suggestions
+        BaseCollection $suggestions,
+        BaseCollection $aggregations
     ) {
         $this->matches = $matches;
         $this->total = $total;
         $this->suggestions = $suggestions;
+        $this->aggregations = $aggregations;
     }
 
     public function matches(): BaseCollection
@@ -73,5 +79,10 @@ final class SearchResult
     public function suggestions(): BaseCollection
     {
         return $this->suggestions;
+    }
+
+    public function aggregations(): BaseCollection
+    {
+        return $this->aggregations;
     }
 }

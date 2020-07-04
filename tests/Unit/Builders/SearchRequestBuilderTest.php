@@ -273,4 +273,53 @@ final class SearchRequestBuilderTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_search_request_with_raw_aggregate_can_be_built(): void
+    {
+        $aggregations = [
+            'max_price' => [
+                'max' => [
+                    'field' => 'price'
+                ]
+            ],
+            'min_price' => [
+                'min' => [
+                    'field' => 'price'
+                ]
+            ]
+        ];
+
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setAggregations($aggregations);
+
+        $actual = $this->builder
+            ->query($this->matchAllQuery)
+            ->aggregateRaw($aggregations)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_aggregate_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setAggregations([
+                'max_price' => [
+                    'max' => [
+                        'field' => 'price'
+                    ]
+                ]
+            ]);
+
+        $actual = $this->builder
+            ->query($this->matchAllQuery)
+            ->aggregate('max_price', [
+                'max' => [
+                    'field' => 'price'
+                ]
+            ])
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
