@@ -29,7 +29,7 @@
     },
     "require": {
         "php": "^7.2",
-        "babenkoivan/elastic-adapter": "dev-feature-aggregations as 1.3"
+        "babenkoivan/elastic-adapter": "^1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
