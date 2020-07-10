@@ -188,3 +188,46 @@ $rawHighlight = $highlight->getRaw();
 
 **Note**, that models are lazy loaded, which means, that they will be fetched from the database with a single query and 
 only when it's needed. 
+
+### Multiple Models Search
+
+It is possible to have multiple models in one index and search through them. In order to do so, one must make a class 
+that extends the `ElasticScoutDriverPlus\Searchable\Aggregator` class and state the searchable models.
+
+You can still optionally include the `CustomSearch` trait.
+
+For example:
+
+```php
+namespace App\Search;
+
+use ElasticScoutDriverPlus\CustomSearch;
+use ElasticScoutDriverPlus\Searchable\Aggregator;
+
+class Mixed extends Aggregator
+{
+    use CustomSearch;
+
+    protected $models = [
+        Article::class,
+        Book::class,
+    ];
+}
+```
+
+In order to keep the index updated, boot the observer for your aggregator in your ServiceProvider like this:
+
+```php
+namespace App\Providers;
+
+use App\Search\Mixed;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        Mixed::bootSearchable();
+    }
+}
+```

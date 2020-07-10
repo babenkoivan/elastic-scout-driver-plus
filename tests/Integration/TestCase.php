@@ -7,6 +7,7 @@ use ElasticClient\ServiceProvider as ElasticClientServiceProvider;
 use ElasticMigrations\ServiceProvider as ElasticMigrationsServiceProvider;
 use ElasticScoutDriver\ServiceProvider as ElasticScoutDriverServiceProvider;
 use ElasticScoutDriverPlus\ServiceProvider as ElasticScoutDriverPlusServiceProvider;
+use ElasticScoutDriverPlus\Tests\App\TestServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
 use Orchestra\Testbench\TestCase as TestbenchTestCase;
 
@@ -20,6 +21,7 @@ class TestCase extends TestbenchTestCase
             ElasticMigrationsServiceProvider::class,
             ElasticScoutDriverServiceProvider::class,
             ElasticScoutDriverPlusServiceProvider::class,
+            TestServiceProvider::class,
         ];
     }
 
