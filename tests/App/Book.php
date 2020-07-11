@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\App;
 
@@ -12,17 +11,19 @@ use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 /**
- * @property int $id
- * @property int $author_id
+ * @property int    $id
+ * @property int    $author_id
  * @property string $title
  * @property string $description
- * @property float $price
+ * @property float  $price
  * @property Carbon $published
  * @property Carbon $deleted_at
  */
 class Book extends Model
 {
-    use Searchable, CustomSearch, SoftDeletes;
+    use Searchable;
+    use CustomSearch;
+    use SoftDeletes;
 
     public $timestamps = false;
 
@@ -39,7 +40,7 @@ class Book extends Model
     ];
 
     /**
-     * {@inheritDoc}
+     * @return array
      */
     public function toSearchableArray()
     {

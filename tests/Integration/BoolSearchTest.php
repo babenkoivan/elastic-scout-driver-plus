@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
@@ -11,6 +10,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
+ *
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
@@ -57,13 +57,13 @@ final class BoolSearchTest extends TestCase
 
     public function test_models_can_be_found_using_should(): void
     {
-        $source = collect(['2018-04-23', '2003-01-14', '2020-03-07'])->map(function (string $published) {
+        $source = collect(['2018-04-23', '2003-01-14', '2020-03-07'])->map(static function (string $published) {
             return factory(Book::class)
                 ->state('belongs_to_author')
                 ->create(['published' => Carbon::createFromFormat('Y-m-d', $published)]);
         });
 
-        $target = $source->filter(function (Book $model) {
+        $target = $source->filter(static function (Book $model) {
             return $model->published->year > 2003;
         });
 
@@ -110,7 +110,7 @@ final class BoolSearchTest extends TestCase
 
         $target = $source->first();
 
-        $source->where('id', '!=', $target->id)->each(function (Book $model) {
+        $source->where('id', '!=', $target->id)->each(static function (Book $model) {
             $model->delete();
         });
 

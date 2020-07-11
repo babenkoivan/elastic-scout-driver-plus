@@ -4,3 +4,6 @@
 /composer.lock
 /phpunit.xml
 /.phpunit.result.cache
+/.php_cs
+/.php_cs.cache
+/phpstan.neon

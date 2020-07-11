@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus;
 
@@ -46,7 +45,7 @@ final class SearchResult
     {
         $models = new EloquentCollection();
 
-        $this->matches->each(function (Match $match) use ($models) {
+        $this->matches->each(static function (Match $match) use ($models) {
             $models->push($match->model());
         });
 
@@ -55,7 +54,7 @@ final class SearchResult
 
     public function documents(): BaseCollection
     {
-        $documents = $this->matches->map(function (Match $match) {
+        $documents = $this->matches->map(static function (Match $match) {
             return $match->document();
         });
 
@@ -64,7 +63,7 @@ final class SearchResult
 
     public function highlights(): BaseCollection
     {
-        $highlights = $this->matches->map(function (Match $match) {
+        $highlights = $this->matches->map(static function (Match $match) {
             return $match->highlight();
         });
 

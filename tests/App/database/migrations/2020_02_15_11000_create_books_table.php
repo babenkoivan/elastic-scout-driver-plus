@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -7,9 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateBooksTable extends Migration
 {
+    /**
+     * @return void
+     */
     public function up()
     {
-        Schema::create('books', function (Blueprint $table) {
+        Schema::create('books', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('author_id');
             $table->string('title');
@@ -22,6 +24,9 @@ class CreateBooksTable extends Migration
         });
     }
 
+    /**
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists('books');

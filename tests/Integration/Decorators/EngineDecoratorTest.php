@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Decorators;
 
@@ -40,7 +39,7 @@ final class EngineDecoratorTest extends TestCase
         // assert that documents have the same ids as created models
         $modelIds = $models->pluck($models->first()->getKeyName())->all();
 
-        $documentIds = collect($searchResponse->getHits())->map(function (Hit $hit) {
+        $documentIds = collect($searchResponse->getHits())->map(static function (Hit $hit) {
             return $hit->getDocument()->getId();
         })->all();
 
@@ -52,7 +51,7 @@ final class EngineDecoratorTest extends TestCase
         $models = factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
 
         // delete newly created models
-        $models->each(function (Book $model) {
+        $models->each(static function (Book $model) {
             $model->delete();
         });
 

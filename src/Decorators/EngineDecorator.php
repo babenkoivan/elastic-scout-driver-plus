@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Decorators;
 
@@ -64,13 +63,15 @@ final class EngineDecorator
         return $searchResponse->getRaw();
     }
 
-
     public function performSearchRequest(string $indexName, SearchRequest $searchRequest): SearchResponse
     {
         return $this->documentManager->search($indexName, $searchRequest);
     }
 
-    public function __call($method, $parameters)
+    /**
+     * @return mixed
+     */
+    public function __call(string $method, array $parameters)
     {
         return $this->forwardCallTo($this->engine, $method, $parameters);
     }

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Unit;
 
@@ -17,12 +16,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\SearchResult
+ *
  * @uses   \ElasticScoutDriverPlus\Match
  */
 final class SearchResultTest extends TestCase
 {
     /**
-     * @var MockObject
+     * @var LazyModelFactory&MockObject
      */
     private $factory;
 
@@ -54,7 +54,7 @@ final class SearchResultTest extends TestCase
 
         $this->factory->expects($this->exactly($models->count()))
             ->method('makeById')
-            ->withConsecutive(...$models->pluck('id')->map(function (int $id) {
+            ->withConsecutive(...$models->pluck('id')->map(static function (int $id) {
                 return Arr::wrap($id);
             }))
             ->willReturnOnConsecutiveCalls(...$models->all());
@@ -117,7 +117,7 @@ final class SearchResultTest extends TestCase
             'title' => collect([
                 new Suggestion(['text' => 'foo', 'offset' => 0, 'length' => 3, 'options' => []]),
                 new Suggestion(['text' => 'bar', 'offset' => 4, 'length' => 3, 'options' => []]),
-            ])
+            ]),
         ]);
 
         $searchResult = new SearchResult(collect(), 0, $suggestions, collect());
@@ -129,8 +129,8 @@ final class SearchResultTest extends TestCase
     {
         $aggregations = collect([
             'max_price' => [
-                'value' => 100
-            ]
+                'value' => 100,
+            ],
         ]);
 
         $searchResult = new SearchResult(collect(), 0, collect(), $aggregations);

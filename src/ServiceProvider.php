@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus;
 
@@ -15,7 +14,7 @@ final class ServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this->app->extend(Engine::class, function (Engine $engine, Application $app) {
+        $this->app->extend(Engine::class, static function (Engine $engine, Application $app) {
             return $app->make(EngineDecorator::class, compact('engine'));
         });
     }
