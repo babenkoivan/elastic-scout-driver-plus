@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Builders;
 
@@ -119,8 +118,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     }
 
     /**
-     * @param  bool|string|array  $source
-     * @return self
+     * @param bool|string|array $source
      */
     public function sourceRaw($source): self
     {
@@ -207,7 +205,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this->engine->rawSearchRequest($this->model, $this);
     }
 
-    public function __call($method, $parameters): self
+    public function __call(string $method, array $parameters): self
     {
         $this->forwardCallTo($this->queryBuilder, $method, $parameters);
         return $this;

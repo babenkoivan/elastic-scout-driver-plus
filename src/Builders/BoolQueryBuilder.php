@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Builders;
 
@@ -137,7 +136,7 @@ final class BoolQueryBuilder implements QueryBuilderInterface
             }
 
             $this->addClause($bool['filter'], 'term', [
-                '__soft_deleted' => $this->softDeleted
+                '__soft_deleted' => $this->softDeleted,
             ]);
         }
 
@@ -157,13 +156,13 @@ final class BoolQueryBuilder implements QueryBuilderInterface
     private function addClause(array &$context, string $type, array $query = []): self
     {
         if (Arr::isAssoc($context)) {
-            $context = array_map(function ($query, $type) {
+            $context = array_map(static function ($query, $type) {
                 return [$type => $query];
             }, $context, array_keys($context));
         }
 
         $context[] = [
-            $type => count($query) > 0 ? $query : new stdClass()
+            $type => count($query) > 0 ? $query : new stdClass(),
         ];
 
         return $this;

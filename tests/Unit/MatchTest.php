@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Unit;
 
@@ -17,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 final class MatchTest extends TestCase
 {
     /**
-     * @var MockObject
+     * @var LazyModelFactory&MockObject
      */
     private $factory;
 

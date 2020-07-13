@@ -1,10 +1,10 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use Carbon\Carbon;
 use ElasticAdapter\Documents\Document;
+use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -15,6 +15,7 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Builders\RawQueryBuilder
+ *
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
@@ -36,8 +37,8 @@ final class RawSearchTest extends TestCase
         $found = Book::rawSearch()
             ->query([
                 'match' => [
-                    'title' => $target->title
-                ]
+                    'title' => $target->title,
+                ],
             ])
             ->execute();
 
@@ -54,8 +55,8 @@ final class RawSearchTest extends TestCase
         $found = Book::rawSearch()
             ->query([
                 'match' => [
-                    'title' => $target->first()->title
-                ]
+                    'title' => $target->first()->title,
+                ],
             ])
             ->highlight('title')
             ->execute();
@@ -64,10 +65,13 @@ final class RawSearchTest extends TestCase
         $this->assertEquals($target->toArray(), $found->models()->toArray());
 
         $found->matches()->each(function (Match $match) {
-            $this->assertSame(
-                ['title' => ['<em>'.$match->model()->title.'</em>']],
-                $match->highlight()->getRaw()
-            );
+            /** @var Book $model */
+            $model = $match->model();
+            $highlight = $match->highlight();
+
+            $this->assertNotNull($highlight);
+            /** @var Highlight $highlight */
+            $this->assertSame(['title' => ['<em>' . $model->title . '</em>']], $highlight->getRaw());
         });
     }
 
@@ -144,7 +148,7 @@ final class RawSearchTest extends TestCase
 
     public function test_terms_can_be_suggested(): void
     {
-        $target = collect(['world', 'word'])->map(function (string $title) {
+        $target = collect(['world', 'word'])->map(static function (string $title) {
             return factory(Book::class)
                 ->state('belongs_to_author')
                 ->create(compact('title'));
@@ -155,8 +159,8 @@ final class RawSearchTest extends TestCase
             ->suggest('title', [
                 'text' => 'wirld',
                 'term' => [
-                    'field' => 'title'
-                ]
+                    'field' => 'title',
+                ],
             ])
             ->execute();
 
@@ -206,7 +210,7 @@ final class RawSearchTest extends TestCase
         $this->assertEquals(
             new Document((string)$target->id, [
                 'title' => $target->title,
-                'description' => $target->description
+                'description' => $target->description,
             ]),
             $found->documents()->first()
         );
@@ -224,10 +228,10 @@ final class RawSearchTest extends TestCase
 
         // additional mixin
         factory(Book::class, 10)->create([
-            'price' => function () {
+            'price' => static function () {
                 return random_int(500, 1000);
             },
-            'author_id' => $firstTarget->author_id
+            'author_id' => $firstTarget->author_id,
         ]);
 
         // find the cheapest books by author
@@ -250,10 +254,10 @@ final class RawSearchTest extends TestCase
 
         // additional mixin
         factory(Book::class, 10)->create([
-            'published' => function () use ($target) {
+            'published' => static function () use ($target) {
                 return $target->published->subDays(rand(1, 10));
             },
-            'author_id' => $target->author_id
+            'author_id' => $target->author_id,
         ]);
 
         // find the most recent book of the author
@@ -281,14 +285,14 @@ final class RawSearchTest extends TestCase
             ->aggregateRaw([
                 'min_price' => [
                     'min' => [
-                        'field' => 'price'
-                    ]
+                        'field' => 'price',
+                    ],
                 ],
                 'max_price' => [
                     'max' => [
-                        'field' => 'price'
-                    ]
-                ]
+                        'field' => 'price',
+                    ],
+                ],
             ])
             ->size(0)
             ->execute();
@@ -307,8 +311,8 @@ final class RawSearchTest extends TestCase
             ->query(['match_all' => new stdClass()])
             ->aggregate('max_price', [
                 'max' => [
-                    'field' => 'price'
-                ]
+                    'field' => 'price',
+                ],
             ])
             ->size(0)
             ->execute();

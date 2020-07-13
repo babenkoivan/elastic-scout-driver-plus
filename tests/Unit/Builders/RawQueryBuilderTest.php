@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Unit\Builders;
 
@@ -37,7 +36,7 @@ final class RawQueryBuilderTest extends TestCase
         $matchAllQuery = ['match_all' => new stdClass()];
 
         $this->builder->query($matchAllQuery);
-        
+
         $this->assertEquals($matchAllQuery, $this->builder->buildQuery());
     }
 }

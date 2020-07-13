@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
 
@@ -41,8 +40,8 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'must' => [
                     ['match_all' => new stdClass()],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -61,8 +60,8 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'filter' => [
                     ['term' => ['__soft_deleted' => 1]],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -78,8 +77,8 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'must' => [
                     ['term' => ['year' => 2020]],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -95,8 +94,8 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'must' => [
                     'term' => ['year' => 2020],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -113,8 +112,8 @@ final class BoolQueryBuilderTest extends TestCase
                 'must' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -131,8 +130,8 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'must_not' => [
                     ['term' => ['year' => 2020]],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -148,8 +147,8 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'must_not' => [
                     'term' => ['year' => 2020],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -166,8 +165,8 @@ final class BoolQueryBuilderTest extends TestCase
                 'should' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -185,8 +184,8 @@ final class BoolQueryBuilderTest extends TestCase
                 'should' => [
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -207,8 +206,8 @@ final class BoolQueryBuilderTest extends TestCase
                     ['term' => ['year' => 2019]],
                     ['term' => ['year' => 2020]],
                 ],
-                'minimum_should_match' => 1
-            ]
+                'minimum_should_match' => 1,
+            ],
         ];
 
         $actual = $this->builder
@@ -226,8 +225,8 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'filter' => [
                     ['term' => ['year' => 2020]],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -243,8 +242,8 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'filter' => [
                     'term' => ['year' => 2020],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder
@@ -263,8 +262,8 @@ final class BoolQueryBuilderTest extends TestCase
                 'filter' => [
                     ['term' => ['year' => 2020]],
                     ['term' => ['__soft_deleted' => 0]],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $actual = $this->builder

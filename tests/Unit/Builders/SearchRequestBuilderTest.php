@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Unit\Builders;
 
@@ -12,14 +11,11 @@ use stdClass;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ *
  * @uses   \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  */
 final class SearchRequestBuilderTest extends TestCase
 {
-    /**
-     * @var SearchRequestBuilder
-     */
-    private $builder;
     /**
      * @var array
      */
@@ -33,9 +29,6 @@ final class SearchRequestBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $model = $this->createMock(Model::class);
-
-        $this->builder = new SearchRequestBuilder($model, new RawQueryBuilder());
         $this->matchAllQuery = ['match_all' => new stdClass()];
         $this->matchNoneQuery = ['match_none' => new stdClass()];
     }
@@ -43,10 +36,9 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_can_be_built_when_query_is_specified(): void
     {
         $searchRequest = new SearchRequest($this->matchAllQuery);
+        $builder = $this->makeBuilderWithQuery($this->matchAllQuery);
 
-        $this->builder->query($this->matchAllQuery);
-
-        $this->assertEquals($searchRequest, $this->builder->buildSearchRequest());
+        $this->assertEquals($searchRequest, $builder->buildSearchRequest());
     }
 
     public function test_search_request_with_raw_highlight_can_be_built(): void
@@ -56,15 +48,14 @@ final class SearchRequestBuilderTest extends TestCase
             'fragment_size' => 150,
             'fields' => [
                 'body' => ['pre_tags' => ['<em>'], 'post_tags' => ['</em>']],
-                'blog.title' => ['number_of_fragments' => 0]
-            ]
+                'blog.title' => ['number_of_fragments' => 0],
+            ],
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setHighlight($highlight);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->highlightRaw($highlight)
             ->buildSearchRequest();
 
@@ -77,12 +68,11 @@ final class SearchRequestBuilderTest extends TestCase
             ->setHighlight([
                 'fields' => [
                     'body' => new stdClass(),
-                    'blog.title' => ['number_of_fragments' => 0]
-                ]
+                    'blog.title' => ['number_of_fragments' => 0],
+                ],
             ]);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->highlight('body')
             ->highlight('blog.title', ['number_of_fragments' => 0])
             ->buildSearchRequest();
@@ -96,14 +86,13 @@ final class SearchRequestBuilderTest extends TestCase
             ['post_date' => ['order' => 'asc']],
             'user',
             ['name' => 'desc'],
-            '_score'
+            '_score',
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setSort($sort);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->sortRaw($sort)
             ->buildSearchRequest();
 
@@ -118,8 +107,7 @@ final class SearchRequestBuilderTest extends TestCase
                 ['name' => 'desc'],
             ]);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->sort('post_date')
             ->sort('name', 'desc')
             ->buildSearchRequest();
@@ -134,8 +122,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setFrom($from);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->from($from)
             ->buildSearchRequest();
 
@@ -149,8 +136,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setSize($size);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->size($size)
             ->buildSearchRequest();
 
@@ -163,16 +149,15 @@ final class SearchRequestBuilderTest extends TestCase
             'color_suggestion' => [
                 'text' => 'red',
                 'term' => [
-                    'field' => 'color'
-                ]
-            ]
+                    'field' => 'color',
+                ],
+            ],
         ];
 
         $expected = (new SearchRequest($this->matchNoneQuery))
             ->setSuggest($suggest);
 
-        $actual = $this->builder
-            ->query($this->matchNoneQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchNoneQuery)
             ->suggestRaw($suggest)
             ->buildSearchRequest();
 
@@ -186,30 +171,29 @@ final class SearchRequestBuilderTest extends TestCase
                 'color_suggestion' => [
                     'text' => 'red',
                     'term' => [
-                        'field' => 'color'
-                    ]
+                        'field' => 'color',
+                    ],
                 ],
                 'shape_suggestion' => [
                     'text' => 'square',
                     'term' => [
-                        'field' => 'shape'
-                    ]
-                ]
+                        'field' => 'shape',
+                    ],
+                ],
             ]);
 
-        $actual = $this->builder
-            ->query($this->matchNoneQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchNoneQuery)
             ->suggest('color_suggestion', [
                 'text' => 'red',
                 'term' => [
-                    'field' => 'color'
-                ]
+                    'field' => 'color',
+                ],
             ])
             ->suggest('shape_suggestion', [
                 'text' => 'square',
                 'term' => [
-                    'field' => 'shape'
-                ]
+                    'field' => 'shape',
+                ],
             ])
             ->buildSearchRequest();
 
@@ -223,8 +207,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setSource($source);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->sourceRaw($source)
             ->buildSearchRequest();
 
@@ -238,8 +221,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setSource($source);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->source($source)
             ->buildSearchRequest();
 
@@ -253,8 +235,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setCollapse($collapse);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->collapseRaw($collapse)
             ->buildSearchRequest();
 
@@ -266,8 +247,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setCollapse(['field' => 'user']);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->collapse('user')
             ->buildSearchRequest();
 
@@ -279,21 +259,20 @@ final class SearchRequestBuilderTest extends TestCase
         $aggregations = [
             'max_price' => [
                 'max' => [
-                    'field' => 'price'
-                ]
+                    'field' => 'price',
+                ],
             ],
             'min_price' => [
                 'min' => [
-                    'field' => 'price'
-                ]
-            ]
+                    'field' => 'price',
+                ],
+            ],
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
             ->setAggregations($aggregations);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->aggregateRaw($aggregations)
             ->buildSearchRequest();
 
@@ -306,20 +285,27 @@ final class SearchRequestBuilderTest extends TestCase
             ->setAggregations([
                 'max_price' => [
                     'max' => [
-                        'field' => 'price'
-                    ]
-                ]
+                        'field' => 'price',
+                    ],
+                ],
             ]);
 
-        $actual = $this->builder
-            ->query($this->matchAllQuery)
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->aggregate('max_price', [
                 'max' => [
-                    'field' => 'price'
-                ]
+                    'field' => 'price',
+                ],
             ])
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);
+    }
+
+    private function makeBuilderWithQuery(array $query): SearchRequestBuilder
+    {
+        $model = $this->createMock(Model::class);
+        $queryBuilder = (new RawQueryBuilder())->query($query);
+
+        return new SearchRequestBuilder($model, $queryBuilder);
     }
 }

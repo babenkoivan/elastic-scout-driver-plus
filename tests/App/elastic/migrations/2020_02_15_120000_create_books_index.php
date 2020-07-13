@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use ElasticAdapter\Indices\Mapping;
 use ElasticAdapter\Indices\Settings;
@@ -10,7 +9,7 @@ final class CreateBooksIndex implements MigrationInterface
 {
     public function up(): void
     {
-        Index::create('books', function (Mapping $mapping, Settings $settings) {
+        Index::create('books', static function (Mapping $mapping, Settings $settings) {
             $mapping->integer('author_id');
             $mapping->text('title');
             $mapping->text('description');

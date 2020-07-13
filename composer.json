@@ -36,7 +36,9 @@
         "orchestra/testbench": "^5.2",
         "babenkoivan/elastic-migrations": "^1.0",
         "babenkoivan/elastic-scout-driver": "^1.0",
-        "laravel/scout": "^8.0"
+        "laravel/scout": "^8.0",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpstan/phpstan": "^0.12.32"
     },
     "config": {
         "bin-dir": "bin"

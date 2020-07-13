@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Factories;
 
@@ -21,6 +20,10 @@ class LazyModelFactory
      * @var SearchResponse
      */
     private $searchResponse;
+    /**
+     * @var Collection
+     */
+    private $cache;
 
     public function __construct(Model $model, SearchResponse $searchResponse)
     {
@@ -29,29 +32,29 @@ class LazyModelFactory
     }
 
     /**
-     * {@inheritDoc}
+     * @param int|string $id
      */
     public function makeById($id): ?Model
     {
-        if (!isset($this->models)) {
+        if (!isset($this->cache)) {
             if ($this->model instanceof Aggregator) {
-                $this->models = $this->mapAggregatedModels();
+                $this->cache = $this->fetchAggregatedModels();
             } else {
-                $this->models = $this->mapModels();
+                $this->cache = $this->fetchModels();
             }
         }
 
-        return $this->models->get($id);
+        return $this->cache->get($id);
     }
 
-    private function mapModels(): Collection
+    private function fetchModels(): Collection
     {
         if ($this->searchResponse->getHitsTotal() == 0) {
             return $this->model->newCollection();
         }
 
         // find document ids and their positions
-        $documentIds = collect($this->searchResponse->getHits())->map(function (Hit $hit) {
+        $documentIds = collect($this->searchResponse->getHits())->map(static function (Hit $hit) {
             return $hit->getDocument()->getId();
         })->all();
 
@@ -63,18 +66,18 @@ class LazyModelFactory
 
         // find models, filter and sort them according to the matched documents
         return $modelQuery->whereIn($this->model->getScoutKeyName(), $documentIds)->get()
-            ->filter(function (Model $model) use ($documentIds) {
+            ->filter(static function (Model $model) use ($documentIds) {
                 return in_array($model->getScoutKey(), $documentIds);
             })
-            ->sortBy(function (Model $model) use ($documentIdPositions) {
+            ->sortBy(static function (Model $model) use ($documentIdPositions) {
                 return $documentIdPositions[$model->getScoutKey()];
             })
-            ->mapWithKeys(function (Model $model) {
+            ->mapWithKeys(static function (Model $model) {
                 return [$model->getScoutKey() => $model];
             });
     }
 
-    private function mapAggregatedModels(): Collection
+    private function fetchAggregatedModels(): Collection
     {
         if ($this->searchResponse->getHitsTotal() == 0) {
             return $this->model->newCollection();

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
@@ -30,7 +29,7 @@ class TestCase extends TestbenchTestCase
         parent::getEnvironmentSetUp($app);
 
         $app['config']->set('scout.driver', 'elastic');
-        $app['config']->set('elastic.migrations.storage_directory', __DIR__.'/../App/elastic/migrations');
+        $app['config']->set('elastic.migrations.storage_directory', dirname(__DIR__) . '/App/elastic/migrations');
         $app['config']->set('elastic.scout_driver.refresh_documents', true);
     }
 
@@ -38,8 +37,8 @@ class TestCase extends TestbenchTestCase
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__.'/../App/database/migrations');
-        $this->withFactories(__DIR__.'/../App/database/factories');
+        $this->loadMigrationsFrom(dirname(__DIR__) . '/App/database/migrations');
+        $this->withFactories(dirname(__DIR__) . '/App/database/factories');
 
         $this->artisan('migrate')->run();
         $this->artisan('elastic:migrate')->run();

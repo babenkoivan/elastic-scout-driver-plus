@@ -1,13 +1,12 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
-/** @var Factory $factory  */
-$factory->define(Author::class, function (Faker $faker) {
+/** @var Factory $factory */
+$factory->define(Author::class, static function (Faker $faker) {
     return [
         'name' => $faker->firstName,
         'last_name' => $faker->lastName,
@@ -16,7 +15,7 @@ $factory->define(Author::class, function (Faker $faker) {
     ];
 });
 
-$factory->afterCreatingState(Author::class, 'has_books', function (Author $author, Faker $faker) {
+$factory->afterCreatingState(Author::class, 'has_books', static function (Author $author, Faker $faker) {
     $books = factory(Book::class, rand(1, 10))->make();
     $author->books()->saveMany($books);
 });

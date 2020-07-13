@@ -5,6 +5,10 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+stages:
+  - code-analysis
+  - test
+
 language: php
 
 php:
@@ -20,9 +24,22 @@ env:
   - ES_VERSION=7.6.2 TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^7.0
   - ES_VERSION=7.6.2 TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^8.0
 
-before_script:
+install:
   - composer global require --no-interaction --prefer-dist --update-no-dev hirak/prestissimo
   - composer require --no-interaction --prefer-dist orchestra/testbench:$TESTBENCH_VERSION laravel/scout:$SCOUT_VERSION
 
 script:
   - ES_VERSION=$ES_VERSION make up wait test
+
+jobs:
+  include:
+    - stage: code-analysis
+      name: Code Style Check
+      php: 7.2
+      env: TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^8.0
+      script: make style-check
+    - stage: code-analysis
+      name: Static Code Analysis
+      php: 7.2
+      env: TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^8.0
+      script: make static-analysis

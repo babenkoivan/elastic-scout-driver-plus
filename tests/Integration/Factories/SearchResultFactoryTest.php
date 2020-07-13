@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Factories;
 
@@ -14,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @covers \ElasticScoutDriverPlus\Factories\SearchResultFactory
+ *
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
@@ -42,9 +42,9 @@ final class SearchResultFactoryTest extends TestCase
         $searchResult = $this->factory->makeFromSearchResponseForModel(new SearchResponse([
             'hits' => [
                 'total' => [
-                    'value' => $models->count()
+                    'value' => $models->count(),
                 ],
-                'hits' => $models->map(function (Model $model) {
+                'hits' => $models->map(static function (Model $model) {
                     return [
                         '_id' => (string)$model->getKey(),
                         '_source' => [],
@@ -57,15 +57,15 @@ final class SearchResultFactoryTest extends TestCase
                         'text' => 'bar',
                         'offset' => 0,
                         'length' => 3,
-                        'options' => []
-                    ]
-                ]
+                        'options' => [],
+                    ],
+                ],
             ],
             'aggregations' => [
                 'max_price' => [
-                    'value' => 100
-                ]
-            ]
+                    'value' => 100,
+                ],
+            ],
         ]), new Book());
 
         $this->assertInstanceOf(SearchResult::class, $searchResult);
@@ -82,15 +82,15 @@ final class SearchResultFactoryTest extends TestCase
                     'text' => 'bar',
                     'offset' => 0,
                     'length' => 3,
-                    'options' => []
-                ])
-            ])
+                    'options' => [],
+                ]),
+            ]),
         ]), $searchResult->suggestions());
 
         $this->assertEquals(collect([
             'max_price' => [
-                'value' => 100
-            ]
+                'value' => 100,
+            ],
         ]), $searchResult->aggregations());
     }
 }
