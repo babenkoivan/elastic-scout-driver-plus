@@ -42,6 +42,9 @@ composer require babenkoivan/elastic-scout-driver-plus
 **Note**, that the library doesn't work without Elastic Scout Driver. If it's not installed yet, please follow
 the installation steps described [here](https://github.com/babenkoivan/elastic-scout-driver#installation).    
 
+If you want to use Elastic Scout Driver Plus with [Lumen framework](https://lumen.laravel.com/) 
+check [this guide](https://github.com/babenkoivan/elastic-scout-driver-plus/wiki/Lumen-Installation).
+
 ## Usage
 
 Elastic Scout Driver Plus doesn't replace or modify default `search` method provided by Laravel Scout. Instead, it
