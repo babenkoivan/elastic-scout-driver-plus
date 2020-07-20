@@ -26,19 +26,9 @@ parameters:
 			path: tests/App/Book.php
 
 		-
-			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:searchableAs\\(\\)\\.$#"
-			count: 2
+			message: "#^Call to an undefined method Illuminate\\\\Support\\\\HigherOrderCollectionProxy\\:\\:searchableAs\\(\\)\\.$#"
+			count: 1
 			path: src/Decorators/EngineDecorator.php
-
-		-
-			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:withTrashed\\(\\)\\.$#"
-			count: 1
-			path: src/Factories/LazyModelFactory.php
-
-		-
-			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getScoutKeyName\\(\\)\\.$#"
-			count: 1
-			path: src/Factories/LazyModelFactory.php
 
 		-
 			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getScoutKey\\(\\)\\.$#"

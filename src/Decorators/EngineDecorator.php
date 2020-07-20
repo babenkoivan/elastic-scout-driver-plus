@@ -6,10 +6,9 @@ use ElasticAdapter\Documents\DocumentManager;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriver\Engine;
-use ElasticScoutDriverPlus\Builders\SearchRequestBuilderInterface;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
 use ElasticScoutDriverPlus\SearchResult;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ForwardsCalls;
 
 final class EngineDecorator
@@ -39,32 +38,21 @@ final class EngineDecorator
         $this->searchResultFactory = $searchResultFactory;
     }
 
-    public function executeSearchRequest(
-        Model $model,
-        SearchRequestBuilderInterface $searchRequestBuilder
-    ): SearchResult {
-        $searchResponse = $this->documentManager->search(
-            $model->searchableAs(),
-            $searchRequestBuilder->buildSearchRequest()
-        );
-
-        return $this->searchResultFactory->makeFromSearchResponseForModel($searchResponse, $model);
+    public function executeSearchRequest(Collection $models, SearchRequest $searchRequest): SearchResult
+    {
+        $searchResponse = $this->performSearchRequest($models, $searchRequest);
+        return $this->searchResultFactory->makeFromSearchResponseUsingModels($searchResponse, $models);
     }
 
-    public function rawSearchRequest(
-        Model $model,
-        SearchRequestBuilderInterface $searchRequestBuilder
-    ): array {
-        $searchResponse = $this->documentManager->search(
-            $model->searchableAs(),
-            $searchRequestBuilder->buildSearchRequest()
-        );
-
+    public function rawSearchRequest(Collection $models, SearchRequest $searchRequest): array
+    {
+        $searchResponse = $this->performSearchRequest($models, $searchRequest);
         return $searchResponse->getRaw();
     }
 
-    public function performSearchRequest(string $indexName, SearchRequest $searchRequest): SearchResponse
+    private function performSearchRequest(Collection $models, SearchRequest $searchRequest): SearchResponse
     {
+        $indexName = $models->map->searchableAs()->join(',');
         return $this->documentManager->search($indexName, $searchRequest);
     }
 

@@ -39,7 +39,7 @@ final class SearchResultFactoryTest extends TestCase
             'author_id' => factory(Author::class)->create()->getKey(),
         ]);
 
-        $searchResult = $this->factory->makeFromSearchResponseForModel(new SearchResponse([
+        $searchResult = $this->factory->makeFromSearchResponseUsingModels(new SearchResponse([
             'hits' => [
                 'total' => [
                     'value' => $models->count(),
@@ -66,7 +66,7 @@ final class SearchResultFactoryTest extends TestCase
                     'value' => 100,
                 ],
             ],
-        ]), new Book());
+        ]), collect([new Book()]));
 
         $this->assertInstanceOf(SearchResult::class, $searchResult);
         $this->assertCount($models->count(), $searchResult->matches());

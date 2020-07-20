@@ -20,7 +20,7 @@ final class LazyModelFactoryTest extends TestCase
 {
     public function test_null_value_is_returned_when_trying_to_make_model_from_empty_search_response(): void
     {
-        $factory = new LazyModelFactory(new Book(), new SearchResponse([
+        $factory = new LazyModelFactory(collect([new Book()]), new SearchResponse([
             'hits' => [
                 'total' => ['value' => 0],
                 'hits' => [],
@@ -40,7 +40,7 @@ final class LazyModelFactoryTest extends TestCase
         $connection = DB::connection();
         $connection->enableQueryLog();
 
-        $factory = new LazyModelFactory(new Book(), new SearchResponse([
+        $factory = new LazyModelFactory(collect([new Book()]), new SearchResponse([
             'hits' => [
                 'total' => ['value' => $models->count()],
                 'hits' => $models->map(static function (Model $model) {

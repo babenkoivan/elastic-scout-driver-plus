@@ -6,7 +6,10 @@ use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Decorators\EngineDecorator;
 use ElasticScoutDriverPlus\SearchResult;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ForwardsCalls;
+use InvalidArgumentException;
+use Laravel\Scout\Searchable;
 use stdClass;
 
 final class SearchRequestBuilder implements SearchRequestBuilderInterface
@@ -14,9 +17,9 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     use ForwardsCalls;
 
     /**
-     * @var Model
+     * @var Collection
      */
-    private $model;
+    private $models;
     /**
      * @var EngineDecorator
      */
@@ -60,8 +63,8 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
-        $this->model = $model;
-        $this->engine = $this->model->searchableUsing();
+        $this->models = collect([$model]);
+        $this->engine = $model->searchableUsing();
         $this->queryBuilder = $queryBuilder;
     }
 
@@ -156,6 +159,23 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
+    public function join(string $modelClass): self
+    {
+        $model = new $modelClass();
+
+        if (!$model instanceof Model || !in_array(Searchable::class, class_uses_recursive($modelClass), true)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s must extend %s class and use %s trait',
+                $modelClass,
+                Model::class,
+                Searchable::class
+            ));
+        }
+
+        $this->models->push($model);
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
         $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
@@ -197,12 +217,12 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
     public function execute(): SearchResult
     {
-        return $this->engine->executeSearchRequest($this->model, $this);
+        return $this->engine->executeSearchRequest($this->models, $this->buildSearchRequest());
     }
 
     public function raw(): array
     {
-        return $this->engine->rawSearchRequest($this->model, $this);
+        return $this->engine->rawSearchRequest($this->models, $this->buildSearchRequest());
     }
 
     public function __call(string $method, array $parameters): self

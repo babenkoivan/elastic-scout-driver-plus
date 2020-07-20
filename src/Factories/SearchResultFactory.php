@@ -6,16 +6,15 @@ use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 final class SearchResultFactory
 {
-    public function makeFromSearchResponseForModel(SearchResponse $searchResponse, Model $model): SearchResult
+    public function makeFromSearchResponseUsingModels(SearchResponse $searchResponse, Collection $models): SearchResult
     {
         $matches = $this->makeMatches(
             $searchResponse->getHits(),
-            new LazyModelFactory($model, $searchResponse)
+            new LazyModelFactory($models, $searchResponse)
         );
 
         $suggestions = $this->makeSuggestions($searchResponse->getSuggestions());

@@ -6,6 +6,7 @@ use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -299,6 +300,13 @@ final class SearchRequestBuilderTest extends TestCase
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);
+    }
+
+    public function test_exception_is_thrown_when_joining_not_a_searchable_model(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->makeBuilderWithQuery($this->matchAllQuery)->join(__CLASS__);
     }
 
     private function makeBuilderWithQuery(array $query): SearchRequestBuilder
