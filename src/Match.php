@@ -14,6 +14,10 @@ final class Match
      */
     private $lazyModelFactory;
     /**
+     * @var string
+     */
+    private $indexName;
+    /**
      * @var Document
      */
     private $document;
@@ -24,18 +28,24 @@ final class Match
 
     public function __construct(
         LazyModelFactory $lazyModelFactory,
+        string $indexName,
         Document $document,
         ?Highlight $highlight = null
     ) {
         $this->lazyModelFactory = $lazyModelFactory;
+        $this->indexName = $indexName;
         $this->document = $document;
         $this->highlight = $highlight;
     }
 
     public function model(): ?Model
     {
-        $documentId = $this->document()->getId();
-        return $this->lazyModelFactory->makeById($documentId);
+        return $this->lazyModelFactory->makeByIndexNameAndDocumentId($this->indexName, $this->document->getId());
+    }
+
+    public function indexName(): string
+    {
+        return $this->indexName;
     }
 
     public function document(): Document

@@ -3,6 +3,7 @@
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use Carbon\Carbon;
+use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 
 /**
@@ -161,5 +162,33 @@ final class BoolSearchTest extends TestCase
 
         $this->assertCount(1, $found->models());
         $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+    }
+
+    public function test_models_can_be_found_in_multiple_indices(): void
+    {
+        // additional mixins
+        factory(Book::class, rand(2, 10))
+            ->state('belongs_to_author')
+            ->create();
+
+        $firstTarget = factory(Author::class)
+            ->state('has_books')
+            ->create(['name' => uniqid('author', true)]);
+
+        $secondTarget = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['title' => uniqid('book', true)]);
+
+        $found = Author::boolSearch()
+            ->join(Book::class)
+            ->should('match', ['name' => $firstTarget->name])
+            ->should('match', ['title' => $secondTarget->title])
+            ->minimumShouldMatch(1)
+            ->sort('_index', 'asc')
+            ->execute();
+
+        $this->assertCount(2, $found->models());
+        $this->assertEquals($firstTarget->toArray(), $found->models()->first()->toArray());
+        $this->assertEquals($secondTarget->toArray(), $found->models()->last()->toArray());
     }
 }

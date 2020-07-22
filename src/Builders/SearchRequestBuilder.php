@@ -159,20 +159,23 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
-    public function join(string $modelClass): self
+    public function join(string ...$modelClasses): self
     {
-        $model = new $modelClass();
+        foreach ($modelClasses as $modelClass) {
+            $model = new $modelClass();
 
-        if (!$model instanceof Model || !in_array(Searchable::class, class_uses_recursive($modelClass), true)) {
-            throw new InvalidArgumentException(sprintf(
-                '%s must extend %s class and use %s trait',
-                $modelClass,
-                Model::class,
-                Searchable::class
-            ));
+            if (!$model instanceof Model || !in_array(Searchable::class, class_uses_recursive($modelClass), true)) {
+                throw new InvalidArgumentException(sprintf(
+                    '%s must extend %s class and use %s trait',
+                    $modelClass,
+                    Model::class,
+                    Searchable::class
+                ));
+            }
+
+            $this->models->push($model);
         }
 
-        $this->models->push($model);
         return $this;
     }
 

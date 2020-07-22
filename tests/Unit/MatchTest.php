@@ -34,13 +34,13 @@ final class MatchTest extends TestCase
         $model->title = 'test';
 
         $this->factory->expects($this->once())
-            ->method('makeById')
-            ->with($model->id)
+            ->method('makeByIndexNameAndDocumentId')
+            ->with('books', $model->id)
             ->willReturn($model);
 
         $document = new Document((string)$model->id, ['title' => $model->title]);
 
-        $match = new Match($this->factory, $document);
+        $match = new Match($this->factory, 'books', $document);
 
         $this->assertSame($match->model(), $model);
     }
@@ -49,7 +49,7 @@ final class MatchTest extends TestCase
     {
         $document = new Document('1', ['title' => 'test']);
 
-        $match = new Match($this->factory, $document);
+        $match = new Match($this->factory, 'books', $document);
 
         $this->assertSame($match->document(), $document);
     }
@@ -59,7 +59,7 @@ final class MatchTest extends TestCase
         $document = new Document('1', ['title' => 'test']);
         $highlight = new Highlight(['title' => ['<em>test</em>']]);
 
-        $match = new Match($this->factory, $document, $highlight);
+        $match = new Match($this->factory, 'books', $document, $highlight);
 
         $this->assertSame($match->highlight(), $highlight);
     }

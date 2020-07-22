@@ -9,8 +9,6 @@ use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -36,8 +34,8 @@ final class SearchResultTest extends TestCase
     public function test_matches_can_be_received(): void
     {
         $matches = collect([
-            new Match($this->factory, new Document('1', ['title' => 'test 1'])),
-            new Match($this->factory, new Document('2', ['title' => 'test 2'])),
+            new Match($this->factory, 'books', new Document('1', ['title' => 'test 1'])),
+            new Match($this->factory, 'books', new Document('2', ['title' => 'test 2'])),
         ]);
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
@@ -53,14 +51,15 @@ final class SearchResultTest extends TestCase
         ]);
 
         $this->factory->expects($this->exactly($models->count()))
-            ->method('makeById')
+            ->method('makeByIndexNameAndDocumentId')
             ->withConsecutive(...$models->pluck('id')->map(static function (int $id) {
-                return Arr::wrap($id);
+                return ['books', $id];
             }))
             ->willReturnOnConsecutiveCalls(...$models->all());
 
-        $matches = $models->map(function (Model $model) {
-            return new Match($this->factory, new Document((string)$model->getScoutKey(), $model->toSearchableArray()));
+        $matches = $models->map(function (Book $model) {
+            $document = new Document((string)$model->getScoutKey(), $model->toSearchableArray());
+            return new Match($this->factory, 'books', $document);
         });
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
@@ -77,7 +76,7 @@ final class SearchResultTest extends TestCase
         ]);
 
         $matches = $documents->map(function (Document $document) {
-            return new Match($this->factory, $document);
+            return new Match($this->factory, 'books', $document);
         });
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
@@ -94,7 +93,8 @@ final class SearchResultTest extends TestCase
         ]);
 
         $matches = $highlights->map(function (?Highlight $highlight, int $index) {
-            return new Match($this->factory, new Document((string)$index, []), $highlight);
+            $document = new Document((string)$index, []);
+            return new Match($this->factory, 'books', $document, $highlight);
         });
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());

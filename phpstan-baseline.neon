@@ -8,6 +8,21 @@ parameters:
 		-
 			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
 			count: 2
+			path: tests/App/Author.php
+
+		-
+			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Author\\:\\:boolSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
+			count: 1
+			path: tests/App/Author.php
+
+		-
+			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Author\\:\\:rawSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
+			count: 1
+			path: tests/App/Author.php
+
+		-
+			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
+			count: 2
 			path: tests/App/Book.php
 
 		-
@@ -32,26 +47,11 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getScoutKey\\(\\)\\.$#"
-			count: 3
-			path: src/Factories/LazyModelFactory.php
-
-		-
-			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getScoutKey\\(\\)\\.$#"
 			count: 1
-			path: tests/Integration/Factories/LazyModelFactoryTest.php
+			path: src/Factories/LazyModelFactory.php
 
 		-
 			message: "#^Cannot call method run\\(\\) on Illuminate\\\\Testing\\\\PendingCommand\\|int\\.$#"
 			count: 4
 			path: tests/Integration/TestCase.php
-
-		-
-			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getScoutKey\\(\\)\\.$#"
-			count: 1
-			path: tests/Unit/SearchResultTest.php
-
-		-
-			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:toSearchableArray\\(\\)\\.$#"
-			count: 1
-			path: tests/Unit/SearchResultTest.php
 

@@ -39,16 +39,16 @@ class Book extends Model
         'published' => 'date:Y-m-d',
     ];
 
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(Author::class);
+    }
+
     /**
      * @return array
      */
     public function toSearchableArray()
     {
         return Arr::except($this->toArray(), [$this->getKeyName()]);
-    }
-
-    public function author(): BelongsTo
-    {
-        return $this->belongsTo(Author::class);
     }
 }

@@ -9,7 +9,6 @@ use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @covers \ElasticScoutDriverPlus\Factories\SearchResultFactory
@@ -44,9 +43,10 @@ final class SearchResultFactoryTest extends TestCase
                 'total' => [
                     'value' => $models->count(),
                 ],
-                'hits' => $models->map(static function (Model $model) {
+                'hits' => $models->map(static function (Book $model) {
                     return [
                         '_id' => (string)$model->getKey(),
+                        '_index' => $model->searchableAs(),
                         '_source' => [],
                     ];
                 })->all(),

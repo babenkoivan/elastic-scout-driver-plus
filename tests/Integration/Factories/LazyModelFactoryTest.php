@@ -20,32 +20,38 @@ final class LazyModelFactoryTest extends TestCase
 {
     public function test_null_value_is_returned_when_trying_to_make_model_from_empty_search_response(): void
     {
-        $factory = new LazyModelFactory(collect([new Book()]), new SearchResponse([
+        $model = new Book();
+
+        $factory = new LazyModelFactory(collect([$model]), new SearchResponse([
             'hits' => [
                 'total' => ['value' => 0],
                 'hits' => [],
             ],
         ]));
 
-        $this->assertNull($factory->makeById(123));
+        $this->assertNull($factory->makeByIndexNameAndDocumentId($model->searchableAs(), '123'));
     }
 
-    public function test_model_can_be_lazy_made_from_not_empty_search_response(): void
+    public function test_models_can_be_lazy_made_from_not_empty_search_response(): void
     {
-        $models = factory(Book::class, rand(2, 10))->create([
-            'author_id' => factory(Author::class)->create()->getKey(),
-        ]);
+        $author = factory(Author::class)->create();
+        $book = factory(Book::class)->create(['author_id' => $author->getKey()]);
+
+        $models = collect([$author, $book]);
 
         /** @var Connection $connection */
         $connection = DB::connection();
         $connection->enableQueryLog();
 
-        $factory = new LazyModelFactory(collect([new Book()]), new SearchResponse([
+        $factory = new LazyModelFactory($models, new SearchResponse([
             'hits' => [
                 'total' => ['value' => $models->count()],
-                'hits' => $models->map(static function (Model $model) {
+                'hits' => $models->map(static function ($model) {
+                    /** @var Author|Book $model */
+
                     return [
                         '_id' => (string)$model->getKey(),
+                        '_index' => $model->searchableAs(),
                         '_source' => [],
                     ];
                 })->all(),
@@ -53,15 +59,20 @@ final class LazyModelFactoryTest extends TestCase
         ]));
 
         // assert that related to search response models are returned
-        $models->each(function (Model $expected) use ($factory) {
-            $actual = $factory->makeById($expected->getScoutKey());
+        $models->each(function ($expected) use ($factory) {
+            /** @var Author|Book $expected */
+            /** @var Author|Book $actual */
+
+            $actual = $factory->makeByIndexNameAndDocumentId(
+                $expected->searchableAs(),
+                (string)$expected->getScoutKey()
+            );
 
             $this->assertNotNull($actual);
-            /** @var Model $actual */
             $this->assertEquals($expected->toArray(), $actual->toArray());
         });
 
-        // assert that the only one query to the database is made
-        $this->assertCount(1, $connection->getQueryLog());
+        // assert that only one query per index is made
+        $this->assertCount(2, $connection->getQueryLog());
     }
 }
