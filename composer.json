@@ -29,7 +29,7 @@
     },
     "require": {
         "php": "^7.2",
-        "babenkoivan/elastic-adapter": "dev-feature-multiple-index-search as 1.4"
+        "babenkoivan/elastic-adapter": "^1.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
