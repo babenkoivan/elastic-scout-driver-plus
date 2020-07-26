@@ -102,6 +102,8 @@ MyModel::boolSearch()
     // aggregations
     ->aggregate('max_price', ['max' => ['field' => 'price']])
     ->aggregateRaw(['max_price' => ['max' => ['field' => 'price']]])
+    // enable multiple index search by joining other models to the search request
+    ->join(MyModel2::class, MyModel3::class, ...)
     // execute request and return array result
     ->raw()
     // execute request and return SearchResult instance (see below for more details)
@@ -137,6 +139,8 @@ MyModel::rawSearch()
     // aggregations
     ->aggregate('max_price', ['max' => ['field' => 'price']])
     ->aggregateRaw(['max_price' => ['max' => ['field' => 'price']]])
+    // enable multiple index search by joining other models to the search request
+    ->join(MyModel2::class, MyModel3::class, ...)
     // execute request and return array result
     ->raw()
     // execute request and return SearchResult instance (see below for more details)
