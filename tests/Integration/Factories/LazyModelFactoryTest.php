@@ -8,7 +8,6 @@ use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Connection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -48,7 +47,6 @@ final class LazyModelFactoryTest extends TestCase
                 'total' => ['value' => $models->count()],
                 'hits' => $models->map(static function ($model) {
                     /** @var Author|Book $model */
-
                     return [
                         '_id' => (string)$model->getKey(),
                         '_index' => $model->searchableAs(),
@@ -62,7 +60,6 @@ final class LazyModelFactoryTest extends TestCase
         $models->each(function ($expected) use ($factory) {
             /** @var Author|Book $expected */
             /** @var Author|Book $actual */
-
             $actual = $factory->makeByIndexNameAndDocumentId(
                 $expected->searchableAs(),
                 (string)$expected->getScoutKey()
