@@ -376,8 +376,8 @@ Available methods:
 
 * [filter](#filter)
 * [minimumShouldMatch](#minimumshouldmatch)
-* [must](#match)
-* [mustNot](#matchnot)
+* [must](#must)
+* [mustNot](#mustnot)
 * [onlyTrashed](#onlytrashed)
 * [should](#should)
 * [withTrashed](#withtrashed)
@@ -545,7 +545,7 @@ In the second case, you get the raw output.
 * [suggestions](#suggestions)
 * [total](#total)
 
-#### aggregation
+#### aggregations
 
 This method returns a collection of aggregations keyed by aggregation name:
 
@@ -614,7 +614,7 @@ $models = $searchResult->models();
 
 **Note**, that models are lazy loaded. They are fetched from the database with a single query and only when you request them.
 
-You can use `loadMissing` to eager load model relations:
+You can use `loadMissing` to eager load the model relations:
 
 ```php
 $models->loadMissing(‘author’);
