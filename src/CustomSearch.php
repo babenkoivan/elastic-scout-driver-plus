@@ -13,7 +13,7 @@ trait CustomSearch
      */
     public static function boolSearch(): SearchRequestBuilder
     {
-        return new SearchRequestBuilder(new static(), new BoolQueryBuilder(new static()));
+        return new SearchRequestBuilder(new static(), new BoolQueryBuilder());
     }
 
     /**

@@ -164,6 +164,25 @@ final class BoolSearchTest extends TestCase
         $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
     }
 
+    public function test_only_trashed_models_can_be_found_in_multiple_indices(): void
+    {
+        $this->app['config']->set('scout.soft_delete', true);
+
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create();
+
+        $target->delete();
+
+        $found = Author::boolSearch()
+            ->join(Book::class)
+            ->onlyTrashed()
+            ->execute();
+
+        $this->assertCount(1, $found->models());
+        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+    }
+
     public function test_models_can_be_found_in_multiple_indices(): void
     {
         // additional mixins

@@ -3,17 +3,11 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use stdClass;
 
 final class BoolQueryBuilder implements QueryBuilderInterface
 {
-    /**
-     * @var Model
-     */
-    protected $model;
     /**
      * @var int|null
      */
@@ -38,11 +32,6 @@ final class BoolQueryBuilder implements QueryBuilderInterface
      * @var array
      */
     private $filter = [];
-
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-    }
 
     public function withTrashed(): self
     {
@@ -126,11 +115,7 @@ final class BoolQueryBuilder implements QueryBuilderInterface
             $bool['filter'] = $this->filter;
         }
 
-        if (
-            in_array(SoftDeletes::class, class_uses_recursive(get_class($this->model))) &&
-            config('scout.soft_delete', false) &&
-            isset($this->softDeleted)
-        ) {
+        if (isset($this->softDeleted) && config('scout.soft_delete', false)) {
             if (!isset($bool['filter'])) {
                 $bool['filter'] = [];
             }
