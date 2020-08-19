@@ -54,11 +54,6 @@ final class Match
         return $this->indexName;
     }
 
-    public function score(): ?float
-    {
-        return $this->score;
-    }
-
     public function document(): Document
     {
         return $this->document;
@@ -67,5 +62,10 @@ final class Match
     public function highlight(): ?Highlight
     {
         return $this->highlight;
+    }
+
+    public function score(): ?float
+    {
+        return $this->score;
     }
 }
