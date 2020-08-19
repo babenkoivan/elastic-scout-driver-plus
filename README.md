@@ -597,7 +597,7 @@ $matches = $searchResult->matches();
 Each match includes the related index name, the score, the model, the document and the highlight:
 
 ```php
-$match = $matches->first();
+$firstMatch = $matches->first();
 
 $indexName = $firstMatch->indexName();
 $score = $firstMatch->score();
