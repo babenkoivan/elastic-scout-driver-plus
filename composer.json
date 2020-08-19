@@ -29,7 +29,7 @@
     },
     "require": {
         "php": "^7.2",
-        "babenkoivan/elastic-adapter": "dev-feature-score as 1.6"
+        "babenkoivan/elastic-adapter": "^1.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
