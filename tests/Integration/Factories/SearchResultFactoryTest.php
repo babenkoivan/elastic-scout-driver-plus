@@ -48,6 +48,7 @@ final class SearchResultFactoryTest extends TestCase
                         '_id' => (string)$model->getKey(),
                         '_index' => $model->searchableAs(),
                         '_source' => [],
+                        '_score' => 1.0,
                     ];
                 })->all(),
             ],

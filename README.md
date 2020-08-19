@@ -594,11 +594,13 @@ You can also retrieve a collection of matches:
 $matches = $searchResult->matches();
 ```
 
-Each match includes a related model, a document and a highlight:
+Each match includes the related index name, the score, the model, the document and the highlight:
 
 ```php
 $match = $matches->first();
 
+$indexName = $firstMatch->indexName();
+$score = $firstMatch->score();
 $model = $firstMatch->model();
 $document = $firstMatch->document();
 $highlight = $firstMatch->highlight();

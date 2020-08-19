@@ -34,8 +34,8 @@ final class SearchResultTest extends TestCase
     public function test_matches_can_be_received(): void
     {
         $matches = collect([
-            new Match($this->factory, 'books', new Document('1', ['title' => 'test 1'])),
-            new Match($this->factory, 'books', new Document('2', ['title' => 'test 2'])),
+            new Match($this->factory, 'books', new Document('1', ['title' => 'test 1']), null, null),
+            new Match($this->factory, 'books', new Document('2', ['title' => 'test 2']), null, null),
         ]);
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
@@ -59,7 +59,7 @@ final class SearchResultTest extends TestCase
 
         $matches = $models->map(function (Book $model) {
             $document = new Document((string)$model->getScoutKey(), $model->toSearchableArray());
-            return new Match($this->factory, 'books', $document);
+            return new Match($this->factory, 'books', $document, null, null);
         });
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
@@ -76,7 +76,7 @@ final class SearchResultTest extends TestCase
         ]);
 
         $matches = $documents->map(function (Document $document) {
-            return new Match($this->factory, 'books', $document);
+            return new Match($this->factory, 'books', $document, null, null);
         });
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
@@ -94,7 +94,7 @@ final class SearchResultTest extends TestCase
 
         $matches = $highlights->map(function (?Highlight $highlight, int $index) {
             $document = new Document((string)$index, []);
-            return new Match($this->factory, 'books', $document, $highlight);
+            return new Match($this->factory, 'books', $document, $highlight, null);
         });
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
