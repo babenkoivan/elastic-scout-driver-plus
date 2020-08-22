@@ -111,6 +111,7 @@ Available methods:
 * [from](#from)
 * [highlight](#highlight)
 * [join](#join)
+* [postFilter](#postfilter)
 * [size](#size)
 * [sort](#sort)
 * [source](#source)
@@ -255,6 +256,24 @@ includes both types in this case:
 ```php
 // every model is either Author or Book
 $models = $searchResult->models();
+```
+
+#### postFilter
+
+`postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
+
+```php
+$searchResult = Book::boolSearch()
+	->postFilter('term', ['published' => '2020-06-07'])
+	->execute();
+``` 
+
+You can also use `postFilterRaw` method:
+
+```php
+$searchResult = Book::boolSearch()
+	->postFilterRaw(['term' => ['published' => '2020-06-07']])
+	->execute();
 ```
 
 #### size

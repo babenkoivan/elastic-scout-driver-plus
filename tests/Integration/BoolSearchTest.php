@@ -12,6 +12,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  *
+ * @uses   \ElasticScoutDriverPlus\Support\Arr
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match

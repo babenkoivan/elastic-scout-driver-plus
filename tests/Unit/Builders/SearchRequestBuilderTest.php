@@ -309,6 +309,36 @@ final class SearchRequestBuilderTest extends TestCase
         $this->makeBuilderWithQuery($this->matchAllQuery)->join(__CLASS__);
     }
 
+    public function test_search_request_with_raw_post_filter_can_be_built(): void
+    {
+        $postFilter = [
+            'term' => [
+                'published' => '2020-06-07',
+            ],
+        ];
+
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setPostFilter($postFilter);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->postFilterRaw($postFilter)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_post_filter_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setPostFilter(['term' => ['published' => '2020-06-07']]);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->postFilter('term', ['published' => '2020-06-07'])
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
     private function makeBuilderWithQuery(array $query): SearchRequestBuilder
     {
         $model = $this->createMock(Model::class);
