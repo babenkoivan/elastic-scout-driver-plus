@@ -126,26 +126,26 @@ based on a search query;
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
     ->aggregate('max_price', [
-		'max' => [
+        'max' => [
             'field' => 'price',
-		],
+        ],
 	])
-	->execute();
+    ->execute();
 ```
 
 You can also use `aggregateRaw` for more flexibility:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->aggregateRaw([
-		'max_price' => [
-			'max' => [
-				'field' => 'price',
-			],
-		],
-	])
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->aggregateRaw([
+        'max_price' => [
+            'max' => [
+                'field' => 'price',
+            ],
+        ],
+    ])
+    ->execute();
 ```
 
 You can retrieve the aggregated data from the search result as follows:
@@ -265,8 +265,8 @@ $models = $searchResult->models();
 ```php
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
-	->postFilter('term', ['published' => '2020-06-07'])
-	->execute();
+    ->postFilter('term', ['published' => '2020-06-07'])
+    ->execute();
 ``` 
 
 You can also use `postFilterRaw` method as follows:
@@ -274,8 +274,8 @@ You can also use `postFilterRaw` method as follows:
 ```php
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
-	->postFilterRaw(['term' => ['published' => '2020-06-07']])
-	->execute();
+    ->postFilterRaw(['term' => ['published' => '2020-06-07']])
+    ->execute();
 ```
 
 #### size
@@ -461,16 +461,16 @@ and won’t contribute to the score:
 
 ```php
 $searchResult = Book::boolSearch()
-	->mustNot('match', ['title' => 'The Book'])
-  ->execute();
+    ->mustNot('match', ['title' => 'The Book'])
+    ->execute();
 ```
 
 or using `mustNotRaw`:
 
 ```php
 $searchResult = Book::boolSearch()
-	->mustNotRaw(['match' => ['title' => 'The Book']])
-  ->execute();
+    ->mustNotRaw(['match' => ['title' => 'The Book']])
+    ->execute();
 ```
 
 ##### onlyTrashed
@@ -479,8 +479,8 @@ Use `onlyTrashed` method to get [only soft deleted records](https://laravel.com/
 
 ```php
 $searchResult = Book::boolSearch()
-	->onlyTrashed()
-  ->execute();
+    ->onlyTrashed()
+    ->execute();
 ```
 
 ##### should
