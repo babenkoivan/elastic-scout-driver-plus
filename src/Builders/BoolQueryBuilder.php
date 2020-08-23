@@ -3,7 +3,7 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\Support\Arr;
+use Illuminate\Support\Arr;
 use stdClass;
 
 final class BoolQueryBuilder implements QueryBuilderInterface
@@ -47,9 +47,7 @@ final class BoolQueryBuilder implements QueryBuilderInterface
 
     public function must(string $type, array $query = []): self
     {
-        $this->must = Arr::wrapAssocArray($this->must);
-        $this->must[] = [$type => empty($query) ? new stdClass() : $query];
-        return $this;
+        return $this->addClause($this->must, $type, $query);
     }
 
     public function mustRaw(array $must): self
@@ -60,9 +58,7 @@ final class BoolQueryBuilder implements QueryBuilderInterface
 
     public function mustNot(string $type, array $query = []): self
     {
-        $this->mustNot = Arr::wrapAssocArray($this->mustNot);
-        $this->mustNot[] = [$type => empty($query) ? new stdClass() : $query];
-        return $this;
+        return $this->addClause($this->mustNot, $type, $query);
     }
 
     public function mustNotRaw(array $mustNot): self
@@ -73,9 +69,7 @@ final class BoolQueryBuilder implements QueryBuilderInterface
 
     public function should(string $type, array $query = []): self
     {
-        $this->should = Arr::wrapAssocArray($this->should);
-        $this->should[] = [$type => empty($query) ? new stdClass() : $query];
-        return $this;
+        return $this->addClause($this->should, $type, $query);
     }
 
     public function shouldRaw(array $should): self
@@ -92,9 +86,7 @@ final class BoolQueryBuilder implements QueryBuilderInterface
 
     public function filter(string $type, array $query): self
     {
-        $this->filter = Arr::wrapAssocArray($this->filter);
-        $this->filter[] = [$type => $query];
-        return $this;
+        return $this->addClause($this->filter, $type, $query);
     }
 
     public function filterRaw(array $filter): self
@@ -124,8 +116,13 @@ final class BoolQueryBuilder implements QueryBuilderInterface
         }
 
         if (isset($this->softDeleted) && config('scout.soft_delete', false)) {
-            $bool['filter'] = isset($bool['filter']) ? Arr::wrapAssocArray($bool['filter']) : [];
-            $bool['filter'][] = ['term' => ['__soft_deleted' => $this->softDeleted]];
+            if (!isset($bool['filter'])) {
+                $bool['filter'] = [];
+            }
+
+            $this->addClause($bool['filter'], 'term', [
+                '__soft_deleted' => $this->softDeleted,
+            ]);
         }
 
         if (count($bool) === 0) {
@@ -139,5 +136,20 @@ final class BoolQueryBuilder implements QueryBuilderInterface
         }
 
         return compact('bool');
+    }
+
+    private function addClause(array &$context, string $type, array $query = []): self
+    {
+        if (Arr::isAssoc($context)) {
+            $context = array_map(static function ($query, $type) {
+                return [$type => $query];
+            }, $context, array_keys($context));
+        }
+
+        $context[] = [
+            $type => count($query) > 0 ? $query : new stdClass(),
+        ];
+
+        return $this;
     }
 }

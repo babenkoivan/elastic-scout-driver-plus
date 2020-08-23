@@ -9,8 +9,6 @@ use stdClass;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
- *
- * @uses   \ElasticScoutDriverPlus\Support\Arr
  */
 final class BoolQueryBuilderTest extends TestCase
 {

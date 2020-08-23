@@ -263,15 +263,17 @@ $models = $searchResult->models();
 `postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
 
 ```php
-$searchResult = Book::boolSearch()
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
 	->postFilter('term', ['published' => '2020-06-07'])
 	->execute();
 ``` 
 
-You can also use `postFilterRaw` method:
+You can also use `postFilterRaw` method as follows:
 
 ```php
-$searchResult = Book::boolSearch()
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
 	->postFilterRaw(['term' => ['published' => '2020-06-07']])
 	->execute();
 ```
