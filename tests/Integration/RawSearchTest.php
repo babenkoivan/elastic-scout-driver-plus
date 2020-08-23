@@ -319,4 +319,24 @@ final class RawSearchTest extends TestCase
 
         $this->assertEquals($source->max('price'), $found->aggregations()->get('max_price')['value']);
     }
+
+    public function test_models_can_be_found_using_post_filter(): void
+    {
+        // additional mixin
+        factory(Book::class, rand(2, 10))
+            ->state('belongs_to_author')
+            ->create();
+
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['published' => Carbon::create(2020, 6, 7)]);
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->postFilter('term', ['published' => '2020-06-07'])
+            ->execute();
+
+        $this->assertCount(1, $found->models());
+        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+    }
 }
