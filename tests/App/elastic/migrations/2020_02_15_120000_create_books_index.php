@@ -15,6 +15,14 @@ final class CreateBooksIndex implements MigrationInterface
             $mapping->text('description');
             $mapping->integer('price');
             $mapping->date('published', ['format' => 'yyyy-MM-dd']);
+
+            $mapping->nested('author', [
+                'properties' => [
+                    'name' => [
+                        'type' => 'text',
+                    ],
+                ],
+            ]);
         });
     }
 

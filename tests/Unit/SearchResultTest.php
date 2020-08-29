@@ -8,7 +8,7 @@ use ElasticAdapter\Search\Suggestion;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
-use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\App\Author;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -46,20 +46,20 @@ final class SearchResultTest extends TestCase
     public function test_models_can_be_received(): void
     {
         $models = collect([
-            (new Book())->forceFill(['id' => 2, 'title' => 'test 2']),
-            (new Book())->forceFill(['id' => 1, 'title' => 'test 1']),
+            (new Author())->forceFill(['id' => 2, 'name' => 'author 2']),
+            (new Author())->forceFill(['id' => 1, 'name' => 'author 1']),
         ]);
 
         $this->factory->expects($this->exactly($models->count()))
             ->method('makeByIndexNameAndDocumentId')
             ->withConsecutive(...$models->pluck('id')->map(static function (int $id) {
-                return ['books', $id];
+                return ['authors', $id];
             }))
             ->willReturnOnConsecutiveCalls(...$models->all());
 
-        $matches = $models->map(function (Book $model) {
+        $matches = $models->map(function (Author $model) {
             $document = new Document((string)$model->getScoutKey(), $model->toSearchableArray());
-            return new Match($this->factory, 'books', $document, null, null);
+            return new Match($this->factory, 'authors', $document, null, null);
         });
 
         $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());

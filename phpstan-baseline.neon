@@ -7,38 +7,28 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
-			count: 2
-			path: tests/App/Author.php
+			count: 3
+			path: tests/App/Model.php
 
 		-
-			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Author\\:\\:boolSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
+			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Model\\:\\:boolSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
 			count: 1
-			path: tests/App/Author.php
-
-		-
-			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Author\\:\\:rawSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
-			count: 1
-			path: tests/App/Author.php
-
-		-
-			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
-			count: 2
-			path: tests/App/Book.php
-
-		-
-			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Book\\:\\:boolSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
-			count: 1
-			path: tests/App/Book.php
+			path: tests/App/Model.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 2
-			path: tests/App/Book.php
+			count: 3
+			path: tests/App/Model.php
 
 		-
-			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Book\\:\\:rawSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
+			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Model\\:\\:rawSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
 			count: 1
-			path: tests/App/Book.php
+			path: tests/App/Model.php
+
+		-
+			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Model\\:\\:nestedSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
+			count: 1
+			path: tests/App/Model.php
 
 		-
 			message: "#^Call to an undefined method Illuminate\\\\Support\\\\HigherOrderCollectionProxy\\:\\:searchableAs\\(\\)\\.$#"
