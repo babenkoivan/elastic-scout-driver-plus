@@ -395,15 +395,15 @@ $searchResult = Book::boolSearch()
 
 Available methods:
 
-* [filter](#filter)
-* [minimumShouldMatch](#minimumshouldmatch)
-* [must](#must)
-* [mustNot](#mustnot)
-* [onlyTrashed](#onlytrashed)
-* [should](#should)
-* [withTrashed](#withtrashed)
+* [filter](#bool-filter)
+* [minimumShouldMatch](#bool-minimum-should-match)
+* [must](#bool-must)
+* [mustNot](#bool-must-not)
+* [onlyTrashed](#bool-only-trashed)
+* [should](#bool-should)
+* [withTrashed](#bool-with-trashed)
 
-##### filter
+##### <a name="bool-filter"></a> filter
 
 The query defined with `filter` [must appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html),
 but won’t contribute to the score:
@@ -422,7 +422,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### minimumShouldMatch
+##### <a name="bool-minimum-should-match"></a> minimumShouldMatch
 
 You can use `minimumShouldMatch` to specify [the number of `should` queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#bool-min-should-match)
 the search results must match:
@@ -435,7 +435,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### must
+##### <a name="bool-must"></a> must
 
 The query defined with `must` [must appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
 and will contribute to the score:
@@ -454,7 +454,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### mustNot
+##### <a name="bool-must-not"></a> mustNot
 
 The query defined with `mustNot` [must not appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
 and won’t contribute to the score:
@@ -473,7 +473,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### onlyTrashed
+##### <a name="bool-only-trashed"></a> onlyTrashed
 
 Use `onlyTrashed` method to get [only soft deleted records](https://laravel.com/docs/master/scout#soft-deleting):
 
@@ -483,7 +483,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### should
+##### <a name="bool-should"></a> should
 
 The query defined with `should` [should appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html):
 
@@ -501,7 +501,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### withTrashed
+##### <a name="bool-with-trashed"></a> withTrashed
 
 You can use `withTrashed` to include [soft deleted records](https://laravel.com/docs/master/scout#soft-deleting)
 in the search result:
@@ -524,7 +524,13 @@ $searchResult = Book::nestedSearch()
     ->execute();
 ```
 
-##### ignoreUnmapped
+Available methods:
+* [ignoreUnmapped](#nested-ignore-unmapped)
+* [path](#nested-path)
+* [query](#nested-query)
+* [scoreMode](#nested-scoreMode)
+
+##### <a name="nested-ignore-unmapped"></a> ignoreUnmapped
 
 You can use `ignoreUnmapped` to query multiple indices that may not contain the field `path`: 
 
@@ -536,7 +542,7 @@ $searchResult = Book::nestedSearch()
     ->execute();
 ```
  
-##### path
+##### <a name="nested-path"></a> path
 
 Use `path` to set a path to the nested field you wish to search in:
 
@@ -547,7 +553,7 @@ $searchResult = Book::nestedSearch()
     ->execute();
 ``` 
 
-##### query
+##### <a name="nested-query"></a> query
 
 `query` defines a raw query you wish to run on the nested field:
 
@@ -558,7 +564,7 @@ $searchResult = Book::nestedSearch()
     ->execute();
 ``` 
 
-##### scoreMode
+##### <a name="nested-score-mode"></a> scoreMode
 
 `scoreMode` is used to set a scoring mode:
 
