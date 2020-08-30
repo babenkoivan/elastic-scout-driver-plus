@@ -24,6 +24,9 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
 * [Search Request Builder](#search-request-builder)
     * [Generic Methods](#generic-methods)
     * [Query Specific Methods](#query-specific-methods)
+        * [Bool Search](#bool-search)
+        * [Nested Search](#nested-search)
+        * [Raw Search](#raw-search)
 * [Search Result](#search-result)
 
 ## Features
@@ -513,6 +516,8 @@ $searchResult = Book::boolSearch()
     ->execute()
 ```
 
+---
+
 #### Nested Search
 
 Use `nestedSearch` to [search in nested fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html#query-dsl-nested-query):
@@ -575,6 +580,8 @@ $searchResult = Book::nestedSearch()
     ->scoreMode('avg')
     ->execute();
 ```
+
+---
 
 #### Raw Search
 
