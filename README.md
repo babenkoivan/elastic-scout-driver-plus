@@ -528,7 +528,7 @@ Available methods:
 * [ignoreUnmapped](#nested-ignore-unmapped)
 * [path](#nested-path)
 * [query](#nested-query)
-* [scoreMode](#nested-scoreMode)
+* [scoreMode](#nested-score-mode)
 
 ##### <a name="nested-ignore-unmapped"></a> ignoreUnmapped
 
