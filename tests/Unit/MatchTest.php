@@ -7,7 +7,7 @@ use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\Tests\App\Book;
-use PHPUnit\Framework\MockObject\MockObject;
+use Illuminate\Database\Eloquent\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,51 +16,61 @@ use PHPUnit\Framework\TestCase;
 final class MatchTest extends TestCase
 {
     /**
-     * @var LazyModelFactory&MockObject
+     * @var Match
      */
-    private $factory;
+    private $match;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->factory = $this->createMock(LazyModelFactory::class);
-    }
-
-    public function test_model_can_be_received(): void
-    {
         $model = new Book();
         $model->id = 1;
         $model->title = 'test';
 
-        $this->factory->expects($this->once())
-            ->method('makeByIndexNameAndDocumentId')
+        $factory = $this->createMock(LazyModelFactory::class);
+
+        $factory->method('makeByIndexNameAndDocumentId')
             ->with('books', $model->id)
             ->willReturn($model);
 
         $document = new Document((string)$model->id, ['title' => $model->title]);
+        $highlight = new Highlight(['title' => ['<em>test</em>']]);
 
-        $match = new Match($this->factory, 'books', $document);
+        $this->match = new Match($factory, 'books', $document, $highlight, 1.1);
+    }
 
-        $this->assertSame($match->model(), $model);
+    public function test_index_name_can_be_received(): void
+    {
+        $this->assertSame('books', $this->match->indexName());
+    }
+
+    public function test_score_can_be_received(): void
+    {
+        $this->assertSame(1.1, $this->match->score());
+    }
+
+    public function test_model_can_be_received(): void
+    {
+        /** @var Model $model */
+        $model = $this->match->model();
+
+        $this->assertSame(['id' => 1, 'title' => 'test'], $model->toArray());
     }
 
     public function test_document_can_be_received(): void
     {
-        $document = new Document('1', ['title' => 'test']);
+        $document = $this->match->document();
 
-        $match = new Match($this->factory, 'books', $document);
-
-        $this->assertSame($match->document(), $document);
+        $this->assertSame('1', $document->getId());
+        $this->assertSame(['title' => 'test'], $document->getContent());
     }
 
     public function test_highlight_can_be_received(): void
     {
-        $document = new Document('1', ['title' => 'test']);
-        $highlight = new Highlight(['title' => ['<em>test</em>']]);
+        /** @var Highlight $highlight */
+        $highlight = $this->match->highlight();
 
-        $match = new Match($this->factory, 'books', $document, $highlight);
-
-        $this->assertSame($match->highlight(), $highlight);
+        $this->assertSame(['title' => ['<em>test</em>']], $highlight->getRaw());
     }
 }

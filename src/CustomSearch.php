@@ -3,6 +3,7 @@
 namespace ElasticScoutDriverPlus;
 
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
+use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder;
 use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
@@ -24,6 +25,14 @@ trait CustomSearch
     public static function rawSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new RawQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&NestedQueryBuilder
+     */
+    public static function nestedSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new NestedQueryBuilder());
     }
 
     /**

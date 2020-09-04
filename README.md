@@ -24,6 +24,9 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
 * [Search Request Builder](#search-request-builder)
     * [Generic Methods](#generic-methods)
     * [Query Specific Methods](#query-specific-methods)
+        * [Bool Search](#bool-search)
+        * [Nested Search](#nested-search)
+        * [Raw Search](#raw-search)
 * [Search Result](#search-result)
 
 ## Features
@@ -111,6 +114,7 @@ Available methods:
 * [from](#from)
 * [highlight](#highlight)
 * [join](#join)
+* [postFilter](#postfilter)
 * [size](#size)
 * [sort](#sort)
 * [source](#source)
@@ -125,26 +129,26 @@ based on a search query;
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
     ->aggregate('max_price', [
-		'max' => [
+        'max' => [
             'field' => 'price',
-		],
+        ],
 	])
-	->execute();
+    ->execute();
 ```
 
 You can also use `aggregateRaw` for more flexibility:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->aggregateRaw([
-		'max_price' => [
-			'max' => [
-				'field' => 'price',
-			],
-		],
-	])
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->aggregateRaw([
+        'max_price' => [
+            'max' => [
+                'field' => 'price',
+            ],
+        ],
+    ])
+    ->execute();
 ```
 
 You can retrieve the aggregated data from the search result as follows:
@@ -161,20 +165,20 @@ search results based on field values:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->collapse('author_id')
-	->sort('published', 'desc')
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->collapse('author_id')
+    ->sort('published', 'desc')
+    ->execute();
 ```
 
 There is also `collapseRaw` method in your disposal:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->collapseRaw(['field' => 'author_id'])
-	->sort('price', 'asc')
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->collapseRaw(['field' => 'author_id'])
+    ->sort('price', 'asc')
+    ->execute();
 ```
 
 #### from
@@ -183,9 +187,9 @@ $searchResult = Book::rawSearch()
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->from(5)
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->from(5)
+    ->execute();
 ```
 
 #### highlight
@@ -195,18 +199,18 @@ from one or more fields in your search results:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match' => ['title' => 'The Book']])
-	->highlight('title')
-	->execute();
+    ->query(['match' => ['title' => 'The Book']])
+    ->highlight('title')
+    ->execute();
 ```
 
 Use `highlightRaw` method if you need more control:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match' => ['title' => 'The Book']])
-	->highlightRaw(['fields' => ['title' => ['number_of_fragments' => 3]]])
-	->execute();
+    ->query(['match' => ['title' => 'The Book']])
+    ->highlightRaw(['fields' => ['title' => ['number_of_fragments' => 3]]])
+    ->execute();
 ```
 
 Use `highlights` method to retrieve highlights from the search result:
@@ -241,11 +245,11 @@ search:
 
 ```php
 $searchResult = Author::boolSearch()
-	->join(Book::class)
-	->should('match', ['name' => 'John'])
-	->should('match', ['title' => 'The Book'])
-	->minimumShouldMatch(1)
-	->execute();
+    ->join(Book::class)
+    ->should('match', ['name' => 'John'])
+    ->should('match', ['title' => 'The Book'])
+    ->minimumShouldMatch(1)
+    ->execute();
 ```
 
 In the example above, we search for an author with name `John` or a book with title `The Book` in two different indices. 
@@ -257,15 +261,35 @@ includes both types in this case:
 $models = $searchResult->models();
 ```
 
+#### postFilter
+
+`postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->postFilter('term', ['published' => '2020-06-07'])
+    ->execute();
+``` 
+
+You can also use `postFilterRaw` method as follows:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->postFilterRaw(['term' => ['published' => '2020-06-07']])
+    ->execute();
+```
+
 #### size
 
 `size` method [limits the number of results to return](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html):
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->size(2)
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->size(2)
+    ->execute();
 ```
 
 #### sort
@@ -274,18 +298,18 @@ This method [sorts](https://www.elastic.co/guide/en/elasticsearch/reference/curr
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->sort('price', 'asc')
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->sort('price', 'asc')
+    ->execute();
 ```
 
 In case, you need more advanced sorting algorithm use `sortRaw`:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->sortRaw(['price' => 'asc'])
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->sortRaw(['price' => 'asc'])
+    ->execute();
 ```
 
 #### source
@@ -294,9 +318,9 @@ This method allows you to [select what document fields of the source are returne
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->source(['title', 'description'])
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->source(['title', 'description'])
+    ->execute();
 ```
 
 `sourceRaw` allows you to use a single wildcard pattern, an array of fields or a boolean value in case you want to 
@@ -304,9 +328,9 @@ exclude document source from the result:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_all' => new \stdClass()])
-	->sourceRaw(false)
-	->execute();
+    ->query(['match_all' => new \stdClass()])
+    ->sourceRaw(false)
+    ->execute();
 ```
 
 #### suggest
@@ -316,18 +340,18 @@ based on a provided text:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_none' => new \stdClass()])
-	->suggest('title_suggest', ['text' => 'book', 'term' => ['field' => 'title']])
-	->execute();
+    ->query(['match_none' => new \stdClass()])
+    ->suggest('title_suggest', ['text' => 'book', 'term' => ['field' => 'title']])
+    ->execute();
 ```
 
 The same query with `suggestRaw` method:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match_none' => new \stdClass()])
-	->suggest(['title_suggest' => ['text' => 'book', 'term' => ['field' => 'title']]])
-	->execute();
+    ->query(['match_none' => new \stdClass()])
+    ->suggest(['title_suggest' => ['text' => 'book', 'term' => ['field' => 'title']]])
+    ->execute();
 ```
 
 When the feature is used, the search result is populated with the suggestions:
@@ -368,129 +392,196 @@ Use `boolSearch` to make a [bool request](https://www.elastic.co/guide/en/elasti
 
 ```php
 $searchResult = Book::boolSearch()
-	->must('match', ['title' => 'The Book'])
-	->execute()
+    ->must('match', ['title' => 'The Book'])
+    ->execute()
 ```
 
 Available methods:
 
-* [filter](#filter)
-* [minimumShouldMatch](#minimumshouldmatch)
-* [must](#must)
-* [mustNot](#mustnot)
-* [onlyTrashed](#onlytrashed)
-* [should](#should)
-* [withTrashed](#withtrashed)
+* [filter](#bool-filter)
+* [minimumShouldMatch](#bool-minimum-should-match)
+* [must](#bool-must)
+* [mustNot](#bool-must-not)
+* [onlyTrashed](#bool-only-trashed)
+* [should](#bool-should)
+* [withTrashed](#bool-with-trashed)
 
-##### filter
+##### <a name="bool-filter"></a> filter
 
 The query defined with `filter` [must appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html),
 but won’t contribute to the score:
 
 ```php
 $searchResult = Book::boolSearch()
-	->filter('term', ['published' => '2020-06-07'])
-	->execute();
+    ->filter('term', ['published' => '2020-06-07'])
+    ->execute();
 ``` 
 
 The same query with `filterRaw` method:
 
 ```php
 $searchResult = Book::boolSearch()
-	->filterRaw(['term' => ['published' => '2020-06-07']])
-	->execute();
+    ->filterRaw(['term' => ['published' => '2020-06-07']])
+    ->execute();
 ```
 
-##### minimumShouldMatch
+##### <a name="bool-minimum-should-match"></a> minimumShouldMatch
 
 You can use `minimumShouldMatch` to specify [the number of `should` queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#bool-min-should-match)
 the search results must match:
 
 ```php
 $searchResult = Book::boolSearch()
-	->should('term', ['published' => '2018-04-23'])
-	->should('term', ['published' => '2020-03-07'])
-	->minimumShouldMatch(1)
-	->execute();
+    ->should('term', ['published' => '2018-04-23'])
+    ->should('term', ['published' => '2020-03-07'])
+    ->minimumShouldMatch(1)
+    ->execute();
 ```
 
-##### must
+##### <a name="bool-must"></a> must
 
 The query defined with `must` [must appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
 and will contribute to the score:
 
 ```php
 $searchResult = Book::boolSearch()
-	->must('match', ['title' => 'The Book'])
-	->execute();
+    ->must('match', ['title' => 'The Book'])
+    ->execute();
 ```
 
 There is also a raw version of this method:
 
 ```php
 $searchResult = Book::boolSearch()
-	->mustRaw(['match' => ['title' => 'The Book']])
-	->execute();
+    ->mustRaw(['match' => ['title' => 'The Book']])
+    ->execute();
 ```
 
-##### mustNot
+##### <a name="bool-must-not"></a> mustNot
 
 The query defined with `mustNot` [must not appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
 and won’t contribute to the score:
 
 ```php
 $searchResult = Book::boolSearch()
-	->mustNot('match', ['title' => 'The Book'])
-  ->execute();
+    ->mustNot('match', ['title' => 'The Book'])
+    ->execute();
 ```
 
 or using `mustNotRaw`:
 
 ```php
 $searchResult = Book::boolSearch()
-	->mustNotRaw(['match' => ['title' => 'The Book']])
-  ->execute();
+    ->mustNotRaw(['match' => ['title' => 'The Book']])
+    ->execute();
 ```
 
-##### onlyTrashed
+##### <a name="bool-only-trashed"></a> onlyTrashed
 
 Use `onlyTrashed` method to get [only soft deleted records](https://laravel.com/docs/master/scout#soft-deleting):
 
 ```php
 $searchResult = Book::boolSearch()
-	->onlyTrashed()
-  ->execute();
+    ->onlyTrashed()
+    ->execute();
 ```
 
-##### should
+##### <a name="bool-should"></a> should
 
 The query defined with `should` [should appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html):
 
 ```php
 $searchResult = Book::boolSearch()
-	->should('match', ['title' => 'The Book'])
-	->execute();
+    ->should('match', ['title' => 'The Book'])
+    ->execute();
 ```
 
 You can also take advantage of `shouldRaw` method:
 
 ```php
 $searchResult = Book::boolSearch()
-	->shouldRaw(['match' => ['title' => 'The Book']])
-	->execute();
+    ->shouldRaw(['match' => ['title' => 'The Book']])
+    ->execute();
 ```
 
-##### withTrashed
+##### <a name="bool-with-trashed"></a> withTrashed
 
 You can use `withTrashed` to include [soft deleted records](https://laravel.com/docs/master/scout#soft-deleting)
 in the search result:
 
 ```php
 $searchResult = Book::boolSearch()
-	->must('match_all')
-	->withTrashed()
-	->execute()
+    ->must('match_all')
+    ->withTrashed()
+    ->execute()
 ```
+
+---
+
+#### Nested Search
+
+Use `nestedSearch` to [search in nested fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html#query-dsl-nested-query):
+
+```php
+$searchResult = Book::nestedSearch()
+    ->path('author')
+    ->query(['match' => ['author.name' => 'Steven']])
+    ->execute();
+```
+
+Available methods:
+* [ignoreUnmapped](#nested-ignore-unmapped)
+* [path](#nested-path)
+* [query](#nested-query)
+* [scoreMode](#nested-score-mode)
+
+##### <a name="nested-ignore-unmapped"></a> ignoreUnmapped
+
+You can use `ignoreUnmapped` to query multiple indices that may not contain the field `path`: 
+
+```php
+$searchResult = Book::nestedSearch()
+    ->path('author')
+    ->query(['match' => ['author.name' => 'Steven']])
+    ->ignoreUnmapped(true)
+    ->execute();
+```
+ 
+##### <a name="nested-path"></a> path
+
+Use `path` to set a path to the nested field you wish to search in:
+
+```php
+$searchResult = Book::nestedSearch()
+    ->path('author')
+    ->query(['match' => ['author.name' => 'Steven']])
+    ->execute();
+``` 
+
+##### <a name="nested-query"></a> query
+
+`query` defines a raw query you wish to run on the nested field:
+
+```php
+$searchResult = Book::nestedSearch()
+    ->path('author')
+    ->query(['match' => ['author.name' => 'Steven']])
+    ->execute();
+``` 
+
+##### <a name="nested-score-mode"></a> scoreMode
+
+`scoreMode` is used to set a scoring mode:
+
+```php
+$searchResult = Book::nestedSearch()
+    ->path('author')
+    ->query(['match' => ['author.name' => 'Steven']])
+    ->scoreMode('avg')
+    ->execute();
+```
+
+---
 
 #### Raw Search
 
@@ -498,8 +589,8 @@ Use `rawSearch` to make any custom search request:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match' => ['title' => 'The Book']])
-	->execute()
+    ->query(['match' => ['title' => 'The Book']])
+    ->execute()
 ```
 
 There is only one method, which is specific to raw search: `query`.
@@ -510,8 +601,8 @@ This method can be used to define raw search request query:
 
 ```php
 $searchResult = Book::rawSearch()
-	->query(['match' => ['title' => 'The Book']])
-	->execute()
+    ->query(['match' => ['title' => 'The Book']])
+    ->execute()
 ```
 
 ## Search Result
@@ -520,16 +611,16 @@ You can send a search request either by using the `execute` method:
 
 ```php
 $searchResult = MyModel::boolSearch()
-	->must('match_all')
-	->execute();
+    ->must('match_all')
+    ->execute();
 ```
 
 or by using the `raw` method:
 
 ```php
 $searchResult = MyModel::boolSearch()
-	->must('match_all')
-	->raw();
+    ->must('match_all')
+    ->raw();
 ```
 
 In the first case, the search results are parsed and an instance of `ElasticScoutDriverPlus\SearchResult` is returned. 
@@ -594,11 +685,13 @@ You can also retrieve a collection of matches:
 $matches = $searchResult->matches();
 ```
 
-Each match includes a related model, a document and a highlight:
+Each match includes the related index name, the score, the model, the document and the highlight:
 
 ```php
-$match = $matches->first();
+$firstMatch = $matches->first();
 
+$indexName = $firstMatch->indexName();
+$score = $firstMatch->score();
 $model = $firstMatch->model();
 $document = $firstMatch->document();
 $highlight = $firstMatch->highlight();

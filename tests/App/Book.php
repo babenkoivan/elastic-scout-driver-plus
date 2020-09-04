@@ -3,12 +3,8 @@
 namespace ElasticScoutDriverPlus\Tests\App;
 
 use Carbon\Carbon;
-use ElasticScoutDriverPlus\CustomSearch;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
-use Laravel\Scout\Searchable;
 
 /**
  * @property int    $id
@@ -18,14 +14,11 @@ use Laravel\Scout\Searchable;
  * @property float  $price
  * @property Carbon $published
  * @property Carbon $deleted_at
+ * @property Author $author
  */
 class Book extends Model
 {
-    use Searchable;
-    use CustomSearch;
     use SoftDeletes;
-
-    public $timestamps = false;
 
     protected $hidden = [
         'deleted_at',
@@ -49,6 +42,9 @@ class Book extends Model
      */
     public function toSearchableArray()
     {
-        return Arr::except($this->toArray(), [$this->getKeyName()]);
+        $searchable = parent::toSearchableArray();
+        $searchable['author'] = $this->author->only('name');
+
+        return $searchable;
     }
 }

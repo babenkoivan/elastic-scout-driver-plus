@@ -60,6 +60,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
      * @var array
      */
     private $aggregations = [];
+    /**
+     * @var array
+     */
+    private $postFilter = [];
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
@@ -179,6 +183,18 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
+    public function postFilter(string $type, array $query): self
+    {
+        $this->postFilter[$type] = $query;
+        return $this;
+    }
+
+    public function postFilterRaw(array $filter): self
+    {
+        $this->postFilter = $filter;
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
         $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
@@ -213,6 +229,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
         if (count($this->aggregations) > 0) {
             $searchRequest->setAggregations($this->aggregations);
+        }
+
+        if (count($this->postFilter) > 0) {
+            $searchRequest->setPostFilter($this->postFilter);
         }
 
         return $searchRequest;

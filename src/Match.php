@@ -25,17 +25,23 @@ final class Match
      * @var Highlight|null
      */
     private $highlight;
+    /**
+     * @var float|null
+     */
+    private $score;
 
     public function __construct(
         LazyModelFactory $lazyModelFactory,
         string $indexName,
         Document $document,
-        ?Highlight $highlight = null
+        ?Highlight $highlight,
+        ?float $score
     ) {
         $this->lazyModelFactory = $lazyModelFactory;
         $this->indexName = $indexName;
         $this->document = $document;
         $this->highlight = $highlight;
+        $this->score = $score;
     }
 
     public function model(): ?Model
@@ -56,5 +62,10 @@ final class Match
     public function highlight(): ?Highlight
     {
         return $this->highlight;
+    }
+
+    public function score(): ?float
+    {
+        return $this->score;
     }
 }

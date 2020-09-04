@@ -84,7 +84,7 @@ final class BoolQueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
-    public function filter(string $type, array $query = []): self
+    public function filter(string $type, array $query): self
     {
         return $this->addClause($this->filter, $type, $query);
     }
