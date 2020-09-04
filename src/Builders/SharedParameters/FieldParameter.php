@@ -2,16 +2,16 @@
 
 namespace ElasticScoutDriverPlus\Builders\SharedParameters;
 
-trait BoostParameter
+trait FieldParameter
 {
     /**
-     * @var float|null
+     * @var string|null
      */
-    private $boost;
+    private $field;
 
-    public function boost(float $boost): self
+    public function field(string $field): self
     {
-        $this->boost = $boost;
+        $this->field = $field;
         return $this;
     }
 }

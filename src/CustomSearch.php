@@ -3,9 +3,12 @@
 namespace ElasticScoutDriverPlus;
 
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
-use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder;
+use ElasticScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
+use ElasticScoutDriverPlus\Builders\MatchPhraseQueryBuilder;
+use ElasticScoutDriverPlus\Builders\MatchQueryBuilder;
+use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
 use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 
@@ -49,5 +52,29 @@ trait CustomSearch
     public static function matchNoneSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new MatchNoneQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&MatchQueryBuilder
+     */
+    public function matchSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new MatchQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&MatchPhraseQueryBuilder
+     */
+    public function matchPhraseSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new MatchPhraseQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&MatchPhrasePrefixQueryBuilder
+     */
+    public function matchPhrasePrefixSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new MatchPhrasePrefixQueryBuilder());
     }
 }

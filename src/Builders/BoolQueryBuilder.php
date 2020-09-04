@@ -2,12 +2,15 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
+use ElasticScoutDriverPlus\Builders\SharedParameters\MinimumShouldMatchParameter;
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
 use Illuminate\Support\Arr;
 use stdClass;
 
 final class BoolQueryBuilder implements QueryBuilderInterface
 {
+    use MinimumShouldMatchParameter;
+
     /**
      * @var int|null
      */
@@ -24,10 +27,6 @@ final class BoolQueryBuilder implements QueryBuilderInterface
      * @var array
      */
     private $should = [];
-    /**
-     * @var int|null
-     */
-    private $minimumShouldMatch;
     /**
      * @var array
      */
@@ -75,12 +74,6 @@ final class BoolQueryBuilder implements QueryBuilderInterface
     public function shouldRaw(array $should): self
     {
         $this->should = $should;
-        return $this;
-    }
-
-    public function minimumShouldMatch(int $minimumShouldMatch): self
-    {
-        $this->minimumShouldMatch = $minimumShouldMatch;
         return $this;
     }
 
