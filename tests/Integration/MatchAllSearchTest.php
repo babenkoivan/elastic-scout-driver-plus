@@ -3,6 +3,7 @@
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use ElasticScoutDriverPlus\Tests\App\Book;
+use const SORT_STRING;
 
 /**
  * @covers \ElasticScoutDriverPlus\CustomSearch
