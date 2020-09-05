@@ -35,12 +35,8 @@ final class MatchQueryBuilder implements QueryBuilderInterface
 
     public function buildQuery(): array
     {
-        if (is_null($this->field)) {
-            throw new QueryBuilderException('Field is not specified');
-        }
-
-        if (is_null($this->text)) {
-            throw new QueryBuilderException('Query text is not specified');
+        if (!isset($this->field, $this->text)) {
+            throw new QueryBuilderException('Field and text have to be specified');
         }
 
         $match = [

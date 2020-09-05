@@ -26,12 +26,8 @@ final class NestedQueryBuilder implements QueryBuilderInterface
 
     public function buildQuery(): array
     {
-        if (is_null($this->path)) {
-            throw new QueryBuilderException('Path is not specified');
-        }
-
-        if (is_null($this->query)) {
-            throw new QueryBuilderException('Query is not specified');
+        if (!isset($this->path, $this->query)) {
+            throw new QueryBuilderException('Path and query have to be specified');
         }
 
         $nested = [

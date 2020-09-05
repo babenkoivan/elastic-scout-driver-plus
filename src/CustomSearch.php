@@ -57,7 +57,7 @@ trait CustomSearch
     /**
      * @return SearchRequestBuilder&MatchQueryBuilder
      */
-    public function matchSearch(): SearchRequestBuilder
+    public static function matchSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new MatchQueryBuilder());
     }
@@ -65,7 +65,7 @@ trait CustomSearch
     /**
      * @return SearchRequestBuilder&MatchPhraseQueryBuilder
      */
-    public function matchPhraseSearch(): SearchRequestBuilder
+    public static function matchPhraseSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new MatchPhraseQueryBuilder());
     }
@@ -73,7 +73,7 @@ trait CustomSearch
     /**
      * @return SearchRequestBuilder&MatchPhrasePrefixQueryBuilder
      */
-    public function matchPhrasePrefixSearch(): SearchRequestBuilder
+    public static function matchPhrasePrefixSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new MatchPhrasePrefixQueryBuilder());
     }

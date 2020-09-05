@@ -8,29 +8,29 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\Builders\MatchQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\MatchPhraseQueryBuilder
  *
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
  */
-final class MatchSearchTest extends TestCase
+final class MatchPhraseSearchTest extends TestCase
 {
     public function test_models_can_be_found_using_field_and_text(): void
     {
         // additional mixin
         factory(Book::class)
             ->state('belongs_to_author')
-            ->create(['title' => 'foo']);
+            ->create(['title' => 'the first book']);
 
         $target = factory(Book::class)
             ->state('belongs_to_author')
-            ->create(['title' => 'bar']);
+            ->create(['title' => 'the second book']);
 
-        $found = Book::matchSearch()
+        $found = Book::matchPhraseSearch()
             ->field('title')
-            ->text('bar')
+            ->text('second book')
             ->execute();
 
         $this->assertCount(1, $found->models());
