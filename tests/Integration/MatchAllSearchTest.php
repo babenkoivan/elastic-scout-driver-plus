@@ -19,10 +19,11 @@ final class MatchAllSearchTest extends TestCase
 {
     public function test_all_models_can_be_found(): void
     {
-        $target = factory(Book::class, rand(2, 10))
+        $target = factory(Book::class, rand(8, 10))
             ->state('belongs_to_author')
             ->create()
-            ->sortBy('id');
+            ->sortBy('id', SORT_STRING)
+            ->values();
 
         $found = Book::matchAllSearch()
             ->sort('_id', 'asc')
