@@ -12,7 +12,9 @@ final class MatchAllQueryBuilder implements QueryBuilderInterface
     public function buildQuery(): array
     {
         return [
-            'match_all' => isset($this->boost) ? ['boost' => $this->boost] : new stdClass(),
+            'match_all' => isset($this->boost)
+                ? ['boost' => $this->boost]
+                : new stdClass(),
         ];
     }
 }

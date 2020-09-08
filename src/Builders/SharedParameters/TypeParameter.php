@@ -2,16 +2,16 @@
 
 namespace ElasticScoutDriverPlus\Builders\SharedParameters;
 
-trait RewriteParameter
+trait TypeParameter
 {
     /**
      * @var string|null
      */
-    private $fuzzyRewrite;
+    private $type;
 
-    public function fuzzyRewrite(string $rewrite): self
+    public function type(string $type): self
     {
-        $this->fuzzyRewrite = $rewrite;
+        $this->type = $type;
         return $this;
     }
 }

@@ -9,6 +9,7 @@ use ElasticScoutDriverPlus\Builders\SharedParameters\SlopParameter;
 use ElasticScoutDriverPlus\Builders\SharedParameters\TextParameter;
 use ElasticScoutDriverPlus\Builders\SharedParameters\ZeroTermsQueryParameter;
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
+use ElasticScoutDriverPlus\Support\ObjectVariables;
 
 final class MatchPhrasePrefixQueryBuilder implements QueryBuilderInterface
 {
@@ -18,6 +19,7 @@ final class MatchPhrasePrefixQueryBuilder implements QueryBuilderInterface
     use MaxExpansionsParameter;
     use SlopParameter;
     use ZeroTermsQueryParameter;
+    use ObjectVariables;
 
     public function buildQuery(): array
     {
@@ -31,21 +33,10 @@ final class MatchPhrasePrefixQueryBuilder implements QueryBuilderInterface
             ],
         ];
 
-        if (isset($this->analyzer)) {
-            $matchPhrasePrefix[$this->field]['analyzer'] = $this->analyzer;
-        }
-
-        if (isset($this->maxExpansions)) {
-            $matchPhrasePrefix[$this->field]['max_expansions'] = $this->maxExpansions;
-        }
-
-        if (isset($this->slop)) {
-            $matchPhrasePrefix[$this->field]['slop'] = $this->slop;
-        }
-
-        if (isset($this->zeroTermsQuery)) {
-            $matchPhrasePrefix[$this->field]['zero_terms_query'] = $this->zeroTermsQuery;
-        }
+        $matchPhrasePrefix[$this->field] += $this->getObjectVariables()
+            ->except(['field', 'text'])
+            ->whereNotNull()
+            ->toArray();
 
         return [
             'match_phrase_prefix' => $matchPhrasePrefix,

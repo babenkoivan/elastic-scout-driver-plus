@@ -7,7 +7,7 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @return contains unresolvable type\\.$#"
-			count: 8
+			count: 9
 			path: tests/App/Model.php
 
 		-
@@ -17,7 +17,7 @@ parameters:
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 8
+			count: 9
 			path: tests/App/Model.php
 
 		-
@@ -52,6 +52,11 @@ parameters:
 
 		-
 			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Model\\:\\:matchPhrasePrefixSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
+			count: 1
+			path: tests/App/Model.php
+
+		-
+			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Model\\:\\:multiMatchSearch\\(\\) with return type void returns ElasticScoutDriverPlus\\\\Builders\\\\SearchRequestBuilder but should not return anything\\.$#"
 			count: 1
 			path: tests/App/Model.php
 

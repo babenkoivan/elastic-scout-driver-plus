@@ -8,6 +8,7 @@ use ElasticScoutDriverPlus\Builders\SharedParameters\SlopParameter;
 use ElasticScoutDriverPlus\Builders\SharedParameters\TextParameter;
 use ElasticScoutDriverPlus\Builders\SharedParameters\ZeroTermsQueryParameter;
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
+use ElasticScoutDriverPlus\Support\ObjectVariables;
 
 final class MatchPhraseQueryBuilder implements QueryBuilderInterface
 {
@@ -16,6 +17,7 @@ final class MatchPhraseQueryBuilder implements QueryBuilderInterface
     use SlopParameter;
     use AnalyzerParameter;
     use ZeroTermsQueryParameter;
+    use ObjectVariables;
 
     public function buildQuery(): array
     {
@@ -29,17 +31,10 @@ final class MatchPhraseQueryBuilder implements QueryBuilderInterface
             ],
         ];
 
-        if (isset($this->slop)) {
-            $matchPhrase[$this->field]['slop'] = $this->slop;
-        }
-
-        if (isset($this->analyzer)) {
-            $matchPhrase[$this->field]['analyzer'] = $this->analyzer;
-        }
-
-        if (isset($this->zeroTermsQuery)) {
-            $matchPhrase[$this->field]['zero_terms_query'] = $this->zeroTermsQuery;
-        }
+        $matchPhrase[$this->field] += $this->getObjectVariables()
+            ->except(['field', 'text'])
+            ->whereNotNull()
+            ->toArray();
 
         return [
             'match_phrase' => $matchPhrase,

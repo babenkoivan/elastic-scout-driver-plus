@@ -193,7 +193,7 @@ final class MatchQueryBuilderTest extends TestCase
         $actual = $this->builder
             ->field('message')
             ->text('this is a test')
-            ->rewrite('constant_score')
+            ->fuzzyRewrite('constant_score')
             ->buildQuery();
 
         $this->assertSame($expected, $actual);

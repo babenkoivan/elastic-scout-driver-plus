@@ -8,6 +8,7 @@ use ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchPhraseQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchQueryBuilder;
+use ElasticScoutDriverPlus\Builders\MultiMatchQueryBuilder;
 use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
 use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
@@ -76,5 +77,13 @@ trait CustomSearch
     public static function matchPhrasePrefixSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new MatchPhrasePrefixQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&MultiMatchQueryBuilder
+     */
+    public static function multiMatchSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new MultiMatchQueryBuilder());
     }
 }

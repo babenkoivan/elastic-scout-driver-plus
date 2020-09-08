@@ -6,12 +6,14 @@ use ElasticScoutDriverPlus\Builders\SharedParameters\IgnoreUnmappedParameter;
 use ElasticScoutDriverPlus\Builders\SharedParameters\QueryParameter;
 use ElasticScoutDriverPlus\Builders\SharedParameters\ScoreModeParameter;
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
+use ElasticScoutDriverPlus\Support\ObjectVariables;
 
 final class NestedQueryBuilder implements QueryBuilderInterface
 {
     use QueryParameter;
     use ScoreModeParameter;
     use IgnoreUnmappedParameter;
+    use ObjectVariables;
 
     /**
      * @var string|null
@@ -30,19 +32,10 @@ final class NestedQueryBuilder implements QueryBuilderInterface
             throw new QueryBuilderException('Path and query have to be specified');
         }
 
-        $nested = [
-            'path' => $this->path,
-            'query' => $this->query,
+        return [
+            'nested' => $this->getObjectVariables()
+                ->whereNotNull()
+                ->toArray(),
         ];
-
-        if (isset($this->scoreMode)) {
-            $nested['score_mode'] = $this->scoreMode;
-        }
-
-        if (isset($this->ignoreUnmapped)) {
-            $nested['ignore_unmapped'] = $this->ignoreUnmapped;
-        }
-
-        return compact('nested');
     }
 }
