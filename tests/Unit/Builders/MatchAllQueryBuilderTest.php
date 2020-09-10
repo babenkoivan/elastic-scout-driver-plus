@@ -23,25 +23,10 @@ final class MatchAllQueryBuilderTest extends TestCase
         $this->builder = new MatchAllQueryBuilder();
     }
 
-    public function test_query_without_boost_can_be_built(): void
+    public function test_query_can_be_built(): void
     {
         $expected = ['match_all' => new stdClass()];
         $actual = $this->builder->buildQuery();
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    public function test_query_with_boost_can_be_built(): void
-    {
-        $expected = [
-            'match_all' => [
-                'boost' => 1.2,
-            ],
-        ];
-
-        $actual = $this->builder
-            ->boost(1.2)
-            ->buildQuery();
 
         $this->assertEquals($expected, $actual);
     }

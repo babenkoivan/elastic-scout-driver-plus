@@ -2,56 +2,48 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\SharedParameters\AnalyzerParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\AutoGenerateSynonymsPhraseQueryParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\FieldParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\FuzzinessParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\FuzzyTranspositionsParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\LenientParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\MaxExpansionsParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\MinimumShouldMatchParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\OperatorParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\PrefixLengthParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\RewriteParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\TextParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\ZeroTermsQueryParameter;
-use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\Support\ObjectVariables;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AnalyzerParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AutoGenerateSynonymsPhraseQueryParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzinessParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzyRewriteParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzyTranspositionsParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\LenientParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MaxExpansionsParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MinimumShouldMatchParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\OperatorParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\PrefixLengthParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\QueryStringParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ZeroTermsQueryParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 
-final class MatchQueryBuilder implements QueryBuilderInterface
+final class MatchQueryBuilder extends ParameterizedQueryBuilder
 {
     use FieldParameter;
-    use TextParameter;
+    use QueryStringParameter;
     use AnalyzerParameter;
     use AutoGenerateSynonymsPhraseQueryParameter;
     use FuzzinessParameter;
     use MaxExpansionsParameter;
     use PrefixLengthParameter;
     use FuzzyTranspositionsParameter;
-    use RewriteParameter;
+    use FuzzyRewriteParameter;
     use LenientParameter;
     use OperatorParameter;
     use MinimumShouldMatchParameter;
     use ZeroTermsQueryParameter;
-    use ObjectVariables;
 
-    public function buildQuery(): array
+    /**
+     * @var string
+     */
+    protected $type = 'match';
+
+    public function __construct()
     {
-        if (!isset($this->field, $this->text)) {
-            throw new QueryBuilderException('Field and text have to be specified');
-        }
-
-        $match = [
-            $this->field => [
-                'query' => $this->text,
-            ],
-        ];
-
-        $match[$this->field] += $this->getObjectVariables()
-            ->except(['field', 'text'])
-            ->whereNotNull()
-            ->toArray();
-
-        return compact('match');
+        $this->parameters = new Collection();
+        $this->validator = new AllOfValidator(['field', 'query']);
+        $this->transformer = new GroupedArrayTransformer('field');
     }
 }

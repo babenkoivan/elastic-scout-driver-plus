@@ -1,20 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Builders\SharedParameters;
+namespace ElasticScoutDriverPlus\Builders\QueryParameters\Shared;
 
 trait MinimumShouldMatchParameter
 {
-    /**
-     * @var int|string|null
-     */
-    private $minimumShouldMatch;
-
     /**
      * @param int|string $minimumShouldMatch
      */
     public function minimumShouldMatch($minimumShouldMatch): self
     {
-        $this->minimumShouldMatch = $minimumShouldMatch;
+        $this->parameters->put('minimum_should_match', $minimumShouldMatch);
         return $this;
     }
 }

@@ -115,7 +115,9 @@ final class BoolSearchTest extends TestCase
             $model->delete();
         });
 
-        $found = Book::boolSearch()->execute();
+        $found = Book::boolSearch()
+            ->must('match_all')
+            ->execute();
 
         $this->assertCount(1, $found->models());
         $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
@@ -157,6 +159,7 @@ final class BoolSearchTest extends TestCase
         $target->delete();
 
         $found = Book::boolSearch()
+            ->must('match_all')
             ->onlyTrashed()
             ->execute();
 
@@ -176,6 +179,7 @@ final class BoolSearchTest extends TestCase
 
         $found = Author::boolSearch()
             ->join(Book::class)
+            ->must('match_all')
             ->onlyTrashed()
             ->execute();
 

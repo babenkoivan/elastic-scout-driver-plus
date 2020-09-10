@@ -2,35 +2,32 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\SharedParameters\MinimumShouldMatchParameter;
-use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use Illuminate\Support\Arr;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MinimumShouldMatchParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator;
+use ElasticScoutDriverPlus\Support\Arr;
 use stdClass;
 
-final class BoolQueryBuilder implements QueryBuilderInterface
+final class BoolQueryBuilder extends ParameterizedQueryBuilder
 {
     use MinimumShouldMatchParameter;
 
     /**
+     * @var string
+     */
+    protected $type = 'bool';
+    /**
      * @var int|null
      */
     private $softDeleted = 0;
-    /**
-     * @var array
-     */
-    private $must = [];
-    /**
-     * @var array
-     */
-    private $mustNot = [];
-    /**
-     * @var array
-     */
-    private $should = [];
-    /**
-     * @var array
-     */
-    private $filter = [];
+
+    public function __construct()
+    {
+        $this->parameters = new Collection();
+        $this->validator = new OneOfValidator(['must', 'must_not', 'should', 'filter']);
+        $this->transformer = new FlatArrayTransformer();
+    }
 
     public function withTrashed(): self
     {
@@ -46,103 +43,77 @@ final class BoolQueryBuilder implements QueryBuilderInterface
 
     public function must(string $type, array $query = []): self
     {
-        return $this->addClause($this->must, $type, $query);
+        $this->parameters->push('must', [
+            $type => count($query) > 0 ? $query : new stdClass(),
+        ]);
+
+        return $this;
     }
 
     public function mustRaw(array $must): self
     {
-        $this->must = $must;
+        $this->parameters->put('must', $must);
         return $this;
     }
 
     public function mustNot(string $type, array $query = []): self
     {
-        return $this->addClause($this->mustNot, $type, $query);
+        $this->parameters->push('must_not', [
+            $type => count($query) > 0 ? $query : new stdClass(),
+        ]);
+
+        return $this;
     }
 
     public function mustNotRaw(array $mustNot): self
     {
-        $this->mustNot = $mustNot;
+        $this->parameters->put('must_not', $mustNot);
         return $this;
     }
 
     public function should(string $type, array $query = []): self
     {
-        return $this->addClause($this->should, $type, $query);
+        $this->parameters->push('should', [
+            $type => count($query) > 0 ? $query : new stdClass(),
+        ]);
+
+        return $this;
     }
 
     public function shouldRaw(array $should): self
     {
-        $this->should = $should;
+        $this->parameters->put('should', $should);
         return $this;
     }
 
     public function filter(string $type, array $query): self
     {
-        return $this->addClause($this->filter, $type, $query);
+        $this->parameters->push('filter', [$type => $query]);
+        return $this;
     }
 
     public function filterRaw(array $filter): self
     {
-        $this->filter = $filter;
+        $this->parameters->put('filter', $filter);
         return $this;
     }
 
     public function buildQuery(): array
     {
-        $bool = [];
-
-        if (count($this->must) > 0) {
-            $bool['must'] = $this->must;
-        }
-
-        if (count($this->mustNot) > 0) {
-            $bool['must_not'] = $this->mustNot;
-        }
-
-        if (count($this->should) > 0) {
-            $bool['should'] = $this->should;
-        }
-
-        if (count($this->filter) > 0) {
-            $bool['filter'] = $this->filter;
-        }
+        $query = parent::buildQuery();
 
         if (isset($this->softDeleted) && config('scout.soft_delete', false)) {
-            if (!isset($bool['filter'])) {
-                $bool['filter'] = [];
-            }
+            $query['bool']['filter'] = isset($query['bool']['filter'])
+                ? Arr::wrapAssoc($query['bool']['filter'])
+                : [];
 
-            $this->addClause($bool['filter'], 'term', [
-                '__soft_deleted' => $this->softDeleted,
-            ]);
+            $query['bool']['filter'][] = [
+                'term' => [
+                    '__soft_deleted' => $this->softDeleted,
+                ],
+            ];
         }
 
-        if (count($bool) === 0) {
-            throw new QueryBuilderException(
-                'At least one of the clauses has to be specified: must, must_not, should or filter'
-            );
-        }
-
-        if (isset($this->minimumShouldMatch)) {
-            $bool['minimum_should_match'] = $this->minimumShouldMatch;
-        }
-
-        return compact('bool');
-    }
-
-    private function addClause(array &$context, string $type, array $query = []): self
-    {
-        if (Arr::isAssoc($context)) {
-            $context = array_map(static function ($query, $type) {
-                return [$type => $query];
-            }, $context, array_keys($context));
-        }
-
-        $context[] = [
-            $type => count($query) > 0 ? $query : new stdClass(),
-        ];
-
-        return $this;
+        return $query;
     }
 }

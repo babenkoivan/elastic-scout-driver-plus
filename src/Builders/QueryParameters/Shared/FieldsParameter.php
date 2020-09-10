@@ -1,20 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Builders\SharedParameters;
+namespace ElasticScoutDriverPlus\Builders\QueryParameters\Shared;
 
 trait FieldsParameter
 {
-    /**
-     * @var array|null
-     */
-    private $fields;
-
     /**
      * @param string[] $fields
      */
     public function fields(array $fields): self
     {
-        $this->fields = $fields;
+        $this->parameters->put('fields', $fields);
         return $this;
     }
 }

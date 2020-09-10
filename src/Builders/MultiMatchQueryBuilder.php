@@ -2,30 +2,31 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\SharedParameters\AnalyzerParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\AutoGenerateSynonymsPhraseQueryParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\BoostParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\FieldsParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\FuzzinessParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\FuzzyTranspositionsParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\LenientParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\MaxExpansionsParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\MinimumShouldMatchParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\OperatorParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\PrefixLengthParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\RewriteParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\SlopParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\TextParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\TieBreakerParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\TypeParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\ZeroTermsQueryParameter;
-use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\Support\ObjectVariables;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AnalyzerParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AutoGenerateSynonymsPhraseQueryParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\BoostParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldsParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzinessParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzyRewriteParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzyTranspositionsParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\LenientParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MaxExpansionsParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MinimumShouldMatchParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\OperatorParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\PrefixLengthParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\QueryStringParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\SlopParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\TieBreakerParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\TypeParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ZeroTermsQueryParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 
-final class MultiMatchQueryBuilder implements QueryBuilderInterface
+final class MultiMatchQueryBuilder extends ParameterizedQueryBuilder
 {
-    use TextParameter;
     use FieldsParameter;
+    use QueryStringParameter;
     use TypeParameter;
     use AnalyzerParameter;
     use BoostParameter;
@@ -35,28 +36,22 @@ final class MultiMatchQueryBuilder implements QueryBuilderInterface
     use LenientParameter;
     use PrefixLengthParameter;
     use MaxExpansionsParameter;
-    use RewriteParameter;
+    use FuzzyRewriteParameter;
     use ZeroTermsQueryParameter;
     use AutoGenerateSynonymsPhraseQueryParameter;
     use FuzzyTranspositionsParameter;
     use TieBreakerParameter;
     use SlopParameter;
-    use ObjectVariables;
 
-    public function buildQuery(): array
+    /**
+     * @var string
+     */
+    protected $type = 'multi_match';
+
+    public function __construct()
     {
-        if (!isset($this->fields, $this->text)) {
-            throw new QueryBuilderException('Fields and text have to be specified');
-        }
-
-        return [
-            'multi_match' => array_merge(
-                ['query' => $this->text],
-                $this->getObjectVariables()
-                    ->except('text')
-                    ->whereNotNull()
-                    ->toArray()
-            ),
-        ];
+        $this->parameters = new Collection();
+        $this->validator = new AllOfValidator(['fields', 'query']);
+        $this->transformer = new FlatArrayTransformer();
     }
 }

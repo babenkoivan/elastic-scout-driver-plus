@@ -36,7 +36,7 @@ final class MultiMatchSearchTest extends TestCase
 
         $found = Book::multiMatchSearch()
             ->fields(['title', 'description'])
-            ->text('foo bar')
+            ->query('foo bar')
             ->execute();
 
         $this->assertCount(1, $found->models());

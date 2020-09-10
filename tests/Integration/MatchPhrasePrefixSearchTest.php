@@ -30,7 +30,7 @@ final class MatchPhrasePrefixSearchTest extends TestCase
 
         $found = Book::matchPhrasePrefixSearch()
             ->field('title')
-            ->text('second bo')
+            ->query('second bo')
             ->execute();
 
         $this->assertCount(1, $found->models());

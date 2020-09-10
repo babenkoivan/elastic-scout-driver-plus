@@ -57,6 +57,9 @@ final class BoolQueryBuilderTest extends TestCase
 
         $expected = [
             'bool' => [
+                'must' => [
+                    ['match_all' => new stdClass()]
+                ],
                 'filter' => [
                     ['term' => ['__soft_deleted' => 1]],
                 ],
@@ -64,6 +67,7 @@ final class BoolQueryBuilderTest extends TestCase
         ];
 
         $actual = $this->builder
+            ->must('match_all')
             ->onlyTrashed()
             ->buildQuery();
 

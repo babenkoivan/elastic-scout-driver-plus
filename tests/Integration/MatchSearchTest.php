@@ -30,7 +30,7 @@ final class MatchSearchTest extends TestCase
 
         $found = Book::matchSearch()
             ->field('title')
-            ->text('bar')
+            ->query('bar')
             ->execute();
 
         $this->assertCount(1, $found->models());

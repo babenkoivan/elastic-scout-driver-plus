@@ -2,12 +2,20 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\SharedParameters\QueryParameter;
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
 
-final class RawQueryBuilder implements QueryBuilderInterface
+final class RawQueryBuilder extends ParameterizedQueryBuilder
 {
-    use QueryParameter;
+    /**
+     * @var array|null
+     */
+    private $query;
+
+    public function query(array $query): self
+    {
+        $this->query = $query;
+        return $this;
+    }
 
     public function buildQuery(): array
     {

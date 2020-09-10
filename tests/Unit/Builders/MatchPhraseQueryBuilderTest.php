@@ -28,7 +28,7 @@ final class MatchPhraseQueryBuilderTest extends TestCase
         $this->expectException(QueryBuilderException::class);
 
         $this->builder
-            ->text('this is a test')
+            ->query('this is a test')
             ->buildQuery();
     }
 
@@ -53,7 +53,7 @@ final class MatchPhraseQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->buildQuery();
 
         $this->assertSame($expected, $actual);
@@ -72,7 +72,7 @@ final class MatchPhraseQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->slop(0)
             ->buildQuery();
 
@@ -92,7 +92,7 @@ final class MatchPhraseQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->analyzer('english')
             ->buildQuery();
 
@@ -112,7 +112,7 @@ final class MatchPhraseQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->zeroTermsQuery('none')
             ->buildQuery();
 

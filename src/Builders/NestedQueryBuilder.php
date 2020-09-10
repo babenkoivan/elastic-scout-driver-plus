@@ -2,40 +2,34 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\SharedParameters\IgnoreUnmappedParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\QueryParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\ScoreModeParameter;
-use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\Support\ObjectVariables;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\IgnoreUnmappedParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\QueryArrayParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ScoreModeParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 
-final class NestedQueryBuilder implements QueryBuilderInterface
+final class NestedQueryBuilder extends ParameterizedQueryBuilder
 {
-    use QueryParameter;
+    use QueryArrayParameter;
     use ScoreModeParameter;
     use IgnoreUnmappedParameter;
-    use ObjectVariables;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private $path;
+    protected $type = 'nested';
+
+    public function __construct()
+    {
+        $this->parameters = new Collection();
+        $this->validator = new AllOfValidator(['path', 'query']);
+        $this->transformer = new FlatArrayTransformer();
+    }
 
     public function path(string $path): self
     {
-        $this->path = $path;
+        $this->parameters->put('path', $path);
         return $this;
-    }
-
-    public function buildQuery(): array
-    {
-        if (!isset($this->path, $this->query)) {
-            throw new QueryBuilderException('Path and query have to be specified');
-        }
-
-        return [
-            'nested' => $this->getObjectVariables()
-                ->whereNotNull()
-                ->toArray(),
-        ];
     }
 }

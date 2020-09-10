@@ -28,7 +28,7 @@ final class MultiMatchQueryBuilderTest extends TestCase
         $this->expectException(QueryBuilderException::class);
 
         $this->builder
-            ->text('this is a test')
+            ->query('this is a test')
             ->buildQuery();
     }
 
@@ -51,8 +51,8 @@ final class MultiMatchQueryBuilderTest extends TestCase
         ];
 
         $actual = $this->builder
+            ->query('this is a test')
             ->fields(['subject', 'message'])
-            ->text('this is a test')
             ->buildQuery();
 
         $this->assertSame($expected, $actual);
@@ -62,15 +62,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'type' => 'best_fields',
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->type('best_fields')
             ->buildQuery();
 
@@ -81,15 +81,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'analyzer' => 'english',
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->analyzer('english')
             ->buildQuery();
 
@@ -100,15 +100,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'boost' => 1.2,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->boost(1.2)
             ->buildQuery();
 
@@ -119,15 +119,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'operator' => 'AND',
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->operator('AND')
             ->buildQuery();
 
@@ -138,15 +138,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'minimum_should_match' => 1,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->minimumShouldMatch(1)
             ->buildQuery();
 
@@ -157,15 +157,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'fuzziness' => 'AUTO',
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->fuzziness('AUTO')
             ->buildQuery();
 
@@ -176,15 +176,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'lenient' => true,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->lenient(true)
             ->buildQuery();
 
@@ -195,15 +195,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'prefix_length' => 3,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->prefixLength(3)
             ->buildQuery();
 
@@ -214,15 +214,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'max_expansions' => 50,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->maxExpansions(50)
             ->buildQuery();
 
@@ -233,15 +233,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'fuzzy_rewrite' => 'constant_score',
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->fuzzyRewrite('constant_score')
             ->buildQuery();
 
@@ -252,15 +252,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'zero_terms_query' => 'none',
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->zeroTermsQuery('none')
             ->buildQuery();
 
@@ -271,15 +271,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'auto_generate_synonyms_phrase_query' => true,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->autoGenerateSynonymsPhraseQuery(true)
             ->buildQuery();
 
@@ -290,15 +290,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'fuzzy_transpositions' => true,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->fuzzyTranspositions(true)
             ->buildQuery();
 
@@ -309,15 +309,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'tie_breaker' => 0.3,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->tieBreaker(0.3)
             ->buildQuery();
 
@@ -328,15 +328,15 @@ final class MultiMatchQueryBuilderTest extends TestCase
     {
         $expected = [
             'multi_match' => [
-                'query' => 'this is a test',
                 'fields' => ['subject', 'message'],
+                'query' => 'this is a test',
                 'slop' => 0,
             ],
         ];
 
         $actual = $this->builder
             ->fields(['subject', 'message'])
-            ->text('this is a test')
+            ->query('this is a test')
             ->slop(0)
             ->buildQuery();
 

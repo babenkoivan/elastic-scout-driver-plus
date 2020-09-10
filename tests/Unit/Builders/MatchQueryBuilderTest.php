@@ -28,7 +28,7 @@ final class MatchQueryBuilderTest extends TestCase
         $this->expectException(QueryBuilderException::class);
 
         $this->builder
-            ->text('this is a test')
+            ->query('this is a test')
             ->buildQuery();
     }
 
@@ -53,7 +53,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->buildQuery();
 
         $this->assertSame($expected, $actual);
@@ -72,7 +72,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->analyzer('english')
             ->buildQuery();
 
@@ -92,7 +92,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->autoGenerateSynonymsPhraseQuery(true)
             ->buildQuery();
 
@@ -112,7 +112,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->fuzziness('AUTO')
             ->buildQuery();
 
@@ -132,7 +132,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->maxExpansions(50)
             ->buildQuery();
 
@@ -152,7 +152,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->prefixLength(0)
             ->buildQuery();
 
@@ -172,7 +172,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->fuzzyTranspositions(true)
             ->buildQuery();
 
@@ -192,7 +192,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->fuzzyRewrite('constant_score')
             ->buildQuery();
 
@@ -212,7 +212,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->lenient(true)
             ->buildQuery();
 
@@ -232,7 +232,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->operator('AND')
             ->buildQuery();
 
@@ -252,7 +252,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->minimumShouldMatch('75%')
             ->buildQuery();
 
@@ -272,7 +272,7 @@ final class MatchQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('message')
-            ->text('this is a test')
+            ->query('this is a test')
             ->zeroTermsQuery('none')
             ->buildQuery();
 

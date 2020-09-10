@@ -2,42 +2,32 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\SharedParameters\AnalyzerParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\FieldParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\SlopParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\TextParameter;
-use ElasticScoutDriverPlus\Builders\SharedParameters\ZeroTermsQueryParameter;
-use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\Support\ObjectVariables;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AnalyzerParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\QueryStringParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\SlopParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ZeroTermsQueryParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 
-final class MatchPhraseQueryBuilder implements QueryBuilderInterface
+final class MatchPhraseQueryBuilder extends ParameterizedQueryBuilder
 {
     use FieldParameter;
-    use TextParameter;
+    use QueryStringParameter;
     use SlopParameter;
     use AnalyzerParameter;
     use ZeroTermsQueryParameter;
-    use ObjectVariables;
 
-    public function buildQuery(): array
+    /**
+     * @var string
+     */
+    protected $type = 'match_phrase';
+
+    public function __construct()
     {
-        if (!isset($this->field, $this->text)) {
-            throw new QueryBuilderException('Field and text have to be specified');
-        }
-
-        $matchPhrase = [
-            $this->field => [
-                'query' => $this->text,
-            ],
-        ];
-
-        $matchPhrase[$this->field] += $this->getObjectVariables()
-            ->except(['field', 'text'])
-            ->whereNotNull()
-            ->toArray();
-
-        return [
-            'match_phrase' => $matchPhrase,
-        ];
+        $this->parameters = new Collection();
+        $this->validator = new AllOfValidator(['field', 'query']);
+        $this->transformer = new GroupedArrayTransformer('field');
     }
 }
