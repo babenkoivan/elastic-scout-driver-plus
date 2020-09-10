@@ -7,7 +7,12 @@ use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @covers \ElasticScoutDriverPlus\Builders\ParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\MatchPhraseQueryBuilder
+ *
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator
  */
 final class MatchPhraseQueryBuilderTest extends TestCase
 {

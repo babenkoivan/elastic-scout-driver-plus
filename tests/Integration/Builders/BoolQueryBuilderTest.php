@@ -8,7 +8,13 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 
 /**
+ * @covers \ElasticScoutDriverPlus\Builders\ParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
+ *
+ * @uses \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
+ * @uses \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator
+ * @uses \ElasticScoutDriverPlus\Support\Arr
  */
 final class BoolQueryBuilderTest extends TestCase
 {
@@ -58,7 +64,7 @@ final class BoolQueryBuilderTest extends TestCase
         $expected = [
             'bool' => [
                 'must' => [
-                    ['match_all' => new stdClass()]
+                    ['match_all' => new stdClass()],
                 ],
                 'filter' => [
                     ['term' => ['__soft_deleted' => 1]],

@@ -9,8 +9,12 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\ParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\NestedQueryBuilder
  *
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match

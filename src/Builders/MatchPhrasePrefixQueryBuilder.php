@@ -2,7 +2,6 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-
 use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AnalyzerParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
