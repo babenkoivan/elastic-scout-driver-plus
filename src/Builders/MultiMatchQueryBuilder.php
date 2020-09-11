@@ -23,7 +23,7 @@ use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ZeroTermsQueryParamet
 use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 
-final class MultiMatchQueryBuilder extends ParameterizedQueryBuilder
+final class MultiMatchQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     use FieldsParameter;
     use QueryStringParameter;

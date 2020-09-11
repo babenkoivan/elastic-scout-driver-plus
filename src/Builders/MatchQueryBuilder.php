@@ -19,7 +19,7 @@ use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ZeroTermsQueryParamet
 use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 
-final class MatchQueryBuilder extends ParameterizedQueryBuilder
+final class MatchQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     use FieldParameter;
     use QueryStringParameter;

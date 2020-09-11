@@ -4,7 +4,7 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
 
-final class RawQueryBuilder extends ParameterizedQueryBuilder
+final class RawQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     /**
      * @var array|null

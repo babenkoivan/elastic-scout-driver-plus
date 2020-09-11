@@ -9,7 +9,7 @@ use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ScoreModeParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 
-final class NestedQueryBuilder extends ParameterizedQueryBuilder
+final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     use QueryArrayParameter;
     use ScoreModeParameter;

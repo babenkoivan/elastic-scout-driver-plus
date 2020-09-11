@@ -7,7 +7,7 @@ use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\ParameterizedQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\MultiMatchQueryBuilder
  *
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection

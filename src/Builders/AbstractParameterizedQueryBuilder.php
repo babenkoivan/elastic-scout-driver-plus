@@ -6,7 +6,7 @@ use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\ArrayTransformerInterface;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\ValidatorInterface;
 
-abstract class ParameterizedQueryBuilder implements QueryBuilderInterface
+abstract class AbstractParameterizedQueryBuilder implements QueryBuilderInterface
 {
     /**
      * @var string

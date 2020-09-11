@@ -69,7 +69,10 @@ final class Collection implements Arrayable
     public function excludeEmpty(): self
     {
         $items = $this->items->filter(static function ($value) {
-            return isset($value) && (!is_array($value) || count($value) > 0);
+            return
+                isset($value) &&
+                $value !== '' &&
+                $value !== [];
         })->all();
 
         return new static($items);

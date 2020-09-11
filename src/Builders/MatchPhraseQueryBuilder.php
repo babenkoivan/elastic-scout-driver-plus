@@ -11,7 +11,7 @@ use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ZeroTermsQueryParamet
 use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 
-final class MatchPhraseQueryBuilder extends ParameterizedQueryBuilder
+final class MatchPhraseQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     use FieldParameter;
     use QueryStringParameter;

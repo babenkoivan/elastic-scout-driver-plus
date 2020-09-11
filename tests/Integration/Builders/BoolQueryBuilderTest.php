@@ -8,7 +8,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\ParameterizedQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  *
  * @uses \ElasticScoutDriverPlus\Builders\QueryParameters\Collection

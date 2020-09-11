@@ -9,7 +9,7 @@ use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator;
 use ElasticScoutDriverPlus\Support\Arr;
 use stdClass;
 
-final class BoolQueryBuilder extends ParameterizedQueryBuilder
+final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     use MinimumShouldMatchParameter;
 
