@@ -16,7 +16,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $type = 'bool';
+    protected $query = 'bool';
     /**
      * @var int|null
      */
@@ -25,8 +25,8 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
     public function __construct()
     {
         $this->parameters = new Collection();
-        $this->validator = new OneOfValidator(['must', 'must_not', 'should', 'filter']);
-        $this->transformer = new FlatArrayTransformer();
+        $this->parameterValidator = new OneOfValidator(['must', 'must_not', 'should', 'filter']);
+        $this->parameterTransformer = new FlatArrayTransformer();
     }
 
     public function withTrashed(): self

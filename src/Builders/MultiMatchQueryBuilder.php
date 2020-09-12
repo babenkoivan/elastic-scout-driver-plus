@@ -46,12 +46,12 @@ final class MultiMatchQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $type = 'multi_match';
+    protected $query = 'multi_match';
 
     public function __construct()
     {
         $this->parameters = new Collection();
-        $this->validator = new AllOfValidator(['fields', 'query']);
-        $this->transformer = new FlatArrayTransformer();
+        $this->parameterValidator = new AllOfValidator(['fields', 'query']);
+        $this->parameterTransformer = new FlatArrayTransformer();
     }
 }

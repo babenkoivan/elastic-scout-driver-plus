@@ -18,13 +18,13 @@ final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $type = 'nested';
+    protected $query = 'nested';
 
     public function __construct()
     {
         $this->parameters = new Collection();
-        $this->validator = new AllOfValidator(['path', 'query']);
-        $this->transformer = new FlatArrayTransformer();
+        $this->parameterValidator = new AllOfValidator(['path', 'query']);
+        $this->parameterTransformer = new FlatArrayTransformer();
     }
 
     public function path(string $path): self

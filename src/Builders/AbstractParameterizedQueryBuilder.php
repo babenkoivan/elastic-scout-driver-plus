@@ -11,7 +11,7 @@ abstract class AbstractParameterizedQueryBuilder implements QueryBuilderInterfac
     /**
      * @var string
      */
-    protected $type;
+    protected $query;
     /**
      * @var Collection
      */
@@ -19,18 +19,18 @@ abstract class AbstractParameterizedQueryBuilder implements QueryBuilderInterfac
     /**
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected $parameterValidator;
     /**
      * @var ArrayTransformerInterface
      */
-    protected $transformer;
+    protected $parameterTransformer;
 
     public function buildQuery(): array
     {
-        $this->validator->validate($this->parameters);
+        $this->parameterValidator->validate($this->parameters);
 
         return [
-            $this->type => $this->transformer->transform($this->parameters),
+            $this->query => $this->parameterTransformer->transform($this->parameters),
         ];
     }
 }

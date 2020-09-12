@@ -24,12 +24,12 @@ final class MatchPhrasePrefixQueryBuilder extends AbstractParameterizedQueryBuil
     /**
      * @var string
      */
-    protected $type = 'match_phrase_prefix';
+    protected $query = 'match_phrase_prefix';
 
     public function __construct()
     {
         $this->parameters = new Collection();
-        $this->validator = new AllOfValidator(['field', 'query']);
-        $this->transformer = new GroupedArrayTransformer('field');
+        $this->parameterValidator = new AllOfValidator(['field', 'query']);
+        $this->parameterTransformer = new GroupedArrayTransformer('field');
     }
 }

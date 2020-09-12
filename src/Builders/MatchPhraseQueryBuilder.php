@@ -22,12 +22,12 @@ final class MatchPhraseQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $type = 'match_phrase';
+    protected $query = 'match_phrase';
 
     public function __construct()
     {
         $this->parameters = new Collection();
-        $this->validator = new AllOfValidator(['field', 'query']);
-        $this->transformer = new GroupedArrayTransformer('field');
+        $this->parameterValidator = new AllOfValidator(['field', 'query']);
+        $this->parameterTransformer = new GroupedArrayTransformer('field');
     }
 }

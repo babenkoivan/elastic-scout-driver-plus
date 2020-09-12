@@ -38,12 +38,12 @@ final class MatchQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $type = 'match';
+    protected $query = 'match';
 
     public function __construct()
     {
         $this->parameters = new Collection();
-        $this->validator = new AllOfValidator(['field', 'query']);
-        $this->transformer = new GroupedArrayTransformer('field');
+        $this->parameterValidator = new AllOfValidator(['field', 'query']);
+        $this->parameterTransformer = new GroupedArrayTransformer('field');
     }
 }

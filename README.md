@@ -25,6 +25,12 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
     * [Generic Methods](#generic-methods)
     * [Query Specific Methods](#query-specific-methods)
         * [Bool Search](#bool-search)
+        * [Match All Search](#match-all-search)
+        * [Match None Search](#match-none-search)
+        * [Match Phrase Prefix Search](#match-phrase-prefix-search)
+        * [Match Phrase Search](#match-phrase-search)
+        * [Match Search](#match-search)
+        * [Multi Match Search](#multi-match-search)
         * [Nested Search](#nested-search)
         * [Raw Search](#raw-search)
 * [Search Result](#search-result)
@@ -161,7 +167,7 @@ $maxPrice = $aggregations->get('max_price');
 #### collapse
 
 This method allows to [collapse](https://www.elastic.co/guide/en/elasticsearch/reference/current/collapse-search-results.html) 
-search results based on field values:
+records based on field values:
 
 ```php
 $searchResult = Book::rawSearch()
@@ -183,7 +189,7 @@ $searchResult = Book::rawSearch()
 
 #### from
 
-`from` method defines [the starting result offset](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html):
+`from` method defines [the starting record offset](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html):
 
 ```php
 $searchResult = Book::rawSearch()
@@ -263,7 +269,7 @@ $models = $searchResult->models();
 
 #### postFilter
 
-`postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
+`postFilter` is used to [filter records](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
 
 ```php
 $searchResult = Book::rawSearch()
@@ -294,7 +300,7 @@ $searchResult = Book::rawSearch()
 
 #### sort
 
-This method [sorts](https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html) the results:
+This method [sorts](https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html) the records:
 
 ```php
 $searchResult = Book::rawSearch()
@@ -388,12 +394,12 @@ The query specific methods depend on the query type. It means that, for example,
 
 #### Bool Search
 
-Use `boolSearch` to make a [bool request](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#query-dsl-bool-query):
+Use `boolSearch` to make a [compound boolean search request](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#query-dsl-bool-query):
 
 ```php
 $searchResult = Book::boolSearch()
     ->must('match', ['title' => 'The Book'])
-    ->execute()
+    ->execute();
 ```
 
 Available methods:
@@ -408,7 +414,7 @@ Available methods:
 
 ##### <a name="bool-filter"></a> filter
 
-The query defined with `filter` [must appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html),
+The query defined with `filter` [must appear in the matching records](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html),
 but won’t contribute to the score:
 
 ```php
@@ -428,7 +434,7 @@ $searchResult = Book::boolSearch()
 ##### <a name="bool-minimum-should-match"></a> minimumShouldMatch
 
 You can use `minimumShouldMatch` to specify [the number of `should` queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#bool-min-should-match)
-the search results must match:
+the records must match:
 
 ```php
 $searchResult = Book::boolSearch()
@@ -440,7 +446,7 @@ $searchResult = Book::boolSearch()
 
 ##### <a name="bool-must"></a> must
 
-The query defined with `must` [must appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
+The query defined with `must` [must appear in the matching records](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
 and will contribute to the score:
 
 ```php
@@ -459,7 +465,7 @@ $searchResult = Book::boolSearch()
 
 ##### <a name="bool-must-not"></a> mustNot
 
-The query defined with `mustNot` [must not appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
+The query defined with `mustNot` [must not appear in the matching records](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
 and won’t contribute to the score:
 
 ```php
@@ -488,7 +494,7 @@ $searchResult = Book::boolSearch()
 
 ##### <a name="bool-should"></a> should
 
-The query defined with `should` [should appear in the matching search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html):
+The query defined with `should` [should appear in the matching records](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html):
 
 ```php
 $searchResult = Book::boolSearch()
@@ -513,8 +519,293 @@ in the search result:
 $searchResult = Book::boolSearch()
     ->must('match_all')
     ->withTrashed()
+    ->execute();
+```
+
+---
+
+#### Match All Search
+
+Use `matchAllSearch` to perform a search request, which 
+[matches all records](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html#query-dsl-match-all-query):
+
+```php
+$searchResult = Book::matchAllSearch()->execute();
+```
+
+There are no query specific methods available in `matchAllSearch`.
+
+---
+
+#### Match None Search
+
+`matchNoneSearch` is [the inverse](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html#query-dsl-match-none-query)
+of [`matchAllSearch`](#match-all-search):
+
+```php
+$searchResult = Book::matchNoneSearch()->execute();
+```
+
+There are no query specific methods available in `matchNoneSearch`.
+
+---
+
+#### Match Phrase Prefix Search
+
+Use `matchPhrasePrefixSearch` to search for the records, that [contain the words of a provided text](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#query-dsl-match-query-phrase-prefix), 
+in the same order as provided:
+
+```php
+$searchResult = Book::matchPhrasePrefixSearch()
+    ->field('title')
+    ->query('My boo')
     ->execute()
 ```
+
+Available methods:
+
+* [analyzer](#match-analyzer)
+* [field](#match-field)
+* [maxExpansions](#match-max-expansions)
+* [query](#match-query)
+* [slop](#match-phrase-slop)
+* [zeroTermsQuery](#match-zero-terms-query)
+
+**Note**, that even though methods are explained in [match search](#match-search) and 
+[match phrase search](#match-phrase-search), they can also be used with match phrase prefix search. For example,
+you can use `zeroTermsQuery` as follows:
+
+```php
+$searchResult = Book::matchPhrasePrefixSearch()
+    ->field('title')
+    ->query('My boo')  
+    ->zeroTermsQuery('none')
+    ->execute();
+```
+
+---
+
+#### Match Phrase Search
+
+Use `matchPhraseSearch` to search for the records, which [match the given phrase](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html#query-dsl-match-query-phrase):
+
+```php
+$searchResult = Book::matchPhraseSearch()
+    ->field('title')
+    ->query('My book')
+    ->execute();
+``` 
+
+Available methods:
+
+* [analyzer](#match-analyzer)
+* [field](#match-field)
+* [query](#match-query)
+* [slop](#match-phrase-slop)
+* [zeroTermsQuery](#match-zero-terms-query)
+
+**Note**, that some methods are explained in [match search](#match-search), but they can also be used with 
+match phrase search. For example, you can use `analyzer` as follows:
+
+```php
+$searchResult = Book::matchPhraseSearch()
+    ->field('title')
+    ->query('My book')
+    ->analyzer('english')
+    ->execute();
+```
+
+##### <a name="match-phrase-slop"></a> slop
+
+Use `slop` to define [the maximum number of positions allowed between matching tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html#query-dsl-match-query-phrase):
+
+```php
+$searchResult = Book::matchPhraseSearch()
+    ->field('title')
+    ->query('My book')
+    ->slop(0)
+    ->execute();
+```
+
+---
+
+#### Match Search
+
+Use `matchSearch` for [full-text search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->execute();
+```
+
+Available methods:
+
+* [analyzer](#match-analyzer)
+* [field](#match-field)
+* [fuzziness](#match-fuzziness)
+* [fuzzyRewrite](#match-fuzzy-rewrite)
+* [fuzzyTranspositions](#match-fuzzy-transpositions)
+* [lenient](#match-lenient)
+* [maxExpansions](#match-max-expansions)
+* [minimumShouldMatch](#match-minimum-should-match)
+* [operator](#match-operator)
+* [prefixLength](#match-prefix-length)
+* [query](#match-query)
+* [zeroTermsQuery](#match-zero-terms-query)
+
+##### <a name="match-analyzer"></a> analyzer
+
+`analyzer` is used to [convert the `query` text into tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->analyzer('english')
+    ->execute();
+```
+
+##### <a name="match-field"></a> field
+
+Use `field` to specify [the field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-top-level-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->execute();
+```
+
+##### <a name="match-fuzziness"></a> fuzziness
+
+`fuzziness` controls [maximum edit distance allowed for matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->fuzziness('AUTO')
+    ->execute();
+```
+
+##### <a name="match-fuzzy-rewrite"></a> fuzzyRewrite
+
+`fuzzyRewrite` is used to [rewrite the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->fuzzyRewrite('constant_score')
+    ->execute();
+```
+
+##### <a name="match-fuzzy-transpositions"></a> fuzzyTranspositions
+
+Use `fuzzyTranspositions` to allow [transpositions for two adjacent characters](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->fuzziness('AUTO')
+    ->fuzzyTranspositions(true)
+    ->execute();
+```
+
+##### <a name="match-lenient"></a> lenient
+
+Use `lenient` to [ignore format-based errors](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('price')
+    ->query('My book')
+    ->lenient(true)
+    ->execute();
+```
+
+##### <a name="match-max-expansions"></a> maxExpansions
+
+You can use `maxExpansions` to specify [maximum number of terms to which the query will expand](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->maxExpansions(50)
+    ->execute();
+```
+
+##### <a name="match-minimum-should-match"></a> minimumShouldMatch
+
+`minimumShouldMatch` defines [minimum number of clauses that must match for a record to be returned](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->operator('OR')
+    ->minimumShouldMatch(1)
+    ->execute();
+``` 
+
+##### <a name="match-operator"></a> operator
+
+Use `operator` to define [the boolean logic used to interpret the `query` text](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->operator('OR')
+    ->execute();
+```
+
+##### <a name="match-prefix-length"></a> prefixLength
+
+`prefixLength` is used to determine [the number of beginning characters left unchanged for fuzzy matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->fuzziness('AUTO')
+    ->prefixLength(0)
+    ->execute();
+```
+
+##### <a name="match-query"></a> query
+
+Use `query` to set [the text you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')  
+    ->execute();
+```
+
+##### <a name="match-zero-terms-query"></a> zeroTermsQuery
+
+You can define [what to return in in case `analyzer` removes all tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params)
+with `zeroTermsQuery`: 
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')  
+    ->zeroTermsQuery('none')
+    ->execute();
+```
+
+---
+
+#### Multi Match Search
+
+[WIP]
 
 ---
 
