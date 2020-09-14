@@ -5,6 +5,7 @@ namespace ElasticScoutDriverPlus\Builders;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AnalyzerParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AutoGenerateSynonymsPhraseQueryParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\BoostParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzinessParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzyRewriteParameter;
@@ -34,6 +35,7 @@ final class MatchQueryBuilder extends AbstractParameterizedQueryBuilder
     use OperatorParameter;
     use MinimumShouldMatchParameter;
     use ZeroTermsQueryParameter;
+    use BoostParameter;
 
     /**
      * @var string

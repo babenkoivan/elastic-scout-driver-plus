@@ -30,7 +30,7 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
         * [Match Phrase Prefix Search](#match-phrase-prefix-search)
         * [Match Phrase Search](#match-phrase-search)
         * [Match Search](#match-search)
-        * [Multi Match Search](#multi-match-search)
+        * [Multi-Match Search](#multi-match-search)
         * [Nested Search](#nested-search)
         * [Raw Search](#raw-search)
 * [Search Result](#search-result)
@@ -643,6 +643,7 @@ $searchResult = Book::matchSearch()
 Available methods:
 
 * [analyzer](#match-analyzer)
+* [autoGenerateSynonymsPhraseQuery](#match-auto-generate-synonyms-phrase-query)
 * [field](#match-field)
 * [fuzziness](#match-fuzziness)
 * [fuzzyRewrite](#match-fuzzy-rewrite)
@@ -664,6 +665,31 @@ $searchResult = Book::matchSearch()
     ->field('title')
     ->query('My book')
     ->analyzer('english')
+    ->execute();
+```
+
+##### <a name="match-auto-generate-synonyms-phrase-query"></a> autoGenerateSynonymsPhraseQuery
+
+`autoGenerateSynonymsPhraseQuery` allows you to define, if match phrase queries have to be [automatically created
+for multi-term synonyms](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
+
+```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->autoGenerateSynonymsPhraseQuery(true)
+    ->execute();
+```
+
+##### <a name="match-boost"></a> boost 
+
+`boost` method allows you to [boost individual fields at query time](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html):
+
+ ```php
+$searchResult = Book::matchSearch()
+    ->field('title')
+    ->query('My book')
+    ->boost(2)
     ->execute();
 ```
 
@@ -803,9 +829,74 @@ $searchResult = Book::matchSearch()
 
 ---
 
-#### Multi Match Search
+#### Multi-Match Search
 
-[WIP]
+Use `multiMatchSearch` to preform [full-text search in multiple fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#query-dsl-multi-match-query):
+
+```php
+$searchResult = Book::multiMatchSearch()
+    ->fields(['title', 'description'])
+    ->query('My book')
+    ->execute();
+```
+
+Available methods:
+
+* [analyzer](#match-analyzer)
+* [autoGenerateSynonymsPhraseQuery](#match-auto-generate-synonyms-phrase-query)
+* [boost](#match-boost)
+* [fields](#multi-match-fields)
+* [fuzziness](#match-fuzziness)
+* [fuzzyRewrite](#match-fuzzy-rewrite)
+* [fuzzyTranspositions](#match-fuzzy-transpositions)
+* [lenient](#match-lenient)
+* [maxExpansions](#match-max-expansions)
+* [minimumShouldMatch](#match-minimum-should-match)
+* [operator](#match-operator)
+* [prefixLength](#match-prefix-length)
+* [query](#match-query)
+* [slop](#match-phrase-slop)
+* [tieBreaker](#match-tie-breaker)
+* [type](#multi-match-type)
+* [zeroTermsQuery](#match-zero-terms-query)
+
+**Note**, that even though some methods are explained in [match search](#match-search) and 
+[match phrase search](#match-phrase-search), they can also be used with multi-match search. 
+For example, you can use `autoGenerateSynonymsPhraseQuery` as follows:
+
+```php
+$searchResult = Book::multiMatchSearch()
+    ->fields(['title', 'description'])
+    ->query('My book')
+    ->autoGenerateSynonymsPhraseQuery(true)
+    ->execute();
+```
+
+##### <a name="multi-match-fields"></a> fields 
+
+Use `fields` to define [the fields you wish to search in](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#field-boost):
+
+```php
+$searchResult = Book::multiMatchSearch()
+    ->fields(['title', 'description'])
+    ->query('My book')
+    ->execute();
+```
+
+##### <a name="multi-match-type"></a> type 
+
+Use `type` to define [how the query must be executed](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#multi-match-types):
+
+```php
+$searchResult = Book::multiMatchSearch()
+    ->fields(['title', 'description'])
+    ->query('My book')
+    ->type('best_fields')
+    ->execute();
+``` 
+
+**Note**, that not all the available methods make sense with every type. Read [the documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#multi-match-types) 
+carefully.
 
 ---
 
