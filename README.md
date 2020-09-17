@@ -856,7 +856,7 @@ Available methods:
 * [prefixLength](#match-prefix-length)
 * [query](#match-query)
 * [slop](#match-phrase-slop)
-* [tieBreaker](#match-tie-breaker)
+* [tieBreaker](#multi-match-tie-breaker)
 * [type](#multi-match-type)
 * [zeroTermsQuery](#match-zero-terms-query)
 
@@ -880,6 +880,19 @@ Use `fields` to define [the fields you wish to search in](https://www.elastic.co
 $searchResult = Book::multiMatchSearch()
     ->fields(['title', 'description'])
     ->query('My book')
+    ->execute();
+```
+
+##### <a name="multi-match-tie-breaker"></a> tieBreaker 
+
+`tieBreaker` is used to increase the [relevance scores](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores)
+of records matching the query:
+
+```php
+$searchResult = Book::multiMatchSearch()
+    ->fields(['title', 'description'])
+    ->query('My book')
+    ->tieBreaker(0.3)
     ->execute();
 ```
 
