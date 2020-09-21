@@ -8,6 +8,9 @@ use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+use const SORT_STRING;
 use stdClass;
 
 /**
@@ -338,5 +341,51 @@ final class RawSearchTest extends TestCase
 
         $this->assertCount(1, $found->models());
         $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+    }
+
+    public function test_models_can_be_paginated(): void
+    {
+        $target = factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create()
+            ->sortBy('id', SORT_STRING)
+            ->chunk(3);
+
+        $builder = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->sort('_id', 'asc');
+
+        $firstPage = $builder->paginate(3, 'customName', 1);
+        $secondPage = $builder->paginate(3, 'customName', 2);
+
+        // assert each paginator has expected attributes
+        $this->assertSame(1, $firstPage->currentPage());
+        $this->assertSame(2, $secondPage->currentPage());
+
+        $this->assertSame(5, $firstPage->total());
+        $this->assertSame(5, $secondPage->total());
+
+        $this->assertSame(3, $firstPage->perPage());
+        $this->assertSame(3, $secondPage->perPage());
+
+        $this->assertCount(3, $firstPage->items());
+        $this->assertCount(2, $secondPage->items());
+
+        // assert each page contains expected models
+        $getPageModels = static function (LengthAwarePaginator $paginator): Collection {
+            return collect($paginator->items())->map(static function (Match $match) {
+                return $match->model();
+            });
+        };
+
+        $this->assertEquals(
+            $target->first()->pluck('id')->toArray(),
+            $getPageModels($firstPage)->pluck('id')->toArray()
+        );
+
+        $this->assertEquals(
+            $target->last()->pluck('id')->toArray(),
+            $getPageModels($secondPage)->pluck('id')->toArray()
+        );
     }
 }

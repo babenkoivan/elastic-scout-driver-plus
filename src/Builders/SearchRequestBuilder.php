@@ -5,7 +5,10 @@ namespace ElasticScoutDriverPlus\Builders;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Decorators\EngineDecorator;
 use ElasticScoutDriverPlus\SearchResult;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ForwardsCalls;
 use InvalidArgumentException;
@@ -252,5 +255,30 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     {
         $this->forwardCallTo($this->queryBuilder, $method, $parameters);
         return $this;
+    }
+
+    public function paginate(
+        int $perPage = self::DEFAULT_PAGE_SIZE,
+        string $pageName = 'page',
+        int $page = null
+    ): LengthAwarePaginatorInterface {
+        $page = $page ?? Paginator::resolveCurrentPage($pageName);
+
+        $searchRequest = $this->buildSearchRequest();
+        $searchRequest->setFrom(($page - 1) * $perPage);
+        $searchRequest->setSize($perPage);
+
+        $searchResult = $this->engine->executeSearchRequest($this->models, $searchRequest);
+
+        return new LengthAwarePaginator(
+            $searchResult->matches()->all(),
+            $searchResult->total(),
+            $perPage,
+            $page,
+            [
+                'path' => Paginator::resolveCurrentPath(),
+                'pageName' => $pageName,
+            ]
+        );
     }
 }
