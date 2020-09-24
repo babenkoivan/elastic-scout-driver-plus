@@ -988,7 +988,7 @@ $searchResult = Book::rawSearch()
     ->execute()
 ```
 
-There is only one method, which is specific to raw search: `query`.
+There is only one method specific to raw search - `query`.
 
 ##### query
 
@@ -1002,24 +1002,34 @@ $searchResult = Book::rawSearch()
 
 ## Search Result
 
-You can send a search request either by using the `execute` method:
+Whenever a search request is ready to be executed, you have several options:
+
+1. You can get raw results:
+
+ ```php
+$rawSearchResults = MyModel::boolSearch()
+    ->must('match_all')
+    ->raw();
+ ```
+
+2. You can paginate your search results:
+
+```php
+$paginator = MyModel::boolSearch()
+    ->must('match_all')
+    ->paginate(10);
+```
+
+Unlike the [standard Scout pagination](https://laravel.com/docs/master/scout#pagination), Elastic Scout Driver Plus 
+paginates [matches](#matches) and not the models. 
+
+3. You can transform raw results into `ElasticScoutDriverPlus\SearchResult` instance:
 
 ```php
 $searchResult = MyModel::boolSearch()
     ->must('match_all')
     ->execute();
 ```
-
-or by using the `raw` method:
-
-```php
-$searchResult = MyModel::boolSearch()
-    ->must('match_all')
-    ->raw();
-```
-
-In the first case, the search results are parsed and an instance of `ElasticScoutDriverPlus\SearchResult` is returned. 
-In the second case, you get the raw output.
 
 `ElasticScoutDriverPlus\SearchResult` provides an easy access to:
 
