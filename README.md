@@ -1023,6 +1023,8 @@ $paginator = MyModel::boolSearch()
 Unlike the [standard Scout pagination](https://laravel.com/docs/master/scout#pagination), Elastic Scout Driver Plus 
 paginates [matches](#matches) and not the models. 
 
+Also **note**, that [from](#from) and [size](#size) are ignored when paginating the search results.
+
 3. You can transform raw results into `ElasticScoutDriverPlus\SearchResult` instance:
 
 ```php
