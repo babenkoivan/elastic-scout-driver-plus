@@ -5,9 +5,10 @@ namespace ElasticScoutDriverPlus;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 
-final class Match
+final class Match implements Arrayable
 {
     /**
      * @var LazyModelFactory
@@ -67,5 +68,23 @@ final class Match
     public function score(): ?float
     {
         return $this->score;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $model = $this->model();
+        $document = $this->document();
+        $highlight = $this->highlight();
+
+        return [
+            'model' => isset($model) ? $model->toArray() : null,
+            'index_name' => $this->indexName(),
+            'document' => $document->toArray(),
+            'highlight' => isset($highlight) ? $highlight->getRaw() : null,
+            'score' => $this->score(),
+        ];
     }
 }

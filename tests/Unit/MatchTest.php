@@ -73,4 +73,15 @@ final class MatchTest extends TestCase
 
         $this->assertSame(['title' => ['<em>test</em>']], $highlight->getRaw());
     }
+
+    public function test_match_can_be_transformed_to_array(): void
+    {
+        $this->assertSame([
+            'model' => ['id' => 1, 'title' => 'test'],
+            'index_name' => 'books',
+            'document' => ['id' => '1', 'content' => ['title' => 'test']],
+            'highlight' => ['title' => ['<em>test</em>']],
+            'score' => 1.1,
+        ], $this->match->toArray());
+    }
 }
