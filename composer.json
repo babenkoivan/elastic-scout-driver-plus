@@ -29,7 +29,7 @@
     },
     "require": {
         "php": "^7.2",
-        "babenkoivan/elastic-adapter": "dev-bug-pagination as 1.7.1"
+        "babenkoivan/elastic-adapter": "^1.7.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
