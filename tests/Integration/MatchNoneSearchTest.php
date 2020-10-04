@@ -6,15 +6,16 @@ use ElasticAdapter\Search\Suggestion;
 use ElasticScoutDriverPlus\Tests\App\Book;
 
 /**
+ * @covers \ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
- * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder
  *
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class MatchNoneSearchTest extends TestCase
 {

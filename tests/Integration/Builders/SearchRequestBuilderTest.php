@@ -1,19 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\Builders;
+namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
-use Illuminate\Database\Eloquent\Model;
+use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  *
  * @uses   \ElasticScoutDriverPlus\Builders\RawQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class SearchRequestBuilderTest extends TestCase
 {
@@ -341,7 +343,7 @@ final class SearchRequestBuilderTest extends TestCase
 
     private function makeBuilderWithQuery(array $query): SearchRequestBuilder
     {
-        $model = $this->createMock(Model::class);
+        $model = new Book();
         $queryBuilder = (new RawQueryBuilder())->query($query);
 
         return new SearchRequestBuilder($model, $queryBuilder);

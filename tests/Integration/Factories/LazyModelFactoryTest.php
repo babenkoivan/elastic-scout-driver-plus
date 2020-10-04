@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Factories;
 
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
+use ElasticScoutDriverPlus\Support\ModelScope;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\DB;
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
  * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class LazyModelFactoryTest extends TestCase
 {
@@ -21,12 +23,12 @@ final class LazyModelFactoryTest extends TestCase
     {
         $model = new Book();
 
-        $factory = new LazyModelFactory(collect([$model]), new SearchResponse([
+        $factory = new LazyModelFactory(new SearchResponse([
             'hits' => [
                 'total' => ['value' => 0],
                 'hits' => [],
             ],
-        ]));
+        ]), new ModelScope(get_class($model)));
 
         $this->assertNull($factory->makeByIndexNameAndDocumentId($model->searchableAs(), '123'));
     }
@@ -38,11 +40,14 @@ final class LazyModelFactoryTest extends TestCase
 
         $models = collect([$author, $book]);
 
+        $modelScope = new ModelScope(Author::class);
+        $modelScope->push(Book::class);
+
         /** @var Connection $connection */
         $connection = DB::connection();
         $connection->enableQueryLog();
 
-        $factory = new LazyModelFactory($models, new SearchResponse([
+        $factory = new LazyModelFactory(new SearchResponse([
             'hits' => [
                 'total' => ['value' => $models->count()],
                 'hits' => $models->map(static function ($model) {
@@ -54,7 +59,7 @@ final class LazyModelFactoryTest extends TestCase
                     ];
                 })->all(),
             ],
-        ]));
+        ]), $modelScope);
 
         // assert that related to search response models are returned
         $models->each(function ($expected) use ($factory) {

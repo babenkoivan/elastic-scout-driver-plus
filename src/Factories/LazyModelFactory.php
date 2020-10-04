@@ -3,17 +3,16 @@
 namespace ElasticScoutDriverPlus\Factories;
 
 use ElasticAdapter\Search\SearchResponse;
+use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection as BaseCollection;
-use Illuminate\Support\Collection as EloquentCollection;
+use Illuminate\Support\Collection;
 
 class LazyModelFactory
 {
     /**
      * @var array
      */
-    private $searchableModels = [];
+    private $mappedQueries;
     /**
      * @var array
      */
@@ -23,11 +22,9 @@ class LazyModelFactory
      */
     private $mappedModels = [];
 
-    public function __construct(BaseCollection $models, SearchResponse $searchResponse)
+    public function __construct(SearchResponse $searchResponse, ModelScope $modelScope)
     {
-        foreach ($models as $model) {
-            $this->searchableModels[$model->searchableAs()] = $model;
-        }
+        $this->mappedQueries = $modelScope->keyQueriesByIndexName()->all();
 
         foreach ($searchResponse->getHits() as $hit) {
             $this->mappedIds[$hit->getIndexName()][] = $hit->getDocument()->getId();
@@ -43,19 +40,17 @@ class LazyModelFactory
         return $this->mappedModels[$indexName][$documentId] ?? null;
     }
 
-    private function mapModelsForIndex(string $indexName): EloquentCollection
+    private function mapModelsForIndex(string $indexName): Collection
     {
-        if (!isset($this->mappedIds[$indexName], $this->searchableModels[$indexName])) {
-            return new EloquentCollection();
+        if (!isset($this->mappedIds[$indexName], $this->mappedQueries[$indexName])) {
+            return new Collection();
         }
 
         $ids = $this->mappedIds[$indexName];
-        $searchableModel = $this->searchableModels[$indexName];
+        $query = clone $this->mappedQueries[$indexName];
+        $scoutKeyName = $query->getModel()->getScoutKeyName();
 
-        $query = in_array(SoftDeletes::class, class_uses_recursive($searchableModel), true) ?
-            $searchableModel->withTrashed() : $searchableModel->newQuery();
-
-        $mappedModels = $query->whereIn($searchableModel->getScoutKeyName(), $ids)->get();
+        $mappedModels = $query->whereIn($scoutKeyName, $ids)->get();
 
         return $mappedModels->mapWithKeys(static function (Model $model) {
             return [(string)$model->getScoutKey() => $model];

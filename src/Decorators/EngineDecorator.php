@@ -6,9 +6,7 @@ use ElasticAdapter\Documents\DocumentManager;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriver\Engine;
-use ElasticScoutDriverPlus\Factories\SearchResultFactory;
-use ElasticScoutDriverPlus\SearchResult;
-use Illuminate\Support\Collection;
+use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Support\Traits\ForwardsCalls;
 
 final class EngineDecorator
@@ -23,36 +21,16 @@ final class EngineDecorator
      * @var DocumentManager
      */
     private $documentManager;
-    /**
-     * @var SearchResultFactory
-     */
-    private $searchResultFactory;
 
-    public function __construct(
-        Engine $engine,
-        DocumentManager $documentManager,
-        SearchResultFactory $searchResultFactory
-    ) {
+    public function __construct(Engine $engine, DocumentManager $documentManager)
+    {
         $this->engine = $engine;
         $this->documentManager = $documentManager;
-        $this->searchResultFactory = $searchResultFactory;
     }
 
-    public function executeSearchRequest(Collection $models, SearchRequest $searchRequest): SearchResult
+    public function executeSearchRequest(SearchRequest $searchRequest, ModelScope $modelScope): SearchResponse
     {
-        $searchResponse = $this->performSearchRequest($models, $searchRequest);
-        return $this->searchResultFactory->makeFromSearchResponseUsingModels($searchResponse, $models);
-    }
-
-    public function rawSearchRequest(Collection $models, SearchRequest $searchRequest): array
-    {
-        $searchResponse = $this->performSearchRequest($models, $searchRequest);
-        return $searchResponse->getRaw();
-    }
-
-    private function performSearchRequest(Collection $models, SearchRequest $searchRequest): SearchResponse
-    {
-        $indexName = $models->map->searchableAs()->join(',');
+        $indexName = $modelScope->resolveIndexNames()->join(',');
         return $this->documentManager->search($indexName, $searchRequest);
     }
 

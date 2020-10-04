@@ -4,15 +4,14 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Decorators\EngineDecorator;
+use ElasticScoutDriverPlus\Factories\SearchResultFactory;
 use ElasticScoutDriverPlus\SearchResult;
+use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ForwardsCalls;
-use InvalidArgumentException;
-use Laravel\Scout\Searchable;
 use stdClass;
 
 final class SearchRequestBuilder implements SearchRequestBuilderInterface
@@ -20,9 +19,9 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     use ForwardsCalls;
 
     /**
-     * @var Collection
+     * @var ModelScope
      */
-    private $models;
+    private $modelScope;
     /**
      * @var EngineDecorator
      */
@@ -70,7 +69,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
-        $this->models = collect([$model]);
+        $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
         $this->queryBuilder = $queryBuilder;
     }
@@ -168,21 +167,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
     public function join(string ...$modelClasses): self
     {
-        foreach ($modelClasses as $modelClass) {
-            $model = new $modelClass();
-
-            if (!$model instanceof Model || !in_array(Searchable::class, class_uses_recursive($modelClass), true)) {
-                throw new InvalidArgumentException(sprintf(
-                    '%s must extend %s class and use %s trait',
-                    $modelClass,
-                    Model::class,
-                    Searchable::class
-                ));
-            }
-
-            $this->models->push($model);
-        }
-
+        $this->modelScope->push(...$modelClasses);
         return $this;
     }
 
@@ -195,6 +180,17 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     public function postFilterRaw(array $filter): self
     {
         $this->postFilter = $filter;
+        return $this;
+    }
+
+    public function load(array $relations, string $modelClass = null): self
+    {
+        $query = isset($modelClass)
+            ? $this->modelScope->getQuery($modelClass)
+            : $this->modelScope->getDefaultQuery();
+
+        $query->with($relations);
+
         return $this;
     }
 
@@ -243,12 +239,15 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
     public function execute(): SearchResult
     {
-        return $this->engine->executeSearchRequest($this->models, $this->buildSearchRequest());
+        $searchResponse = $this->engine->executeSearchRequest($this->buildSearchRequest(), $this->modelScope);
+        return SearchResultFactory::makeFromSearchResponseUsingModelScope($searchResponse, $this->modelScope);
     }
 
     public function raw(): array
     {
-        return $this->engine->rawSearchRequest($this->models, $this->buildSearchRequest());
+        return $this->engine
+            ->executeSearchRequest($this->buildSearchRequest(), $this->modelScope)
+            ->getRaw();
     }
 
     public function __call(string $method, array $parameters): self
@@ -264,11 +263,11 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     ): LengthAwarePaginatorInterface {
         $page = $page ?? Paginator::resolveCurrentPage($pageName);
 
-        $searchRequest = $this->buildSearchRequest();
-        $searchRequest->setFrom(($page - 1) * $perPage);
-        $searchRequest->setSize($perPage);
+        $builder = clone $this;
+        $builder->from(($page - 1) * $perPage);
+        $builder->size($perPage);
 
-        $searchResult = $this->engine->executeSearchRequest($this->models, $searchRequest);
+        $searchResult = $builder->execute();
 
         return new LengthAwarePaginator(
             $searchResult->matches()->all(),

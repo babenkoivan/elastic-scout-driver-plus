@@ -7,22 +7,25 @@ use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
+use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\App\Model;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use const SORT_STRING;
 use stdClass;
 
 /**
+ * @covers \ElasticScoutDriverPlus\Builders\RawQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
- * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  *
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class RawSearchTest extends TestCase
 {
@@ -387,5 +390,40 @@ final class RawSearchTest extends TestCase
             $target->last()->pluck('id')->toArray(),
             $getPageModels($secondPage)->pluck('id')->toArray()
         );
+    }
+
+    public function test_models_can_be_found_with_relations_in_a_single_index(): void
+    {
+        factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->load(['author'])
+            ->execute();
+
+        $found->models()->each(function (Model $model) {
+            $this->assertTrue($model->relationLoaded('author'));
+        });
+    }
+
+    public function test_models_can_be_found_with_relations_in_multiple_indices(): void
+    {
+        factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->join(Author::class)
+            ->load(['author'], Book::class)
+            ->load(['books'], Author::class)
+            ->execute();
+
+        $found->models()->each(function (Model $model) {
+            $relation = $model instanceof Book ? 'author' : 'books';
+            $this->assertTrue($model->relationLoaded($relation));
+        });
     }
 }

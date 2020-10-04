@@ -6,24 +6,27 @@ use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
+use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Support\Collection;
 
 final class SearchResultFactory
 {
-    public function makeFromSearchResponseUsingModels(SearchResponse $searchResponse, Collection $models): SearchResult
-    {
-        $matches = $this->makeMatches(
+    public static function makeFromSearchResponseUsingModelScope(
+        SearchResponse $searchResponse,
+        ModelScope $modelScope
+    ): SearchResult {
+        $matches = self::makeMatches(
             $searchResponse->getHits(),
-            new LazyModelFactory($models, $searchResponse)
+            new LazyModelFactory($searchResponse, $modelScope)
         );
 
-        $suggestions = $this->makeSuggestions($searchResponse->getSuggestions());
-        $aggregations = $this->makeAggregations($searchResponse->getAggregations());
+        $suggestions = self::makeSuggestions($searchResponse->getSuggestions());
+        $aggregations = self::makeAggregations($searchResponse->getAggregations());
 
         return new SearchResult($matches, $searchResponse->getHitsTotal(), $suggestions, $aggregations);
     }
 
-    private function makeMatches(array $hits, LazyModelFactory $lazyModelFactory): Collection
+    private static function makeMatches(array $hits, LazyModelFactory $lazyModelFactory): Collection
     {
         return collect($hits)->map(static function (Hit $hit) use ($lazyModelFactory) {
             return new Match(
@@ -36,14 +39,14 @@ final class SearchResultFactory
         });
     }
 
-    private function makeSuggestions(array $suggestions): Collection
+    private static function makeSuggestions(array $suggestions): Collection
     {
         return collect($suggestions)->mapWithKeys(static function (array $entries, string $suggestion) {
             return [$suggestion => collect($entries)];
         });
     }
 
-    private function makeAggregations(array $aggregations): Collection
+    private static function makeAggregations(array $aggregations): Collection
     {
         return collect($aggregations);
     }

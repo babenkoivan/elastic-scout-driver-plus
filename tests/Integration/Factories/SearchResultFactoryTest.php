@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Factories;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticAdapter\Search\Suggestion;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
-use ElasticScoutDriverPlus\SearchResult;
+use ElasticScoutDriverPlus\Support\ModelScope;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
@@ -13,32 +13,21 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 /**
  * @covers \ElasticScoutDriverPlus\Factories\SearchResultFactory
  *
+ * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
- * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class SearchResultFactoryTest extends TestCase
 {
-    /**
-     * @var SearchResultFactory
-     */
-    private $factory;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->factory = resolve(SearchResultFactory::class);
-    }
-
     public function test_search_result_can_be_made_from_search_response_for_provided_model(): void
     {
         $models = factory(Book::class, rand(2, 10))->create([
             'author_id' => factory(Author::class)->create()->getKey(),
         ]);
 
-        $searchResult = $this->factory->makeFromSearchResponseUsingModels(new SearchResponse([
+        $searchResult = SearchResultFactory::makeFromSearchResponseUsingModelScope(new SearchResponse([
             'hits' => [
                 'total' => [
                     'value' => $models->count(),
@@ -67,9 +56,8 @@ final class SearchResultFactoryTest extends TestCase
                     'value' => 100,
                 ],
             ],
-        ]), collect([new Book()]));
+        ]), new ModelScope(Book::class));
 
-        $this->assertInstanceOf(SearchResult::class, $searchResult);
         $this->assertCount($models->count(), $searchResult->matches());
         $this->assertCount($models->count(), $searchResult->documents());
         $this->assertCount($models->count(), $searchResult->models());

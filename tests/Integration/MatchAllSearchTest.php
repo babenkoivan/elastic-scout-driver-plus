@@ -6,15 +6,16 @@ use ElasticScoutDriverPlus\Tests\App\Book;
 use const SORT_STRING;
 
 /**
+ * @covers \ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
- * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder
  *
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class MatchAllSearchTest extends TestCase
 {

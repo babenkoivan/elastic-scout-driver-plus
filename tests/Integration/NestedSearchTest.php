@@ -6,19 +6,20 @@ use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 
 /**
- * @covers \ElasticScoutDriverPlus\CustomSearch
- * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
- * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\NestedQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\CustomSearch
+ * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  *
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class NestedSearchTest extends TestCase
 {
