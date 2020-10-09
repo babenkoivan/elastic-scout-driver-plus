@@ -356,7 +356,7 @@ The same query with `suggestRaw` method:
 ```php
 $searchResult = Book::rawSearch()
     ->query(['match_none' => new \stdClass()])
-    ->suggest(['title_suggest' => ['text' => 'book', 'term' => ['field' => 'title']]])
+    ->suggestRaw(['title_suggest' => ['text' => 'book', 'term' => ['field' => 'title']]])
     ->execute();
 ```
 
