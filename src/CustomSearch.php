@@ -3,6 +3,7 @@
 namespace ElasticScoutDriverPlus;
 
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
+use ElasticScoutDriverPlus\Builders\ExistsQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
@@ -85,5 +86,13 @@ trait CustomSearch
     public static function multiMatchSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new MultiMatchQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&ExistsQueryBuilder
+     */
+    public static function existsSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new ExistsQueryBuilder());
     }
 }
