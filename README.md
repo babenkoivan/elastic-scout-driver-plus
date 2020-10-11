@@ -120,6 +120,7 @@ Available methods:
 * [from](#from)
 * [highlight](#highlight)
 * [join](#join)
+* [load](#load)
 * [postFilter](#postfilter)
 * [size](#size)
 * [sort](#sort)
@@ -265,6 +266,28 @@ includes both types in this case:
 ```php
 // every model is either Author or Book
 $models = $searchResult->models();
+```
+
+#### load
+
+This method allows you to eager load model relations: 
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match' => ['title' => 'The Book']])
+    ->load(['author'])
+    ->execute();
+```
+
+When [searching in multiple indices](#join), you need to explicitly define the model you want the relations for:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new stdClass()])
+    ->join(Author::class)
+    ->load(['author'], Book::class)
+    ->load(['books'], Author::class)
+    ->execute();
 ```
 
 #### postFilter
@@ -1113,12 +1136,6 @@ $models = $searchResult->models();
 ```
 
 **Note**, that models are lazy loaded. They are fetched from the database with a single query and only when you request them.
-
-You can use `loadMissing` to eager load the model relations:
-
-```php
-$models->loadMissing(‘author’);
-```
 
 #### suggestions
 

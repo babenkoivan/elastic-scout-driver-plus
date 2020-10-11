@@ -45,11 +45,11 @@ final class ModelScopeTest extends TestCase
         $this->assertTrue($this->modelScope->has(Book::class));
     }
 
-    public function test_default_query_can_be_retrieved_from_scope(): void
+    public function test_base_query_can_be_retrieved_from_scope(): void
     {
         $this->assertInstanceOf(
             Book::class,
-            $this->modelScope->getDefaultQuery()->getModel()
+            $this->modelScope->getBaseQuery()->getModel()
         );
     }
 
@@ -82,10 +82,10 @@ final class ModelScopeTest extends TestCase
         $this->assertInstanceOf(Author::class, $keyedQueries->get('authors')->getModel());
     }
 
-    public function test_index_names_can_be_resolved(): void
+    public function test_index_names_can_be_retrieved(): void
     {
         $this->modelScope->push(Author::class);
 
-        $this->assertSame(['books', 'authors'], $this->modelScope->resolveIndexNames()->toArray());
+        $this->assertSame(['books', 'authors'], $this->modelScope->getIndexNames()->toArray());
     }
 }

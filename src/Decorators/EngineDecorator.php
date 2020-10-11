@@ -30,7 +30,7 @@ final class EngineDecorator
 
     public function executeSearchRequest(SearchRequest $searchRequest, ModelScope $modelScope): SearchResponse
     {
-        $indexName = $modelScope->resolveIndexNames()->join(',');
+        $indexName = $modelScope->getIndexNames()->join(',');
         return $this->documentManager->search($indexName, $searchRequest);
     }
 

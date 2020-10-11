@@ -187,7 +187,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     {
         $query = isset($modelClass)
             ? $this->modelScope->getQuery($modelClass)
-            : $this->modelScope->getDefaultQuery();
+            : $this->modelScope->getBaseQuery();
 
         $query->with($relations);
 

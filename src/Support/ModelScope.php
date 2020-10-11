@@ -14,7 +14,7 @@ final class ModelScope
     /**
      * @var string
      */
-    private $default;
+    private $baseModelClass;
     /**
      * @var Collection
      */
@@ -22,7 +22,7 @@ final class ModelScope
 
     public function __construct(string $modelClass)
     {
-        $this->default = $modelClass;
+        $this->baseModelClass = $modelClass;
         $this->queries = collect();
 
         $this->push($modelClass);
@@ -57,11 +57,6 @@ final class ModelScope
         return $this->queries->has($modelClass);
     }
 
-    public function getDefaultQuery(): Builder
-    {
-        return $this->queries->get($this->default);
-    }
-
     public function getQuery(string $modelClass): Builder
     {
         if (!$this->has($modelClass)) {
@@ -74,6 +69,11 @@ final class ModelScope
         return $this->queries->get($modelClass);
     }
 
+    public function getBaseQuery(): Builder
+    {
+        return $this->getQuery($this->baseModelClass);
+    }
+
     public function keyQueriesByIndexName(): Collection
     {
         return $this->queries->keyBy(static function (Builder $query): string {
@@ -81,7 +81,7 @@ final class ModelScope
         });
     }
 
-    public function resolveIndexNames(): Collection
+    public function getIndexNames(): Collection
     {
         return $this->queries->map(static function (Builder $query): string {
             return $query->getModel()->searchableAs();
