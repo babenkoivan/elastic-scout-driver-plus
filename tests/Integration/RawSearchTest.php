@@ -12,6 +12,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\App\Model;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use const SORT_STRING;
 use stdClass;
 
@@ -20,8 +21,8 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
- * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
@@ -425,5 +426,23 @@ final class RawSearchTest extends TestCase
             $relation = $model instanceof Book ? 'author' : 'books';
             $this->assertTrue($model->relationLoaded($relation));
         });
+    }
+
+    public function test_search_result_can_be_cached(): void
+    {
+        $source = factory(Book::class, rand(2, 5))
+            ->state('belongs_to_author')
+            ->create();
+
+        $cacheStore = Cache::store('file');
+        $cacheStore->delete('raw_search_result');
+
+        $searchResult = $cacheStore->rememberForever('raw_search_result', static function () {
+            return Book::rawSearch()
+                ->query(['match_all' => new stdClass()])
+                ->execute();
+        });
+
+        $this->assertEquals($source->toArray(), $searchResult->models()->toArray());
     }
 }

@@ -5,26 +5,31 @@ namespace ElasticScoutDriverPlus\Factories;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
 class LazyModelFactory
 {
     /**
-     * @var array
+     * @var ModelScope
      */
-    private $mappedQueries;
+    private $modelScope;
     /**
+     * List of model ids keyed by index name
+     *
      * @var array
      */
     private $mappedIds = [];
     /**
+     * List of models keyed by index name
+     *
      * @var array
      */
     private $mappedModels = [];
 
     public function __construct(SearchResponse $searchResponse, ModelScope $modelScope)
     {
-        $this->mappedQueries = $modelScope->keyQueriesByIndexName()->all();
+        $this->modelScope = $modelScope;
 
         foreach ($searchResponse->getHits() as $hit) {
             $this->mappedIds[$hit->getIndexName()][] = $hit->getDocument()->getId();
@@ -34,25 +39,36 @@ class LazyModelFactory
     public function makeByIndexNameAndDocumentId(string $indexName, string $documentId): ?Model
     {
         if (!isset($this->mappedModels[$indexName])) {
-            $this->mappedModels[$indexName] = $this->mapModelsForIndex($indexName);
+            $this->mappedModels[$indexName] = $this->findModelsForIndex($indexName);
         }
 
         return $this->mappedModels[$indexName][$documentId] ?? null;
     }
 
-    private function mapModelsForIndex(string $indexName): Collection
+    private function findModelsForIndex(string $indexName): Collection
     {
-        if (!isset($this->mappedIds[$indexName], $this->mappedQueries[$indexName])) {
+        $modelClass = $this->modelScope->resolveModelClass($indexName);
+
+        if (!isset($this->mappedIds[$indexName], $modelClass)) {
             return new Collection();
         }
 
         $ids = $this->mappedIds[$indexName];
-        $query = clone $this->mappedQueries[$indexName];
-        $scoutKeyName = $query->getModel()->getScoutKeyName();
+        $model = new $modelClass();
+        $scoutKeyName = $model->getScoutKeyName();
+        $relations = $this->modelScope->resolveRelations($modelClass);
 
-        $mappedModels = $query->whereIn($scoutKeyName, $ids)->get();
+        $query = in_array(SoftDeletes::class, class_uses_recursive($model), true)
+            ? $model->withTrashed()
+            : $model->newQuery();
 
-        return $mappedModels->mapWithKeys(static function (Model $model) {
+        if (isset($relations)) {
+            $query->with($relations);
+        }
+
+        $result = $query->whereIn($scoutKeyName, $ids)->get();
+
+        return $result->mapWithKeys(static function (Model $model) {
             return [(string)$model->getScoutKey() => $model];
         });
     }

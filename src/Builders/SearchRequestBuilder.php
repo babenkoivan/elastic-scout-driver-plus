@@ -185,12 +185,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
     public function load(array $relations, string $modelClass = null): self
     {
-        $query = isset($modelClass)
-            ? $this->modelScope->getQuery($modelClass)
-            : $this->modelScope->getBaseQuery();
-
-        $query->with($relations);
-
+        $this->modelScope->with($relations, $modelClass);
         return $this;
     }
 

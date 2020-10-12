@@ -6,7 +6,6 @@ use ElasticScoutDriverPlus\Support\ModelScope;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
-use Illuminate\Database\Eloquent\Builder;
 use InvalidArgumentException;
 
 /**
@@ -37,55 +36,53 @@ final class ModelScopeTest extends TestCase
     {
         $this->modelScope->push(Author::class);
 
-        $this->assertTrue($this->modelScope->has(Author::class));
+        $this->assertTrue($this->modelScope->contains(Author::class));
     }
 
     public function test_model_existence_in_scope_can_be_checked(): void
     {
-        $this->assertTrue($this->modelScope->has(Book::class));
+        $this->assertTrue($this->modelScope->contains(Book::class));
     }
 
-    public function test_base_query_can_be_retrieved_from_scope(): void
-    {
-        $this->assertInstanceOf(
-            Book::class,
-            $this->modelScope->getBaseQuery()->getModel()
-        );
-    }
-
-    public function test_exception_is_thrown_when_trying_to_retrieve_non_existing_query(): void
+    public function test_exception_is_thrown_when_adding_relations_for_out_of_scope_model(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->modelScope->getQuery(Author::class);
+        $this->modelScope->with(['books'], Author::class);
     }
 
-    public function test_query_can_be_retrieved_from_scope(): void
+    public function test_base_model_relations_can_be_added_in_scope(): void
     {
-        $this->assertInstanceOf(
-            Book::class,
-            $this->modelScope->getQuery(Book::class)->getModel()
-        );
+        $this->modelScope->with(['author']);
+
+        $this->assertSame(['author'], $this->modelScope->resolveRelations(Book::class));
     }
 
-    public function test_scope_queries_can_be_keyed_by_index_name(): void
+    public function test_explicit_model_relations_can_be_added_in_scope(): void
     {
-        $this->modelScope->push(Author::class);
+        $this->modelScope
+            ->push(Author::class)
+            ->with(['books'], Author::class);
 
-        $keyedQueries = $this->modelScope->keyQueriesByIndexName();
-
-        $this->assertCount(2, $keyedQueries);
-        $this->assertSame(['books', 'authors'], $keyedQueries->keys()->toArray());
-        $this->assertInstanceOf(Builder::class, $keyedQueries->get('books'));
-        $this->assertInstanceOf(Builder::class, $keyedQueries->get('authors'));
-        $this->assertInstanceOf(Book::class, $keyedQueries->get('books')->getModel());
-        $this->assertInstanceOf(Author::class, $keyedQueries->get('authors')->getModel());
+        $this->assertSame(['books'], $this->modelScope->resolveRelations(Author::class));
     }
 
-    public function test_index_names_can_be_retrieved(): void
+    public function test_index_names_can_be_resolved(): void
     {
         $this->modelScope->push(Author::class);
 
-        $this->assertSame(['books', 'authors'], $this->modelScope->getIndexNames()->toArray());
+        $this->assertSame(['books', 'authors'], $this->modelScope->resolveIndexNames()->toArray());
+    }
+
+    public function test_model_class_can_be_resolved(): void
+    {
+        $this->assertSame(Book::class, $this->modelScope->resolveModelClass('books'));
+    }
+
+    public function test_relations_can_be_resolved(): void
+    {
+        $this->modelScope->with(['author']);
+
+        $this->assertSame(['author'], $this->modelScope->resolveRelations(Book::class));
     }
 }

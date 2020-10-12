@@ -2,9 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Support;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Laravel\Scout\Searchable;
@@ -16,14 +14,23 @@ final class ModelScope
      */
     private $baseModelClass;
     /**
+     * Collection of model classes keyed by index name
+     *
      * @var Collection
      */
-    private $queries;
+    private $modelClasses;
+    /**
+     * Collection of relations keyed by model class
+     *
+     * @var Collection
+     */
+    private $relations;
 
     public function __construct(string $modelClass)
     {
         $this->baseModelClass = $modelClass;
-        $this->queries = collect();
+        $this->modelClasses = collect();
+        $this->relations = collect();
 
         $this->push($modelClass);
     }
@@ -33,7 +40,10 @@ final class ModelScope
         foreach ($modelClasses as $modelClass) {
             $model = new $modelClass();
 
-            if (!$model instanceof Model || !in_array(Searchable::class, class_uses_recursive($modelClass), true)) {
+            if (
+                !$model instanceof Model ||
+                !in_array(Searchable::class, class_uses_recursive($modelClass), true)
+            ) {
                 throw new InvalidArgumentException(sprintf(
                     '%s must extend %s class and use %s trait',
                     $modelClass,
@@ -42,49 +52,45 @@ final class ModelScope
                 ));
             }
 
-            $query = in_array(SoftDeletes::class, class_uses_recursive($model), true)
-                ? $model->withTrashed()
-                : $model->newQuery();
-
-            $this->queries->put($modelClass, $query);
+            $this->modelClasses->put($model->searchableAs(), $modelClass);
         }
 
         return $this;
     }
 
-    public function has(string $modelClass): bool
+    public function contains(string $modelClass): bool
     {
-        return $this->queries->has($modelClass);
+        return $this->modelClasses->contains($modelClass);
     }
 
-    public function getQuery(string $modelClass): Builder
+    public function with(array $relations, ?string $modelClass = null): self
     {
-        if (!$this->has($modelClass)) {
+        $modelClass = $modelClass ?? $this->baseModelClass;
+
+        if (!$this->contains($modelClass)) {
             throw new InvalidArgumentException(sprintf(
                 '%s is not found in the model scope',
                 $modelClass
             ));
         }
 
-        return $this->queries->get($modelClass);
+        $this->relations->put($modelClass, $relations);
+
+        return $this;
     }
 
-    public function getBaseQuery(): Builder
+    public function resolveIndexNames(): Collection
     {
-        return $this->getQuery($this->baseModelClass);
+        return $this->modelClasses->keys();
     }
 
-    public function keyQueriesByIndexName(): Collection
+    public function resolveModelClass(string $indexName): ?string
     {
-        return $this->queries->keyBy(static function (Builder $query): string {
-            return $query->getModel()->searchableAs();
-        });
+        return $this->modelClasses->get($indexName);
     }
 
-    public function getIndexNames(): Collection
+    public function resolveRelations(string $modelClass): ?array
     {
-        return $this->queries->map(static function (Builder $query): string {
-            return $query->getModel()->searchableAs();
-        })->values();
+        return $this->relations->get($modelClass);
     }
 }
