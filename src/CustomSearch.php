@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus;
 
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
 use ElasticScoutDriverPlus\Builders\ExistsQueryBuilder;
+use ElasticScoutDriverPlus\Builders\FuzzyQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
@@ -94,5 +95,13 @@ trait CustomSearch
     public static function existsSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new ExistsQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&FuzzyQueryBuilder
+     */
+    public static function fuzzySearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new FuzzyQueryBuilder());
     }
 }
