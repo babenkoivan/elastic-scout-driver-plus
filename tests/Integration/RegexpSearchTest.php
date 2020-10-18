@@ -6,7 +6,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
- * @covers \ElasticScoutDriverPlus\Builders\PrefixQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\RegexpQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\CustomSearch
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
@@ -20,22 +20,22 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
-final class PrefixSearchTest extends TestCase
+final class RegexpSearchTest extends TestCase
 {
     public function test_models_can_be_found_using_field_and_value(): void
     {
         // additional mixin
         factory(Book::class)
             ->state('belongs_to_author')
-            ->create(['title' => 'First']);
+            ->create(['title' => 'Number one']);
 
         $target = factory(Book::class)
             ->state('belongs_to_author')
-            ->create(['title' => 'Second']);
+            ->create(['title' => 'Number two']);
 
-        $found = Book::prefixSearch()
+        $found = Book::regexpSearch()
             ->field('title')
-            ->value('sec')
+            ->value('t.o')
             ->execute();
 
         $this->assertCount(1, $found->models());

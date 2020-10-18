@@ -22,7 +22,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
-final class RangeSearch extends TestCase
+final class RangeSearchTest extends TestCase
 {
     public function test_models_can_be_found_using_field_and_gt(): void
     {
