@@ -13,6 +13,7 @@ use ElasticScoutDriverPlus\Builders\MatchPhraseQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MultiMatchQueryBuilder;
 use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
+use ElasticScoutDriverPlus\Builders\PrefixQueryBuilder;
 use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 
@@ -112,5 +113,13 @@ trait CustomSearch
     public static function idsSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new IdsQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&PrefixQueryBuilder
+     */
+    public static function prefixSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new PrefixQueryBuilder());
     }
 }
