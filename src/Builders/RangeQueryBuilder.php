@@ -6,6 +6,7 @@ use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\BoostParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\RelationParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\TimeZoneParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\CompoundValidator;
@@ -16,6 +17,7 @@ final class RangeQueryBuilder extends AbstractParameterizedQueryBuilder
     use FieldParameter;
     use RelationParameter;
     use BoostParameter;
+    use TimeZoneParameter;
 
     /**
      * @var string
@@ -73,12 +75,6 @@ final class RangeQueryBuilder extends AbstractParameterizedQueryBuilder
     public function format(string $format): self
     {
         $this->parameters->put('format', $format);
-        return $this;
-    }
-
-    public function timeZone(string $timeZone): self
-    {
-        $this->parameters->put('time_zone', $timeZone);
         return $this;
     }
 }
