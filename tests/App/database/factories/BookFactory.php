@@ -13,6 +13,7 @@ $factory->define(Book::class, static function (Faker $faker) {
         'description' => $faker->realText(),
         'price' => $faker->randomNumber(3),
         'published' => Carbon::createFromFormat('Y-m-d', $faker->date('Y-m-d')),
+        'tags' => $faker->words(random_int(1, 5)),
     ];
 });
 

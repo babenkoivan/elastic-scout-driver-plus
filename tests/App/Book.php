@@ -30,6 +30,7 @@ class Book extends Model
 
     protected $casts = [
         'published' => 'date:Y-m-d',
+        'tags' => 'json',
     ];
 
     public function author(): BelongsTo

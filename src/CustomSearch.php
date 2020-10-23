@@ -19,6 +19,7 @@ use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
 use ElasticScoutDriverPlus\Builders\RegexpQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
+use ElasticScoutDriverPlus\Builders\TermsQueryBuilder;
 
 trait CustomSearch
 {
@@ -148,5 +149,13 @@ trait CustomSearch
     public static function termSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new TermQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&TermsQueryBuilder
+     */
+    public static function termsSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new TermsQueryBuilder());
     }
 }
