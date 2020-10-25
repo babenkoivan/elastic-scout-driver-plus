@@ -20,6 +20,7 @@ use ElasticScoutDriverPlus\Builders\RegexpQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
 use ElasticScoutDriverPlus\Builders\TermsQueryBuilder;
+use ElasticScoutDriverPlus\Builders\WildcardQueryBuilder;
 
 trait CustomSearch
 {
@@ -157,5 +158,13 @@ trait CustomSearch
     public static function termsSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new TermsQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&WildcardQueryBuilder
+     */
+    public static function wildcardSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new WildcardQueryBuilder());
     }
 }
