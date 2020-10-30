@@ -21,7 +21,6 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
 * [Compatibility](#compatibility)
 * [Installation](#installation)
 * [Usage](#usage)
-* [Raw Search](#raw-search)
 
 ## Features
 
@@ -60,7 +59,7 @@ read [this guide](https://github.com/babenkoivan/elastic-scout-driver-plus/wiki/
 
 ## Usage
 
-Elastic Scout Driver Plus comes with a new trait, which you need to add in your model to activate advanced search capabilities:
+Elastic Scout Driver Plus comes with a new trait, which you need to add in your model to activate advanced search features:
 
 ```php
 class Book extends Model
@@ -97,27 +96,22 @@ Choose factory method depending on the query type you wish to perform:
 * [nestedSearch](docs/joining-queries.md#nested)
 * [prefixSearch](docs/term-queries.md#prefix)
 * [rangeSearch](docs/term-queries.md#range)
-* [rawSearch](#raw-search)
 * [regexpSearch](docs/term-queries.md#regexp)
 * [termSearch](docs/term-queries.md#term)
 * [termsSearch](docs/term-queries.md#terms)
 * [wildcardSearch](docs/term-queries.md#wildcard)
 
-If there is no a dedicated factory method for the query type you need, use [rawSearch](#raw-search) instead.
-
-It's also **important to know**, that all the search request builders share the same generic methods, which provide such
-basic functionality as sorting, highlighting, etc. Check the full list of available generic methods with the usage examples 
-[here](docs/generic-methods.md).
-
-Building a search request is just a half of the work, you also need to know how to execute it and get the respective data,
-e.g. highlights. Read [here](docs/search-results.md) about request execution, pagination, etc.
-
-## Raw Search
-
-Use `rawSearch` to make any custom search request:
+If there is no a dedicated factory method for the query type you need, use [rawSearch](#raw-search) instead:
 
 ```php
 $searchResult = Book::rawSearch()
     ->query(['match' => ['title' => 'The Book']])
     ->execute()
 ```
+
+It's also **important to know**, that all the search request builders share the same [generic methods](docs/generic-methods.md), 
+which provide such basic functionality as sorting, highlighting, etc. Check the full list of available generic methods 
+and usage examples [here](docs/generic-methods.md).
+
+Building a search request is just a half of the work, you also need to know how to execute it and get the respective data,
+e.g. highlights. Read [this page](docs/search-results.md) to get familiar with request execution, pagination, etc.
