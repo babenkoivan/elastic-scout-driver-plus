@@ -25,7 +25,6 @@ env:
   - ES_VERSION=7.6.2 TESTBENCH_VERSION=^5.0 SCOUT_VERSION=^8.0
 
 install:
-  - composer global require --no-interaction --prefer-dist --update-no-dev hirak/prestissimo
   - composer require --no-interaction --prefer-dist orchestra/testbench:$TESTBENCH_VERSION laravel/scout:$SCOUT_VERSION
 
 script:
