@@ -21,6 +21,12 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
 * [Compatibility](#compatibility)
 * [Installation](#installation)
 * [Usage](#usage)
+    * [Generic Methods](docs/generic-methods.md)
+    * [Compound Queries](docs/compound-queries.md)
+    * [Full Text Queries](docs/full-text-queries.md)
+    * [Joining Queries](docs/joining-queries.md)
+    * [Term Queries](docs/term-queries.md)
+    * [Search Results](docs/search-results.md)
 
 ## Features
 
@@ -101,7 +107,7 @@ Choose factory method depending on the query type you wish to perform:
 * [termsSearch](docs/term-queries.md#terms)
 * [wildcardSearch](docs/term-queries.md#wildcard)
 
-If there is no a dedicated factory method for the query type you need, use [rawSearch](#raw-search) instead:
+If there is no a dedicated factory method for the query type you need, use rawSearch instead:
 
 ```php
 $searchResult = Book::rawSearch()

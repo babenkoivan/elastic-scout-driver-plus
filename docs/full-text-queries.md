@@ -6,7 +6,6 @@
 * [Match Phrase](#match-phrase)
 * [Match](#match)
 * [Multi-Match](#multi-match)
-* [Multi-Match](#multi-match)
 
 ## Match All
 
@@ -107,7 +106,7 @@ $searchResult = Book::matchPhrasePrefixSearch()
 
 ## <a name="match-phrase-prefix-zero-terms-query"></a> zeroTermsQuery
 
-You can define [what to return in case `analyzer` removes all tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params)
+You can define [what to return in case `analyzer` removes all tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params)
 with `zeroTermsQuery`: 
 
 ```php
