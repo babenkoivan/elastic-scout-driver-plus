@@ -46,7 +46,7 @@ Available methods:
 * [slop](#match-phrase-prefix-slop)
 * [zeroTermsQuery](#match-phrase-prefix-zero-terms-query)
 
-## <a name="match-phrase-prefix-analyzer"></a> analyzer
+### <a name="match-phrase-prefix-analyzer"></a> analyzer
 
 `analyzer` is used to [convert the `query` text into tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params):
 
@@ -58,7 +58,7 @@ $searchResult = Book::matchPhrasePrefixSearch()
     ->execute();
 ```
 
-## <a name="match-phrase-prefix-field"></a> field
+### <a name="match-phrase-prefix-field"></a> field
 
 Use `field` to specify [the field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-top-level-params):
 
@@ -69,7 +69,7 @@ $searchResult = Book::matchPhrasePrefixSearch()
     ->execute();
 ```
 
-## <a name="match-phrase-prefix-max-expansions"></a> maxExpansions
+### <a name="match-phrase-prefix-max-expansions"></a> maxExpansions
 
 You can use `maxExpansions` to specify [maximum number of terms to which the last provided term of the `query` value will expand](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params):
 
@@ -81,7 +81,7 @@ $searchResult = Book::matchPhrasePrefixSearch()
     ->execute();
 ```
 
-## <a name="match-phrase-prefix-query"></a> query
+### <a name="match-phrase-prefix-query"></a> query
 
 Use `query` to set [the text you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params):
 
@@ -92,7 +92,7 @@ $searchResult = Book::matchPhrasePrefixSearch()
     ->execute();
 ```
 
-## <a name="match-phrase-prefix-slop"></a> slop
+### <a name="match-phrase-prefix-slop"></a> slop
 
 Use `slop` to define [the maximum number of positions allowed between matching tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params):
 
@@ -104,7 +104,7 @@ $searchResult = Book::matchPhrasePrefixSearch()
     ->execute();
 ```
 
-## <a name="match-phrase-prefix-zero-terms-query"></a> zeroTermsQuery
+### <a name="match-phrase-prefix-zero-terms-query"></a> zeroTermsQuery
 
 You can define [what to return in case `analyzer` removes all tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params)
 with `zeroTermsQuery`: 
@@ -248,7 +248,7 @@ $searchResult = Book::matchSearch()
 
 ### <a name="match-boost"></a> boost 
 
-`boost` method allows you to [boost individual fields at query time](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html):
+`boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html):
 
  ```php
 $searchResult = Book::matchSearch()
@@ -450,7 +450,7 @@ $searchResult = Book::multiMatchSearch()
 
 ### <a name="multi-match-boost"></a> boost 
 
-`boost` method allows you to [boost individual fields at query time](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html):
+`boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html):
 
  ```php
 $searchResult = Book::multiMatchSearch()

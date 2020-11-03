@@ -22,7 +22,7 @@ Available methods:
 * [should](#bool-should)
 * [withTrashed](#bool-with-trashed)
 
-##### <a name="bool-filter"></a> filter
+### <a name="bool-filter"></a> filter
 
 The query defined with `filter` [must appear in the matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html),
 but won’t contribute to the score:
@@ -41,7 +41,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### <a name="bool-minimum-should-match"></a> minimumShouldMatch
+### <a name="bool-minimum-should-match"></a> minimumShouldMatch
 
 You can use `minimumShouldMatch` to specify [the number of `should` queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#bool-min-should-match)
 the documents must match:
@@ -54,7 +54,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### <a name="bool-must"></a> must
+### <a name="bool-must"></a> must
 
 The query defined with `must` [must appear in the matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
 and will contribute to the score:
@@ -73,7 +73,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### <a name="bool-must-not"></a> mustNot
+### <a name="bool-must-not"></a> mustNot
 
 The query defined with `mustNot` [must not appear in the matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
 and won’t contribute to the score:
@@ -92,7 +92,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### <a name="bool-only-trashed"></a> onlyTrashed
+### <a name="bool-only-trashed"></a> onlyTrashed
 
 Use `onlyTrashed` method to get [only soft deleted results](https://laravel.com/docs/master/scout#soft-deleting):
 
@@ -102,7 +102,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### <a name="bool-should"></a> should
+### <a name="bool-should"></a> should
 
 The query defined with `should` [should appear in the matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html):
 
@@ -120,7 +120,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-##### <a name="bool-with-trashed"></a> withTrashed
+### <a name="bool-with-trashed"></a> withTrashed
 
 You can use `withTrashed` to include [soft deleted results](https://laravel.com/docs/master/scout#soft-deleting)
 in the search result:
