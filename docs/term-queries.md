@@ -456,12 +456,85 @@ Available methods:
 
 ### <a name="terms-boost"></a> boost
 
-// todo
+`boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#terms-top-level-params):
+
+```php
+$searchResult = Book::termsSearch()
+    ->terms('tags', ['available', 'new'])
+    ->boost(2)
+    ->execute();
+```
 
 ### <a name="terms-terms"></a> terms
 
-// todo
+Use `terms` to define array of terms you [wish to find in the provided field](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#terms-top-level-params):
+
+```php
+$searchResult = Book::termsSearch()
+    ->terms('tags', ['available', 'new'])
+    ->execute();
+```
 
 ## Wildcard
 
-// todo
+`wildcardSearch` returns documents that [contain terms matching a wildcard pattern](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#query-dsl-wildcard-query):
+
+```php
+$searchResult = Book::wildcardSearch()
+    ->field('title')
+    ->value('bo*k')
+    ->execute();
+```
+
+Available methods:
+
+* [boost](#wildcard-boost)
+* [field](#wildcard-field)
+* [rewrite](#wildcard-rewrite)
+* [value](#wildcard-value)
+
+### <a name="wildcard-boost"></a> boost
+
+`boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-query-field-params):
+
+```php
+$searchResult = Book::wildcardSearch()
+    ->field('title')
+    ->value('bo*k')
+    ->boost(2)
+    ->execute();
+```
+
+### <a name="wildcard-field"></a> field
+
+Use `field` to specify the [field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-top-level-params):
+
+```php
+$searchResult = Book::wildcardSearch()
+    ->field('title')
+    ->value('bo*k')
+    ->execute();
+```
+
+### <a name="wildcard-rewrite"></a> rewrite
+
+`rewrite` is used to [rewrite the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-query-field-params):
+
+```php
+$searchResult = Book::wildcardSearch()
+    ->field('title')
+    ->value('bo*k')
+    ->rewrite('constant_score')
+    ->execute();
+```
+
+### <a name="wildcard-value"></a> value
+
+With `value` you can define a [wildcard pattern for terms you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-query-field-params):
+
+```php
+$searchResult = Book::wildcardSearch()
+    ->field('title')
+    ->value('bo*k')
+    ->execute();
+```
