@@ -7,3 +7,5 @@ parameters:
   paths:
     - src
     - tests
+  excludes_analyse:
+    - tests/App/Model.php

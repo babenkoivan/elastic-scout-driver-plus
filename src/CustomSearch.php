@@ -3,6 +3,9 @@
 namespace ElasticScoutDriverPlus;
 
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
+use ElasticScoutDriverPlus\Builders\ExistsQueryBuilder;
+use ElasticScoutDriverPlus\Builders\FuzzyQueryBuilder;
+use ElasticScoutDriverPlus\Builders\IdsQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
@@ -10,8 +13,14 @@ use ElasticScoutDriverPlus\Builders\MatchPhraseQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MultiMatchQueryBuilder;
 use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
+use ElasticScoutDriverPlus\Builders\PrefixQueryBuilder;
+use ElasticScoutDriverPlus\Builders\RangeQueryBuilder;
 use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
+use ElasticScoutDriverPlus\Builders\RegexpQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
+use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
+use ElasticScoutDriverPlus\Builders\TermsQueryBuilder;
+use ElasticScoutDriverPlus\Builders\WildcardQueryBuilder;
 
 trait CustomSearch
 {
@@ -85,5 +94,77 @@ trait CustomSearch
     public static function multiMatchSearch(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static(), new MultiMatchQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&ExistsQueryBuilder
+     */
+    public static function existsSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new ExistsQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&FuzzyQueryBuilder
+     */
+    public static function fuzzySearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new FuzzyQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&IdsQueryBuilder
+     */
+    public static function idsSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new IdsQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&PrefixQueryBuilder
+     */
+    public static function prefixSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new PrefixQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&RangeQueryBuilder
+     */
+    public static function rangeSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new RangeQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&RegexpQueryBuilder
+     */
+    public static function regexpSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new RegexpQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&TermQueryBuilder
+     */
+    public static function termSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new TermQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&TermsQueryBuilder
+     */
+    public static function termsSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new TermsQueryBuilder());
+    }
+
+    /**
+     * @return SearchRequestBuilder&WildcardQueryBuilder
+     */
+    public static function wildcardSearch(): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder(new static(), new WildcardQueryBuilder());
     }
 }

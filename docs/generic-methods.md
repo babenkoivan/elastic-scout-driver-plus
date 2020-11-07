@@ -1,0 +1,297 @@
+# Generic Methods
+
+* [aggregate](#aggregate)
+* [collapse](#collapse)
+* [from](#from)
+* [highlight](#highlight)
+* [join](#join)
+* [load](#load)
+* [postFilter](#postfilter)
+* [size](#size)
+* [sort](#sort)
+* [source](#source)
+* [suggest](#suggest)
+
+### aggregate
+
+This method can be used to [aggregate data](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) 
+based on a search query;
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->aggregate('max_price', [
+        'max' => [
+            'field' => 'price',
+        ],
+	])
+    ->execute();
+```
+
+You can also use `aggregateRaw` for more flexibility:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->aggregateRaw([
+        'max_price' => [
+            'max' => [
+                'field' => 'price',
+            ],
+        ],
+    ])
+    ->execute();
+```
+
+You can retrieve the aggregated data from the search result as follows:
+
+```php
+$aggregations = $searchResult->aggregations();
+$maxPrice = $aggregations->get('max_price');
+```
+
+### collapse
+
+This method allows to [collapse](https://www.elastic.co/guide/en/elasticsearch/reference/current/collapse-search-results.html) 
+search results based on field values:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->collapse('author_id')
+    ->sort('published', 'desc')
+    ->execute();
+```
+
+There is also `collapseRaw` method at your disposal:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->collapseRaw(['field' => 'author_id'])
+    ->sort('price', 'asc')
+    ->execute();
+```
+
+### from
+
+`from` method defines [the starting document offset](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->from(5)
+    ->execute();
+```
+
+### highlight
+
+This method allows you to get [highlighted snippets](https://www.elastic.co/guide/en/elasticsearch/reference/current/highlighting.html#highlighting)
+from one or more fields in your search results:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match' => ['title' => 'The Book']])
+    ->highlight('title')
+    ->execute();
+```
+
+Use `highlightRaw` method if you need more control:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match' => ['title' => 'The Book']])
+    ->highlightRaw(['fields' => ['title' => ['number_of_fragments' => 3]]])
+    ->execute();
+```
+
+Use `highlights` method to retrieve all highlights from the search result:
+
+```php
+$highlights = $searchResult->highlights();
+```
+
+You can also get a highlight for [every respective match](search-results.md#matches):
+
+```php
+$matches = $searchResult->matches();
+$highlight = $matches->first()->highlight();
+```
+
+The highlighted snippets can be retrieved as follows:
+
+```php
+$snippets = $highlight->getSnippets('title');
+```
+
+If you would rather prefer an array representation of the highlight, use `getRaw` method:
+
+```php
+$raw = $highlight->getRaw();
+```
+
+### join
+
+This method enables [multi indices](https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-index.html#multi-index)
+search:
+
+```php
+$searchResult = Author::boolSearch()
+    ->join(Book::class)
+    ->should('match', ['name' => 'John'])
+    ->should('match', ['title' => 'The Book'])
+    ->minimumShouldMatch(1)
+    ->execute();
+```
+
+In the example above, we search for an author with name `John` or a book with title `The Book` in two different indices. 
+It doesn’t matter if we start the query from `Book` or `Author` model. Remember though, that the result model collection 
+includes both types in this case:
+
+```php
+// every model is either Author or Book
+$models = $searchResult->models();
+```
+
+### load
+
+This method allows you to eager load model relations: 
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match' => ['title' => 'The Book']])
+    ->load(['author'])
+    ->execute();
+```
+
+When [searching in multiple indices](#join), you need to explicitly define the model you want the relations for:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new stdClass()])
+    ->join(Author::class)
+    ->load(['author'], Book::class)
+    ->load(['books'], Author::class)
+    ->execute();
+```
+
+### postFilter
+
+`postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->postFilter('term', ['published' => '2020-06-07'])
+    ->execute();
+``` 
+
+You can also use `postFilterRaw` method as follows:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->postFilterRaw(['term' => ['published' => '2020-06-07']])
+    ->execute();
+```
+
+### size
+
+`size` method [limits the number of hits to return](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->size(2)
+    ->execute();
+```
+
+### sort
+
+This method [sorts](https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html) the search results:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->sort('price', 'asc')
+    ->execute();
+```
+
+In case, you need more advanced sorting algorithm use `sortRaw`:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->sortRaw(['price' => 'asc'])
+    ->execute();
+```
+
+### source
+
+This method allows you to [select what document fields of the source are returned](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-fields.html#source-filtering):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->source(['title', 'description'])
+    ->execute();
+```
+
+`sourceRaw` allows you to use a single wildcard pattern, an array of fields or a boolean value in case you want to 
+exclude document source from the result:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->sourceRaw(false)
+    ->execute();
+```
+
+### suggest
+
+This method can be used to [get similar looking terms](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html#search-suggesters)
+based on a provided text:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_none' => new \stdClass()])
+    ->suggest('title_suggest', ['text' => 'book', 'term' => ['field' => 'title']])
+    ->execute();
+```
+
+The same query with `suggestRaw` method:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_none' => new \stdClass()])
+    ->suggestRaw(['title_suggest' => ['text' => 'book', 'term' => ['field' => 'title']]])
+    ->execute();
+```
+
+When the feature is used, the search result is populated with the suggestions:
+
+```php
+$suggestions = $searchResult->suggestions();
+```
+
+Each key of this collection is a suggestion name, each element is a collection of suggested terms:
+
+```php
+$titleSuggestions = $suggestions->get('title_suggest');
+```
+
+Each suggestion contains various information about the term:
+
+```php
+$firstSuggestion = $titleSuggestions->first();
+
+// the suggestion text
+$text = $firstSuggestion->getText();
+// the start offset and the length in the suggest text
+$offset = $firstSuggestion->getOffset();
+$length = $firstSuggestion->getLength();
+// an arbitrary number of options
+$options = $firstSuggestion->getOptions();
+// an array representation of the suggestion
+$raw = $firstSuggestion->getRaw();
+```

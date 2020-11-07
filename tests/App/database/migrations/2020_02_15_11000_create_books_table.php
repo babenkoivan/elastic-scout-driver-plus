@@ -15,9 +15,10 @@ class CreateBooksTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('author_id');
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('price');
             $table->date('published');
+            $table->text('tags');
             $table->softDeletes();
 
             $table->foreign('author_id')->references('id')->on('authors');
