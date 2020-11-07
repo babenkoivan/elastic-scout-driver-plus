@@ -1,6 +1,6 @@
 # Search Results
 
-Whenever a search request is ready to be executed, you have several options:
+Whenever your search request is ready to be executed, you have several options:
 
 1. You can get raw results:
 

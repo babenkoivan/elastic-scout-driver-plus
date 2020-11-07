@@ -58,14 +58,19 @@ composer require babenkoivan/elastic-scout-driver-plus
 ```
 
 **Note**, that the library doesn't work without Elastic Scout Driver. If it's not installed yet, please follow
-the installation steps described [here](https://github.com/babenkoivan/elastic-scout-driver#installation).
+the installation steps described [here](https://github.com/babenkoivan/elastic-scout-driver#installation). If you
+are already using Elastic Scout Driver, I recommend you to update it before installing Elastic Scout Driver Plus:
+
+```bash
+composer update babenkoivan/elastic-scout-driver
+```
 
 If you want to use Elastic Scout Driver Plus with [Lumen framework](https://lumen.laravel.com/)
-read [this guide](https://github.com/babenkoivan/elastic-scout-driver-plus/wiki/Lumen-Installation).
+refer to [this guide](https://github.com/babenkoivan/elastic-scout-driver-plus/wiki/Lumen-Installation).
 
 ## Usage
 
-Elastic Scout Driver Plus comes with a new trait, which you need to add in your model to activate advanced search features:
+Elastic Scout Driver Plus comes with a new trait, which you need to add in your model to activate advanced search functionality:
 
 ```php
 class Book extends Model
@@ -77,7 +82,7 @@ class Book extends Model
 
 This trait adds a bunch of factory methods in your model: `boolSearch()`, `matchSearch()`, `rawSearch()`, etc.
 Each method creates a search request builder for the specific query type. For example, if you want to make a 
-[match query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html) use `matchSearch()`: 
+[match query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html) use `matchSearch()` method: 
 
 ```php
 $searchResult = Book::matchSearch()
@@ -89,35 +94,34 @@ $searchResult = Book::matchSearch()
 ``` 
 
 Choose factory method depending on the query type you wish to perform:
-* [boolSearch](docs/compound-queries.md#boolean) 
-* [existsSearch](docs/term-queries.md#exists) 
-* [fuzzySearch](docs/term-queries.md#fuzzy)
-* [idsSearch](docs/term-queries.md#ids)
-* [matchAllSearch](docs/full-text-queries.md#match-all)
-* [matchNoneSearch](docs/full-text-queries.md#match-none)
-* [matchPhrasePrefixSearch](docs/full-text-queries.md#match-phrase-prefix)
-* [matchPhraseSearch](docs/full-text-queries.md#match-phrase)
-* [matchSearch](docs/full-text-queries.md#match)
-* [multiMatchSearch](docs/full-text-queries.md#multi-match)
-* [nestedSearch](docs/joining-queries.md#nested)
-* [prefixSearch](docs/term-queries.md#prefix)
-* [rangeSearch](docs/term-queries.md#range)
-* [regexpSearch](docs/term-queries.md#regexp)
-* [termSearch](docs/term-queries.md#term)
-* [termsSearch](docs/term-queries.md#terms)
-* [wildcardSearch](docs/term-queries.md#wildcard)
+* [bool](docs/compound-queries.md#boolean) 
+* [exists](docs/term-queries.md#exists) 
+* [fuzzy](docs/term-queries.md#fuzzy)
+* [ids](docs/term-queries.md#ids)
+* [match all](docs/full-text-queries.md#match-all)
+* [match none](docs/full-text-queries.md#match-none)
+* [match phrase prefix](docs/full-text-queries.md#match-phrase-prefix)
+* [match phrase](docs/full-text-queries.md#match-phrase)
+* [match](docs/full-text-queries.md#match)
+* [multi-match](docs/full-text-queries.md#multi-match)
+* [nested](docs/joining-queries.md#nested)
+* [prefix](docs/term-queries.md#prefix)
+* [range](docs/term-queries.md#range)
+* [regexp](docs/term-queries.md#regexp)
+* [term](docs/term-queries.md#term)
+* [terms](docs/term-queries.md#terms)
+* [wildcard](docs/term-queries.md#wildcard)
 
-If there is no a dedicated factory method for the query type you need, use rawSearch instead:
+If there is no method for the query type you need, you can use `rawSearch()`:
 
 ```php
 $searchResult = Book::rawSearch()
     ->query(['match' => ['title' => 'The Book']])
-    ->execute()
+    ->execute();
 ```
 
-It's also **important to know**, that all the search request builders share the same [generic methods](docs/generic-methods.md), 
+It is **important to know**, that all search request builders share the same [generic methods](docs/generic-methods.md), 
 which provide such basic functionality as sorting, highlighting, etc. Check the full list of available generic methods 
-and usage examples [here](docs/generic-methods.md).
+and the usage examples [here](docs/generic-methods.md).
 
-Building a search request is just a half of the work, you also need to know how to execute it and get the respective data,
-e.g. highlights. Read [this page](docs/search-results.md) to get familiar with request execution, pagination, etc.
+Finally, refer to [this page](docs/search-results.md) to get familiar with `$searchResult` object, pagination and more.
