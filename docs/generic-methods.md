@@ -11,6 +11,7 @@
 * [sort](#sort)
 * [source](#source)
 * [suggest](#suggest)
+* [trackTotalHits](#tracktotalhits)
 
 ### aggregate
 
@@ -294,4 +295,15 @@ $length = $firstSuggestion->getLength();
 $options = $firstSuggestion->getOptions();
 // an array representation of the suggestion
 $raw = $firstSuggestion->getRaw();
+```
+
+### trackTotalHits
+
+This method allows you to [control how the total number of hits should be tracked](https://www.elastic.co/guide/en/elasticsearch//reference/current/search-your-data.html#track-total-hits):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->trackTotalHits(true)
+    ->execute();
 ```

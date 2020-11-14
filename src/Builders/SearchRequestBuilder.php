@@ -66,6 +66,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
      * @var array
      */
     private $postFilter = [];
+    /**
+     * @var int|bool|null
+     */
+    private $trackTotalHits;
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
@@ -189,6 +193,15 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
+    /**
+     * @param int|bool $trackTotalHits
+     */
+    public function trackTotalHits($trackTotalHits): self
+    {
+        $this->trackTotalHits = $trackTotalHits;
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
         $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
@@ -227,6 +240,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
         if (count($this->postFilter) > 0) {
             $searchRequest->setPostFilter($this->postFilter);
+        }
+
+        if (isset($this->trackTotalHits)) {
+            $searchRequest->setTrackTotalHits($this->trackTotalHits);
         }
 
         return $searchRequest;

@@ -445,4 +445,34 @@ final class RawSearchTest extends TestCase
 
         $this->assertEquals($source->toArray(), $searchResult->models()->toArray());
     }
+
+    public function test_total_hits_calculation_can_be_skipped(): void
+    {
+        $source = factory(Book::class, rand(2, 5))
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->trackTotalHits(false)
+            ->execute();
+
+        $this->assertEquals($source->toArray(), $found->models()->toArray());
+        $this->assertNull($found->total());
+    }
+
+    public function test_total_hits_number_can_be_limited(): void
+    {
+        $source = factory(Book::class, 10)
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->trackTotalHits(5)
+            ->execute();
+
+        $this->assertEquals($source->toArray(), $found->models()->toArray());
+        $this->assertSame(5, $found->total());
+    }
 }

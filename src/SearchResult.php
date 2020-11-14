@@ -12,7 +12,7 @@ final class SearchResult
      */
     private $matches;
     /**
-     * @var int
+     * @var int|null
      */
     private $total;
     /**
@@ -26,14 +26,14 @@ final class SearchResult
 
     public function __construct(
         BaseCollection $matches,
-        int $total,
         BaseCollection $suggestions,
-        BaseCollection $aggregations
+        BaseCollection $aggregations,
+        ?int $total
     ) {
         $this->matches = $matches;
-        $this->total = $total;
         $this->suggestions = $suggestions;
         $this->aggregations = $aggregations;
+        $this->total = $total;
     }
 
     public function matches(): BaseCollection
@@ -70,7 +70,7 @@ final class SearchResult
         return $highlights->filter()->values();
     }
 
-    public function total(): int
+    public function total(): ?int
     {
         return $this->total;
     }

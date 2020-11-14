@@ -23,7 +23,7 @@ final class SearchResultFactory
         $suggestions = self::makeSuggestions($searchResponse->getSuggestions());
         $aggregations = self::makeAggregations($searchResponse->getAggregations());
 
-        return new SearchResult($matches, $searchResponse->getHitsTotal(), $suggestions, $aggregations);
+        return new SearchResult($matches, $suggestions, $aggregations, $searchResponse->getHitsTotal());
     }
 
     private static function makeMatches(array $hits, LazyModelFactory $lazyModelFactory): Collection

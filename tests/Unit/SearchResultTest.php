@@ -38,7 +38,7 @@ final class SearchResultTest extends TestCase
             new Match($this->factory, 'books', new Document('2', ['title' => 'test 2']), null, null),
         ]);
 
-        $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
+        $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
 
         $this->assertSame($searchResult->matches(), $matches);
     }
@@ -62,7 +62,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, 'authors', $document, null, null);
         });
 
-        $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
+        $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
 
         $this->assertEquals($searchResult->models()->toArray(), $models->toArray());
     }
@@ -79,7 +79,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, 'books', $document, null, null);
         });
 
-        $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
+        $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
 
         $this->assertEquals($searchResult->documents(), $documents);
     }
@@ -97,7 +97,7 @@ final class SearchResultTest extends TestCase
             return new Match($this->factory, 'books', $document, $highlight, null);
         });
 
-        $searchResult = new SearchResult($matches, $matches->count(), collect(), collect());
+        $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
 
         $this->assertEquals($searchResult->highlights(), $highlights->filter()->values());
     }
@@ -106,7 +106,7 @@ final class SearchResultTest extends TestCase
     {
         $total = rand(2, 100);
 
-        $searchResult = new SearchResult(collect(), $total, collect(), collect());
+        $searchResult = new SearchResult(collect(), collect(), collect(), $total);
 
         $this->assertSame($total, $searchResult->total());
     }
@@ -120,7 +120,7 @@ final class SearchResultTest extends TestCase
             ]),
         ]);
 
-        $searchResult = new SearchResult(collect(), 0, $suggestions, collect());
+        $searchResult = new SearchResult(collect(), $suggestions, collect(), null);
 
         $this->assertSame($suggestions, $searchResult->suggestions());
     }
@@ -133,7 +133,7 @@ final class SearchResultTest extends TestCase
             ],
         ]);
 
-        $searchResult = new SearchResult(collect(), 0, collect(), $aggregations);
+        $searchResult = new SearchResult(collect(), collect(), $aggregations, null);
 
         $this->assertSame($aggregations, $searchResult->aggregations());
     }
