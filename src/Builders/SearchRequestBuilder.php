@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Traits\ForwardsCalls;
+use RuntimeException;
 use stdClass;
 
 final class SearchRequestBuilder implements SearchRequestBuilderInterface
@@ -280,6 +281,13 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         $builder->size($perPage);
 
         $searchResult = $builder->execute();
+
+        if (is_null($searchResult->total())) {
+            throw new RuntimeException(
+                'Search result does not contain the total hits number. ' .
+                'Please, make sure that total hits are tracked.'
+            );
+        }
 
         return new LengthAwarePaginator(
             $searchResult->matches()->all(),

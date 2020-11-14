@@ -13,6 +13,7 @@ use ElasticScoutDriverPlus\Tests\App\Model;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use RuntimeException;
 use const SORT_STRING;
 use stdClass;
 
@@ -391,6 +392,20 @@ final class RawSearchTest extends TestCase
             $target->last()->pluck('id')->toArray(),
             $getPageModels($secondPage)->pluck('id')->toArray()
         );
+    }
+
+    public function test_exception_is_thrown_when_paginating_search_results_but_total_hits_are_not_tracked(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        factory(Book::class, rand(2, 5))
+            ->state('belongs_to_author')
+            ->create();
+
+        Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->trackTotalHits(false)
+            ->paginate();
     }
 
     public function test_models_can_be_found_with_relations_in_a_single_index(): void
