@@ -15,6 +15,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Factory
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory

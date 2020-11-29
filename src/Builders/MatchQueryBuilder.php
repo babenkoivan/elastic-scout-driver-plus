@@ -40,7 +40,7 @@ final class MatchQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'match';
+    protected $type = 'match';
 
     public function __construct()
     {

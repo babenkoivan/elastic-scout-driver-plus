@@ -20,7 +20,7 @@ final class WildcardQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'wildcard';
+    protected $type = 'wildcard';
 
     public function __construct()
     {

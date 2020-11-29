@@ -14,7 +14,7 @@ final class ExistsQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'exists';
+    protected $type = 'exists';
 
     public function __construct()
     {

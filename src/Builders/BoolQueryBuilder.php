@@ -3,11 +3,11 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Factory;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MinimumShouldMatchParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator;
 use ElasticScoutDriverPlus\Support\Arr;
-use stdClass;
 
 final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
 {
@@ -16,7 +16,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'bool';
+    protected $type = 'bool';
     /**
      * @var int|null
      */
@@ -41,12 +41,12 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
         return $this;
     }
 
-    public function must(string $type, array $query = []): self
+    /**
+     * @param string|array|QueryBuilderInterface $type
+     */
+    public function must($type, array $query = []): self
     {
-        $this->parameters->push('must', [
-            $type => count($query) > 0 ? $query : new stdClass(),
-        ]);
-
+        $this->parameters->push('must', Factory::makeQuery(func_get_args()));
         return $this;
     }
 
@@ -56,12 +56,12 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
         return $this;
     }
 
-    public function mustNot(string $type, array $query = []): self
+    /**
+     * @param string|array|QueryBuilderInterface $type
+     */
+    public function mustNot($type, array $query = []): self
     {
-        $this->parameters->push('must_not', [
-            $type => count($query) > 0 ? $query : new stdClass(),
-        ]);
-
+        $this->parameters->push('must_not', Factory::makeQuery(func_get_args()));
         return $this;
     }
 
@@ -71,12 +71,12 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
         return $this;
     }
 
-    public function should(string $type, array $query = []): self
+    /**
+     * @param string|array|QueryBuilderInterface $type
+     */
+    public function should($type, array $query = []): self
     {
-        $this->parameters->push('should', [
-            $type => count($query) > 0 ? $query : new stdClass(),
-        ]);
-
+        $this->parameters->push('should', Factory::makeQuery(func_get_args()));
         return $this;
     }
 
@@ -86,9 +86,12 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
         return $this;
     }
 
-    public function filter(string $type, array $query): self
+    /**
+     * @param string|array|QueryBuilderInterface $type
+     */
+    public function filter($type, array $query): self
     {
-        $this->parameters->push('filter', [$type => $query]);
+        $this->parameters->push('filter', Factory::makeQuery(func_get_args()));
         return $this;
     }
 

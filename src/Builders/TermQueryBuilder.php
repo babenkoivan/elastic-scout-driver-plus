@@ -18,7 +18,7 @@ final class TermQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'term';
+    protected $type = 'term';
 
     public function __construct()
     {

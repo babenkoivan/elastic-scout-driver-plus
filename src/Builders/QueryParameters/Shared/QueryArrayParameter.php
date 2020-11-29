@@ -2,11 +2,17 @@
 
 namespace ElasticScoutDriverPlus\Builders\QueryParameters\Shared;
 
+use ElasticScoutDriverPlus\Builders\QueryBuilderInterface;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Factory;
+
 trait QueryArrayParameter
 {
-    public function query(array $query): self
+    /**
+     * @param string|array|QueryBuilderInterface $type
+     */
+    public function query($type, array $query = []): self
     {
-        $this->parameters->put('query', $query);
+        $this->parameters->put('query', Factory::makeQuery(func_get_args()));
         return $this;
     }
 }

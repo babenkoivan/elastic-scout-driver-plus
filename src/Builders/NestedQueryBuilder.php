@@ -18,7 +18,7 @@ final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'nested';
+    protected $type = 'nested';
 
     public function __construct()
     {

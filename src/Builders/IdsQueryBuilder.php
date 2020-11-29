@@ -11,7 +11,7 @@ final class IdsQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'ids';
+    protected $type = 'ids';
 
     public function __construct()
     {

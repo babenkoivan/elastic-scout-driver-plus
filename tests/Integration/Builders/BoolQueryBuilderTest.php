@@ -12,6 +12,7 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  *
  * @uses \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
+ * @uses \ElasticScoutDriverPlus\Builders\QueryParameters\Factory
  * @uses \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer
  * @uses \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator
  * @uses \ElasticScoutDriverPlus\Support\Arr

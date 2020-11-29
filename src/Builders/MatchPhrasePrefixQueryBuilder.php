@@ -24,7 +24,7 @@ final class MatchPhrasePrefixQueryBuilder extends AbstractParameterizedQueryBuil
     /**
      * @var string
      */
-    protected $query = 'match_phrase_prefix';
+    protected $type = 'match_phrase_prefix';
 
     public function __construct()
     {

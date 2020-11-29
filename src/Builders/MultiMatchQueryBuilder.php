@@ -46,7 +46,7 @@ final class MultiMatchQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'multi_match';
+    protected $type = 'multi_match';
 
     public function __construct()
     {

@@ -24,7 +24,7 @@ final class FuzzyQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'fuzzy';
+    protected $type = 'fuzzy';
 
     public function __construct()
     {

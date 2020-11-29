@@ -22,7 +22,7 @@ final class RegexpQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'regexp';
+    protected $type = 'regexp';
 
     public function __construct()
     {

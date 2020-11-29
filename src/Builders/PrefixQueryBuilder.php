@@ -18,7 +18,7 @@ final class PrefixQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'prefix';
+    protected $type = 'prefix';
 
     public function __construct()
     {

@@ -6,7 +6,7 @@ use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\BoostParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\RelationParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\TimeZoneParameter;
+use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\TimeZoneParameter;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
 use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\CompoundValidator;
@@ -22,7 +22,7 @@ final class RangeQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'range';
+    protected $type = 'range';
 
     public function __construct()
     {

@@ -22,7 +22,7 @@ final class MatchPhraseQueryBuilder extends AbstractParameterizedQueryBuilder
     /**
      * @var string
      */
-    protected $query = 'match_phrase';
+    protected $type = 'match_phrase';
 
     public function __construct()
     {
