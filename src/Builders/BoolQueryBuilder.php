@@ -46,7 +46,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
      */
     public function must($type, array $query = []): self
     {
-        $this->parameters->push('must', Factory::makeQuery(...func_get_args()));
+        $this->parameters->push('must', Factory::makeQuery($type, $query));
         return $this;
     }
 
@@ -61,7 +61,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
      */
     public function mustNot($type, array $query = []): self
     {
-        $this->parameters->push('must_not', Factory::makeQuery(...func_get_args()));
+        $this->parameters->push('must_not', Factory::makeQuery($type, $query));
         return $this;
     }
 
@@ -76,7 +76,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
      */
     public function should($type, array $query = []): self
     {
-        $this->parameters->push('should', Factory::makeQuery(...func_get_args()));
+        $this->parameters->push('should', Factory::makeQuery($type, $query));
         return $this;
     }
 
@@ -91,7 +91,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
      */
     public function filter($type, array $query = []): self
     {
-        $this->parameters->push('filter', Factory::makeQuery(...func_get_args()));
+        $this->parameters->push('filter', Factory::makeQuery($type, $query));
         return $this;
     }
 
