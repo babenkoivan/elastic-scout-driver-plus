@@ -353,6 +353,36 @@ final class SearchRequestBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_callback_is_applied_when_value_is_true(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setSize(999);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->when(true, static function (SearchRequestBuilder $builder) {
+                $builder->size(999);
+            })
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_default_callback_is_applied_when_value_is_false(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setFrom(333);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->when(false, static function (SearchRequestBuilder $builder) {
+                $builder->from(111);
+            }, static function (SearchRequestBuilder $builder) {
+                $builder->from(333);
+            })
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
     private function makeBuilderWithQuery(array $query): SearchRequestBuilder
     {
         $model = new Book();
