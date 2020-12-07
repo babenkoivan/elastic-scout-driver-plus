@@ -26,6 +26,9 @@ install:
   - composer require --dev --no-interaction orchestra/testbench:$TESTBENCH_VERSION laravel/scout:$SCOUT_VERSION
   - if [[ $TESTBENCH_VERSION == "^6.0" ]]; then composer require --dev --no-interaction laravel/legacy-factories; fi
 
+before_script:
+  - phpenv config-rm xdebug.ini
+
 script:
   - ES_VERSION=$ES_VERSION make up wait test
 
