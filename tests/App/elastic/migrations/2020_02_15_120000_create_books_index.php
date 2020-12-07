@@ -22,6 +22,9 @@ final class CreateBooksIndex implements MigrationInterface
                     'name' => [
                         'type' => 'text',
                     ],
+                    'phone_number' => [
+                        'type' => 'keyword',
+                    ],
                 ],
             ]);
         });

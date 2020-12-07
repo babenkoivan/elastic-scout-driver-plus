@@ -24,12 +24,12 @@ final class FactoryTest extends TestCase
             'match_all' => new \stdClass(),
         ];
 
-        $actualQuery = Factory::makeQuery(['match_all']);
+        $actualQuery = Factory::makeQuery('match_all');
 
         $this->assertEquals($expectedQuery, $actualQuery);
     }
 
-    public function test_query_can_be_made_out_of_type_and_body(): void
+    public function test_query_can_be_made_out_of_type_and_query_body(): void
     {
         $expectedQuery = [
             'match' => [
@@ -37,12 +37,7 @@ final class FactoryTest extends TestCase
             ],
         ];
 
-        $actualQuery = Factory::makeQuery([
-            'match',
-            [
-                'title' => 'The Book',
-            ],
-        ]);
+        $actualQuery = Factory::makeQuery('match', ['title' => 'The Book']);
 
         $this->assertSame($expectedQuery, $actualQuery);
     }
@@ -56,10 +51,8 @@ final class FactoryTest extends TestCase
         ];
 
         $actualQuery = Factory::makeQuery([
-            [
-                'match' => [
-                    'title' => 'The Book',
-                ],
+            'match' => [
+                'title' => 'The Book',
             ],
         ]);
 
@@ -76,11 +69,11 @@ final class FactoryTest extends TestCase
             ],
         ];
 
-        $actualQuery = Factory::makeQuery([
+        $actualQuery = Factory::makeQuery(
             (new MatchQueryBuilder())
                 ->field('title')
-                ->query('The Book'),
-        ]);
+                ->query('The Book')
+        );
 
         $this->assertSame($expectedQuery, $actualQuery);
     }

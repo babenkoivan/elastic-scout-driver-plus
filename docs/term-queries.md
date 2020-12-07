@@ -20,6 +20,8 @@ $searchResult = Book::existsSearch()
     ->execute();
 ```
 
+`ExistsQueryBuilder` doesn't provide any additional methods.
+
 ## Fuzzy
 
 `fuzzySearch` returns documents that [contain terms similar to the search term](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#query-dsl-fuzzy-query):
@@ -31,7 +33,7 @@ $searchResult = Book::fuzzySearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `FuzzyQueryBuilder`:
 
 * [field](#fuzzy-field)
 * [fuzziness](#fuzzy-fuzziness)
@@ -144,7 +146,7 @@ $searchResult = Book::prefixSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `PrefixQueryBuilder`:
 
 * [field](#prefix-field)
 * [rewrite](#prefix-rewrite)
@@ -195,7 +197,7 @@ $searchResult = Book::rangeSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `RangeQueryBuilder`:
 
 * [boost](#range-boost)
 * [field](#range-field)
@@ -322,7 +324,7 @@ $searchResult = Book::regexpSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `RegexpQueryBuilder`:
 
 * [field](#regexp-field)
 * [flags](#regexp-flags)
@@ -399,7 +401,7 @@ $searchResult = Book::termSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `TermQueryBuilder`:
 
 * [boost](#term-boost)
 * [field](#term-field)
@@ -449,7 +451,7 @@ $searchResult = Book::termsSearch()
     ->execute();
 ```
 
-Available methods: 
+Available methods provided by `TermsQueryBuilder`: 
 
 * [boost](#terms-boost)
 * [terms](#terms-terms)
@@ -486,7 +488,7 @@ $searchResult = Book::wildcardSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `WildcardQueryBuilder`:
 
 * [boost](#wildcard-boost)
 * [field](#wildcard-field)

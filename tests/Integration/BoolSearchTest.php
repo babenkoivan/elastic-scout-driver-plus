@@ -3,6 +3,7 @@
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use Carbon\Carbon;
+use ElasticScoutDriverPlus\Builders\RangeQueryBuilder;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 
@@ -17,7 +18,11 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Factory
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\CompoundValidator
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator
+ * @uses   \ElasticScoutDriverPlus\Builders\RangeQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
@@ -220,5 +225,29 @@ final class BoolSearchTest extends TestCase
         $this->assertCount(2, $found->models());
         $this->assertEquals($firstTarget->toArray(), $found->models()->first()->toArray());
         $this->assertEquals($secondTarget->toArray(), $found->models()->last()->toArray());
+    }
+
+    public function test_models_can_be_found_using_query_builder(): void
+    {
+        // additional mixin
+        factory(Book::class, rand(2, 5))
+            ->state('belongs_to_author')
+            ->create(['published' => '2019-03-07']);
+
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['published' => '2020-12-07']);
+
+        $found = Book::boolSearch()
+            ->must(
+                (new RangeQueryBuilder())
+                    ->field('published')
+                    ->gte('2020')
+                    ->format('yyyy')
+            )
+            ->execute();
+
+        $this->assertCount(1, $found->models());
+        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
     }
 }

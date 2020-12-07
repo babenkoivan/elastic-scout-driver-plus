@@ -70,7 +70,7 @@ refer to [this guide](https://github.com/babenkoivan/elastic-scout-driver-plus/w
 
 ## Usage
 
-Elastic Scout Driver Plus comes with a new trait, which you need to add in your model to activate advanced search functionality:
+Elastic Scout Driver Plus comes with a new trait `CustomSearch`, which you need to add in your model to activate advanced search functionality:
 
 ```php
 class Book extends Model
@@ -81,7 +81,7 @@ class Book extends Model
 ```
 
 This trait adds a bunch of factory methods in your model: `boolSearch()`, `matchSearch()`, `rawSearch()`, etc.
-Each method creates a search request builder for the specific query type. For example, if you want to make a 
+Each method creates a search request builder for specific query type. For example, if you want to make a 
 [match query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html) use `matchSearch()` method: 
 
 ```php

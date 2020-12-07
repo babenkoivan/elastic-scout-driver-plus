@@ -12,7 +12,7 @@ final class CreateAuthorsIndex implements MigrationInterface
         Index::create('authors', static function (Mapping $mapping, Settings $settings) {
             $mapping->text('name');
             $mapping->text('last_name');
-            $mapping->text('phone_number');
+            $mapping->keyword('phone_number');
             $mapping->text('email');
         });
     }

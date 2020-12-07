@@ -16,6 +16,8 @@ Use `matchAllSearch` to perform a search request, which
 $searchResult = Book::matchAllSearch()->execute();
 ```
 
+`MatchAllQueryBuilder` doesn't provide any additional methods.
+
 ## Match None
 
 `matchNoneSearch` is [the inverse](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html#query-dsl-match-none-query)
@@ -24,6 +26,8 @@ of [`matchAllSearch`](#match-all):
 ```php
 $searchResult = Book::matchNoneSearch()->execute();
 ```
+
+`MatchNoneQueryBuilder` doesn't provide any additional methods.
 
 ## Match Phrase Prefix
 
@@ -37,7 +41,7 @@ $searchResult = Book::matchPhrasePrefixSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `MatchPhrasePrefixQueryBuilder`:
 
 * [analyzer](#match-phrase-prefix-analyzer)
 * [field](#match-phrase-prefix-field)
@@ -128,7 +132,7 @@ $searchResult = Book::matchPhraseSearch()
     ->execute();
 ``` 
 
-Available methods:
+Available methods provided by `MatchPhraseQueryBuilder`:
 
 * [analyzer](#match-phrase-analyzer)
 * [field](#match-phrase-field)
@@ -205,7 +209,7 @@ $searchResult = Book::matchSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `MatchQueryBuilder`:
 
 * [analyzer](#match-analyzer)
 * [autoGenerateSynonymsPhraseQuery](#match-auto-generate-synonyms-phrase-query)
@@ -403,7 +407,7 @@ $searchResult = Book::multiMatchSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `MultiMatchQueryBuilder`:
 
 * [analyzer](#multi-match-analyzer)
 * [autoGenerateSynonymsPhraseQuery](#multi-match-auto-generate-synonyms-phrase-query)
@@ -618,7 +622,7 @@ $searchResult = Book::multiMatchSearch()
     ->execute();
 ``` 
 
-**Note**, that not all the available methods make sense with each type. Read [the documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#multi-match-types) 
+**Note**, that not all the available methods make sense with every type. Read [the documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#multi-match-types) 
 carefully.
 
 ### <a name="multi-match-zero-terms-query"></a> zeroTermsQuery 

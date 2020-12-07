@@ -12,7 +12,7 @@ $searchResult = Book::boolSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `BoolQueryBuilder`:
 
 * [filter](#bool-filter)
 * [minimumShouldMatch](#bool-minimum-should-match)
@@ -28,10 +28,21 @@ The query defined with `filter` [must appear in the matching documents](https://
 but won’t contribute to the score:
 
 ```php
+// option 1: use query type and body
 $searchResult = Book::boolSearch()
     ->filter('term', ['published' => '2020-06-07'])
     ->execute();
-``` 
+
+// option 2: use an array
+$searchResult = Book::boolSearch()
+    ->filter(['term' => ['published' => '2020-06-07']])
+    ->execute();
+
+// option 3: use a query builder
+$searchResult = Book::boolSearch()
+    ->filter((new TermQueryBuilder())->field('published')->value('2020-06-07'))
+    ->execute();
+```
 
 The same query with `filterRaw` method:
 
@@ -60,8 +71,19 @@ The query defined with `must` [must appear in the matching documents](https://ww
 and will contribute to the score:
 
 ```php
+// option 1: use query type and body
 $searchResult = Book::boolSearch()
     ->must('match', ['title' => 'The Book'])
+    ->execute();
+
+// option 2: use an array
+$searchResult = Book::boolSearch()
+    ->must(['match' => ['title' => 'The Book']])
+    ->execute();
+
+// option 3: use a query builder
+$searchResult = Book::boolSearch()
+    ->must((new MatchQueryBuilder())->field('title')->query('The Book'))
     ->execute();
 ```
 
@@ -79,8 +101,19 @@ The query defined with `mustNot` [must not appear in the matching documents](htt
 and won’t contribute to the score:
 
 ```php
+// option 1: use query type and body
 $searchResult = Book::boolSearch()
     ->mustNot('match', ['title' => 'The Book'])
+    ->execute();
+
+// option 2: use an array
+$searchResult = Book::boolSearch()
+    ->mustNot(['match' => ['title' => 'The Book']])
+    ->execute();
+
+// option 3: use a query builder
+$searchResult = Book::boolSearch()
+    ->mustNot((new MatchQueryBuilder())->field('title')->query('The Book'))
     ->execute();
 ```
 
@@ -107,8 +140,19 @@ $searchResult = Book::boolSearch()
 The query defined with `should` [should appear in the matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html):
 
 ```php
+// option 1: use query type and body
 $searchResult = Book::boolSearch()
     ->should('match', ['title' => 'The Book'])
+    ->execute();
+
+// option 2: use an array
+$searchResult = Book::boolSearch()
+    ->should(['match' => ['title' => 'The Book']])
+    ->execute();
+
+// option 3: use a query builder
+$searchResult = Book::boolSearch()
+    ->should((new MatchQueryBuilder())->field('title')->query('The Book'))
     ->execute();
 ```
 

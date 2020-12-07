@@ -13,7 +13,7 @@ $searchResult = Book::nestedSearch()
     ->execute();
 ```
 
-Available methods:
+Available methods provided by `NestedQueryBuilder`:
 * [ignoreUnmapped](#nested-ignore-unmapped)
 * [path](#nested-path)
 * [query](#nested-query)
@@ -47,9 +47,22 @@ $searchResult = Book::nestedSearch()
 `query` defines a raw query you wish to run on the nested field:
 
 ```php
+// option 1: use query type and body
+$searchResult = Book::nestedSearch()
+    ->path('author')
+    ->query('match', ['author.name' => 'Steven'])
+    ->execute();
+
+// option 2: use an array
 $searchResult = Book::nestedSearch()
     ->path('author')
     ->query(['match' => ['author.name' => 'Steven']])
+    ->execute();
+
+// option 3: use a query builder
+$searchResult = Book::nestedSearch()
+    ->path('author')
+    ->query((new MatchQueryBuilder())->field('author.name')->query('Steven'))
     ->execute();
 ``` 
 

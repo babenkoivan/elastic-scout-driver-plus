@@ -12,7 +12,7 @@ trait QueryArrayParameter
      */
     public function query($type, array $query = []): self
     {
-        $this->parameters->put('query', Factory::makeQuery(func_get_args()));
+        $this->parameters->put('query', Factory::makeQuery(...func_get_args()));
         return $this;
     }
 }

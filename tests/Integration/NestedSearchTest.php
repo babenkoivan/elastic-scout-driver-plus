@@ -2,6 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
+use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 
@@ -16,7 +17,9 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Factory
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator
+ * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
  * @uses   \ElasticScoutDriverPlus\SearchResult
@@ -46,6 +49,34 @@ final class NestedSearchTest extends TestCase
                     'author.name' => 'Steven',
                 ],
             ])
+            ->execute();
+
+        $this->assertCount(1, $found->models());
+        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+    }
+
+    public function test_models_can_be_found_using_query_builder(): void
+    {
+        // additional mixin
+        factory(Book::class)->create([
+            'author_id' => factory(Author::class)->create([
+                'phone_number' => '202-555-0165',
+            ]),
+        ]);
+
+        $target = factory(Book::class)->create([
+            'author_id' => factory(Author::class)->create([
+                'phone_number' => '202-555-0139',
+            ]),
+        ]);
+
+        $found = Book::nestedSearch()
+            ->path('author')
+            ->query(
+                (new TermQueryBuilder())
+                    ->field('author.phone_number')
+                    ->value('202-555-0139')
+            )
             ->execute();
 
         $this->assertCount(1, $found->models());
