@@ -12,6 +12,7 @@
 * [source](#source)
 * [suggest](#suggest)
 * [trackTotalHits](#tracktotalhits)
+* [when](#when)
 
 ### aggregate
 
@@ -305,5 +306,32 @@ This method allows you to [control how the total number of hits should be tracke
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
     ->trackTotalHits(true)
+    ->execute();
+```
+
+### when
+
+This method can be used to apply certain clauses based on another condition:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->when($orderBy, function ($builder, $orderBy) {
+        return $builder->sort($orderBy, 'asc');
+    })
+    ->execute();
+```
+
+You may also pass another closure as a third argument to the `when` method. This closure will only execute
+if the first argument evaluates as `false`:
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->when($orderBy, function ($builder, $orderBy) {
+        return $builder->sort($orderBy, 'asc');
+    }, function ($builder) {
+         return $builder->sort('price', 'asc');
+     })
     ->execute();
 ```

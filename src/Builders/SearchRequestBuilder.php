@@ -300,4 +300,24 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
             ]
         );
     }
+
+    /**
+     * @param mixed         $value
+     * @param callable      $callback
+     * @param callable|null $default
+     *
+     * @return mixed
+     */
+    public function when($value, $callback, $default = null)
+    {
+        if ($value) {
+            return $callback($this, $value) ?? $this;
+        }
+
+        if ($default) {
+            return $default($this, $value) ?? $this;
+        }
+
+        return $this;
+    }
 }
