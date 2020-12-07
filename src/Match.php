@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
+use ElasticAdapter\Search\Hit;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
@@ -15,59 +16,47 @@ final class Match implements Arrayable
      */
     private $lazyModelFactory;
     /**
-     * @var string
+     * @var Hit
      */
-    private $indexName;
-    /**
-     * @var Document
-     */
-    private $document;
-    /**
-     * @var Highlight|null
-     */
-    private $highlight;
-    /**
-     * @var float|null
-     */
-    private $score;
+    private $hit;
 
-    public function __construct(
-        LazyModelFactory $lazyModelFactory,
-        string $indexName,
-        Document $document,
-        ?Highlight $highlight,
-        ?float $score
-    ) {
+    public function __construct(LazyModelFactory $lazyModelFactory, Hit $hit)
+    {
         $this->lazyModelFactory = $lazyModelFactory;
-        $this->indexName = $indexName;
-        $this->document = $document;
-        $this->highlight = $highlight;
-        $this->score = $score;
+        $this->hit = $hit;
     }
 
     public function model(): ?Model
     {
-        return $this->lazyModelFactory->makeByIndexNameAndDocumentId($this->indexName, $this->document->getId());
+        return $this->lazyModelFactory->makeByIndexNameAndDocumentId(
+            $this->indexName(),
+            $this->document()->getId()
+        );
     }
 
     public function indexName(): string
     {
-        return $this->indexName;
+        return $this->hit->getIndexName();
     }
 
     public function document(): Document
     {
-        return $this->document;
+        return $this->hit->getDocument();
     }
 
     public function highlight(): ?Highlight
     {
-        return $this->highlight;
+        return $this->hit->getHighlight();
     }
 
     public function score(): ?float
     {
-        return $this->score;
+        return $this->hit->getScore();
+    }
+
+    public function raw(): array
+    {
+        return $this->hit->getRaw();
     }
 
     /**

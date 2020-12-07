@@ -102,6 +102,12 @@ $document = $firstMatch->document();
 $highlight = $firstMatch->highlight();
 ```
 
+Furthermore, you can get a raw representation of the respective hit:
+
+```php
+$raw = $firstMatch->raw();
+```
+
 ### models
 
 Use `models` to retrieve a collection of matching models:

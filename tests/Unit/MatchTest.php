@@ -2,8 +2,8 @@
 
 namespace ElasticScoutDriverPlus\Tests\Unit;
 
-use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
+use ElasticAdapter\Search\Hit;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -34,10 +34,15 @@ final class MatchTest extends TestCase
             ->with('books', $model->id)
             ->willReturn($model);
 
-        $document = new Document((string)$model->id, ['title' => $model->title]);
-        $highlight = new Highlight(['title' => ['<em>test</em>']]);
+        $hit = new Hit([
+            '_index' => 'books',
+            '_score' => 1.1,
+            '_id' => (string)$model->id,
+            '_source' => ['title' => $model->title],
+            'highlight' => ['title' => ['<em>test</em>']],
+        ]);
 
-        $this->match = new Match($factory, 'books', $document, $highlight, 1.1);
+        $this->match = new Match($factory, $hit);
     }
 
     public function test_index_name_can_be_received(): void
@@ -83,5 +88,16 @@ final class MatchTest extends TestCase
             'highlight' => ['title' => ['<em>test</em>']],
             'score' => 1.1,
         ], $this->match->toArray());
+    }
+
+    public function test_raw_can_be_received(): void
+    {
+        $this->assertSame([
+            '_index' => 'books',
+            '_score' => 1.1,
+            '_id' => '1',
+            '_source' => ['title' => 'test'],
+            'highlight' => ['title' => ['<em>test</em>']],
+        ], $this->match->raw());
     }
 }

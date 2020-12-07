@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus\Tests\Unit;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
+use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\Suggestion;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
@@ -34,8 +35,8 @@ final class SearchResultTest extends TestCase
     public function test_matches_can_be_received(): void
     {
         $matches = collect([
-            new Match($this->factory, 'books', new Document('1', ['title' => 'test 1']), null, null),
-            new Match($this->factory, 'books', new Document('2', ['title' => 'test 2']), null, null),
+            new Match($this->factory, new Hit(['_index' => 'books', '_id' => '1'])),
+            new Match($this->factory, new Hit(['_index' => 'books', '_id' => '2'])),
         ]);
 
         $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
@@ -58,8 +59,13 @@ final class SearchResultTest extends TestCase
             ->willReturnOnConsecutiveCalls(...$models->all());
 
         $matches = $models->map(function (Author $model) {
-            $document = new Document((string)$model->getScoutKey(), $model->toSearchableArray());
-            return new Match($this->factory, 'authors', $document, null, null);
+            $hit = new Hit([
+                '_index' => 'authors',
+                '_id' => (string)$model->getScoutKey(),
+                '_source' => $model->toSearchableArray(),
+            ]);
+
+            return new Match($this->factory, $hit);
         });
 
         $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
@@ -76,7 +82,13 @@ final class SearchResultTest extends TestCase
         ]);
 
         $matches = $documents->map(function (Document $document) {
-            return new Match($this->factory, 'books', $document, null, null);
+            $hit = new Hit([
+                '_index' => 'books',
+                '_id' => $document->getId(),
+                '_source' => $document->getContent(),
+            ]);
+
+            return new Match($this->factory, $hit);
         });
 
         $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
@@ -92,9 +104,14 @@ final class SearchResultTest extends TestCase
             new Highlight(['title' => '<em>bar</em>']),
         ]);
 
-        $matches = $highlights->map(function (?Highlight $highlight, int $index) {
-            $document = new Document((string)$index, []);
-            return new Match($this->factory, 'books', $document, $highlight, null);
+        $matches = $highlights->map(function (?Highlight $highlight, int $counter) {
+            $hit = new Hit([
+                '_index' => 'books',
+                '_id' => (string)$counter,
+                'highlight' => $highlight ? $highlight->getRaw() : null,
+            ]);
+
+            return new Match($this->factory, $hit);
         });
 
         $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());

@@ -29,13 +29,7 @@ final class SearchResultFactory
     private static function makeMatches(array $hits, LazyModelFactory $lazyModelFactory): Collection
     {
         return collect($hits)->map(static function (Hit $hit) use ($lazyModelFactory) {
-            return new Match(
-                $lazyModelFactory,
-                $hit->getIndexName(),
-                $hit->getDocument(),
-                $hit->getHighlight(),
-                $hit->getScore()
-            );
+            return new Match($lazyModelFactory, $hit);
         });
     }
 
