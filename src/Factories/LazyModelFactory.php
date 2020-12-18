@@ -2,6 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Factories;
 
+use ElasticAdapter\Indices\IndexManager;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
@@ -39,15 +40,16 @@ class LazyModelFactory
     public function makeByIndexNameAndDocumentId(string $indexName, string $documentId): ?Model
     {
         if (!isset($this->mappedModels[$indexName])) {
-            $this->mappedModels[$indexName] = $this->findModelsForIndex($indexName);
+            $this->mappedModels[$indexName] = $this->mapModels($indexName);
         }
 
         return $this->mappedModels[$indexName][$documentId] ?? null;
     }
 
-    private function findModelsForIndex(string $indexName): Collection
+    private function mapModels(string $indexName): Collection
     {
-        $modelClass = $this->modelScope->resolveModelClass($indexName);
+        $aliasName = $this->resolveAlias($indexName) ?? $indexName;
+        $modelClass = $this->modelScope->resolveModelClass($aliasName);
 
         if (!isset($this->mappedIds[$indexName], $modelClass)) {
             return new Collection();
@@ -55,7 +57,6 @@ class LazyModelFactory
 
         $ids = $this->mappedIds[$indexName];
         $model = new $modelClass();
-        $scoutKeyName = $model->getScoutKeyName();
         $relations = $this->modelScope->resolveRelations($modelClass);
 
         $query = in_array(SoftDeletes::class, class_uses_recursive($model), true)
@@ -66,10 +67,31 @@ class LazyModelFactory
             $query->with($relations);
         }
 
-        $result = $query->whereIn($scoutKeyName, $ids)->get();
+        $result = $query->whereIn($model->getScoutKeyName(), $ids)->get();
 
         return $result->mapWithKeys(static function (Model $model) {
             return [(string)$model->getScoutKey() => $model];
         });
+    }
+
+    private function resolveAlias(string $indexName): ?string
+    {
+        $indexNames = $this->modelScope->resolveIndexNames();
+
+        // if the index name can be found in the scope, then we can be sure,
+        // that an actual index name is used to map models to the index
+        if ($indexNames->contains($indexName)) {
+            return null;
+        }
+
+        // otherwise, we get all aliases for the given index and
+        // try to find the one, which is in the scope
+        foreach (app(IndexManager::class)->getAliases($indexName) as $alias) {
+            if ($indexNames->contains($alias->getName())) {
+                return $alias->getName();
+            }
+        }
+
+        return null;
     }
 }
