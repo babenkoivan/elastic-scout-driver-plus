@@ -17,12 +17,12 @@ jobs:
           - php: 7.3
             scout: 8.0
             testbench: 5.0
-            elastic-search: 7.9.3
+            elastic-search: 7.6.0
 
           - php: 7.4
             scout: 8.0
             testbench: 6.0
-            elastic-search: 7.9.3
+            elastic-search: 7.10.1
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
