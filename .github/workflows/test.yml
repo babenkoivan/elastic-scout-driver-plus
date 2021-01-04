@@ -1,10 +1,10 @@
-name: Run unit and integration tests
+name: Run tests
 
 on: push
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         php: [7.2, 7.3, 7.4]
@@ -31,6 +31,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          coverage: none
           tools: composer:v2
 
       - name: Get composer cache directory
