@@ -1,9 +1,9 @@
-name: Analyse code
+name: Static code analysis
 
 on: push
 
 jobs:
-  test:
+  static-analysis:
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout code

@@ -1,9 +1,9 @@
-name: Check code style
+name: Code style
 
 on: push
 
 jobs:
-  test:
+  style-check:
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout code
