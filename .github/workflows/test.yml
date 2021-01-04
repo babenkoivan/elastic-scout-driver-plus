@@ -7,10 +7,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ['7.2', '7.3', '7.4']
-        scout: ['7.0', '8.0']
-        testbench: ['4.0', '5.0', '6.0']
-        elastic-search: ['7.0.0', '7.9.3']
+        php: [7.2, 7.3, 7.4]
+        include:
+          - php: 7.2
+            scout: 7.0
+            testbench: 4.0
+            elastic-search: 7.0.0
+
+          - php: 7.3
+            scout: 8.0
+            testbench: 5.0
+            elastic-search: 7.9.3
+
+          - php: 7.4
+            scout: 8.0
+            testbench: 6.0
+            elastic-search: 7.9.3
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
