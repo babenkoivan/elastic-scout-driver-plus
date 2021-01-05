@@ -1,0 +1,57 @@
+name: Tests
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        php: [7.2, 7.3, 7.4]
+        include:
+          - php: 7.2
+            scout: 7.0
+            testbench: 4.0
+            elastic-search: 7.0.0
+
+          - php: 7.3
+            scout: 8.0
+            testbench: 5.0
+            elastic-search: 7.6.0
+
+          - php: 7.4
+            scout: 8.0
+            testbench: 6.0
+            elastic-search: 7.10.1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install php and composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Restore composer cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer require --no-interaction orchestra/testbench:^${{ matrix.testbench }} laravel/scout:^${{ matrix.scout }}
+
+      - name: Install legacy factories
+        run: composer require --dev --no-interaction laravel/legacy-factories
+        if: ${{ matrix.testbench == '6.0' }}
+
+      - name: Run tests
+        run: ES_VERSION=${{ matrix.elastic-search }} make up wait test
+
