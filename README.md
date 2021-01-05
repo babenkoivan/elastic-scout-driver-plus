@@ -6,7 +6,9 @@
     <a href="https://packagist.org/packages/babenkoivan/elastic-scout-driver-plus"><img src="https://poser.pugx.org/babenkoivan/elastic-scout-driver-plus/v/stable"></a>
     <a href="https://packagist.org/packages/babenkoivan/elastic-scout-driver-plus"><img src="https://poser.pugx.org/babenkoivan/elastic-scout-driver-plus/downloads"></a>
     <a href="https://packagist.org/packages/babenkoivan/elastic-scout-driver-plus"><img src="https://poser.pugx.org/babenkoivan/elastic-scout-driver-plus/license"></a>
-    <a href="https://github.com/babenkoivan/elastic-scout-driver-plus/actions?query=workflow%3ATests+branch%3Amaster"><img src="https://github.com/babenkoivan/elastic-scout-driver-plus/workflows/Tests/badge.svg?branch=master"></a>
+    <a href="https://github.com/babenkoivan/elastic-scout-driver-plus/actions?query=workflow%3ATests"><img src="https://github.com/babenkoivan/elastic-scout-driver-plus/workflows/Tests/badge.svg"></a>
+    <a href="https://github.com/babenkoivan/elastic-scout-driver-plus/actions?query=workflow%3A%22Code+style%22"><img src="https://github.com/babenkoivan/elastic-scout-driver-plus/workflows/Code%20style/badge.svg"></a>
+    <a href="https://github.com/babenkoivan/elastic-scout-driver-plus/actions?query=workflow%3A%22Static+analysis%22"><img src="https://github.com/babenkoivan/elastic-scout-driver-plus/workflows/Static%20analysis/badge.svg"></a>
     <a href="https://paypal.me/babenkoi"><img src="https://img.shields.io/badge/donate-paypal-blue"></a>
 </p>
 
