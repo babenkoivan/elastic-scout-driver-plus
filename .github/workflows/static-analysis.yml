@@ -1,4 +1,4 @@
-name: Static code analysis
+name: Static analysis
 
 on: push
 
