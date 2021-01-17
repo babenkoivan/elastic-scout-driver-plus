@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit;
+namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use ElasticAdapter\Search\Highlight;
 use ElasticAdapter\Search\Hit;
@@ -8,7 +8,6 @@ use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use Illuminate\Database\Eloquent\Model;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\Match

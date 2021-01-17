@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit;
+namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
@@ -11,7 +11,6 @@ use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\SearchResult

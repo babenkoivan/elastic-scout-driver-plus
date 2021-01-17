@@ -224,7 +224,7 @@ In case, you need more advanced sorting algorithm use `sortRaw`:
 ```php
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
-    ->sortRaw([['price' => 'asc']])
+    ->sortRaw([['price' => 'asc'], ['published' => 'asc']])
     ->execute();
 ```
 
