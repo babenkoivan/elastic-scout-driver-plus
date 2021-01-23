@@ -5,6 +5,8 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
+use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
+use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use InvalidArgumentException;
@@ -15,6 +17,7 @@ use stdClass;
  *
  * @uses   \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @uses   \ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class SearchRequestBuilderTest extends TestCase
@@ -378,6 +381,37 @@ final class SearchRequestBuilderTest extends TestCase
             }, static function (SearchRequestBuilder $builder) {
                 $builder->from(333);
             })
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_track_scores_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setTrackScores(true);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->trackScores(true)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_exception_is_thrown_when_trying_to_boost_out_of_scope_index(): void
+    {
+        $this->expectException(ModelClassNotFoundInScopeException::class);
+
+        $this->makeBuilderWithQuery($this->matchAllQuery)->boostIndex(Author::class, 2);
+    }
+
+    public function test_search_request_with_index_boost_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setIndicesBoost([['books' => 2]]);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->boostIndex(Book::class, 2)
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);

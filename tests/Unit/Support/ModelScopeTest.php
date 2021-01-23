@@ -2,6 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\Unit\Support;
 
+use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -10,6 +11,8 @@ use InvalidArgumentException;
 
 /**
  * @covers \ElasticScoutDriverPlus\Support\ModelScope
+ *
+ * @uses   \ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
  */
 final class ModelScopeTest extends TestCase
 {
@@ -46,7 +49,7 @@ final class ModelScopeTest extends TestCase
 
     public function test_exception_is_thrown_when_adding_relations_for_out_of_scope_model(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ModelClassNotFoundInScopeException::class);
 
         $this->modelScope->with(['books'], Author::class);
     }
@@ -72,6 +75,11 @@ final class ModelScopeTest extends TestCase
         $this->modelScope->push(Author::class);
 
         $this->assertSame(['books', 'authors'], $this->modelScope->resolveIndexNames()->toArray());
+    }
+
+    public function test_index_name_can_be_resolved(): void
+    {
+        $this->assertSame('books', $this->modelScope->resolveIndexName(Book::class));
     }
 
     public function test_model_class_can_be_resolved(): void

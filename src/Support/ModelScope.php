@@ -2,6 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Support;
 
+use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -68,10 +69,7 @@ final class ModelScope
         $modelClass = $modelClass ?? $this->baseModelClass;
 
         if (!$this->contains($modelClass)) {
-            throw new InvalidArgumentException(sprintf(
-                '%s is not found in the model scope',
-                $modelClass
-            ));
+            throw new ModelClassNotFoundInScopeException($modelClass);
         }
 
         $this->relations->put($modelClass, $relations);
@@ -82,6 +80,11 @@ final class ModelScope
     public function resolveIndexNames(): Collection
     {
         return $this->modelClasses->keys();
+    }
+
+    public function resolveIndexName(string $modelClass): ?string
+    {
+        return $this->modelClasses->search($modelClass);
     }
 
     public function resolveModelClass(string $indexName): ?string

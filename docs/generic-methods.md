@@ -1,6 +1,7 @@
 # Generic Methods
 
 * [aggregate](#aggregate)
+* [boostIndex](#boostindex)
 * [collapse](#collapse)
 * [from](#from)
 * [highlight](#highlight)
@@ -11,6 +12,7 @@
 * [sort](#sort)
 * [source](#source)
 * [suggest](#suggest)
+* [trackScores](#trackscores)
 * [trackTotalHits](#tracktotalhits)
 * [when](#when)
 
@@ -50,6 +52,18 @@ You can retrieve the aggregated data from the search result as follows:
 ```php
 $aggregations = $searchResult->aggregations();
 $maxPrice = $aggregations->get('max_price');
+```
+
+### boostIndex
+
+When searching in multiple indices, you can use this method to [boost results from a specific index](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multiple-indices.html#index-boost):
+
+```php
+$searchResult = Author::boolSearch()
+    ->join(Book::class)
+    ->boostIndex(Book::class, 2)
+    ->must('match_all')
+    ->execute();
 ```
 
 ### collapse
@@ -296,6 +310,17 @@ $length = $firstSuggestion->getLength();
 $options = $firstSuggestion->getOptions();
 // an array representation of the suggestion
 $raw = $firstSuggestion->getRaw();
+```
+
+### trackScores
+
+This method forces [scores to be computed and tracked](https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html#_track_scores):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->trackScores(true)
+    ->execute();
 ```
 
 ### trackTotalHits

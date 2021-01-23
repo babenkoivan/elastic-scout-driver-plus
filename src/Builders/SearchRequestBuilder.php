@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Decorators\EngineDecorator;
+use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Support\ModelScope;
@@ -71,6 +72,14 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
      * @var int|bool|null
      */
     private $trackTotalHits;
+    /**
+     * @var bool|null
+     */
+    private $trackScores;
+    /**
+     * @var array
+     */
+    private $indicesBoost = [];
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
@@ -203,15 +212,33 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
+    public function trackScores(bool $trackScores): self
+    {
+        $this->trackScores = $trackScores;
+        return $this;
+    }
+
+    public function boostIndex(string $modelClass, float $boost): self
+    {
+        if (!$this->modelScope->contains($modelClass)) {
+            throw new ModelClassNotFoundInScopeException($modelClass);
+        }
+
+        $indexName = $this->modelScope->resolveIndexName($modelClass);
+        $this->indicesBoost[] = [$indexName => $boost];
+
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
         $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
 
-        if (count($this->highlight) > 0) {
+        if (!empty($this->highlight)) {
             $searchRequest->setHighlight($this->highlight);
         }
 
-        if (count($this->sort) > 0) {
+        if (!empty($this->sort)) {
             $searchRequest->setSort($this->sort);
         }
 
@@ -223,7 +250,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
             $searchRequest->setSize($this->size);
         }
 
-        if (count($this->suggest) > 0) {
+        if (!empty($this->suggest)) {
             $searchRequest->setSuggest($this->suggest);
         }
 
@@ -231,20 +258,28 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
             $searchRequest->setSource($this->source);
         }
 
-        if (count($this->collapse) > 0) {
+        if (!empty($this->collapse)) {
             $searchRequest->setCollapse($this->collapse);
         }
 
-        if (count($this->aggregations) > 0) {
+        if (!empty($this->aggregations)) {
             $searchRequest->setAggregations($this->aggregations);
         }
 
-        if (count($this->postFilter) > 0) {
+        if (!empty($this->postFilter)) {
             $searchRequest->setPostFilter($this->postFilter);
         }
 
         if (isset($this->trackTotalHits)) {
             $searchRequest->setTrackTotalHits($this->trackTotalHits);
+        }
+
+        if (isset($this->trackScores)) {
+            $searchRequest->setTrackScores($this->trackScores);
+        }
+
+        if (!empty($this->indicesBoost)) {
+            $searchRequest->setIndicesBoost($this->indicesBoost);
         }
 
         return $searchRequest;
