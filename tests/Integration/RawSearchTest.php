@@ -490,4 +490,39 @@ final class RawSearchTest extends TestCase
         $this->assertEquals($source->toArray(), $found->models()->toArray());
         $this->assertSame(5, $found->total());
     }
+
+    public function test_scores_can_be_tracked_when_sorting_on_field(): void
+    {
+        factory(Book::class)
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->sort('price')
+            ->trackScores(true)
+            ->execute();
+
+        $this->assertCount(1, $found->matches());
+        $this->assertNotNull($found->matches()->first()->score());
+    }
+
+    public function test_index_results_can_be_boosted(): void
+    {
+        $firstTarget = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create();
+
+        $secondTarget = $firstTarget->author;
+
+        $found = Book::rawSearch()
+            ->join(Author::class)
+            ->query(['match_all' => new stdClass()])
+            ->boostIndex(Book::class, 2)
+            ->execute();
+
+        $this->assertCount(2, $found->models());
+        $this->assertEquals($firstTarget->toArray(), $found->models()->first()->toArray());
+        $this->assertEquals($secondTarget->toArray(), $found->models()->last()->toArray());
+    }
 }
