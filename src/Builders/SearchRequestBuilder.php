@@ -332,6 +332,9 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
             [
                 'path' => Paginator::resolveCurrentPath(),
                 'pageName' => $pageName,
+                'aggregations' => $searchResult->aggregations(),
+                'highlights' => $searchResult->highlights(),
+                'suggestions' => $searchResult->suggestions(),
             ]
         );
     }
