@@ -17,6 +17,16 @@
             "email": "babenko.i.a@gmail.com"
         }
     ],
+    "funding": [
+        {
+            "type": "buymeacoffee",
+            "url": "https://www.buymeacoffee.com/ivanbabenko"
+        },
+        {
+            "type": "paypal",
+            "url": "https://paypal.me/babenkoi"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "ElasticScoutDriverPlus\\": "src"

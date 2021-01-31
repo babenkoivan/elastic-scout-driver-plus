@@ -12,6 +12,10 @@
     <a href="https://paypal.me/babenkoi"><img src="https://img.shields.io/badge/donate-paypal-blue"></a>
 </p>
 
+<p align="center">
+    <a href="https://www.buymeacoffee.com/ivanbabenko" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" height="50"></a>
+</p>
+
 ---
 
 Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scout-driver).
