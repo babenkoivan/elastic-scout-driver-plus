@@ -8,6 +8,7 @@ use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\Paginator;
 use ElasticScoutDriverPlus\SearchResult;
+use RuntimeException;
 
 /**
  * @covers \ElasticScoutDriverPlus\Paginator
@@ -26,7 +27,7 @@ final class PaginatorTest extends TestCase
             new Document('2', ['title' => 'test 2']),
         ]);
 
-        $matches = $documents->map(function (Document $document) use ($factory) {
+        $matches = $documents->map(static function (Document $document) use ($factory) {
             $hit = new Hit([
                 '_index' => 'books',
                 '_id' => $document->getId(),
@@ -41,5 +42,13 @@ final class PaginatorTest extends TestCase
 
         $this->assertEquals($matches, $paginator->matches());
         $this->assertEquals($documents, $paginator->documents());
+    }
+
+    public function test_exception_is_thrown_when_search_result_has_no_total_value(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $searchResult = new SearchResult(collect(), collect(), collect(), null);
+        new Paginator($searchResult, 10);
     }
 }

@@ -5,6 +5,7 @@ namespace ElasticScoutDriverPlus;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection as BaseCollection;
+use RuntimeException;
 
 /**
  * @method BaseCollection aggregations()
@@ -27,6 +28,13 @@ final class Paginator extends LengthAwarePaginator
         ?int $currentPage = null,
         array $options = []
     ) {
+        if (is_null($searchResult->total())) {
+            throw new RuntimeException(
+                'Search result does not contain the total hits number. ' .
+                'Please, make sure that total hits are tracked.'
+            );
+        }
+
         parent::__construct(
             $searchResult->matches()->all(),
             $searchResult->total(),

@@ -11,7 +11,6 @@ use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\ForwardsCalls;
-use RuntimeException;
 use stdClass;
 
 final class SearchRequestBuilder implements SearchRequestBuilderInterface
@@ -312,15 +311,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         $builder = clone $this;
         $builder->from(($page - 1) * $perPage);
         $builder->size($perPage);
-
         $searchResult = $builder->execute();
-
-        if (is_null($searchResult->total())) {
-            throw new RuntimeException(
-                'Search result does not contain the total hits number. ' .
-                'Please, make sure that total hits are tracked.'
-            );
-        }
 
         return new Paginator(
             $searchResult,
