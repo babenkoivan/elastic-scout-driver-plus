@@ -7,5 +7,7 @@ parameters:
   paths:
     - src
     - tests
-  excludes_analyse:
-    - tests/App/Model.php
+  excludePaths:
+    - src/CustomSearch.php
+  ignoreErrors:
+    - '#Call to an undefined method ElasticScoutDriverPlus\\Builders\\SearchRequestBuilder::\w+\(\)#'
