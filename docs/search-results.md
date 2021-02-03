@@ -2,7 +2,7 @@
 
 Whenever your search request is ready to be executed, you have several options:
 
-1. You can get raw results:
+## 1. You can get a raw response from Elasticsearch:
 
  ```php
 $rawSearchResults = MyModel::boolSearch()
@@ -10,20 +10,7 @@ $rawSearchResults = MyModel::boolSearch()
     ->raw();
  ```
 
-2. You can paginate your search results:
-
-```php
-$paginator = MyModel::boolSearch()
-    ->must('match_all')
-    ->paginate(10);
-```
-
-Unlike the [standard Scout pagination](https://laravel.com/docs/master/scout#pagination), Elastic Scout Driver Plus 
-paginates [matches](#matches) and not the models. 
-
-Also **note**, that [from](generic-methods.md#from) and [size](generic-methods.md#size) are ignored when paginating the search results.
-
-3. You can transform raw results into `ElasticScoutDriverPlus\SearchResult` instance:
+## 2. You can execute the request and get `ElasticScoutDriverPlus\SearchResult` instance in return:
 
 ```php
 $searchResult = MyModel::boolSearch()
@@ -31,7 +18,7 @@ $searchResult = MyModel::boolSearch()
     ->execute();
 ```
 
-`ElasticScoutDriverPlus\SearchResult` provides an easy access to:
+`SearchResult` provides easy access to:
 
 * [aggregations](#aggregations)
 * [documents](#documents)
@@ -145,3 +132,28 @@ This method returns the total number of matching documents:
 ```php
 $total = $searchResult->total();
 ```
+
+## 3. Finally, you can paginate the search results:
+
+```php
+$paginator = MyModel::boolSearch()
+    ->must('match_all')
+    ->paginate(10);
+```
+
+The paginator provides the same interface as `SearchResult`, which means that you can access models, highlights, etc.:
+
+```php
+$models = $paginator->models();
+```
+
+Unlike the [standard Scout paginator](https://laravel.com/docs/master/scout#pagination), Elastic Scout Driver Plus
+paginates [matches](#matches) and not the models:
+
+```php
+foreach ($paginator as $match) {
+    $model = $match->model();
+}
+```
+
+Please also **note** that [from](generic-methods.md#from) and [size](generic-methods.md#size) are ignored when paginating the search results.

@@ -3,8 +3,8 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
+use ElasticScoutDriverPlus\Paginator;
 use ElasticScoutDriverPlus\SearchResult;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface SearchRequestBuilderInterface
 {
@@ -20,5 +20,5 @@ interface SearchRequestBuilderInterface
         int $perPage = self::DEFAULT_PAGE_SIZE,
         string $pageName = 'page',
         int $page = null
-    ): LengthAwarePaginator;
+    ): Paginator;
 }

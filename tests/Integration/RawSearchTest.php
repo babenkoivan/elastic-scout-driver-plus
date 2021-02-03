@@ -6,11 +6,11 @@ use Carbon\Carbon;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\Match;
+use ElasticScoutDriverPlus\Paginator;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\App\Model;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use RuntimeException;
@@ -26,6 +26,7 @@ use stdClass;
  *
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\Match
+ * @uses   \ElasticScoutDriverPlus\Paginator
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
@@ -377,21 +378,8 @@ final class RawSearchTest extends TestCase
         $this->assertCount(2, $secondPage->items());
 
         // assert each page contains expected models
-        $getPageModels = static function (LengthAwarePaginator $paginator): Collection {
-            return collect($paginator->items())->map(static function (Match $match) {
-                return $match->model();
-            });
-        };
-
-        $this->assertEquals(
-            $target->first()->pluck('id')->toArray(),
-            $getPageModels($firstPage)->pluck('id')->toArray()
-        );
-
-        $this->assertEquals(
-            $target->last()->pluck('id')->toArray(),
-            $getPageModels($secondPage)->pluck('id')->toArray()
-        );
+        $this->assertEquals($target->first()->values()->toArray(), $firstPage->models()->toArray());
+        $this->assertEquals($target->last()->values()->toArray(), $secondPage->models()->toArray());
     }
 
     public function test_exception_is_thrown_when_paginating_search_results_but_total_hits_are_not_tracked(): void

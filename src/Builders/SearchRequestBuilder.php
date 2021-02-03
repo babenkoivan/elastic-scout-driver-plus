@@ -6,12 +6,10 @@ use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Decorators\EngineDecorator;
 use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
+use ElasticScoutDriverPlus\Paginator;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Support\ModelScope;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorInterface;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Traits\ForwardsCalls;
 use RuntimeException;
 use stdClass;
@@ -308,7 +306,7 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         int $perPage = self::DEFAULT_PAGE_SIZE,
         string $pageName = 'page',
         int $page = null
-    ): LengthAwarePaginatorInterface {
+    ): Paginator {
         $page = $page ?? Paginator::resolveCurrentPage($pageName);
 
         $builder = clone $this;
@@ -324,9 +322,8 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
             );
         }
 
-        return new LengthAwarePaginator(
-            $searchResult->matches()->all(),
-            $searchResult->total(),
+        return new Paginator(
+            $searchResult,
             $perPage,
             $page,
             [
