@@ -2,7 +2,9 @@
 
 Whenever your search request is ready to be executed, you have several options:
 
-## 1. You can get a raw response from Elasticsearch:
+## Raw
+
+You can get a raw response from Elasticsearch:
 
  ```php
 $rawSearchResults = MyModel::boolSearch()
@@ -10,7 +12,9 @@ $rawSearchResults = MyModel::boolSearch()
     ->raw();
  ```
 
-## 2. You can execute the request and get `ElasticScoutDriverPlus\SearchResult` instance in return:
+## SearchResult
+
+You can execute the request and get `ElasticScoutDriverPlus\SearchResult` instance in return:
 
 ```php
 $searchResult = MyModel::boolSearch()
@@ -133,7 +137,9 @@ This method returns the total number of matching documents:
 $total = $searchResult->total();
 ```
 
-## 3. Finally, you can paginate the search results:
+## Pagination
+
+Finally, you can paginate the search results:
 
 ```php
 $paginator = MyModel::boolSearch()
@@ -156,4 +162,4 @@ foreach ($paginator as $match) {
 }
 ```
 
-Please also **note** that [from](generic-methods.md#from) and [size](generic-methods.md#size) are ignored when paginating the search results.
+**Note** that [from](generic-methods.md#from) and [size](generic-methods.md#size) are ignored when paginating the search results.
