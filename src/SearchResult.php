@@ -4,11 +4,13 @@ namespace ElasticScoutDriverPlus;
 
 use ArrayIterator;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Traits\ForwardsCalls;
 use IteratorAggregate;
 
 /**
+ * @mixin Collection
  * @implements IteratorAggregate<int, Match>
  */
 final class SearchResult implements IteratorAggregate

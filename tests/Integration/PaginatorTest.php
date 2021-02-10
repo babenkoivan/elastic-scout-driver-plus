@@ -8,6 +8,7 @@ use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\Paginator;
 use ElasticScoutDriverPlus\SearchResult;
+use ElasticScoutDriverPlus\Tests\App\Book;
 use RuntimeException;
 
 /**
@@ -18,6 +19,17 @@ use RuntimeException;
  */
 final class PaginatorTest extends TestCase
 {
+    public function test_forwards_calls_to_collection(): void
+    {
+        $searchResult = new SearchResult(collect(), collect(), collect(), 0);
+        $paginator = new Paginator($searchResult, 2, 1);
+
+        $models = factory(Book::class, 2)->make();
+        $paginator->setCollection($models);
+
+        $this->assertEquals($models->first(), $paginator->first());
+    }
+
     public function test_forwards_calls_to_search_result(): void
     {
         $factory = $this->createMock(LazyModelFactory::class);

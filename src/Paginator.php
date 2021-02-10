@@ -51,6 +51,10 @@ final class Paginator extends LengthAwarePaginator
      */
     public function __call($method, $parameters)
     {
+        if (method_exists($this->getCollection(), $method)) {
+            return $this->forwardCallTo($this->getCollection(), $method, $parameters);
+        }
+
         return $this->forwardCallTo($this->searchResult, $method, $parameters);
     }
 }
