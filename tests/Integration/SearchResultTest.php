@@ -153,4 +153,31 @@ final class SearchResultTest extends TestCase
 
         $this->assertSame($aggregations, $searchResult->aggregations());
     }
+
+    public function test_forwards_calls_to_matches(): void
+    {
+        $matches = collect([
+            new Match($this->factory, new Hit(['_index' => 'books', '_id' => '1'])),
+            new Match($this->factory, new Hit(['_index' => 'books', '_id' => '2'])),
+            new Match($this->factory, new Hit(['_index' => 'books', '_id' => '3'])),
+        ]);
+
+        $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
+
+        $this->assertSame($matches->first(), $searchResult->first());
+    }
+
+    public function test_can_be_iterated(): void
+    {
+        $matches = collect([
+            new Match($this->factory, new Hit(['_index' => 'authors', '_id' => '1'])),
+            new Match($this->factory, new Hit(['_index' => 'authors', '_id' => '2'])),
+        ]);
+
+        $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
+
+        foreach ($searchResult as $i => $match) {
+            $this->assertSame($matches->get($i), $match);
+        }
+    }
 }

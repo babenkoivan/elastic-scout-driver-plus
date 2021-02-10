@@ -18,7 +18,7 @@ use RuntimeException;
  */
 final class PaginatorTest extends TestCase
 {
-    public function test_paginator_forward_calls_to_search_result(): void
+    public function test_forwards_calls_to_search_result(): void
     {
         $factory = $this->createMock(LazyModelFactory::class);
 

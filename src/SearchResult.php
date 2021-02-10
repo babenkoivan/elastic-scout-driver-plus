@@ -2,11 +2,19 @@
 
 namespace ElasticScoutDriverPlus;
 
+use ArrayIterator;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Traits\ForwardsCalls;
+use IteratorAggregate;
 
-final class SearchResult
+/**
+ * @implements IteratorAggregate<int, Match>
+ */
+final class SearchResult implements IteratorAggregate
 {
+    use ForwardsCalls;
+
     /**
      * @var BaseCollection
      */
@@ -83,5 +91,24 @@ final class SearchResult
     public function aggregations(): BaseCollection
     {
         return $this->aggregations;
+    }
+
+    /**
+     * @return ArrayIterator<int, Match>
+     */
+    public function getIterator()
+    {
+        return $this->matches->getIterator();
+    }
+
+    /**
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        return $this->forwardCallTo($this->matches, $method, $parameters);
     }
 }
