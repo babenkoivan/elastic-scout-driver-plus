@@ -4,7 +4,7 @@ namespace ElasticScoutDriverPlus\Factories;
 
 use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchResponse;
-use ElasticScoutDriverPlus\Match;
+use ElasticScoutDriverPlus\Match as ElasticMatch;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Support\Collection;
@@ -27,7 +27,7 @@ final class SearchResultFactory
         $lazyModelFactory = new LazyModelFactory($searchResponse, $modelScope);
 
         return collect($searchResponse->getHits())->map(static function (Hit $hit) use ($lazyModelFactory) {
-            return new Match($lazyModelFactory, $hit);
+            return new ElasticMatch($lazyModelFactory, $hit);
         });
     }
 
