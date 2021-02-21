@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\IdsQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\CustomSearch
+ * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  *
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\Match
+ * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */

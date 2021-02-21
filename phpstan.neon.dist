@@ -8,6 +8,6 @@ parameters:
     - src
     - tests
   excludePaths:
-    - src/CustomSearch.php
+    - src/QueryDsl.php
   ignoreErrors:
     - '#Call to an undefined method ElasticScoutDriverPlus\\Builders\\SearchRequestBuilder::\w+\(\)#'

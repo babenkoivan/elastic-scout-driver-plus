@@ -9,7 +9,7 @@ use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 
-final class Match implements Arrayable
+final class QueryMatch implements Arrayable
 {
     /**
      * @var LazyModelFactory

@@ -4,14 +4,13 @@ namespace ElasticScoutDriverPlus;
 
 use ArrayIterator;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Traits\ForwardsCalls;
 use IteratorAggregate;
 
 /**
- * @mixin Collection
- * @implements IteratorAggregate<int, Match>
+ * @mixin BaseCollection
+ * @implements IteratorAggregate<int, QueryMatch>
  */
 final class SearchResult implements IteratorAggregate
 {
@@ -55,7 +54,7 @@ final class SearchResult implements IteratorAggregate
     {
         $models = new EloquentCollection();
 
-        $this->matches->each(static function (Match $match) use ($models) {
+        $this->matches->each(static function (QueryMatch $match) use ($models) {
             $models->push($match->model());
         });
 
@@ -64,7 +63,7 @@ final class SearchResult implements IteratorAggregate
 
     public function documents(): BaseCollection
     {
-        $documents = $this->matches->map(static function (Match $match) {
+        $documents = $this->matches->map(static function (QueryMatch $match) {
             return $match->document();
         });
 
@@ -73,7 +72,7 @@ final class SearchResult implements IteratorAggregate
 
     public function highlights(): BaseCollection
     {
-        $highlights = $this->matches->map(static function (Match $match) {
+        $highlights = $this->matches->map(static function (QueryMatch $match) {
             return $match->highlight();
         });
 
@@ -96,7 +95,7 @@ final class SearchResult implements IteratorAggregate
     }
 
     /**
-     * @return ArrayIterator<int, Match>
+     * @return ArrayIterator<int, QueryMatch>
      */
     public function getIterator()
     {

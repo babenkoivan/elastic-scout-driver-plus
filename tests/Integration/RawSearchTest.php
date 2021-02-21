@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration;
 use Carbon\Carbon;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
-use ElasticScoutDriverPlus\Match;
+use ElasticScoutDriverPlus\QueryMatch;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -18,12 +18,12 @@ use stdClass;
 /**
  * @covers \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\CustomSearch
+ * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\Match
+ * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\Paginator
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
@@ -71,7 +71,7 @@ final class RawSearchTest extends TestCase
         $this->assertCount($target->count(), $found->models());
         $this->assertEquals($target->toArray(), $found->models()->toArray());
 
-        $found->matches()->each(function (Match $match) {
+        $found->matches()->each(function (QueryMatch $match) {
             /** @var Book $model */
             $model = $match->model();
             $highlight = $match->highlight();

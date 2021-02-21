@@ -48,8 +48,8 @@ Elastic Scout Driver Plus supports:
 
 The current version of Elastic Scout Driver Plus has been tested with the following configuration:
 
-* PHP 7.2-7.4
-* Elasticsearch 7.0-7.9
+* PHP 7.2-8.0
+* Elasticsearch 7.0-7.10
 * Laravel 6.x-8.x
 * Laravel Scout 7.x-8.x
 * Elastic Scout Driver 1.x
@@ -75,13 +75,13 @@ refer to [this guide](https://github.com/babenkoivan/elastic-scout-driver-plus/w
 
 ## Usage
 
-Elastic Scout Driver Plus comes with a new trait `CustomSearch`, which you need to add in your model to activate advanced search functionality:
+Elastic Scout Driver Plus comes with a new trait `QueryDsl`, which you need to add in your model to activate advanced search functionality:
 
 ```php
 class Book extends Model
 {
     use Searchable;
-    use CustomSearch;
+    use QueryDsl;
 }
 ```
 

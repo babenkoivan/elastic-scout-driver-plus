@@ -11,7 +11,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\CustomSearch
+ * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
@@ -24,7 +24,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator
  * @uses   \ElasticScoutDriverPlus\Builders\RangeQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\Match
+ * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\Arr
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope

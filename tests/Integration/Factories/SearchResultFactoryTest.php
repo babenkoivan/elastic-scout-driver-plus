@@ -15,7 +15,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  *
  * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
- * @uses   \ElasticScoutDriverPlus\Match
+ * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */

@@ -5,8 +5,8 @@ namespace ElasticScoutDriverPlus\Tests\Integration;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Hit;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
-use ElasticScoutDriverPlus\Match;
 use ElasticScoutDriverPlus\Paginator;
+use ElasticScoutDriverPlus\QueryMatch;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use RuntimeException;
@@ -14,7 +14,7 @@ use RuntimeException;
 /**
  * @covers \ElasticScoutDriverPlus\Paginator
  *
- * @uses \ElasticScoutDriverPlus\Match
+ * @uses \ElasticScoutDriverPlus\QueryMatch
  * @uses \ElasticScoutDriverPlus\SearchResult
  */
 final class PaginatorTest extends TestCase
@@ -46,7 +46,7 @@ final class PaginatorTest extends TestCase
                 '_source' => $document->getContent(),
             ]);
 
-            return new Match($factory, $hit);
+            return new QueryMatch($factory, $hit);
         });
 
         $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());

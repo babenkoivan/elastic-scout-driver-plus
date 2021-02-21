@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\App;
 
-use ElasticScoutDriverPlus\CustomSearch;
+use ElasticScoutDriverPlus\QueryDsl;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
@@ -10,7 +10,7 @@ use Laravel\Scout\Searchable;
 abstract class Model extends BaseModel
 {
     use Searchable;
-    use CustomSearch;
+    use QueryDsl;
 
     public $timestamps = false;
 

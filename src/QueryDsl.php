@@ -22,7 +22,7 @@ use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
 use ElasticScoutDriverPlus\Builders\TermsQueryBuilder;
 use ElasticScoutDriverPlus\Builders\WildcardQueryBuilder;
 
-trait CustomSearch
+trait QueryDsl
 {
     /**
      * @return SearchRequestBuilder&BoolQueryBuilder
