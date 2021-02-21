@@ -11,11 +11,11 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
  *
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\CompoundValidator
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\QueryMatch

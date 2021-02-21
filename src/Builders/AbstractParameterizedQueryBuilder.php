@@ -2,9 +2,9 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\ArrayTransformerInterface;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\ValidatorInterface;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\ArrayTransformerInterface;
+use ElasticScoutDriverPlus\QueryParameters\Validators\ValidatorInterface;
 
 abstract class AbstractParameterizedQueryBuilder implements QueryBuilderInterface
 {

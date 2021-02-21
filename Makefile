@@ -77,7 +77,7 @@ style-check: ## Check the code style
 
 static-analysis: ## Do static code analysis
 	@printf "\033[93m→ Analysing the code\033[0m\n"
-	@bin/phpstan analyse
+	@bin/phpstan analyse  --memory-limit=-1
 	@printf "\n\033[92m✔︎ Code static analysis is completed\033[0m\n"
 
 help: ## Show help

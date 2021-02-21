@@ -2,11 +2,11 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Factory;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MinimumShouldMatchParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Factory;
+use ElasticScoutDriverPlus\QueryParameters\Shared\MinimumShouldMatchParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
 use ElasticScoutDriverPlus\Support\Arr;
 
 final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder

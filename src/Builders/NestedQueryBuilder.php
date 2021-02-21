@@ -2,12 +2,12 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\IgnoreUnmappedParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\QueryArrayParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ScoreModeParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\IgnoreUnmappedParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\QueryArrayParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\ScoreModeParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
 {

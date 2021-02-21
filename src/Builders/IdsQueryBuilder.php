@@ -2,9 +2,9 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class IdsQueryBuilder extends AbstractParameterizedQueryBuilder
 {

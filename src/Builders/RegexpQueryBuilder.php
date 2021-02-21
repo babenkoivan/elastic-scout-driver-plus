@@ -2,14 +2,14 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FlagsParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MaxDeterminizedStatesParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\RewriteParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ValueParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FlagsParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\MaxDeterminizedStatesParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\RewriteParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\ValueParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class RegexpQueryBuilder extends AbstractParameterizedQueryBuilder
 {

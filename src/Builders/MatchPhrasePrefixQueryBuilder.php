@@ -2,15 +2,15 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AnalyzerParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MaxExpansionsParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\QueryStringParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\SlopParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ZeroTermsQueryParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\AnalyzerParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\MaxExpansionsParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\QueryStringParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\SlopParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\ZeroTermsQueryParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class MatchPhrasePrefixQueryBuilder extends AbstractParameterizedQueryBuilder
 {

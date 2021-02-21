@@ -2,10 +2,10 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\BoostParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\NullValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\NullValidator;
 
 final class TermsQueryBuilder extends AbstractParameterizedQueryBuilder
 {

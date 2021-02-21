@@ -10,11 +10,11 @@ use PHPUnit\Framework\TestCase;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\RangeQueryBuilder
  *
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\CompoundValidator
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  */
 final class RangeQueryBuilderTest extends TestCase
 {

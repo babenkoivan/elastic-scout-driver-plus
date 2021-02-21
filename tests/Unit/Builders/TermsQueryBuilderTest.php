@@ -9,9 +9,9 @@ use PHPUnit\Framework\TestCase;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\TermsQueryBuilder
  *
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer
- * @uses   \ElasticScoutDriverPlus\Builders\QueryParameters\Validators\NullValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\NullValidator
  */
 final class TermsQueryBuilderTest extends TestCase
 {

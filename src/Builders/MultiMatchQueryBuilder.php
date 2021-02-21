@@ -2,26 +2,26 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AnalyzerParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\AutoGenerateSynonymsPhraseQueryParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\BoostParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldsParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzinessParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzyRewriteParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzyTranspositionsParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\LenientParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MaxExpansionsParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MinimumShouldMatchParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\OperatorParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\PrefixLengthParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\QueryStringParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\SlopParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\TieBreakerParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\TypeParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ZeroTermsQueryParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\FlatArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\AnalyzerParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\AutoGenerateSynonymsPhraseQueryParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FieldsParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FuzzinessParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FuzzyRewriteParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FuzzyTranspositionsParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\LenientParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\MaxExpansionsParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\MinimumShouldMatchParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\OperatorParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\PrefixLengthParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\QueryStringParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\SlopParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\TieBreakerParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\TypeParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\ZeroTermsQueryParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class MultiMatchQueryBuilder extends AbstractParameterizedQueryBuilder
 {

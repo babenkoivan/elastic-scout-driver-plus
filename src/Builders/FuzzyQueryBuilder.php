@@ -2,15 +2,15 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FuzzinessParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\MaxExpansionsParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\PrefixLengthParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\RewriteParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\ValueParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FuzzinessParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\MaxExpansionsParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\PrefixLengthParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\RewriteParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\ValueParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class FuzzyQueryBuilder extends AbstractParameterizedQueryBuilder
 {

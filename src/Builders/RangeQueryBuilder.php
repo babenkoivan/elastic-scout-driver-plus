@@ -2,15 +2,15 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\Builders\QueryParameters\Collection;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\BoostParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\FieldParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\RelationParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Shared\TimeZoneParameter;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Transformers\GroupedArrayTransformer;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\AllOfValidator;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\CompoundValidator;
-use ElasticScoutDriverPlus\Builders\QueryParameters\Validators\OneOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\RelationParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\TimeZoneParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
+use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
+use ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator;
+use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
 
 final class RangeQueryBuilder extends AbstractParameterizedQueryBuilder
 {
