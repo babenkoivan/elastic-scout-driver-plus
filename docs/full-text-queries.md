@@ -213,6 +213,7 @@ Available methods provided by `MatchQueryBuilder`:
 
 * [analyzer](#match-analyzer)
 * [autoGenerateSynonymsPhraseQuery](#match-auto-generate-synonyms-phrase-query)
+* [boost](#match-boost)
 * [field](#match-field)
 * [fuzziness](#match-fuzziness)
 * [fuzzyRewrite](#match-fuzzy-rewrite)
