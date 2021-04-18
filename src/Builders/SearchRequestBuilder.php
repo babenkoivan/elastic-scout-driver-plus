@@ -38,6 +38,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
      */
     private $sort = [];
     /**
+     * @var array
+     */
+    private $rescore = [];
+    /**
      * @var int|null
      */
     private $from;
@@ -110,6 +114,12 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
     public function sort(string $field, string $direction = 'asc'): self
     {
         $this->sort[] = [$field => $direction];
+        return $this;
+    }
+
+    public function rescoreRaw(array $rescore): self
+    {
+        $this->rescore = $rescore;
         return $this;
     }
 
@@ -237,6 +247,10 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
 
         if (!empty($this->sort)) {
             $searchRequest->setSort($this->sort);
+        }
+
+        if (!empty($this->rescore)) {
+            $searchRequest->setRescore($this->rescore);
         }
 
         if (isset($this->from)) {

@@ -121,6 +121,34 @@ final class SearchRequestBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_search_request_with_raw_rescore_can_be_built(): void
+    {
+        $rescore = [
+            'window_size' => 50,
+            'query' => [
+                'rescore_query' => [
+                    'match_phrase' => [
+                        'message' => [
+                            'query' => 'the quick brown',
+                            'slop' => 2,
+                        ],
+                    ],
+                ],
+                'query_weight' => 0.7,
+                'rescore_query_weight' => 1.2,
+            ],
+        ];
+
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setRescore($rescore);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->rescoreRaw($rescore)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
     public function test_search_request_with_from_can_be_built(): void
     {
         $from = rand(2, 1000);
