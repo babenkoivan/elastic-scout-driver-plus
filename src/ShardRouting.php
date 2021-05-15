@@ -13,7 +13,7 @@ trait ShardRouting
      * to route the document to a shard.
      * By default the scout key will be used.
      */
-    public function getRoutingPath(): string
+    abstract public function getRoutingPath(): string
     {
         return $this->getScoutKeyName();
     }
