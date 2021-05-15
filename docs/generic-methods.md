@@ -245,9 +245,27 @@ $searchResult = Book::rawSearch()
 
 ### rescore
 
-This method [rescores](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#rescore) the search results:
+This method allows you to [rescore](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#rescore) the search results:
+
+You can also use `rescoreWeights` and `rescoreWindowSize` to set the query_weight, rescore_query_weight and window_size.
 
 ```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->rescore($type = 'match_phrase', [
+        'message' => [
+            'query' => 'the quick brown',
+            'slop' => 2,
+        ],
+    ])
+    ->rescoreWeights($queryWeight = 0.7, $rescoreQueryWeight = 1.2)
+    ->rescoreWindowSize($windowSize = 10)
+    ->execute();
+```
+
+Use `rescoreRaw` method if you need more control:
+
+ ```php
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
     ->rescoreRaw([

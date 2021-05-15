@@ -123,6 +123,25 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
         return $this;
     }
 
+    public function rescoreQuery(string $type, array $query): self
+    {
+        $this->rescore['query']['rescore_query'][$type] = $query;
+        return $this;
+    }
+
+    public function rescoreWindowSize(int $windowSize): self
+    {
+        $this->rescore['window_size'] =  $windowSize;
+        return $this;
+    }
+
+    public function rescoreWeights(float $queryWeight, float $rescoreQueryWeight): self
+    {
+        $this->rescore['query']['query_weight'] = $queryWeight;
+        $this->rescore['query']['rescore_query_weight'] = $rescoreQueryWeight;
+        return $this;
+    }
+
     public function from(int $from): self
     {
         $this->from = $from;

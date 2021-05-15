@@ -149,6 +149,67 @@ final class SearchRequestBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_search_request_with_rescore_query_can_be_built(): void
+    {
+        $rescoreQuery = [
+            'match_phrase' => [
+                'message' => [
+                    'query' => 'the quick brown',
+                    'slop' => 2,
+                ],
+            ],
+        ];
+
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setRescore([
+                'query' => [
+                    'rescore_query' => $rescoreQuery,
+                ],
+            ]);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->rescoreQuery($type = 'match_phrase', [
+                'message' => [
+                    'query' => 'the quick brown',
+                    'slop' => 2,
+                ],
+            ])
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_rescore_weights_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setRescore([
+                'query' => [
+                    'query_weight' => 0.7,
+                    'rescore_query_weight' => 1.2,
+                ],
+            ]);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->rescoreWeights($queryWeight = 0.7, $rescoreQueryWeight = 1.2)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_rescore_window_size_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setRescore([
+                'window_size' => 10,
+            ]);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->rescoreWindowSize($windowSize = 10)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
     public function test_search_request_with_from_can_be_built(): void
     {
         $from = rand(2, 1000);
