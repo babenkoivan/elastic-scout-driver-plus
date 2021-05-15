@@ -2,14 +2,14 @@
 
 namespace ElasticScoutDriverPlus\Decorators;
 
-use ElasticScoutDriver\Engine;
-use ElasticAdapter\Search\SearchRequest;
-use ElasticScoutDriverPlus\ShardRouting;
-use ElasticAdapter\Search\SearchResponse;
-use Illuminate\Support\Traits\ForwardsCalls;
 use ElasticAdapter\Documents\DocumentManager;
-use ElasticScoutDriverPlus\Support\ModelScope;
+use ElasticAdapter\Search\SearchRequest;
+use ElasticAdapter\Search\SearchResponse;
+use ElasticScoutDriver\Engine;
 use ElasticScoutDriver\Factories\DocumentFactoryInterface;
+use ElasticScoutDriverPlus\ShardRouting;
+use ElasticScoutDriverPlus\Support\ModelScope;
+use Illuminate\Support\Traits\ForwardsCalls;
 
 final class EngineDecorator
 {
@@ -33,11 +33,10 @@ final class EngineDecorator
     private $documentFactory;
 
     public function __construct(
-        Engine $engine, 
+        Engine $engine,
         DocumentManager $documentManager,
         DocumentFactoryInterface $documentFactory
-    )
-    {
+    ) {
         $this->refreshDocuments = config('elastic.scout_driver.refresh_documents');
 
         $this->engine = $engine;
@@ -46,8 +45,11 @@ final class EngineDecorator
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * Update the given model in the index.
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $models
+     * @return void
+     */
     public function update($models)
     {
         if ($models->isEmpty()) {
@@ -63,7 +65,10 @@ final class EngineDecorator
     }
 
     /**
-     * {@inheritDoc}
+     * Remove the given model from the index.
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $models
+     * @return void
      */
     public function delete($models)
     {
