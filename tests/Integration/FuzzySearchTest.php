@@ -52,6 +52,7 @@ final class FuzzySearchTest extends TestCase
             ->field('title')
             ->value('boko')
             ->transpositions(true)
+            ->sort('author_id')
             ->execute();
 
         $this->assertCount($target->count(), $found->models());

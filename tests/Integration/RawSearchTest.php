@@ -66,6 +66,7 @@ final class RawSearchTest extends TestCase
                 ],
             ])
             ->highlight('title')
+            ->sort('author_id')
             ->execute();
 
         $this->assertCount($target->count(), $found->models());
@@ -441,6 +442,7 @@ final class RawSearchTest extends TestCase
         $searchResult = $cacheStore->rememberForever('raw_search_result', static function () {
             return Book::rawSearch()
                 ->query(['match_all' => new stdClass()])
+                ->sort('author_id')
                 ->execute();
         });
 
@@ -455,6 +457,7 @@ final class RawSearchTest extends TestCase
 
         $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
+            ->sort('author_id')
             ->trackTotalHits(false)
             ->execute();
 
@@ -470,6 +473,7 @@ final class RawSearchTest extends TestCase
 
         $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
+            ->sort('author_id')
             ->trackTotalHits(5)
             ->execute();
 

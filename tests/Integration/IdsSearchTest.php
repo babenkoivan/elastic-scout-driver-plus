@@ -35,6 +35,7 @@ final class IdsSearchTest extends TestCase
 
         $found = Book::idsSearch()
             ->values(['8', '9', '10'])
+            ->sort('author_id')
             ->execute();
 
         $this->assertCount($target->count(), $found->models());

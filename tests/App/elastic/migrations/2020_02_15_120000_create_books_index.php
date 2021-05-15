@@ -27,6 +27,10 @@ final class CreateBooksIndex implements MigrationInterface
                     ],
                 ],
             ]);
+
+            $settings->index([
+                'number_of_shards' => 4,
+            ]);
         });
     }
 

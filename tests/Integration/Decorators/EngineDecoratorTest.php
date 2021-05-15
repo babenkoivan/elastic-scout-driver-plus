@@ -33,7 +33,7 @@ final class EngineDecoratorTest extends TestCase
         // find all indexed models
         $searchResponse = $this->documentManager->search(
             $models->first()->searchableAs(),
-            new SearchRequest(['match_all' => new stdClass()])
+            (new SearchRequest(['match_all' => new stdClass()]))->setSort(['author_id'])
         );
 
         // assert that documents have the same ids as created models
@@ -58,7 +58,7 @@ final class EngineDecoratorTest extends TestCase
         // find all indexed models
         $searchResponse = $this->documentManager->search(
             $models->first()->searchableAs(),
-            new SearchRequest(['match_all' => new stdClass()])
+            (new SearchRequest(['match_all' => new stdClass()]))->setSort(['author_id'])
         );
 
         // assert that there is no documents in the index
@@ -70,7 +70,7 @@ final class EngineDecoratorTest extends TestCase
         factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
 
         $target = factory(Book::class)->state('belongs_to_author')->create(['title' => uniqid('test')]);
-        $found = Book::search($target->title)->get();
+        $found = Book::search($target->title)->orderBy('author_id')->get();
 
         $this->assertCount(1, $found);
         $this->assertEquals($target->toArray(), $found->first()->toArray());
