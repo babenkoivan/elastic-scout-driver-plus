@@ -13,8 +13,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\ForwardsCalls;
 use stdClass;
 
-final class SearchRequestBuilder implements SearchRequestBuilderInterface
+class SearchRequestBuilder
 {
+    public const DEFAULT_PAGE_SIZE = 10;
+
     use ForwardsCalls;
 
     /**
@@ -295,12 +297,6 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
             ->getRaw();
     }
 
-    public function __call(string $method, array $parameters): self
-    {
-        $this->forwardCallTo($this->queryBuilder, $method, $parameters);
-        return $this;
-    }
-
     public function paginate(
         int $perPage = self::DEFAULT_PAGE_SIZE,
         string $pageName = 'page',
@@ -341,6 +337,12 @@ final class SearchRequestBuilder implements SearchRequestBuilderInterface
             return $default($this, $value) ?? $this;
         }
 
+        return $this;
+    }
+
+    public function __call(string $method, array $parameters): self
+    {
+        $this->forwardCallTo($this->queryBuilder, $method, $parameters);
         return $this;
     }
 }
