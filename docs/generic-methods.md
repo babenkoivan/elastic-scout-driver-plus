@@ -10,6 +10,7 @@
 * [postFilter](#postfilter)
 * [size](#size)
 * [sort](#sort)
+* [rescore](#rescore)
 * [source](#source)
 * [suggest](#suggest)
 * [trackScores](#trackscores)
@@ -239,6 +240,49 @@ In case, you need more advanced sorting algorithm use `sortRaw`:
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
     ->sortRaw([['price' => 'asc'], ['published' => 'asc']])
+    ->execute();
+```
+
+### rescore
+
+This method allows you to [rescore](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#rescore) the search results:
+
+You can also use `rescoreWeights` and `rescoreWindowSize` to set the query_weight, rescore_query_weight and window_size.
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->rescore($type = 'match_phrase', [
+        'message' => [
+            'query' => 'the quick brown',
+            'slop' => 2,
+        ],
+    ])
+    ->rescoreWeights($queryWeight = 0.7, $rescoreQueryWeight = 1.2)
+    ->rescoreWindowSize($windowSize = 10)
+    ->execute();
+```
+
+Use `rescoreRaw` method if you need more control:
+
+ ```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->rescoreRaw([
+        'window_size' => 50,
+        'query' => [
+            'rescore_query' => [
+                'match_phrase' => [
+                    'message' => [
+                        'query' => 'the quick brown',
+                        'slop' => 2,
+                    ],
+                ],
+            ],
+            'query_weight' => 0.7,
+            'rescore_query_weight' => 1.2,
+        ]
+    ])
     ->execute();
 ```
 

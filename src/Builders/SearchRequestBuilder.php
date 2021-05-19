@@ -40,6 +40,10 @@ class SearchRequestBuilder
      */
     private $sort = [];
     /**
+     * @var array
+     */
+    private $rescore = [];
+    /**
      * @var int|null
      */
     private $from;
@@ -112,6 +116,31 @@ class SearchRequestBuilder
     public function sort(string $field, string $direction = 'asc'): self
     {
         $this->sort[] = [$field => $direction];
+        return $this;
+    }
+
+    public function rescoreRaw(array $rescore): self
+    {
+        $this->rescore = $rescore;
+        return $this;
+    }
+
+    public function rescoreQuery(string $type, array $query): self
+    {
+        $this->rescore['query']['rescore_query'][$type] = $query;
+        return $this;
+    }
+
+    public function rescoreWindowSize(int $windowSize): self
+    {
+        $this->rescore['window_size'] =  $windowSize;
+        return $this;
+    }
+
+    public function rescoreWeights(float $queryWeight, float $rescoreQueryWeight): self
+    {
+        $this->rescore['query']['query_weight'] = $queryWeight;
+        $this->rescore['query']['rescore_query_weight'] = $rescoreQueryWeight;
         return $this;
     }
 
@@ -239,6 +268,10 @@ class SearchRequestBuilder
 
         if (!empty($this->sort)) {
             $searchRequest->setSort($this->sort);
+        }
+
+        if (!empty($this->rescore)) {
+            $searchRequest->setRescore($this->rescore);
         }
 
         if (isset($this->from)) {
