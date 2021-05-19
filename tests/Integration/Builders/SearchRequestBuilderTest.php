@@ -168,7 +168,7 @@ final class SearchRequestBuilderTest extends TestCase
             ]);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
-            ->rescoreQuery($type = 'match_phrase', [
+            ->rescoreQuery('match_phrase', [
                 'message' => [
                     'query' => 'the quick brown',
                     'slop' => 2,
@@ -190,7 +190,7 @@ final class SearchRequestBuilderTest extends TestCase
             ]);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
-            ->rescoreWeights($queryWeight = 0.7, $rescoreQueryWeight = 1.2)
+            ->rescoreWeights(0.7, 1.2)
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);
@@ -204,7 +204,7 @@ final class SearchRequestBuilderTest extends TestCase
             ]);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
-            ->rescoreWindowSize($windowSize = 10)
+            ->rescoreWindowSize(10)
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);
