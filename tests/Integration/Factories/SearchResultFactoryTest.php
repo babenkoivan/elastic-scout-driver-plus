@@ -13,7 +13,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 /**
  * @covers \ElasticScoutDriverPlus\Factories\SearchResultFactory
  *
- * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @uses   \ElasticScoutDriverPlus\Engine
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult

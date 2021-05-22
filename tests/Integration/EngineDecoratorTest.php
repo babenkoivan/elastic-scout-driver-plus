@@ -10,9 +10,9 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @covers \ElasticScoutDriverPlus\Engine
  */
-final class EngineDecoratorTest extends TestCase
+final class EngineTest extends TestCase
 {
     /**
      * @var DocumentManager

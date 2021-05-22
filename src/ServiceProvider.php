@@ -2,8 +2,6 @@
 
 namespace ElasticScoutDriverPlus;
 
-use ElasticScoutDriver\Engine;
-use ElasticScoutDriverPlus\Decorators\EngineDecorator;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider as AbstractServiceProvider;
 
@@ -14,8 +12,8 @@ final class ServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this->app->extend(Engine::class, static function (Engine $engine, Application $app) {
-            return $app->make(EngineDecorator::class, compact('engine'));
+        $this->app->bind(\ElasticScoutDriver\Engine::class, static function (Application $app) {
+            return $app->make(\ElasticScoutDriverPlus\Engine::class);
         });
     }
 }

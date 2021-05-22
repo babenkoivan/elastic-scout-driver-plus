@@ -16,7 +16,7 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  *
  * @uses   \ElasticScoutDriverPlus\Builders\RawQueryBuilder
- * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @uses   \ElasticScoutDriverPlus\Engine
  * @uses   \ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */

@@ -9,7 +9,7 @@ use const SORT_STRING;
  * @covers \ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\QueryDsl
- * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory

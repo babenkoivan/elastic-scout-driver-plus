@@ -3,7 +3,7 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
-use ElasticScoutDriverPlus\Decorators\EngineDecorator;
+use ElasticScoutDriverPlus\Engine;
 use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
 use ElasticScoutDriverPlus\Paginator;
@@ -24,7 +24,7 @@ class SearchRequestBuilder
      */
     private $modelScope;
     /**
-     * @var EngineDecorator
+     * @var Engine
      */
     private $engine;
     /**

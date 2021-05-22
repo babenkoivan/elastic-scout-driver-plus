@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @covers \ElasticScoutDriverPlus\Builders\IdsQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\QueryDsl
- * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @covers \ElasticScoutDriverPlus\Engine
  *
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
@@ -34,8 +34,8 @@ final class IdsSearchTest extends TestCase
         $target = $models->where('id', '>', 7)->values();
 
         $found = Book::idsSearch()
-            ->values(['8', '9', '10'])
-            ->sort('author_id')
+        ->sort('db_id')
+        ->values(['8', '9', '10'])
             ->execute();
 
         $this->assertCount($target->count(), $found->models());

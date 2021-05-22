@@ -19,7 +19,7 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\QueryDsl
- * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
@@ -60,13 +60,13 @@ final class RawSearchTest extends TestCase
             ->create(['title' => uniqid('test')]);
 
         $found = Book::rawSearch()
+            ->sort('db_id')
             ->query([
                 'match' => [
                     'title' => $target->first()->title,
                 ],
             ])
             ->highlight('title')
-            ->sort('author_id')
             ->execute();
 
         $this->assertCount($target->count(), $found->models());
@@ -358,7 +358,7 @@ final class RawSearchTest extends TestCase
 
         $builder = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
-            ->sort('_id', 'asc');
+            ->sort('db_id', 'asc');
 
         $firstPage = $builder->paginate(3, 'customName', 1);
         $secondPage = $builder->paginate(3, 'customName', 2);
@@ -441,8 +441,8 @@ final class RawSearchTest extends TestCase
 
         $searchResult = $cacheStore->rememberForever('raw_search_result', static function () {
             return Book::rawSearch()
+                ->sort('db_id')
                 ->query(['match_all' => new stdClass()])
-                ->sort('author_id')
                 ->execute();
         });
 
@@ -456,8 +456,8 @@ final class RawSearchTest extends TestCase
             ->create();
 
         $found = Book::rawSearch()
+            ->sort('db_id')
             ->query(['match_all' => new stdClass()])
-            ->sort('author_id')
             ->trackTotalHits(false)
             ->execute();
 
@@ -472,8 +472,8 @@ final class RawSearchTest extends TestCase
             ->create();
 
         $found = Book::rawSearch()
+            ->sort('db_id')
             ->query(['match_all' => new stdClass()])
-            ->sort('author_id')
             ->trackTotalHits(5)
             ->execute();
 
