@@ -60,7 +60,7 @@ final class RawSearchTest extends TestCase
             ->create(['title' => uniqid('test')]);
 
         $found = Book::rawSearch()
-            ->sort('db_id')
+            ->sort('id')
             ->query([
                 'match' => [
                     'title' => $target->first()->title,
@@ -358,7 +358,7 @@ final class RawSearchTest extends TestCase
 
         $builder = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
-            ->sort('db_id', 'asc');
+            ->sort('id', 'asc');
 
         $firstPage = $builder->paginate(3, 'customName', 1);
         $secondPage = $builder->paginate(3, 'customName', 2);
@@ -441,7 +441,7 @@ final class RawSearchTest extends TestCase
 
         $searchResult = $cacheStore->rememberForever('raw_search_result', static function () {
             return Book::rawSearch()
-                ->sort('db_id')
+                ->sort('id')
                 ->query(['match_all' => new stdClass()])
                 ->execute();
         });
@@ -456,7 +456,7 @@ final class RawSearchTest extends TestCase
             ->create();
 
         $found = Book::rawSearch()
-            ->sort('db_id')
+            ->sort('id')
             ->query(['match_all' => new stdClass()])
             ->trackTotalHits(false)
             ->execute();
@@ -472,7 +472,7 @@ final class RawSearchTest extends TestCase
             ->create();
 
         $found = Book::rawSearch()
-            ->sort('db_id')
+            ->sort('id')
             ->query(['match_all' => new stdClass()])
             ->trackTotalHits(5)
             ->execute();

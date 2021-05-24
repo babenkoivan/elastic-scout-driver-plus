@@ -45,9 +45,8 @@ class Book extends Model
      */
     public function toSearchableArray()
     {
-        $searchable = parent::toSearchableArray();
+        $searchable = $this->toArray();
         $searchable['author'] = $this->author->only(['name', 'phone_number']);
-        $searchable['db_id'] = $this->id;
 
         return $searchable;
     }

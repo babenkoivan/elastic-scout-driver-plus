@@ -19,4 +19,12 @@ final class Author extends Model
     {
         return $this->hasMany(Book::class);
     }
+
+    /**
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
+    }
 }

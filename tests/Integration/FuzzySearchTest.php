@@ -49,7 +49,7 @@ final class FuzzySearchTest extends TestCase
             ->create(['title' => 'The book']);
 
         $found = Book::fuzzySearch()
-            ->sort('db_id')
+            ->sort('id')
             ->field('title')
             ->value('boko')
             ->transpositions(true)

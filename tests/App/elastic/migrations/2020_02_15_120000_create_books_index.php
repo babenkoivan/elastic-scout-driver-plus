@@ -10,7 +10,7 @@ final class CreateBooksIndex implements MigrationInterface
     public function up(): void
     {
         Index::create('books', static function (Mapping $mapping, Settings $settings) {
-            $mapping->integer('db_id');
+            $mapping->integer('id');
             $mapping->integer('author_id');
             $mapping->text('title');
             $mapping->text('description');
