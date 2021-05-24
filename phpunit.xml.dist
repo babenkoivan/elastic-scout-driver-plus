@@ -9,6 +9,14 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true"
          colors="true">
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <file>src/ServiceProvider.php</file>
+        </exclude>
+    </coverage>
     <testsuites>
         <testsuite name="unit">
             <directory suffix="Test.php">tests/Unit</directory>
@@ -17,14 +25,6 @@
             <directory suffix="Test.php">tests/Integration</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-            <exclude>
-                <file>src/ServiceProvider.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="DB_CONNECTION" value="mysql"/>

@@ -67,7 +67,7 @@ test: ## Run tests
 
 coverage: ## Run tests and generate the code coverage report
 	@printf "\033[93m→ Running tests and generating the code coverage report\033[0m\n"
-	@bin/phpunit --testdox --coverage-text
+	@XDEBUG_MODE=coverage bin/phpunit --testdox --coverage-text
 	@printf "\n\033[92m✔︎ Tests are completed and the report is generated\033[0m\n"
 
 style-check: ## Check the code style
@@ -77,7 +77,7 @@ style-check: ## Check the code style
 
 static-analysis: ## Do static code analysis
 	@printf "\033[93m→ Analysing the code\033[0m\n"
-	@bin/phpstan analyse  --memory-limit=-1
+	@php -d memory_limit=-1 bin/phpstan analyse
 	@printf "\n\033[92m✔︎ Code static analysis is completed\033[0m\n"
 
 help: ## Show help

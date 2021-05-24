@@ -32,6 +32,7 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
     * [Joining Queries](docs/joining-queries.md)
     * [Term Queries](docs/term-queries.md)
     * [Search Results](docs/search-results.md)
+* [Custom routing](#custom-routing)
 
 ## Features
 
@@ -43,6 +44,7 @@ Elastic Scout Driver Plus supports:
 * [Suggesters](docs/generic-methods.md#suggest)
 * [Source filtering](docs/generic-methods.md#source)
 * [Field collapsing](docs/generic-methods.md#collapse)
+* [Custom routing](#custom-routing)
 
 ## Compatibility
 
@@ -126,23 +128,36 @@ $searchResult = Book::rawSearch()
 ```
 
 It is **important to know**, that all search request builders share the same [generic methods](docs/generic-methods.md), 
-which provide such basic functionality as sorting, highlighting, etc. Check the full list of available generic methods 
+which provide such basic functionality as sorting, highlighting, etc. Check the full list of available generic methods, 
 and the usage examples [here](docs/generic-methods.md).
 
 Finally, refer to [this page](docs/search-results.md) to get familiar with `$searchResult` object, pagination and more.
 
 ## Custom routing
 
-In case you need [custom es routing](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html) you can use the trait `ShardRouting`.
-
-Override the method `getRoutingPath` to specify a document field that will be used to route the document to a shard.
-
-Dot notation is also supported.
+In case you want to implement a [custom shard routing](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html) 
+use the `ShardRouting` trait:
 
 ```php
 class MyModel extends Model
 {
     use ShardRouting;
+
+    public function getRoutingPath(): string
+    {
+        return 'id';
+    }
+}
+```
+
+The `getRoutingPath` method returns a document field, which value is used to route the document to a particular shard.
+You can also use the dot notation to access the nested fields:
+
+```php
+class MyModel extends Model
+{
+    use ShardRouting;
+
     public function getRoutingPath(): string
     {
         return 'user.id';
@@ -150,4 +165,4 @@ class MyModel extends Model
 }
 ```
 
-This will allow for custom routing on index and delete operations.
+Custom routing is automatically applied to all index and delete operations.
