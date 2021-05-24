@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
- * @uses   \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @uses   \ElasticScoutDriverPlus\Engine
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
 final class LazyModelFactoryTest extends TestCase

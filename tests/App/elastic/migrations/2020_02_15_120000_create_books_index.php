@@ -10,6 +10,7 @@ final class CreateBooksIndex implements MigrationInterface
     public function up(): void
     {
         Index::create('books', static function (Mapping $mapping, Settings $settings) {
+            $mapping->integer('id');
             $mapping->integer('author_id');
             $mapping->text('title');
             $mapping->text('description');
@@ -26,6 +27,10 @@ final class CreateBooksIndex implements MigrationInterface
                         'type' => 'keyword',
                     ],
                 ],
+            ]);
+
+            $settings->index([
+                'number_of_shards' => 4,
             ]);
         });
     }

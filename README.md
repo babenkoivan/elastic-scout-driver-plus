@@ -130,3 +130,24 @@ which provide such basic functionality as sorting, highlighting, etc. Check the 
 and the usage examples [here](docs/generic-methods.md).
 
 Finally, refer to [this page](docs/search-results.md) to get familiar with `$searchResult` object, pagination and more.
+
+## Custom routing
+
+In case you need [custom es routing](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html) you can use the trait `ShardRouting`.
+
+Override the method `getRoutingPath` to specify a document field that will be used to route the document to a shard.
+
+Dot notation is also supported.
+
+```php
+class MyModel extends Model
+{
+    use ShardRouting;
+    public function getRoutingPath(): string
+    {
+        return 'user.id';
+    }
+}
+```
+
+This will allow for custom routing on index and delete operations.

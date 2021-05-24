@@ -9,7 +9,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Builders\FuzzyQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\QueryDsl
- * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @covers \ElasticScoutDriverPlus\Engine
  *
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
@@ -49,6 +49,7 @@ final class FuzzySearchTest extends TestCase
             ->create(['title' => 'The book']);
 
         $found = Book::fuzzySearch()
+            ->sort('id')
             ->field('title')
             ->value('boko')
             ->transpositions(true)

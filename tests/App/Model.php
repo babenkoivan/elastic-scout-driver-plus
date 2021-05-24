@@ -4,7 +4,6 @@ namespace ElasticScoutDriverPlus\Tests\App;
 
 use ElasticScoutDriverPlus\QueryDsl;
 use Illuminate\Database\Eloquent\Model as BaseModel;
-use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 abstract class Model extends BaseModel
@@ -20,13 +19,5 @@ abstract class Model extends BaseModel
     public function toArray()
     {
         return $this->attributesToArray();
-    }
-
-    /**
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return Arr::except($this->toArray(), [$this->getKeyName()]);
     }
 }

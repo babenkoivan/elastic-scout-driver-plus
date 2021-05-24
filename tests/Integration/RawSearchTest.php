@@ -19,7 +19,7 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\QueryDsl
- * @covers \ElasticScoutDriverPlus\Decorators\EngineDecorator
+ * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
@@ -60,6 +60,7 @@ final class RawSearchTest extends TestCase
             ->create(['title' => uniqid('test')]);
 
         $found = Book::rawSearch()
+            ->sort('id')
             ->query([
                 'match' => [
                     'title' => $target->first()->title,
@@ -357,7 +358,7 @@ final class RawSearchTest extends TestCase
 
         $builder = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
-            ->sort('_id', 'asc');
+            ->sort('id', 'asc');
 
         $firstPage = $builder->paginate(3, 'customName', 1);
         $secondPage = $builder->paginate(3, 'customName', 2);
@@ -440,6 +441,7 @@ final class RawSearchTest extends TestCase
 
         $searchResult = $cacheStore->rememberForever('raw_search_result', static function () {
             return Book::rawSearch()
+                ->sort('id')
                 ->query(['match_all' => new stdClass()])
                 ->execute();
         });
@@ -454,6 +456,7 @@ final class RawSearchTest extends TestCase
             ->create();
 
         $found = Book::rawSearch()
+            ->sort('id')
             ->query(['match_all' => new stdClass()])
             ->trackTotalHits(false)
             ->execute();
@@ -469,6 +472,7 @@ final class RawSearchTest extends TestCase
             ->create();
 
         $found = Book::rawSearch()
+            ->sort('id')
             ->query(['match_all' => new stdClass()])
             ->trackTotalHits(5)
             ->execute();
