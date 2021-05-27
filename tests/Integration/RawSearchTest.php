@@ -91,11 +91,11 @@ final class RawSearchTest extends TestCase
 
         $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
-            ->sort('price')
+            ->sort('id')
             ->execute();
 
         $this->assertCount($target->count(), $found->models());
-        $this->assertEquals($target->sortBy('price')->values()->toArray(), $found->models()->toArray());
+        $this->assertEquals($target->sortBy('id')->values()->toArray(), $found->models()->toArray());
     }
 
     public function test_models_can_be_found_using_raw_query_and_from(): void
