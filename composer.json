@@ -40,13 +40,13 @@
     "require": {
         "php": "^7.2 || ^8.0",
         "babenkoivan/elastic-adapter": "^1.16",
-        "babenkoivan/elastic-scout-driver": "^1.3.1"
+        "babenkoivan/elastic-scout-driver": "^1.4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "orchestra/testbench": "^6.12",
         "babenkoivan/elastic-migrations": "^1.4",
-        "laravel/scout": "^8.0",
+        "laravel/scout": "^9.0",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpstan/phpstan": "^0.12.32",
         "laravel/legacy-factories": "^1.1"
