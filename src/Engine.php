@@ -21,7 +21,7 @@ final class Engine extends BaseEngine
         $model = $models->first();
         $index = $model->searchableAs();
         $routingPath = in_array(ShardRouting::class, class_uses_recursive($model)) ? $model->getRoutingPath() : null;
-        $documents = $this->documentFactory->makeFromModels($models);
+        $documents = $this->documentFactory->makeFromModels($models, false);
 
         $this->documentManager->index($index, $documents->all(), $this->refreshDocuments, $routingPath);
     }
@@ -38,7 +38,7 @@ final class Engine extends BaseEngine
         $model = $models->first();
         $index = $model->searchableAs();
         $routingPath = in_array(ShardRouting::class, class_uses_recursive($model)) ? $model->getRoutingPath() : null;
-        $documents = $this->documentFactory->makeFromModels($models);
+        $documents = $this->documentFactory->makeFromModels($models, true);
 
         $this->documentManager->delete($index, $documents->all(), $this->refreshDocuments, $routingPath);
     }
