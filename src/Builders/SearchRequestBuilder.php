@@ -80,6 +80,10 @@ class SearchRequestBuilder
      */
     private $trackScores;
     /**
+     * @var float|null
+     */
+    private $minScore;
+    /**
      * @var array
      */
     private $indicesBoost = [];
@@ -246,6 +250,12 @@ class SearchRequestBuilder
         return $this;
     }
 
+    public function minScore(float $minScore): self
+    {
+        $this->minScore = $minScore;
+        return $this;
+    }
+
     public function boostIndex(string $modelClass, float $boost): self
     {
         if (!$this->modelScope->contains($modelClass)) {
@@ -308,6 +318,10 @@ class SearchRequestBuilder
 
         if (isset($this->trackScores)) {
             $searchRequest->setTrackScores($this->trackScores);
+        }
+
+        if (isset($this->minScore)) {
+            $searchRequest->setMinScore($this->minScore);
         }
 
         if (!empty($this->indicesBoost)) {

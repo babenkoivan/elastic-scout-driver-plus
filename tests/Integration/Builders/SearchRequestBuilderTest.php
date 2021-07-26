@@ -506,6 +506,18 @@ final class SearchRequestBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_search_request_with_min_score_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->setMinScore(0.5);
+
+        $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
+            ->minScore(0.5)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
     private function makeBuilderWithQuery(array $query): SearchRequestBuilder
     {
         $model = new Book();

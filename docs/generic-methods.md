@@ -367,6 +367,17 @@ $searchResult = Book::rawSearch()
     ->execute();
 ```
 
+### minScore
+
+This method allows you to [set minimum score for matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-api-min-score):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->minScore(0.5)
+    ->execute();
+```
+
 ### trackTotalHits
 
 This method allows you to [control how the total number of hits should be tracked](https://www.elastic.co/guide/en/elasticsearch//reference/current/search-your-data.html#track-total-hits):
