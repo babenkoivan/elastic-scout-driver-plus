@@ -39,7 +39,7 @@
     },
     "require": {
         "php": "^7.2 || ^8.0",
-        "babenkoivan/elastic-adapter": "^1.16",
+        "babenkoivan/elastic-adapter": "^1.17",
         "babenkoivan/elastic-scout-driver": "^1.4.0"
     },
     "require-dev": {
