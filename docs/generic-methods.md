@@ -7,6 +7,7 @@
 * [highlight](#highlight)
 * [join](#join)
 * [load](#load)
+* [minScore](#minscore)
 * [postFilter](#postfilter)
 * [size](#size)
 * [sort](#sort)
@@ -192,6 +193,17 @@ $searchResult = Book::rawSearch()
     ->execute();
 ```
 
+### minScore
+
+This method allows you to [set minimum score for matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-api-min-score):
+
+```php
+$searchResult = Book::rawSearch()
+    ->query(['match_all' => new \stdClass()])
+    ->minScore(0.5)
+    ->execute();
+```
+
 ### postFilter
 
 `postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
@@ -364,17 +376,6 @@ This method forces [scores to be computed and tracked](https://www.elastic.co/gu
 $searchResult = Book::rawSearch()
     ->query(['match_all' => new \stdClass()])
     ->trackScores(true)
-    ->execute();
-```
-
-### minScore
-
-This method allows you to [set minimum score for matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-api-min-score):
-
-```php
-$searchResult = Book::rawSearch()
-    ->query(['match_all' => new \stdClass()])
-    ->minScore(0.5)
     ->execute();
 ```
 
