@@ -9,5 +9,6 @@ parameters:
     - tests
   excludePaths:
     - src/QueryDsl.php
+    - tests/App/database/factories
   ignoreErrors:
     - '#Call to an undefined method ElasticScoutDriverPlus\\Builders\\SearchRequestBuilder::\w+\(\)#'
