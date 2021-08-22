@@ -12,6 +12,7 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
  * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
@@ -49,8 +50,8 @@ final class MatchNoneSearchTest extends TestCase
         /** @var Suggestion $suggestion */
         $suggestion = $found->suggestions()->get('title')->first();
 
-        $this->assertSame('word', $suggestion->getText());
-        $this->assertSame($target->title, $suggestion->getOptions()[0]['text']);
+        $this->assertSame('word', $suggestion->text());
+        $this->assertSame($target->title, $suggestion->options()[0]['text']);
         $this->assertSame(0, $found->total());
     }
 }

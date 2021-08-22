@@ -143,26 +143,13 @@ class MyModel extends Model
 {
     use ShardRouting;
 
-    public function getRoutingPath(): string
+    public function getRouting(): string
     {
-        return 'id';
+        return $this->user->id;
     }
 }
 ```
 
-The `getRoutingPath` method returns a document field, which value is used to route the document to a particular shard.
-You can also use the dot notation to access the nested fields:
-
-```php
-class MyModel extends Model
-{
-    use ShardRouting;
-
-    public function getRoutingPath(): string
-    {
-        return 'user.id';
-    }
-}
-```
+The `getRouting` method returns a value, which is used to route the document to a particular shard.
 
 Custom routing is automatically applied to all index and delete operations.

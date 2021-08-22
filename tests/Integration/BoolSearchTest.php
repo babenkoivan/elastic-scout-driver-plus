@@ -15,6 +15,10 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
+ * @uses   \ElasticScoutDriverPlus\Builders\RangeQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
+ * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Factory
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
@@ -22,9 +26,6 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
- * @uses   \ElasticScoutDriverPlus\Builders\RangeQueryBuilder
- * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\Arr
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope

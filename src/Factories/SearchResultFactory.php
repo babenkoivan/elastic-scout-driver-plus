@@ -15,31 +15,20 @@ final class SearchResultFactory
         SearchResponse $searchResponse,
         ModelScope $modelScope
     ): SearchResult {
-        $matches = self::makeMatches($searchResponse, $modelScope);
-        $suggestions = self::makeSuggestions($searchResponse->getSuggestions());
-        $aggregations = self::makeAggregations($searchResponse->getAggregations());
-
-        return new SearchResult($matches, $suggestions, $aggregations, $searchResponse->getHitsTotal());
+        return new SearchResult(
+            self::makeMatches($searchResponse, $modelScope),
+            $searchResponse->suggestions(),
+            $searchResponse->aggregations(),
+            $searchResponse->total()
+        );
     }
 
     private static function makeMatches(SearchResponse $searchResponse, ModelScope $modelScope): Collection
     {
         $lazyModelFactory = new LazyModelFactory($searchResponse, $modelScope);
 
-        return collect($searchResponse->getHits())->map(static function (Hit $hit) use ($lazyModelFactory) {
+        return collect($searchResponse->hits())->map(static function (Hit $hit) use ($lazyModelFactory) {
             return new QueryMatch($lazyModelFactory, $hit);
         });
-    }
-
-    private static function makeSuggestions(array $suggestions): Collection
-    {
-        return collect($suggestions)->mapWithKeys(static function (array $entries, string $suggestion) {
-            return [$suggestion => collect($entries)];
-        });
-    }
-
-    private static function makeAggregations(array $aggregations): Collection
-    {
-        return collect($aggregations);
     }
 }

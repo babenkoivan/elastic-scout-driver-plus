@@ -54,8 +54,8 @@ Every document has an id and an indexed content:
 ```php
 $document = $documents->first();
 
-$id = $document->getId();
-$content = $document->getContent();
+$id = $document->id();
+$content = $document->content();
 ```
 
 ### highlights
@@ -66,11 +66,11 @@ This method returns a collection of highlights:
 $highlights = $searchResult->highlights();
 ```
 
-You can use `getSnippets` to get highlighted snippets for the given field:
+You can use `snippets` to get highlighted snippets for the given field:
 
 ```php
 $highlight = $highlights->first();
-$snippets = $highlight->getSnippets('title');
+$snippets = $highlight->snippets('title');
 ```
 
 ### matches
@@ -123,10 +123,10 @@ Each suggestion includes a suggestion text, an offset, a length and an arbitrary
 ```php
 $firstSuggestion = $titleSuggestions->first();
 
-$text = $firstSuggestion->getText();
-$offset = $firstSuggestion->getOffset();
-$length = $firstSuggestion->getLength();
-$options = $firstSuggestion->getOptions();
+$text = $firstSuggestion->text();
+$offset = $firstSuggestion->offset();
+$length = $firstSuggestion->length();
+$options = $firstSuggestion->options();
 ```
 
 ### total

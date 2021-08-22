@@ -42,8 +42,8 @@ final class PaginatorTest extends TestCase
         $matches = $documents->map(static function (Document $document) use ($factory) {
             $hit = new Hit([
                 '_index' => 'books',
-                '_id' => $document->getId(),
-                '_source' => $document->getContent(),
+                '_id' => $document->id(),
+                '_source' => $document->content(),
             ]);
 
             return new QueryMatch($factory, $hit);

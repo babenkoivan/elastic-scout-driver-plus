@@ -9,8 +9,8 @@ namespace ElasticScoutDriverPlus;
 trait ShardRouting
 {
     /**
-     * Override this method to specify the document field,
-     * which value will be used to route the document to a shard.
+     * Override this method to specify the value,
+     * which will be used to route the document to a shard.
      */
-    abstract public function getRoutingPath(): string;
+    abstract public function getRouting(): string;
 }

@@ -51,8 +51,8 @@ class Book extends Model
         return $searchable;
     }
 
-    public function getRoutingPath(): string
+    public function getRouting(): string
     {
-        return 'author.name';
+        return $this->author->name;
     }
 }

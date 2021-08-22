@@ -1,16 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration\Decorators;
+namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use ElasticAdapter\Documents\DocumentManager;
 use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 
 /**
  * @covers \ElasticScoutDriverPlus\Engine
+ *
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
  */
 final class EngineTest extends TestCase
 {
@@ -33,14 +34,14 @@ final class EngineTest extends TestCase
         // find all indexed models
         $searchResponse = $this->documentManager->search(
             $models->first()->searchableAs(),
-            (new SearchRequest(['match_all' => new stdClass()]))->setSort(['id'])
+            (new SearchRequest(['match_all' => new stdClass()]))->sort(['id'])
         );
 
         // assert that documents have the same ids as created models
         $modelIds = $models->pluck($models->first()->getKeyName())->all();
 
-        $documentIds = collect($searchResponse->getHits())->map(static function (Hit $hit) {
-            return $hit->getDocument()->getId();
+        $documentIds = collect($searchResponse->hits())->map(static function (Hit $hit) {
+            return $hit->document()->id();
         })->all();
 
         $this->assertEquals($modelIds, $documentIds);
@@ -62,7 +63,7 @@ final class EngineTest extends TestCase
         );
 
         // assert that there is no documents in the index
-        $this->assertSame(0, $searchResponse->getHitsTotal());
+        $this->assertSame(0, $searchResponse->total());
     }
 
     public function test_models_can_be_found_using_default_search(): void

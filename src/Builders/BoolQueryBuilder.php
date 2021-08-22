@@ -106,11 +106,11 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
         $query = parent::buildQuery();
 
         if (isset($this->softDeleted) && config('scout.soft_delete', false)) {
-            $query['bool']['filter'] = isset($query['bool']['filter'])
-                ? Arr::wrapAssoc($query['bool']['filter'])
+            $query[$this->type]['filter'] = isset($query[$this->type]['filter'])
+                ? Arr::wrapAssoc($query[$this->type]['filter'])
                 : [];
 
-            $query['bool']['filter'][] = [
+            $query[$this->type]['filter'][] = [
                 'term' => [
                     '__soft_deleted' => $this->softDeleted,
                 ],

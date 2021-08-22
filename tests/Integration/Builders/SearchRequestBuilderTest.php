@@ -59,7 +59,7 @@ final class SearchRequestBuilderTest extends TestCase
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setHighlight($highlight);
+            ->highlight($highlight);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->highlightRaw($highlight)
@@ -71,7 +71,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_highlight_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setHighlight([
+            ->highlight([
                 'fields' => [
                     'body' => new stdClass(),
                     'blog.title' => ['number_of_fragments' => 0],
@@ -96,7 +96,7 @@ final class SearchRequestBuilderTest extends TestCase
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setSort($sort);
+            ->sort($sort);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->sortRaw($sort)
@@ -108,7 +108,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_sort_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setSort([
+            ->sort([
                 ['post_date' => 'asc'],
                 ['name' => 'desc'],
             ]);
@@ -140,7 +140,7 @@ final class SearchRequestBuilderTest extends TestCase
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setRescore($rescore);
+            ->rescore($rescore);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->rescoreRaw($rescore)
@@ -161,7 +161,7 @@ final class SearchRequestBuilderTest extends TestCase
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setRescore([
+            ->rescore([
                 'query' => [
                     'rescore_query' => $rescoreQuery,
                 ],
@@ -182,7 +182,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_rescore_weights_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setRescore([
+            ->rescore([
                 'query' => [
                     'query_weight' => 0.7,
                     'rescore_query_weight' => 1.2,
@@ -199,7 +199,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_rescore_window_size_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setRescore([
+            ->rescore([
                 'window_size' => 10,
             ]);
 
@@ -215,7 +215,7 @@ final class SearchRequestBuilderTest extends TestCase
         $from = rand(2, 1000);
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setFrom($from);
+            ->from($from);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->from($from)
@@ -229,7 +229,7 @@ final class SearchRequestBuilderTest extends TestCase
         $size = rand(2, 1000);
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setSize($size);
+            ->size($size);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->size($size)
@@ -250,7 +250,7 @@ final class SearchRequestBuilderTest extends TestCase
         ];
 
         $expected = (new SearchRequest($this->matchNoneQuery))
-            ->setSuggest($suggest);
+            ->suggest($suggest);
 
         $actual = $this->makeBuilderWithQuery($this->matchNoneQuery)
             ->suggestRaw($suggest)
@@ -262,7 +262,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_suggest_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchNoneQuery))
-            ->setSuggest([
+            ->suggest([
                 'color_suggestion' => [
                     'text' => 'red',
                     'term' => [
@@ -300,7 +300,7 @@ final class SearchRequestBuilderTest extends TestCase
         $source = false;
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setSource($source);
+            ->source($source);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->sourceRaw($source)
@@ -314,7 +314,7 @@ final class SearchRequestBuilderTest extends TestCase
         $source = ['title', 'description'];
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setSource($source);
+            ->source($source);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->source($source)
@@ -328,7 +328,7 @@ final class SearchRequestBuilderTest extends TestCase
         $collapse = ['field' => 'user'];
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setCollapse($collapse);
+            ->collapse($collapse);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->collapseRaw($collapse)
@@ -340,7 +340,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_collapse_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setCollapse(['field' => 'user']);
+            ->collapse(['field' => 'user']);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->collapse('user')
@@ -365,7 +365,7 @@ final class SearchRequestBuilderTest extends TestCase
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setAggregations($aggregations);
+            ->aggregations($aggregations);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->aggregateRaw($aggregations)
@@ -377,7 +377,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_aggregate_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setAggregations([
+            ->aggregations([
                 'max_price' => [
                     'max' => [
                         'field' => 'price',
@@ -412,7 +412,7 @@ final class SearchRequestBuilderTest extends TestCase
         ];
 
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setPostFilter($postFilter);
+            ->postFilter($postFilter);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->postFilterRaw($postFilter)
@@ -424,7 +424,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_post_filter_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setPostFilter(['term' => ['published' => '2020-06-07']]);
+            ->postFilter(['term' => ['published' => '2020-06-07']]);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->postFilter('term', ['published' => '2020-06-07'])
@@ -436,7 +436,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_track_total_hits_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setTrackTotalHits(100);
+            ->trackTotalHits(100);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->trackTotalHits(100)
@@ -448,7 +448,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_callback_is_applied_when_value_is_true(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setSize(999);
+            ->size(999);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->when(true, static function (SearchRequestBuilder $builder) {
@@ -462,7 +462,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_default_callback_is_applied_when_value_is_false(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setFrom(333);
+            ->from(333);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->when(false, static function (SearchRequestBuilder $builder) {
@@ -478,7 +478,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_track_scores_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setTrackScores(true);
+            ->trackScores(true);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->trackScores(true)
@@ -497,7 +497,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_index_boost_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setIndicesBoost([['books' => 2]]);
+            ->indicesBoost([['books' => 2]]);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->boostIndex(Book::class, 2)
@@ -509,7 +509,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_with_min_score_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->setMinScore(0.5);
+            ->minScore(0.5);
 
         $actual = $this->makeBuilderWithQuery($this->matchAllQuery)
             ->minScore(0.5)

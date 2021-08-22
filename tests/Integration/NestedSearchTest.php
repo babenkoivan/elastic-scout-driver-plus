@@ -14,14 +14,15 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
+ * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
+ * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Factory
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
- * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */

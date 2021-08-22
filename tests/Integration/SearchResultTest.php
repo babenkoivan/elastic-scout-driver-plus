@@ -83,8 +83,8 @@ final class SearchResultTest extends TestCase
         $matches = $documents->map(function (Document $document) {
             $hit = new Hit([
                 '_index' => 'books',
-                '_id' => $document->getId(),
-                '_source' => $document->getContent(),
+                '_id' => $document->id(),
+                '_source' => $document->content(),
             ]);
 
             return new QueryMatch($this->factory, $hit);
@@ -107,7 +107,7 @@ final class SearchResultTest extends TestCase
             $hit = new Hit([
                 '_index' => 'books',
                 '_id' => (string)$counter,
-                'highlight' => $highlight ? $highlight->getRaw() : null,
+                'highlight' => $highlight ? $highlight->raw() : null,
             ]);
 
             return new QueryMatch($this->factory, $hit);

@@ -5,7 +5,9 @@ namespace ElasticScoutDriverPlus;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriver\Engine as BaseEngine;
+use ElasticScoutDriverPlus\Factories\RoutingFactory;
 use ElasticScoutDriverPlus\Support\ModelScope;
+use Illuminate\Database\Eloquent\Model;
 
 final class Engine extends BaseEngine
 {
@@ -18,12 +20,12 @@ final class Engine extends BaseEngine
             return;
         }
 
-        $model = $models->first();
-        $index = $model->searchableAs();
-        $routingPath = in_array(ShardRouting::class, class_uses_recursive($model)) ? $model->getRoutingPath() : null;
-        $documents = $this->documentFactory->makeFromModels($models);
-
-        $this->documentManager->index($index, $documents->all(), $this->refreshDocuments, $routingPath);
+        $this->documentManager->index(
+            $models->first()->searchableAs(),
+            $this->documentFactory->makeFromModels($models),
+            $this->refreshDocuments,
+            RoutingFactory::makeFromModels($models)
+        );
     }
 
     /**
@@ -35,12 +37,16 @@ final class Engine extends BaseEngine
             return;
         }
 
-        $model = $models->first();
-        $index = $model->searchableAs();
-        $routingPath = in_array(ShardRouting::class, class_uses_recursive($model)) ? $model->getRoutingPath() : null;
-        $documents = $this->documentFactory->makeFromModels($models);
+        $documentIds = $models->map(static function (Model $model) {
+            return (string)$model->getScoutKey();
+        })->all();
 
-        $this->documentManager->delete($index, $documents->all(), $this->refreshDocuments, $routingPath);
+        $this->documentManager->delete(
+            $models->first()->searchableAs(),
+            $documentIds,
+            $this->refreshDocuments,
+            RoutingFactory::makeFromModels($models)
+        );
     }
 
     public function executeSearchRequest(SearchRequest $searchRequest, ModelScope $modelScope): SearchResponse

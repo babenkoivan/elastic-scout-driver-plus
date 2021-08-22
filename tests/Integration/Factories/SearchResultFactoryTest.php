@@ -2,6 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Factories;
 
+use ElasticAdapter\Search\Aggregation;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticAdapter\Search\Suggestion;
 use ElasticScoutDriverPlus\Factories\SearchResultFactory;
@@ -15,6 +16,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  *
  * @uses   \ElasticScoutDriverPlus\Engine
  * @uses   \ElasticScoutDriverPlus\Factories\LazyModelFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
  * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
@@ -77,9 +79,9 @@ final class SearchResultFactoryTest extends TestCase
         ]), $searchResult->suggestions());
 
         $this->assertEquals(collect([
-            'max_price' => [
+            'max_price' => new Aggregation([
                 'value' => 100,
-            ],
+            ]),
         ]), $searchResult->aggregations());
     }
 }

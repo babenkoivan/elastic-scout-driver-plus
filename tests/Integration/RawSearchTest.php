@@ -22,9 +22,10 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
  * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\Paginator
+ * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
@@ -79,7 +80,7 @@ final class RawSearchTest extends TestCase
 
             $this->assertNotNull($highlight);
             /** @var Highlight $highlight */
-            $this->assertSame(['title' => ['<em>' . $model->title . '</em>']], $highlight->getRaw());
+            $this->assertSame(['title' => ['<em>' . $model->title . '</em>']], $highlight->raw());
         });
     }
 
@@ -175,7 +176,7 @@ final class RawSearchTest extends TestCase
         $suggestionOptions = $found->suggestions()
             ->get('title')
             ->first()
-            ->getOptions();
+            ->options();
 
         $this->assertSame(
             $target->pluck('title')->sort()->values()->toArray(),
@@ -305,8 +306,8 @@ final class RawSearchTest extends TestCase
             ->size(0)
             ->execute();
 
-        $this->assertEquals($minPrice, $found->aggregations()->get('min_price')['value']);
-        $this->assertEquals($maxPrice, $found->aggregations()->get('max_price')['value']);
+        $this->assertEquals($minPrice, $found->aggregations()->get('min_price')->raw()['value']);
+        $this->assertEquals($maxPrice, $found->aggregations()->get('max_price')->raw()['value']);
     }
 
     public function test_document_data_can_be_analyzed_using_aggregations(): void
@@ -325,7 +326,7 @@ final class RawSearchTest extends TestCase
             ->size(0)
             ->execute();
 
-        $this->assertEquals($source->max('price'), $found->aggregations()->get('max_price')['value']);
+        $this->assertEquals($source->max('price'), $found->aggregations()->get('max_price')->raw()['value']);
     }
 
     public function test_models_can_be_found_using_post_filter(): void

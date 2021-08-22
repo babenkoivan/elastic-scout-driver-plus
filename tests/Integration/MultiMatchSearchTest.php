@@ -12,11 +12,12 @@ use ElasticScoutDriverPlus\Tests\App\Book;
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  *
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
+ * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\QueryMatch
  * @uses   \ElasticScoutDriverPlus\SearchResult
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */

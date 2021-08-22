@@ -273,59 +273,59 @@ class SearchRequestBuilder
         $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
 
         if (!empty($this->highlight)) {
-            $searchRequest->setHighlight($this->highlight);
+            $searchRequest->highlight($this->highlight);
         }
 
         if (!empty($this->sort)) {
-            $searchRequest->setSort($this->sort);
+            $searchRequest->sort($this->sort);
         }
 
         if (!empty($this->rescore)) {
-            $searchRequest->setRescore($this->rescore);
+            $searchRequest->rescore($this->rescore);
         }
 
         if (isset($this->from)) {
-            $searchRequest->setFrom($this->from);
+            $searchRequest->from($this->from);
         }
 
         if (isset($this->size)) {
-            $searchRequest->setSize($this->size);
+            $searchRequest->size($this->size);
         }
 
         if (!empty($this->suggest)) {
-            $searchRequest->setSuggest($this->suggest);
+            $searchRequest->suggest($this->suggest);
         }
 
         if (isset($this->source)) {
-            $searchRequest->setSource($this->source);
+            $searchRequest->source($this->source);
         }
 
         if (!empty($this->collapse)) {
-            $searchRequest->setCollapse($this->collapse);
+            $searchRequest->collapse($this->collapse);
         }
 
         if (!empty($this->aggregations)) {
-            $searchRequest->setAggregations($this->aggregations);
+            $searchRequest->aggregations($this->aggregations);
         }
 
         if (!empty($this->postFilter)) {
-            $searchRequest->setPostFilter($this->postFilter);
+            $searchRequest->postFilter($this->postFilter);
         }
 
         if (isset($this->trackTotalHits)) {
-            $searchRequest->setTrackTotalHits($this->trackTotalHits);
+            $searchRequest->trackTotalHits($this->trackTotalHits);
         }
 
         if (isset($this->trackScores)) {
-            $searchRequest->setTrackScores($this->trackScores);
+            $searchRequest->trackScores($this->trackScores);
         }
 
         if (isset($this->minScore)) {
-            $searchRequest->setMinScore($this->minScore);
+            $searchRequest->minScore($this->minScore);
         }
 
         if (!empty($this->indicesBoost)) {
-            $searchRequest->setIndicesBoost($this->indicesBoost);
+            $searchRequest->indicesBoost($this->indicesBoost);
         }
 
         return $searchRequest;
@@ -341,7 +341,7 @@ class SearchRequestBuilder
     {
         return $this->engine
             ->executeSearchRequest($this->buildSearchRequest(), $this->modelScope)
-            ->getRaw();
+            ->raw();
     }
 
     public function paginate(

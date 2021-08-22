@@ -30,33 +30,33 @@ final class QueryMatch implements Arrayable
     {
         return $this->lazyModelFactory->makeByIndexNameAndDocumentId(
             $this->indexName(),
-            $this->document()->getId()
+            $this->document()->id()
         );
     }
 
     public function indexName(): string
     {
-        return $this->hit->getIndexName();
+        return $this->hit->indexName();
     }
 
     public function document(): Document
     {
-        return $this->hit->getDocument();
+        return $this->hit->document();
     }
 
     public function highlight(): ?Highlight
     {
-        return $this->hit->getHighlight();
+        return $this->hit->highlight();
     }
 
     public function score(): ?float
     {
-        return $this->hit->getScore();
+        return $this->hit->score();
     }
 
     public function raw(): array
     {
-        return $this->hit->getRaw();
+        return $this->hit->raw();
     }
 
     /**
@@ -72,7 +72,7 @@ final class QueryMatch implements Arrayable
             'model' => isset($model) ? $model->toArray() : null,
             'index_name' => $this->indexName(),
             'document' => $document->toArray(),
-            'highlight' => isset($highlight) ? $highlight->getRaw() : null,
+            'highlight' => isset($highlight) ? $highlight->raw() : null,
             'score' => $this->score(),
         ];
     }

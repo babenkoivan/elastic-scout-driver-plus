@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @covers \ElasticScoutDriverPlus\QueryMatch
+ *
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
  */
 final class QueryMatchTest extends TestCase
 {
@@ -66,8 +68,8 @@ final class QueryMatchTest extends TestCase
     {
         $document = $this->match->document();
 
-        $this->assertSame('1', $document->getId());
-        $this->assertSame(['title' => 'test'], $document->getContent());
+        $this->assertSame('1', $document->id());
+        $this->assertSame(['title' => 'test'], $document->content());
     }
 
     public function test_highlight_can_be_received(): void
@@ -75,7 +77,7 @@ final class QueryMatchTest extends TestCase
         /** @var Highlight $highlight */
         $highlight = $this->match->highlight();
 
-        $this->assertSame(['title' => ['<em>test</em>']], $highlight->getRaw());
+        $this->assertSame(['title' => ['<em>test</em>']], $highlight->raw());
     }
 
     public function test_match_can_be_transformed_to_array(): void
