@@ -8,11 +8,11 @@ use Illuminate\Support\Collection as BaseCollection;
 use RuntimeException;
 
 /**
- * @method BaseCollection aggregations()
- * @method BaseCollection documents()
- * @method BaseCollection highlights()
- * @method BaseCollection matches()
- * @method BaseCollection suggestions()
+ * @method BaseCollection     aggregations()
+ * @method BaseCollection     documents()
+ * @method BaseCollection     highlights()
+ * @method BaseCollection     matches()
+ * @method BaseCollection     suggestions()
  * @method EloquentCollection models()
  */
 final class Paginator extends LengthAwarePaginator

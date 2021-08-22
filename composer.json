@@ -47,7 +47,7 @@
         "orchestra/testbench": "^6.12",
         "babenkoivan/elastic-migrations": "v2.0.x-dev",
         "laravel/scout": "^9.0",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "phpstan/phpstan": "^0.12.32",
         "laravel/legacy-factories": "^1.1"
     },

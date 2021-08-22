@@ -72,7 +72,7 @@ coverage: ## Run tests and generate the code coverage report
 
 style-check: ## Check the code style
 	@printf "\033[93m→ Checking the code style\033[0m\n"
-	@bin/php-cs-fixer fix --allow-risky=yes --dry-run --diff-format=udiff --show-progress=dots --verbose
+	@bin/php-cs-fixer fix --allow-risky=yes --dry-run --diff --show-progress=dots --verbose
 	@printf "\n\033[92m✔︎ Code style is checked\033[0m\n"
 
 static-analysis: ## Do static code analysis
