@@ -1,36 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration;
+namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
 use Carbon\Carbon;
+use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
 use ElasticScoutDriverPlus\Builders\RangeQueryBuilder;
+use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
- *
- * @uses   \ElasticScoutDriverPlus\Builders\RangeQueryBuilder
- * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\QueryMatch
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Factory
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
- * @uses   \ElasticScoutDriverPlus\SearchResult
- * @uses   \ElasticScoutDriverPlus\Support\Arr
- * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
-final class BoolSearchTest extends TestCase
+final class BoolQueryTest extends TestCase
 {
     public function test_models_can_be_found_using_must(): void
     {
@@ -43,12 +30,17 @@ final class BoolSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('test')]);
 
-        $found = Book::boolSearch()
-            ->must('match', ['title' => $target->title])
+        $found = Book::searchRequest()
+            ->query(
+                Query::bool()->must(
+                    Query::match()
+                        ->field('title')
+                        ->query($target->title)
+                )
+            )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_models_can_be_found_using_must_not(): void
@@ -61,12 +53,17 @@ final class BoolSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::boolSearch()
-            ->mustNot('match', ['title' => $mixin->title])
+        $found = Book::searchRequest()
+            ->query(
+                Query::bool()->mustNot(
+                    Query::match()
+                        ->field('title')
+                        ->query($mixin->title)
+                )
+            )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_models_can_be_found_using_should(): void
@@ -79,20 +76,26 @@ final class BoolSearchTest extends TestCase
 
         $target = $source->filter(static function (Book $model) {
             return $model->published->year > 2003;
-        });
+        })->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::boolSearch()
-            ->should('term', ['published' => '2018-04-23'])
-            ->should('term', ['published' => '2020-03-07'])
-            ->minimumShouldMatch(1)
+        $found = Book::searchRequest()
+            ->query(
+                Query::bool()
+                    ->should(
+                        Query::term()
+                            ->field('published')
+                            ->value('2018-04-23')
+                    )
+                    ->should(
+                        Query::term()
+                            ->field('published')
+                            ->value('2020-03-07')
+                    )
+            )
+            ->sort('id')
             ->execute();
 
-        $this->assertCount(2, $found->models());
-
-        $this->assertSame(
-            $target->pluck('id')->sort()->values()->all(),
-            $found->models()->pluck('id')->sort()->values()->all()
-        );
+        $this->assertFoundModels($target, $found);
     }
 
     public function test_models_can_be_found_using_filter(): void
@@ -106,12 +109,17 @@ final class BoolSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create(['published' => Carbon::create(2020, 6, 7)]);
 
-        $found = Book::boolSearch()
-            ->filter('term', ['published' => '2020-06-07'])
+        $found = Book::searchRequest()
+            ->query(
+                Query::bool()->filter(
+                    Query::term()
+                        ->field('published')
+                        ->value('2020-06-07')
+                )
+            )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_not_trashed_models_can_be_found(): void
@@ -128,12 +136,15 @@ final class BoolSearchTest extends TestCase
             $model->delete();
         });
 
-        $found = Book::boolSearch()
-            ->must('match_all')
+        $found = Book::searchRequest()
+            ->query(
+                Query::bool()->must(
+                    Query::matchAll()
+                )
+            )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_trashed_models_can_be_found(): void
@@ -142,22 +153,22 @@ final class BoolSearchTest extends TestCase
 
         $target = factory(Book::class, rand(2, 10))
             ->state('belongs_to_author')
-            ->create();
+            ->create()
+            ->sortBy('id', SORT_NUMERIC);
 
         // soft delete some models
         $target->first()->delete();
 
-        $found = Book::boolSearch()
-            ->must('match_all')
-            ->withTrashed()
+        $found = Book::searchRequest()
+            ->query(
+                Query::bool()
+                    ->must(Query::matchAll())
+                    ->withTrashed()
+            )
+            ->sort('id')
             ->execute();
 
-        $this->assertCount($target->count(), $found->models());
-
-        $this->assertSame(
-            $target->pluck('id')->sort()->values()->all(),
-            $found->models()->pluck('id')->sort()->values()->all()
-        );
+        $this->assertFoundModels($target, $found);
     }
 
     public function test_only_trashed_models_can_be_found(): void
@@ -171,13 +182,15 @@ final class BoolSearchTest extends TestCase
         $target = $source->first();
         $target->delete();
 
-        $found = Book::boolSearch()
-            ->must('match_all')
-            ->onlyTrashed()
+        $found = Book::searchRequest()
+            ->query(
+                Query::bool()
+                    ->must(Query::matchAll())
+                    ->onlyTrashed()
+            )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_only_trashed_models_can_be_found_in_multiple_indices(): void
@@ -190,14 +203,16 @@ final class BoolSearchTest extends TestCase
 
         $target->delete();
 
-        $found = Author::boolSearch()
+        $found = Author::searchRequest()
+            ->query(
+                Query::bool()
+                    ->must(Query::matchAll())
+                    ->onlyTrashed()
+            )
             ->join(Book::class)
-            ->must('match_all')
-            ->onlyTrashed()
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_models_can_be_found_in_multiple_indices(): void
@@ -215,17 +230,26 @@ final class BoolSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('book', true)]);
 
-        $found = Author::boolSearch()
+        $found = Author::searchRequest()
+            ->query(
+                Query::bool()
+                    ->should(
+                        Query::match()
+                            ->field('name')
+                            ->query($firstTarget->name)
+                    )
+                    ->should(
+                        Query::match()
+                            ->field('title')
+                            ->query($secondTarget->title)
+                    )
+                    ->minimumShouldMatch(1)
+            )
             ->join(Book::class)
-            ->should('match', ['name' => $firstTarget->name])
-            ->should('match', ['title' => $secondTarget->title])
-            ->minimumShouldMatch(1)
-            ->sort('_index', 'asc')
+            ->sort('_index')
             ->execute();
 
-        $this->assertCount(2, $found->models());
-        $this->assertEquals($firstTarget->toArray(), $found->models()->first()->toArray());
-        $this->assertEquals($secondTarget->toArray(), $found->models()->last()->toArray());
+        $this->assertFoundModels(collect([$firstTarget, $secondTarget]), $found);
     }
 
     public function test_models_can_be_found_using_query_builder(): void
@@ -239,16 +263,17 @@ final class BoolSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create(['published' => '2020-12-07']);
 
-        $found = Book::boolSearch()
-            ->must(
-                (new RangeQueryBuilder())
-                    ->field('published')
-                    ->gte('2020')
-                    ->format('yyyy')
+        $found = Book::searchRequest()
+            ->query(
+                (new BoolQueryBuilder())->must(
+                    (new RangeQueryBuilder())
+                        ->field('published')
+                        ->gte('2020')
+                        ->format('yyyy')
+                )
             )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 }

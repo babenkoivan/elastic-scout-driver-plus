@@ -1,24 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration;
+namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
 use ElasticAdapter\Search\Suggestion;
+use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
 use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
- *
- * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\QueryMatch
- * @uses   \ElasticScoutDriverPlus\SearchResult
- * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
-final class MatchNoneSearchTest extends TestCase
+final class MatchNoneQueryTest extends TestCase
 {
     public function test_none_models_can_be_found(): void
     {
@@ -26,10 +21,11 @@ final class MatchNoneSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::matchNoneSearch()
+        $found = Book::searchRequest()
+            ->query(Query::matchNone())
             ->execute();
 
-        $this->assertCount(0, $found->models());
+        $this->assertSame(0, $found->total());
     }
 
     public function test_terms_can_be_suggested(): void
@@ -38,7 +34,8 @@ final class MatchNoneSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => 'world']);
 
-        $found = Book::matchNoneSearch()
+        $found = Book::searchRequest()
+            ->query(Query::matchNone())
             ->suggest('title', [
                 'text' => 'word',
                 'term' => [
@@ -51,7 +48,7 @@ final class MatchNoneSearchTest extends TestCase
         $suggestion = $found->suggestions()->get('title')->first();
 
         $this->assertSame('word', $suggestion->text());
-        $this->assertSame($target->title, $suggestion->options()[0]['text']);
+        $this->assertSame($target->title, $suggestion->options()->first()['text']);
         $this->assertSame(0, $found->total());
     }
 }

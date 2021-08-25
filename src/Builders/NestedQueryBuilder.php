@@ -4,14 +4,14 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\QueryParameters\Collection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\IgnoreUnmappedParameter;
-use ElasticScoutDriverPlus\QueryParameters\Shared\QueryArrayParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\QueryParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\ScoreModeParameter;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
 {
-    use QueryArrayParameter;
+    use QueryParameter;
     use ScoreModeParameter;
     use IgnoreUnmappedParameter;
 

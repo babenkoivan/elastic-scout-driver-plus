@@ -2,12 +2,13 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
+use Closure;
 use ElasticScoutDriverPlus\QueryParameters\Collection;
-use ElasticScoutDriverPlus\QueryParameters\Factory;
 use ElasticScoutDriverPlus\QueryParameters\Shared\MinimumShouldMatchParameter;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
 use ElasticScoutDriverPlus\Support\Arr;
+use function ElasticScoutDriverPlus\query;
 
 final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
 {
@@ -42,11 +43,11 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
     }
 
     /**
-     * @param string|array|QueryBuilderInterface $type
+     * @param Closure|QueryBuilderInterface|array $query
      */
-    public function must($type, array $query = []): self
+    public function must($query): self
     {
-        $this->parameters->push('must', Factory::makeQuery($type, $query));
+        $this->parameters->push('must', query($query));
         return $this;
     }
 
@@ -57,11 +58,11 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
     }
 
     /**
-     * @param string|array|QueryBuilderInterface $type
+     * @param Closure|QueryBuilderInterface|array $query
      */
-    public function mustNot($type, array $query = []): self
+    public function mustNot($query): self
     {
-        $this->parameters->push('must_not', Factory::makeQuery($type, $query));
+        $this->parameters->push('must_not', query($query));
         return $this;
     }
 
@@ -72,11 +73,11 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
     }
 
     /**
-     * @param string|array|QueryBuilderInterface $type
+     * @param Closure|QueryBuilderInterface|array $query
      */
-    public function should($type, array $query = []): self
+    public function should($query): self
     {
-        $this->parameters->push('should', Factory::makeQuery($type, $query));
+        $this->parameters->push('should', query($query));
         return $this;
     }
 
@@ -87,11 +88,11 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
     }
 
     /**
-     * @param string|array|QueryBuilderInterface $type
+     * @param Closure|QueryBuilderInterface|array $query
      */
-    public function filter($type, array $query = []): self
+    public function filter($query): self
     {
-        $this->parameters->push('filter', Factory::makeQuery($type, $query));
+        $this->parameters->push('filter', query($query));
         return $this;
     }
 

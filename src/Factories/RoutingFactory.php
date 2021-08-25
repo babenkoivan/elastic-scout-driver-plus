@@ -6,7 +6,7 @@ use ElasticAdapter\Documents\Routing;
 use ElasticScoutDriverPlus\ShardRouting;
 use Illuminate\Support\Collection;
 
-final class RoutingFactory
+class RoutingFactory
 {
     public static function makeFromModels(Collection $models): Routing
     {

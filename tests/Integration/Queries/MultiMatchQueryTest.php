@@ -1,27 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration;
+namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
+use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
 use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\MultiMatchQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
- *
- * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\QueryMatch
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\SearchResult
- * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
-final class MultiMatchSearchTest extends TestCase
+final class MultiMatchQueryTest extends TestCase
 {
     public function test_models_can_be_found_using_fields_and_text(): void
     {
@@ -40,12 +32,14 @@ final class MultiMatchSearchTest extends TestCase
                 'description' => 'bar',
             ]);
 
-        $found = Book::multiMatchSearch()
-            ->fields(['title', 'description'])
-            ->query('foo bar')
+        $found = Book::searchRequest()
+            ->query(
+                Query::multiMatch()
+                    ->fields(['title', 'description'])
+                    ->query('foo bar')
+            )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 }

@@ -10,14 +10,12 @@ use ElasticScoutDriverPlus\Paginator;
 use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Traits\ForwardsCalls;
 use stdClass;
+use function ElasticScoutDriverPlus\query;
 
 class SearchRequestBuilder
 {
     public const DEFAULT_PAGE_SIZE = 10;
-
-    use ForwardsCalls;
 
     /**
      * @var ModelScope
@@ -27,10 +25,6 @@ class SearchRequestBuilder
      * @var Engine
      */
     private $engine;
-    /**
-     * @var QueryBuilderInterface
-     */
-    private $queryBuilder;
     /**
      * @var array
      */
@@ -87,12 +81,15 @@ class SearchRequestBuilder
      * @var array
      */
     private $indicesBoost = [];
+    /**
+     * @var array
+     */
+    private $query;
 
-    public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
+    public function __construct(Model $model)
     {
         $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
-        $this->queryBuilder = $queryBuilder;
     }
 
     public function highlightRaw(array $highlight): self
@@ -268,9 +265,38 @@ class SearchRequestBuilder
         return $this;
     }
 
+    /**
+     * @param mixed         $value
+     * @param callable      $callback
+     * @param callable|null $default
+     *
+     * @return mixed
+     */
+    public function when($value, $callback, $default = null)
+    {
+        if ($value) {
+            return $callback($this, $value) ?? $this;
+        }
+
+        if ($default) {
+            return $default($this, $value) ?? $this;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Closure|QueryBuilderInterface|array
+     */
+    public function query($query): self
+    {
+        $this->query = query($query);
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
-        $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
+        $searchRequest = new SearchRequest($this->query);
 
         if (!empty($this->highlight)) {
             $searchRequest->highlight($this->highlight);
@@ -337,13 +363,6 @@ class SearchRequestBuilder
         return SearchResultFactory::makeFromSearchResponseUsingModelScope($searchResponse, $this->modelScope);
     }
 
-    public function raw(): array
-    {
-        return $this->engine
-            ->executeSearchRequest($this->buildSearchRequest(), $this->modelScope)
-            ->raw();
-    }
-
     public function paginate(
         int $perPage = self::DEFAULT_PAGE_SIZE,
         string $pageName = 'page',
@@ -367,29 +386,10 @@ class SearchRequestBuilder
         );
     }
 
-    /**
-     * @param mixed         $value
-     * @param callable      $callback
-     * @param callable|null $default
-     *
-     * @return mixed
-     */
-    public function when($value, $callback, $default = null)
+    public function raw(): array
     {
-        if ($value) {
-            return $callback($this, $value) ?? $this;
-        }
-
-        if ($default) {
-            return $default($this, $value) ?? $this;
-        }
-
-        return $this;
-    }
-
-    public function __call(string $method, array $parameters): self
-    {
-        $this->forwardCallTo($this->queryBuilder, $method, $parameters);
-        return $this;
+        return $this->engine
+            ->executeSearchRequest($this->buildSearchRequest(), $this->modelScope)
+            ->raw();
     }
 }

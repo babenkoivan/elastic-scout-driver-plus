@@ -1,35 +1,25 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration;
+namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
 use Carbon\Carbon;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
 use ElasticScoutDriverPlus\QueryMatch;
-use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\App\Model;
+use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Support\Facades\Cache;
 use RuntimeException;
-use const SORT_STRING;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
- *
- * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\Paginator
- * @uses   \ElasticScoutDriverPlus\QueryMatch
- * @uses   \ElasticScoutDriverPlus\SearchResult
- * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
-final class RawSearchTest extends TestCase
+final class RawQueryTest extends TestCase
 {
     public function test_models_can_be_found_using_raw_query(): void
     {
@@ -42,7 +32,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('test')]);
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query([
                 'match' => [
                     'title' => $target->title,
@@ -50,17 +40,17 @@ final class RawSearchTest extends TestCase
             ])
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_models_can_be_found_using_raw_query_and_highlight(): void
     {
         $target = factory(Book::class, rand(2, 10))
             ->state('belongs_to_author')
-            ->create(['title' => uniqid('test')]);
+            ->create(['title' => uniqid('test')])
+            ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->sort('id')
             ->query([
                 'match' => [
@@ -68,10 +58,10 @@ final class RawSearchTest extends TestCase
                 ],
             ])
             ->highlight('title')
+            ->sort('id')
             ->execute();
 
-        $this->assertCount($target->count(), $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->toArray());
+        $this->assertFoundModels($target, $found);
 
         $found->matches()->each(function (QueryMatch $match) {
             /** @var Book $model */
@@ -88,15 +78,15 @@ final class RawSearchTest extends TestCase
     {
         $target = factory(Book::class, rand(2, 10))
             ->state('belongs_to_author')
-            ->create();
+            ->create()
+            ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->sort('id')
             ->execute();
 
-        $this->assertCount($target->count(), $found->models());
-        $this->assertEquals($target->sortBy('id')->values()->toArray(), $found->models()->toArray());
+        $this->assertFoundModels($target, $found);
     }
 
     public function test_models_can_be_found_using_raw_query_and_from(): void
@@ -105,7 +95,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->from(5)
             ->execute();
@@ -120,7 +110,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->size(2)
             ->execute();
@@ -129,26 +119,13 @@ final class RawSearchTest extends TestCase
         $this->assertSame(4, $found->total());
     }
 
-    public function test_search_result_can_be_retrieved(): void
-    {
-        factory(Book::class, rand(2, 10))
-            ->state('belongs_to_author')
-            ->create();
-
-        $found = Book::rawSearch()
-            ->query(['match_all' => new stdClass()])
-            ->execute();
-
-        $this->assertInstanceOf(SearchResult::class, $found);
-    }
-
     public function test_raw_result_can_be_retrieved(): void
     {
         factory(Book::class, rand(2, 10))
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->raw();
 
@@ -163,7 +140,7 @@ final class RawSearchTest extends TestCase
                 ->create(compact('title'));
         });
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_none' => new stdClass()])
             ->suggest('title', [
                 'text' => 'wirld',
@@ -180,7 +157,7 @@ final class RawSearchTest extends TestCase
 
         $this->assertSame(
             $target->pluck('title')->sort()->values()->toArray(),
-            collect($suggestionOptions)->pluck('text')->sort()->values()->toArray()
+            $suggestionOptions->pluck('text')->sort()->values()->toArray()
         );
     }
 
@@ -190,7 +167,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->sourceRaw(false)
             ->execute();
@@ -209,7 +186,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->source(['title', 'description'])
             ->execute();
@@ -244,15 +221,13 @@ final class RawSearchTest extends TestCase
         ]);
 
         // find the cheapest books by author
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->collapseRaw(['field' => 'author_id'])
             ->sort('price', 'asc')
             ->execute();
 
-        $this->assertCount(2, $found->models());
-        $this->assertEquals($firstTarget->toArray(), $found->models()->first()->toArray());
-        $this->assertEquals($secondTarget->toArray(), $found->models()->last()->toArray());
+        $this->assertFoundModels(collect([$firstTarget, $secondTarget]), $found);
     }
 
     public function test_models_can_be_found_using_field_collapsing(): void
@@ -270,14 +245,13 @@ final class RawSearchTest extends TestCase
         ]);
 
         // find the most recent book of the author
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->collapse('author_id')
             ->sort('published', 'desc')
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_document_data_can_be_analyzed_using_raw_aggregations(): void
@@ -289,7 +263,7 @@ final class RawSearchTest extends TestCase
         $minPrice = $source->min('price');
         $maxPrice = $source->max('price');
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->aggregateRaw([
                 'min_price' => [
@@ -316,7 +290,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->aggregate('max_price', [
                 'max' => [
@@ -340,13 +314,12 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create(['published' => Carbon::create(2020, 6, 7)]);
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->postFilter('term', ['published' => '2020-06-07'])
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_models_can_be_paginated(): void
@@ -354,12 +327,12 @@ final class RawSearchTest extends TestCase
         $target = factory(Book::class, 5)
             ->state('belongs_to_author')
             ->create()
-            ->sortBy('id', SORT_STRING)
+            ->sortBy('id', SORT_NUMERIC)
             ->chunk(3);
 
-        $builder = Book::rawSearch()
+        $builder = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
-            ->sort('id', 'asc');
+            ->sort('id');
 
         $firstPage = $builder->paginate(3, 'customName', 1);
         $secondPage = $builder->paginate(3, 'customName', 2);
@@ -390,7 +363,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        Book::rawSearch()
+        Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->trackTotalHits(false)
             ->paginate();
@@ -402,7 +375,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->load(['author'])
             ->execute();
@@ -418,7 +391,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->join(Author::class)
             ->load(['author'], Book::class)
@@ -433,52 +406,55 @@ final class RawSearchTest extends TestCase
 
     public function test_search_result_can_be_cached(): void
     {
-        $source = factory(Book::class, rand(2, 5))
+        $target = factory(Book::class, rand(2, 5))
             ->state('belongs_to_author')
-            ->create();
+            ->create()
+            ->sortBy('id', SORT_NUMERIC);
 
         $cacheStore = Cache::store('file');
         $cacheStore->delete('raw_search_result');
 
-        $searchResult = $cacheStore->rememberForever('raw_search_result', static function () {
-            return Book::rawSearch()
-                ->sort('id')
+        $found = $cacheStore->rememberForever('raw_search_result', static function () {
+            return Book::searchRequest()
                 ->query(['match_all' => new stdClass()])
+                ->sort('id')
                 ->execute();
         });
 
-        $this->assertEquals($source->toArray(), $searchResult->models()->toArray());
+        $this->assertFoundModels($target, $found);
     }
 
     public function test_total_hits_calculation_can_be_skipped(): void
     {
-        $source = factory(Book::class, rand(2, 5))
+        $target = factory(Book::class, rand(2, 5))
             ->state('belongs_to_author')
-            ->create();
+            ->create()
+            ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::rawSearch()
-            ->sort('id')
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
+            ->sort('id')
             ->trackTotalHits(false)
             ->execute();
 
-        $this->assertEquals($source->toArray(), $found->models()->toArray());
+        $this->assertFoundModels($target, $found);
         $this->assertNull($found->total());
     }
 
     public function test_total_hits_number_can_be_limited(): void
     {
-        $source = factory(Book::class, 10)
+        $target = factory(Book::class, 10)
             ->state('belongs_to_author')
-            ->create();
+            ->create()
+            ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::rawSearch()
-            ->sort('id')
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
+            ->sort('id')
             ->trackTotalHits(5)
             ->execute();
 
-        $this->assertEquals($source->toArray(), $found->models()->toArray());
+        $this->assertFoundModels($target, $found);
         $this->assertSame(5, $found->total());
     }
 
@@ -488,7 +464,7 @@ final class RawSearchTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
             ->sort('price')
             ->trackScores(true)
@@ -506,14 +482,12 @@ final class RawSearchTest extends TestCase
 
         $secondTarget = $firstTarget->author;
 
-        $found = Book::rawSearch()
+        $found = Book::searchRequest()
             ->join(Author::class)
             ->query(['match_all' => new stdClass()])
             ->boostIndex(Book::class, 2)
             ->execute();
 
-        $this->assertCount(2, $found->models());
-        $this->assertEquals($firstTarget->toArray(), $found->models()->first()->toArray());
-        $this->assertEquals($secondTarget->toArray(), $found->models()->last()->toArray());
+        $this->assertFoundModels(collect([$firstTarget, $secondTarget]), $found);
     }
 }

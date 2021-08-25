@@ -1,32 +1,22 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration;
+namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
+use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
 use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
+use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\NestedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
- * @covers \ElasticScoutDriverPlus\QueryDsl
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
- *
- * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
- * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\Factories\SearchResultFactory
- * @uses   \ElasticScoutDriverPlus\QueryMatch
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Factory
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\SearchResult
- * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
-final class NestedSearchTest extends TestCase
+final class NestedQueryTest extends TestCase
 {
     public function test_models_can_be_found_using_path_and_query(): void
     {
@@ -43,17 +33,19 @@ final class NestedSearchTest extends TestCase
             ]),
         ]);
 
-        $found = Book::nestedSearch()
-            ->path('author')
-            ->query([
-                'match' => [
-                    'author.name' => 'Steven',
-                ],
-            ])
+        $found = Book::searchRequest()
+            ->query(
+                Query::nested()
+                    ->path('author')
+                    ->query(
+                        Query::match()
+                            ->field('author.name')
+                            ->query('Steven')
+                    )
+            )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 
     public function test_models_can_be_found_using_query_builder(): void
@@ -71,16 +63,18 @@ final class NestedSearchTest extends TestCase
             ]),
         ]);
 
-        $found = Book::nestedSearch()
-            ->path('author')
+        $found = Book::searchRequest()
             ->query(
-                (new TermQueryBuilder())
-                    ->field('author.phone_number')
-                    ->value('202-555-0139')
+                (new NestedQueryBuilder())
+                    ->path('author')
+                    ->query(
+                        (new TermQueryBuilder())
+                            ->field('author.phone_number')
+                            ->value('202-555-0139')
+                    )
             )
             ->execute();
 
-        $this->assertCount(1, $found->models());
-        $this->assertEquals($target->toArray(), $found->models()->first()->toArray());
+        $this->assertFoundModel($target, $found);
     }
 }

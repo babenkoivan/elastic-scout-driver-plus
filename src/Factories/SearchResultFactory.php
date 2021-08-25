@@ -9,7 +9,7 @@ use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Support\Collection;
 
-final class SearchResultFactory
+class SearchResultFactory
 {
     public static function makeFromSearchResponseUsingModelScope(
         SearchResponse $searchResponse,
