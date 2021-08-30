@@ -20,7 +20,7 @@ final class RoutingFactoryTest extends TestCase
         $routing = new Routing();
 
         foreach ($models as $model) {
-            $routing->add((string)$model->getScoutKey(), $model->getRouting());
+            $routing->add((string)$model->getScoutKey(), (string)$model->shardRouting());
         }
 
         $this->assertEquals($routing, RoutingFactory::makeFromModels($models));

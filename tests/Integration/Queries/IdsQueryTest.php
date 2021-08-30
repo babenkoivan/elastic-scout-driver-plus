@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
-use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
+use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Eloquent\Model;

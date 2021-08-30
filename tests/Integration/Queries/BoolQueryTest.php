@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 use Carbon\Carbon;
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
 use ElasticScoutDriverPlus\Builders\RangeQueryBuilder;
-use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
+use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;

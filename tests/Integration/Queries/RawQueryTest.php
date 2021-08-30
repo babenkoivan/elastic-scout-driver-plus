@@ -316,7 +316,7 @@ final class RawQueryTest extends TestCase
 
         $found = Book::searchRequest()
             ->query(['match_all' => new stdClass()])
-            ->postFilter('term', ['published' => '2020-06-07'])
+            ->postFilter(['term' => ['published' => '2020-06-07']])
             ->execute();
 
         $this->assertFoundModel($target, $found);

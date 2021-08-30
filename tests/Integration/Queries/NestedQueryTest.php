@@ -4,7 +4,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
 use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
 use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
-use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
+use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;

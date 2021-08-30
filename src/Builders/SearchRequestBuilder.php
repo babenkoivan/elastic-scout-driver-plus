@@ -214,15 +214,12 @@ class SearchRequestBuilder
         return $this;
     }
 
-    public function postFilter(string $type, array $query): self
+    /**
+     * @param Closure|QueryBuilderInterface|array $query
+     */
+    public function postFilter($query): self
     {
-        $this->postFilter[$type] = $query;
-        return $this;
-    }
-
-    public function postFilterRaw(array $filter): self
-    {
-        $this->postFilter = $filter;
+        $this->postFilter = query($query);
         return $this;
     }
 
@@ -286,7 +283,7 @@ class SearchRequestBuilder
     }
 
     /**
-     * @param Closure|QueryBuilderInterface|array
+     * @param Closure|QueryBuilderInterface|array $query
      */
     public function query($query): self
     {

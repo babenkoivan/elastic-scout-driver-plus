@@ -6,7 +6,7 @@ use Closure;
 use ElasticScoutDriverPlus\Builders\QueryBuilderInterface;
 
 /**
- * @param Closure|QueryBuilderInterface|array
+ * @param Closure|QueryBuilderInterface|array $query
  */
 function query($query): array
 {

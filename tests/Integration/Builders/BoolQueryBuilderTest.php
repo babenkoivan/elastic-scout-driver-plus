@@ -4,7 +4,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
 
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
+use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 

@@ -9,6 +9,14 @@ trait Searchable
 {
     use BaseSearchable;
 
+    /**
+     * @return string|int|null
+     */
+    public function shardRouting()
+    {
+        return null;
+    }
+
     public static function searchRequest(): SearchRequestBuilder
     {
         return new SearchRequestBuilder(new static());

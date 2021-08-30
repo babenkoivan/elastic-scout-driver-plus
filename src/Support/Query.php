@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Factories;
+namespace ElasticScoutDriverPlus\Support;
 
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
 use ElasticScoutDriverPlus\Builders\ExistsQueryBuilder;
@@ -20,7 +20,7 @@ use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
 use ElasticScoutDriverPlus\Builders\TermsQueryBuilder;
 use ElasticScoutDriverPlus\Builders\WildcardQueryBuilder;
 
-class QueryFactory
+class Query
 {
     public static function bool(): BoolQueryBuilder
     {

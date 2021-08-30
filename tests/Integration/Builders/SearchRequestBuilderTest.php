@@ -423,25 +423,6 @@ final class SearchRequestBuilderTest extends TestCase
             ->join(__CLASS__);
     }
 
-    public function test_search_request_with_raw_post_filter_can_be_built(): void
-    {
-        $postFilter = [
-            'term' => [
-                'published' => '2020-06-07',
-            ],
-        ];
-
-        $expected = (new SearchRequest($this->matchAllQuery))
-            ->postFilter($postFilter);
-
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
-            ->postFilterRaw($postFilter)
-            ->buildSearchRequest();
-
-        $this->assertEquals($expected, $actual);
-    }
-
     public function test_search_request_with_post_filter_can_be_built(): void
     {
         $expected = (new SearchRequest($this->matchAllQuery))
@@ -449,7 +430,7 @@ final class SearchRequestBuilderTest extends TestCase
 
         $actual = (new SearchRequestBuilder(new Book()))
             ->query($this->matchAllQuery)
-            ->postFilter('term', ['published' => '2020-06-07'])
+            ->postFilter(['term' => ['published' => '2020-06-07']])
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);

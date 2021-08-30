@@ -3,7 +3,7 @@
 namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
 use ElasticAdapter\Search\Suggestion;
-use ElasticScoutDriverPlus\Factories\QueryFactory as Query;
+use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 

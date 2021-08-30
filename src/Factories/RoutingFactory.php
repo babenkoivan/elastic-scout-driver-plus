@@ -3,7 +3,6 @@
 namespace ElasticScoutDriverPlus\Factories;
 
 use ElasticAdapter\Documents\Routing;
-use ElasticScoutDriverPlus\ShardRouting;
 use Illuminate\Support\Collection;
 
 class RoutingFactory
@@ -13,8 +12,8 @@ class RoutingFactory
         $routing = new Routing();
 
         foreach ($models as $model) {
-            if (in_array(ShardRouting::class, class_uses_recursive($model), true)) {
-                $routing->add((string)$model->getScoutKey(), $model->getRouting());
+            if ($value = $model->shardRouting()) {
+                $routing->add((string)$model->getScoutKey(), (string)$value);
             }
         }
 
