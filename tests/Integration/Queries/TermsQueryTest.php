@@ -25,9 +25,8 @@ final class TermsQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['tags' => ['available', 'new']]);
 
-        $found = Book::searchRequest()
-            ->query(Query::terms()->terms('tags', ['available', 'new']))
-            ->execute();
+        $query = Query::terms()->terms('tags', ['available', 'new']);
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

@@ -26,13 +26,11 @@ final class MatchPhrasePrefixQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => 'the second book']);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::matchPhrasePrefix()
-                    ->field('title')
-                    ->query('second bo')
-            )
-            ->execute();
+        $query = Query::matchPhrasePrefix()
+            ->field('title')
+            ->query('second bo');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

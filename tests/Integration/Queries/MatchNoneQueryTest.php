@@ -21,9 +21,7 @@ final class MatchNoneQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(Query::matchNone())
-            ->execute();
+        $found = Book::searchQuery(Query::matchNone())->execute();
 
         $this->assertSame(0, $found->total());
     }
@@ -34,8 +32,7 @@ final class MatchNoneQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => 'world']);
 
-        $found = Book::searchRequest()
-            ->query(Query::matchNone())
+        $found = Book::searchQuery(Query::matchNone())
             ->suggest('title', [
                 'text' => 'word',
                 'term' => [

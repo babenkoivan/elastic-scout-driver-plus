@@ -26,13 +26,11 @@ final class FuzzyQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => 'The black book']);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::fuzzy()
-                    ->field('title')
-                    ->value('lack')
-            )
-            ->execute();
+        $query = Query::fuzzy()
+            ->field('title')
+            ->value('lack');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -44,13 +42,12 @@ final class FuzzyQueryTest extends TestCase
             ->create(['title' => 'The book'])
             ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::fuzzy()
-                    ->field('title')
-                    ->value('boko')
-                    ->transpositions(true)
-            )
+        $query = Query::fuzzy()
+            ->field('title')
+            ->value('boko')
+            ->transpositions(true);
+
+        $found = Book::searchQuery($query)
             ->sort('id')
             ->execute();
 

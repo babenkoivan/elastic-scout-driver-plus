@@ -25,13 +25,11 @@ final class RangeQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['price' => 200]);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::range()
-                    ->field('price')
-                    ->gt(100)
-            )
-            ->execute();
+        $query = Query::range()
+            ->field('price')
+            ->gt(100);
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -47,14 +45,12 @@ final class RangeQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['published' => '2010-06-17']);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::range()
-                    ->field('published')
-                    ->lt('2020')
-                    ->format('yyyy')
-            )
-            ->execute();
+        $query = Query::range()
+            ->field('published')
+            ->lt('2020')
+            ->format('yyyy');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

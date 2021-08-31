@@ -26,8 +26,9 @@ final class IdsQueryTest extends TestCase
 
         $target = $models->where('id', '>', 7)->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::searchRequest()
-            ->query(Query::ids()->values(['8', '9', '10']))
+        $query = Query::ids()->values(['8', '9', '10']);
+
+        $found = Book::searchQuery($query)
             ->sort('id')
             ->execute();
 

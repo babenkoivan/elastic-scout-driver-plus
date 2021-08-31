@@ -25,13 +25,11 @@ final class RegexpQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => 'Number two']);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::regexp()
-                    ->field('title')
-                    ->value('t.o')
-            )
-            ->execute();
+        $query = Query::regexp()
+            ->field('title')
+            ->value('t.o');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

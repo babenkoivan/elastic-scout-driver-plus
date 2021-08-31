@@ -26,13 +26,11 @@ final class MatchQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => 'bar']);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::match()
-                    ->field('title')
-                    ->query('bar')
-            )
-            ->execute();
+        $query = Query::match()
+            ->field('title')
+            ->query('bar');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

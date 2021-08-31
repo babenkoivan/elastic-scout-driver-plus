@@ -33,13 +33,11 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('test')]);
 
-        $found = Book::searchRequest()
-            ->query([
-                'match' => [
-                    'title' => $target->title,
-                ],
-            ])
-            ->execute();
+        $found = Book::searchQuery([
+            'match' => [
+                'title' => $target->title,
+            ],
+        ])->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -51,13 +49,14 @@ final class RawQueryTest extends TestCase
             ->create(['title' => uniqid('test')])
             ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::searchRequest()
+        $query = [
+            'match' => [
+                'title' => $target->first()->title,
+            ],
+        ];
+
+        $found = Book::searchQuery($query)
             ->sort('id')
-            ->query([
-                'match' => [
-                    'title' => $target->first()->title,
-                ],
-            ])
             ->highlight('title')
             ->sort('id')
             ->execute();
@@ -82,8 +81,7 @@ final class RawQueryTest extends TestCase
             ->create()
             ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->sort('id')
             ->execute();
 
@@ -96,8 +94,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->from(5)
             ->execute();
 
@@ -111,8 +108,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->size(2)
             ->execute();
 
@@ -126,9 +122,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
-            ->raw();
+        $found = Book::searchQuery(['match_all' => new stdClass()])->raw();
 
         $this->assertIsArray($found);
     }
@@ -141,8 +135,7 @@ final class RawQueryTest extends TestCase
                 ->create(compact('title'));
         });
 
-        $found = Book::searchRequest()
-            ->query(['match_none' => new stdClass()])
+        $found = Book::searchQuery(['match_none' => new stdClass()])
             ->suggest('title', [
                 'text' => 'wirld',
                 'term' => [
@@ -168,8 +161,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->sourceRaw(false)
             ->execute();
 
@@ -187,8 +179,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->source(['title', 'description'])
             ->execute();
 
@@ -222,8 +213,7 @@ final class RawQueryTest extends TestCase
         ]);
 
         // find the cheapest books by author
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->collapseRaw(['field' => 'author_id'])
             ->sort('price', 'asc')
             ->execute();
@@ -246,8 +236,7 @@ final class RawQueryTest extends TestCase
         ]);
 
         // find the most recent book of the author
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->collapse('author_id')
             ->sort('published', 'desc')
             ->execute();
@@ -264,8 +253,7 @@ final class RawQueryTest extends TestCase
         $minPrice = $source->min('price');
         $maxPrice = $source->max('price');
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->aggregateRaw([
                 'min_price' => [
                     'min' => [
@@ -291,8 +279,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->aggregate('max_price', [
                 'max' => [
                     'field' => 'price',
@@ -315,8 +302,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['published' => Carbon::create(2020, 6, 7)]);
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->postFilter(['term' => ['published' => '2020-06-07']])
             ->execute();
 
@@ -331,8 +317,7 @@ final class RawQueryTest extends TestCase
             ->sortBy('id', SORT_NUMERIC)
             ->chunk(3);
 
-        $builder = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $builder = Book::searchQuery(['match_all' => new stdClass()])
             ->sort('id');
 
         $firstPage = $builder->paginate(3, 'customName', 1);
@@ -364,8 +349,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        Book::searchQuery(['match_all' => new stdClass()])
             ->trackTotalHits(false)
             ->paginate();
     }
@@ -376,8 +360,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->load(['author'])
             ->execute();
 
@@ -392,8 +375,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->join(Author::class)
             ->load(['author'], Book::class)
             ->load(['books'], Author::class)
@@ -416,8 +398,7 @@ final class RawQueryTest extends TestCase
         $cacheStore->delete('raw_search_result');
 
         $found = $cacheStore->rememberForever('raw_search_result', static function () {
-            return Book::searchRequest()
-                ->query(['match_all' => new stdClass()])
+            return Book::searchQuery(['match_all' => new stdClass()])
                 ->sort('id')
                 ->execute();
         });
@@ -432,8 +413,7 @@ final class RawQueryTest extends TestCase
             ->create()
             ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->sort('id')
             ->trackTotalHits(false)
             ->execute();
@@ -449,8 +429,7 @@ final class RawQueryTest extends TestCase
             ->create()
             ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->sort('id')
             ->trackTotalHits(5)
             ->execute();
@@ -465,8 +444,7 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(['match_all' => new stdClass()])
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->sort('price')
             ->trackScores(true)
             ->execute();
@@ -483,9 +461,8 @@ final class RawQueryTest extends TestCase
 
         $secondTarget = $firstTarget->author;
 
-        $found = Book::searchRequest()
+        $found = Book::searchQuery(['match_all' => new stdClass()])
             ->join(Author::class)
-            ->query(['match_all' => new stdClass()])
             ->boostIndex(Book::class, 2)
             ->execute();
 

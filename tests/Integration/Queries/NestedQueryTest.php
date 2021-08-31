@@ -33,17 +33,15 @@ final class NestedQueryTest extends TestCase
             ]),
         ]);
 
-        $found = Book::searchRequest()
+        $query = Query::nested()
+            ->path('author')
             ->query(
-                Query::nested()
-                    ->path('author')
-                    ->query(
-                        Query::match()
-                            ->field('author.name')
-                            ->query('Steven')
-                    )
-            )
-            ->execute();
+                Query::match()
+                    ->field('author.name')
+                    ->query('Steven')
+            );
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -63,17 +61,15 @@ final class NestedQueryTest extends TestCase
             ]),
         ]);
 
-        $found = Book::searchRequest()
+        $builder = (new NestedQueryBuilder())
+            ->path('author')
             ->query(
-                (new NestedQueryBuilder())
-                    ->path('author')
-                    ->query(
-                        (new TermQueryBuilder())
-                            ->field('author.phone_number')
-                            ->value('202-555-0139')
-                    )
-            )
-            ->execute();
+                (new TermQueryBuilder())
+                    ->field('author.phone_number')
+                    ->value('202-555-0139')
+            );
+
+        $found = Book::searchQuery($builder)->execute();
 
         $this->assertFoundModel($target, $found);
     }

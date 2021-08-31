@@ -22,8 +22,7 @@ final class MatchAllQueryTest extends TestCase
             ->create()
             ->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::searchRequest()
-            ->query(Query::matchAll())
+        $found = Book::searchQuery(Query::matchAll())
             ->sort('id')
             ->execute();
 

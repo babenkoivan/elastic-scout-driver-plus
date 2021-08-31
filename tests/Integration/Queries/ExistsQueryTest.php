@@ -25,9 +25,8 @@ final class ExistsQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['description' => 'The best book ever']);
 
-        $found = Book::searchRequest()
-            ->query(Query::exists()->field('description'))
-            ->execute();
+        $query = Query::exists()->field('description');
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

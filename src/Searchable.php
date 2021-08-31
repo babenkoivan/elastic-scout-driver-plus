@@ -2,6 +2,8 @@
 
 namespace ElasticScoutDriverPlus;
 
+use Closure;
+use ElasticScoutDriverPlus\Builders\QueryBuilderInterface;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 use Laravel\Scout\Searchable as BaseSearchable;
 
@@ -17,8 +19,11 @@ trait Searchable
         return null;
     }
 
-    public static function searchRequest(): SearchRequestBuilder
+    /**
+     * @param Closure|QueryBuilderInterface|array $query
+     */
+    public static function searchQuery($query): SearchRequestBuilder
     {
-        return new SearchRequestBuilder(new static());
+        return new SearchRequestBuilder($query, new static());
     }
 }

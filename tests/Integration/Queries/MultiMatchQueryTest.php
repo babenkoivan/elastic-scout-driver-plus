@@ -32,13 +32,11 @@ final class MultiMatchQueryTest extends TestCase
                 'description' => 'bar',
             ]);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::multiMatch()
-                    ->fields(['title', 'description'])
-                    ->query('foo bar')
-            )
-            ->execute();
+        $query = Query::multiMatch()
+            ->fields(['title', 'description'])
+            ->query('foo bar');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

@@ -31,15 +31,13 @@ final class BoolQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('test')]);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::bool()->must(
-                    Query::match()
-                        ->field('title')
-                        ->query($target->title)
-                )
-            )
-            ->execute();
+        $query = Query::bool()->must(
+            Query::match()
+                ->field('title')
+                ->query($target->title)
+        );
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -54,15 +52,13 @@ final class BoolQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::bool()->mustNot(
-                    Query::match()
-                        ->field('title')
-                        ->query($mixin->title)
-                )
-            )
-            ->execute();
+        $query = Query::bool()->mustNot(
+            Query::match()
+                ->field('title')
+                ->query($mixin->title)
+        );
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -79,20 +75,19 @@ final class BoolQueryTest extends TestCase
             return $model->published->year > 2003;
         })->sortBy('id', SORT_NUMERIC);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::bool()
-                    ->should(
-                        Query::term()
-                            ->field('published')
-                            ->value('2018-04-23')
-                    )
-                    ->should(
-                        Query::term()
-                            ->field('published')
-                            ->value('2020-03-07')
-                    )
+        $query = Query::bool()
+            ->should(
+                Query::term()
+                    ->field('published')
+                    ->value('2018-04-23')
             )
+            ->should(
+                Query::term()
+                    ->field('published')
+                    ->value('2020-03-07')
+            );
+
+        $found = Book::searchQuery($query)
             ->sort('id')
             ->execute();
 
@@ -110,15 +105,13 @@ final class BoolQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['published' => Carbon::create(2020, 6, 7)]);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::bool()->filter(
-                    Query::term()
-                        ->field('published')
-                        ->value('2020-06-07')
-                )
-            )
-            ->execute();
+        $query = Query::bool()->filter(
+            Query::term()
+                ->field('published')
+                ->value('2020-06-07')
+        );
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -137,13 +130,11 @@ final class BoolQueryTest extends TestCase
             $model->delete();
         });
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::bool()->must(
-                    Query::matchAll()
-                )
-            )
-            ->execute();
+        $query = Query::bool()->must(
+            Query::matchAll()
+        );
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -160,12 +151,11 @@ final class BoolQueryTest extends TestCase
         // soft delete some models
         $target->first()->delete();
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::bool()
-                    ->must(Query::matchAll())
-                    ->withTrashed()
-            )
+        $query = Query::bool()
+            ->must(Query::matchAll())
+            ->withTrashed();
+
+        $found = Book::searchQuery($query)
             ->sort('id')
             ->execute();
 
@@ -183,13 +173,11 @@ final class BoolQueryTest extends TestCase
         $target = $source->first();
         $target->delete();
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::bool()
-                    ->must(Query::matchAll())
-                    ->onlyTrashed()
-            )
-            ->execute();
+        $query = Query::bool()
+            ->must(Query::matchAll())
+            ->onlyTrashed();
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }
@@ -204,12 +192,11 @@ final class BoolQueryTest extends TestCase
 
         $target->delete();
 
-        $found = Author::searchRequest()
-            ->query(
-                Query::bool()
-                    ->must(Query::matchAll())
-                    ->onlyTrashed()
-            )
+        $query = Query::bool()
+            ->must(Query::matchAll())
+            ->onlyTrashed();
+
+        $found = Author::searchQuery($query)
             ->join(Book::class)
             ->execute();
 
@@ -231,21 +218,20 @@ final class BoolQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => uniqid('book', true)]);
 
-        $found = Author::searchRequest()
-            ->query(
-                Query::bool()
-                    ->should(
-                        Query::match()
-                            ->field('name')
-                            ->query($firstTarget->name)
-                    )
-                    ->should(
-                        Query::match()
-                            ->field('title')
-                            ->query($secondTarget->title)
-                    )
-                    ->minimumShouldMatch(1)
+        $query = Query::bool()
+            ->should(
+                Query::match()
+                    ->field('name')
+                    ->query($firstTarget->name)
             )
+            ->should(
+                Query::match()
+                    ->field('title')
+                    ->query($secondTarget->title)
+            )
+            ->minimumShouldMatch(1);
+
+        $found = Author::searchQuery($query)
             ->join(Book::class)
             ->sort('_index')
             ->execute();
@@ -264,16 +250,14 @@ final class BoolQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['published' => '2020-12-07']);
 
-        $found = Book::searchRequest()
-            ->query(
-                (new BoolQueryBuilder())->must(
-                    (new RangeQueryBuilder())
-                        ->field('published')
-                        ->gte('2020')
-                        ->format('yyyy')
-                )
-            )
-            ->execute();
+        $builder = (new BoolQueryBuilder())->must(
+            (new RangeQueryBuilder())
+                ->field('published')
+                ->gte('2020')
+                ->format('yyyy')
+        );
+
+        $found = Book::searchQuery($builder)->execute();
 
         $this->assertFoundModel($target, $found);
     }

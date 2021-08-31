@@ -25,13 +25,11 @@ final class WildcardQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => 'The right book']);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::wildcard()
-                    ->field('title')
-                    ->value('ri*t')
-            )
-            ->execute();
+        $query = Query::wildcard()
+            ->field('title')
+            ->value('ri*t');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

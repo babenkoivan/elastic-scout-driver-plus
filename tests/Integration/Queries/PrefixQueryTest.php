@@ -25,13 +25,11 @@ final class PrefixQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['title' => 'Second']);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::prefix()
-                    ->field('title')
-                    ->value('sec')
-            )
-            ->execute();
+        $query = Query::prefix()
+            ->field('title')
+            ->value('sec');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

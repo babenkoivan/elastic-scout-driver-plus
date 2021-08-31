@@ -25,13 +25,11 @@ final class TermQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['price' => 300]);
 
-        $found = Book::searchRequest()
-            ->query(
-                Query::term()
-                    ->field('price')
-                    ->value('300')
-            )
-            ->execute();
+        $query = Query::term()
+            ->field('price')
+            ->value('300');
+
+        $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

@@ -41,7 +41,7 @@ final class SearchRequestBuilderTest extends TestCase
     public function test_search_request_can_be_built_when_query_is_specified(): void
     {
         $searchRequest = new SearchRequest($this->matchAllQuery);
-        $builder = (new SearchRequestBuilder(new Book()))->query($this->matchAllQuery);
+        $builder = new SearchRequestBuilder($this->matchAllQuery, new Book());
 
         $this->assertEquals($searchRequest, $builder->buildSearchRequest());
     }
@@ -60,8 +60,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->highlight($highlight);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->highlightRaw($highlight)
             ->buildSearchRequest();
 
@@ -78,8 +77,7 @@ final class SearchRequestBuilderTest extends TestCase
                 ],
             ]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->highlight('body')
             ->highlight('blog.title', ['number_of_fragments' => 0])
             ->buildSearchRequest();
@@ -99,8 +97,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->sort($sort);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->sortRaw($sort)
             ->buildSearchRequest();
 
@@ -115,8 +112,7 @@ final class SearchRequestBuilderTest extends TestCase
                 ['name' => 'desc'],
             ]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->sort('post_date')
             ->sort('name', 'desc')
             ->buildSearchRequest();
@@ -145,8 +141,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->rescore($rescore);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->rescoreRaw($rescore)
             ->buildSearchRequest();
 
@@ -171,8 +166,7 @@ final class SearchRequestBuilderTest extends TestCase
                 ],
             ]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->rescoreQuery('match_phrase', [
                 'message' => [
                     'query' => 'the quick brown',
@@ -194,8 +188,7 @@ final class SearchRequestBuilderTest extends TestCase
                 ],
             ]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->rescoreWeights(0.7, 1.2)
             ->buildSearchRequest();
 
@@ -209,8 +202,7 @@ final class SearchRequestBuilderTest extends TestCase
                 'window_size' => 10,
             ]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->rescoreWindowSize(10)
             ->buildSearchRequest();
 
@@ -224,8 +216,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->from($from);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->from($from)
             ->buildSearchRequest();
 
@@ -239,8 +230,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->size($size);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->size($size)
             ->buildSearchRequest();
 
@@ -261,8 +251,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchNoneQuery))
             ->suggest($suggest);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchNoneQuery)
+        $actual = (new SearchRequestBuilder($this->matchNoneQuery, new Book()))
             ->suggestRaw($suggest)
             ->buildSearchRequest();
 
@@ -287,8 +276,7 @@ final class SearchRequestBuilderTest extends TestCase
                 ],
             ]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchNoneQuery)
+        $actual = (new SearchRequestBuilder($this->matchNoneQuery, new Book()))
             ->suggest('color_suggestion', [
                 'text' => 'red',
                 'term' => [
@@ -313,8 +301,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->source($source);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->sourceRaw($source)
             ->buildSearchRequest();
 
@@ -328,8 +315,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->source($source);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->source($source)
             ->buildSearchRequest();
 
@@ -343,8 +329,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->collapse($collapse);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->collapseRaw($collapse)
             ->buildSearchRequest();
 
@@ -356,8 +341,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->collapse(['field' => 'user']);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->collapse('user')
             ->buildSearchRequest();
 
@@ -382,8 +366,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->aggregations($aggregations);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->aggregateRaw($aggregations)
             ->buildSearchRequest();
 
@@ -401,8 +384,7 @@ final class SearchRequestBuilderTest extends TestCase
                 ],
             ]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->aggregate('max_price', [
                 'max' => [
                     'field' => 'price',
@@ -417,9 +399,7 @@ final class SearchRequestBuilderTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
-            ->join(__CLASS__);
+        (new SearchRequestBuilder($this->matchAllQuery, new Book()))->join(__CLASS__);
     }
 
     public function test_search_request_with_post_filter_can_be_built(): void
@@ -427,8 +407,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->postFilter(['term' => ['published' => '2020-06-07']]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->postFilter(['term' => ['published' => '2020-06-07']])
             ->buildSearchRequest();
 
@@ -440,8 +419,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->trackTotalHits(100);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->trackTotalHits(100)
             ->buildSearchRequest();
 
@@ -453,8 +431,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->size(999);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->when(true, static function (SearchRequestBuilder $builder) {
                 $builder->size(999);
             })
@@ -468,8 +445,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->from(333);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->when(false, static function (SearchRequestBuilder $builder) {
                 $builder->from(111);
             }, static function (SearchRequestBuilder $builder) {
@@ -485,8 +461,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->trackScores(true);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->trackScores(true)
             ->buildSearchRequest();
 
@@ -497,9 +472,7 @@ final class SearchRequestBuilderTest extends TestCase
     {
         $this->expectException(ModelClassNotFoundInScopeException::class);
 
-        (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
-            ->boostIndex(Author::class, 2);
+        (new SearchRequestBuilder($this->matchAllQuery, new Book()))->boostIndex(Author::class, 2);
     }
 
     public function test_search_request_with_index_boost_can_be_built(): void
@@ -507,8 +480,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->indicesBoost([['books' => 2]]);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->boostIndex(Book::class, 2)
             ->buildSearchRequest();
 
@@ -520,8 +492,7 @@ final class SearchRequestBuilderTest extends TestCase
         $expected = (new SearchRequest($this->matchAllQuery))
             ->minScore(0.5);
 
-        $actual = (new SearchRequestBuilder(new Book()))
-            ->query($this->matchAllQuery)
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
             ->minScore(0.5)
             ->buildSearchRequest();
 
