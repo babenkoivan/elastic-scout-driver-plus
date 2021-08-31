@@ -2,33 +2,27 @@
 
 namespace ElasticScoutDriverPlus;
 
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use ElasticScoutDriverPlus\Decorators\SearchResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection as BaseCollection;
 use RuntimeException;
 
 /**
- * @method BaseCollection     aggregations()
- * @method BaseCollection     documents()
- * @method BaseCollection     highlights()
- * @method BaseCollection     matches()
- * @method BaseCollection     suggestions()
- * @method EloquentCollection models()
+ * @mixin SearchResponse
  */
 final class Paginator extends LengthAwarePaginator
 {
     /**
-     * @var SearchResult
+     * @var SearchResponse
      */
-    private $searchResult;
+    private $searchResponse;
 
     public function __construct(
-        SearchResult $searchResult,
+        SearchResponse $searchResponse,
         int $perPage,
         ?int $currentPage = null,
         array $options = []
     ) {
-        if (is_null($searchResult->total())) {
+        if (is_null($searchResponse->total())) {
             throw new RuntimeException(
                 'Search result does not contain the total hits number. ' .
                 'Please, make sure that total hits are tracked.'
@@ -36,14 +30,14 @@ final class Paginator extends LengthAwarePaginator
         }
 
         parent::__construct(
-            $searchResult->matches()->all(),
-            $searchResult->total(),
+            $searchResponse->hits()->all(),
+            $searchResponse->total(),
             $perPage,
             $currentPage,
             $options
         );
 
-        $this->searchResult = $searchResult;
+        $this->searchResponse = $searchResponse;
     }
 
     /**
@@ -55,6 +49,6 @@ final class Paginator extends LengthAwarePaginator
             return $this->forwardCallTo($this->getCollection(), $method, $parameters);
         }
 
-        return $this->forwardCallTo($this->searchResult, $method, $parameters);
+        return $this->forwardCallTo($this->searchResponse, $method, $parameters);
     }
 }

@@ -20,12 +20,11 @@ final class Engine extends BaseEngine
             return;
         }
 
-        $this->documentManager->index(
-            $models->first()->searchableAs(),
-            $this->documentFactory->makeFromModels($models),
-            $this->refreshDocuments,
-            RoutingFactory::makeFromModels($models)
-        );
+        $indexName = $models->first()->searchableAs();
+        $routing = RoutingFactory::makeFromModels($models);
+        $documents = $this->documentFactory->makeFromModels($models);
+
+        $this->documentManager->index($indexName, $documents, $this->refreshDocuments, $routing);
     }
 
     /**
@@ -37,16 +36,14 @@ final class Engine extends BaseEngine
             return;
         }
 
+        $indexName = $models->first()->searchableAs();
+        $routing = RoutingFactory::makeFromModels($models);
+
         $documentIds = $models->map(static function (Model $model) {
             return (string)$model->getScoutKey();
         })->all();
 
-        $this->documentManager->delete(
-            $models->first()->searchableAs(),
-            $documentIds,
-            $this->refreshDocuments,
-            RoutingFactory::makeFromModels($models)
-        );
+        $this->documentManager->delete($indexName, $documentIds, $this->refreshDocuments, $routing);
     }
 
     public function executeSearchRequest(SearchRequest $searchRequest, ModelScope $modelScope): SearchResponse

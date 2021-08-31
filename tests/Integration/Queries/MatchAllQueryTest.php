@@ -5,6 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use const SORT_NUMERIC;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder

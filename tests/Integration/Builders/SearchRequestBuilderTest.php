@@ -3,7 +3,6 @@
 namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
 
 use ElasticAdapter\Search\SearchRequest;
-use ElasticScoutDriverPlus\Builders\RawQueryBuilder;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
 use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use ElasticScoutDriverPlus\Tests\App\Author;

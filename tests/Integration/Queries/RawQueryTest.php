@@ -5,13 +5,14 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 use Carbon\Carbon;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
-use ElasticScoutDriverPlus\QueryMatch;
+use ElasticScoutDriverPlus\Decorators\Hit;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\App\Model;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Support\Facades\Cache;
 use RuntimeException;
+use const SORT_NUMERIC;
 use stdClass;
 
 /**
@@ -63,10 +64,10 @@ final class RawQueryTest extends TestCase
 
         $this->assertFoundModels($target, $found);
 
-        $found->matches()->each(function (QueryMatch $match) {
+        $found->hits()->each(function (Hit $hit) {
             /** @var Book $model */
-            $model = $match->model();
-            $highlight = $match->highlight();
+            $model = $hit->model();
+            $highlight = $hit->highlight();
 
             $this->assertNotNull($highlight);
             /** @var Highlight $highlight */
@@ -470,8 +471,8 @@ final class RawQueryTest extends TestCase
             ->trackScores(true)
             ->execute();
 
-        $this->assertCount(1, $found->matches());
-        $this->assertNotNull($found->matches()->first()->score());
+        $this->assertCount(1, $found->hits());
+        $this->assertNotNull($found->hits()->first()->score());
     }
 
     public function test_index_results_can_be_boosted(): void

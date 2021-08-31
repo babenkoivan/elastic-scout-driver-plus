@@ -3,12 +3,12 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use Closure;
+use function ElasticScoutDriverPlus\query;
 use ElasticScoutDriverPlus\QueryParameters\Collection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\MinimumShouldMatchParameter;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
 use ElasticScoutDriverPlus\Support\Arr;
-use function ElasticScoutDriverPlus\query;
 
 final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
 {

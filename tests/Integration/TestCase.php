@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration;
 use ElasticClient\ServiceProvider as ElasticClientServiceProvider;
 use ElasticMigrations\ServiceProvider as ElasticMigrationsServiceProvider;
 use ElasticScoutDriver\ServiceProvider as ElasticScoutDriverServiceProvider;
-use ElasticScoutDriverPlus\SearchResult;
+use ElasticScoutDriverPlus\Decorators\SearchResponse;
 use ElasticScoutDriverPlus\ServiceProvider as ElasticScoutDriverPlusServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -53,14 +53,14 @@ class TestCase extends TestbenchTestCase
         parent::tearDown();
     }
 
-    protected function assertFoundModel(Model $model, SearchResult $searchResult): void
+    protected function assertFoundModel(Model $model, SearchResponse $searchResponse): void
     {
-        $this->assertCount(1, $searchResult->models());
-        $this->assertEquals($model->toArray(), $searchResult->models()->first()->toArray());
+        $this->assertCount(1, $searchResponse->models());
+        $this->assertEquals($model->toArray(), $searchResponse->models()->first()->toArray());
     }
 
-    protected function assertFoundModels(Collection $models, SearchResult $searchResult): void
+    protected function assertFoundModels(Collection $models, SearchResponse $searchResponse): void
     {
-        $this->assertEquals($models->values()->toArray(), $searchResult->models()->values()->toArray());
+        $this->assertEquals($models->values()->toArray(), $searchResponse->models()->values()->toArray());
     }
 }

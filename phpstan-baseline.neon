@@ -21,6 +21,11 @@ parameters:
 			path: src/Support/ModelScope.php
 
 		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: tests/App/Model.php
+
+		-
 			message: "#^Cannot call method run\\(\\) on Illuminate\\\\Testing\\\\PendingCommand\\|int\\.$#"
 			count: 4
 			path: tests/Integration/TestCase.php
