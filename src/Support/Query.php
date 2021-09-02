@@ -19,9 +19,12 @@ use ElasticScoutDriverPlus\Builders\RegexpQueryBuilder;
 use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
 use ElasticScoutDriverPlus\Builders\TermsQueryBuilder;
 use ElasticScoutDriverPlus\Builders\WildcardQueryBuilder;
+use Illuminate\Support\Traits\Macroable;
 
 class Query
 {
+    use Macroable;
+
     public static function bool(): BoolQueryBuilder
     {
         return new BoolQueryBuilder();

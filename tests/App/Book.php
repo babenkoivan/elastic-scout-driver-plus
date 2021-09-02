@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $description
  * @property float  $price
+ * @property array  $tags
  * @property Carbon $published
  * @property Carbon $deleted_at
  * @property Author $author

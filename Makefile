@@ -3,7 +3,7 @@
 .DEFAULT_GOAL := help
 
 ## mysql config
-MYSQL_VERSION ?= 5.6
+MYSQL_VERSION ?= 8.0
 MYSQL_CONTAINER_IMAGE := mysql:${MYSQL_VERSION}
 MYSQL_CONTAINER_NAME := elastic-scout-driver-plus-mysql
 MYSQL_HOST_PORT := 23306
