@@ -30,7 +30,7 @@ final class Paginator extends LengthAwarePaginator
         }
 
         parent::__construct(
-            $searchResult->hits()->all(),
+            $searchResult->hits(),
             $searchResult->total(),
             $perPage,
             $currentPage,
@@ -38,6 +38,18 @@ final class Paginator extends LengthAwarePaginator
         );
 
         $this->searchResult = $searchResult;
+    }
+
+    public function onlyModels(): self
+    {
+        $models = $this->models();
+        return $this->setCollection($models);
+    }
+
+    public function onlyDocuments(): self
+    {
+        $documents = $this->documents();
+        return $this->setCollection($documents);
     }
 
     /**
