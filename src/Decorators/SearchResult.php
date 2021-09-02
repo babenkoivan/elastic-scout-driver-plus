@@ -4,24 +4,24 @@ namespace ElasticScoutDriverPlus\Decorators;
 
 use ArrayIterator;
 use ElasticAdapter\Search\Hit as BaseHit;
-use ElasticAdapter\Search\SearchResponse as BaseSearchResponse;
+use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ForwardsCalls;
 use IteratorAggregate;
 
 /**
- * @mixin BaseSearchResponse
+ * @mixin SearchResponse
  * @mixin Collection
  *
  * @implements IteratorAggregate<int, Hit>
  */
-final class SearchResponse implements IteratorAggregate
+final class SearchResult implements IteratorAggregate
 {
     use ForwardsCalls;
 
     /**
-     * @var BaseSearchResponse
+     * @var SearchResponse
      */
     private $searchResponse;
     /**
@@ -29,7 +29,7 @@ final class SearchResponse implements IteratorAggregate
      */
     private $lazyModelFactory;
 
-    public function __construct(BaseSearchResponse $searchResponse, LazyModelFactory $lazyModelFactory)
+    public function __construct(SearchResponse $searchResponse, LazyModelFactory $lazyModelFactory)
     {
         $this->searchResponse = $searchResponse;
         $this->lazyModelFactory = $lazyModelFactory;

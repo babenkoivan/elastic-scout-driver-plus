@@ -4,7 +4,7 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use Closure;
 use ElasticAdapter\Search\SearchRequest;
-use ElasticScoutDriverPlus\Decorators\SearchResponse;
+use ElasticScoutDriverPlus\Decorators\SearchResult;
 use ElasticScoutDriverPlus\Engine;
 use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
@@ -350,12 +350,12 @@ class SearchRequestBuilder
         return $searchRequest;
     }
 
-    public function execute(): SearchResponse
+    public function execute(): SearchResult
     {
         $searchResponse = $this->engine->executeSearchRequest($this->buildSearchRequest(), $this->modelScope);
         $lazyModelFactory = new LazyModelFactory($searchResponse, $this->modelScope);
 
-        return new SearchResponse($searchResponse, $lazyModelFactory);
+        return new SearchResult($searchResponse, $lazyModelFactory);
     }
 
     public function paginate(
@@ -368,10 +368,10 @@ class SearchRequestBuilder
         $builder = clone $this;
         $builder->from(($page - 1) * $perPage);
         $builder->size($perPage);
-        $searchResponse = $builder->execute();
+        $searchResult = $builder->execute();
 
         return new Paginator(
-            $searchResponse,
+            $searchResult,
             $perPage,
             $page,
             [

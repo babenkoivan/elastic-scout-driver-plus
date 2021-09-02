@@ -2,27 +2,27 @@
 
 namespace ElasticScoutDriverPlus;
 
-use ElasticScoutDriverPlus\Decorators\SearchResponse;
+use ElasticScoutDriverPlus\Decorators\SearchResult;
 use Illuminate\Pagination\LengthAwarePaginator;
 use RuntimeException;
 
 /**
- * @mixin SearchResponse
+ * @mixin SearchResult
  */
 final class Paginator extends LengthAwarePaginator
 {
     /**
-     * @var SearchResponse
+     * @var SearchResult
      */
-    private $searchResponse;
+    private $searchResult;
 
     public function __construct(
-        SearchResponse $searchResponse,
+        SearchResult $searchResult,
         int $perPage,
         ?int $currentPage = null,
         array $options = []
     ) {
-        if (is_null($searchResponse->total())) {
+        if (is_null($searchResult->total())) {
             throw new RuntimeException(
                 'Search result does not contain the total hits number. ' .
                 'Please, make sure that total hits are tracked.'
@@ -30,14 +30,14 @@ final class Paginator extends LengthAwarePaginator
         }
 
         parent::__construct(
-            $searchResponse->hits()->all(),
-            $searchResponse->total(),
+            $searchResult->hits()->all(),
+            $searchResult->total(),
             $perPage,
             $currentPage,
             $options
         );
 
-        $this->searchResponse = $searchResponse;
+        $this->searchResult = $searchResult;
     }
 
     /**
@@ -49,6 +49,6 @@ final class Paginator extends LengthAwarePaginator
             return $this->forwardCallTo($this->getCollection(), $method, $parameters);
         }
 
-        return $this->forwardCallTo($this->searchResponse, $method, $parameters);
+        return $this->forwardCallTo($this->searchResult, $method, $parameters);
     }
 }
