@@ -57,4 +57,12 @@ class Book extends Model
     {
         return $this->author->name;
     }
+
+    /**
+     * @return array
+     */
+    public function searchableWith()
+    {
+        return ['author'];
+    }
 }

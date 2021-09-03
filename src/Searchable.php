@@ -12,6 +12,14 @@ trait Searchable
     use BaseSearchable;
 
     /**
+     * @param Closure|QueryBuilderInterface|array $query
+     */
+    public static function searchQuery($query): SearchRequestBuilder
+    {
+        return new SearchRequestBuilder($query, new static());
+    }
+
+    /**
      * @return string|int|null
      */
     public function shardRouting()
@@ -20,10 +28,10 @@ trait Searchable
     }
 
     /**
-     * @param Closure|QueryBuilderInterface|array $query
+     * @return array|string|null
      */
-    public static function searchQuery($query): SearchRequestBuilder
+    public function searchableWith()
     {
-        return new SearchRequestBuilder($query, new static());
+        return null;
     }
 }

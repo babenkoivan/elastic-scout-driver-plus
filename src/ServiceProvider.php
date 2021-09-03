@@ -3,19 +3,18 @@
 namespace ElasticScoutDriverPlus;
 
 use ElasticScoutDriver\Engine;
+use ElasticScoutDriver\Factories\DocumentFactoryInterface;
 use ElasticScoutDriverPlus\Engine as EnginePlus;
-use Illuminate\Contracts\Foundation\Application;
+use ElasticScoutDriverPlus\Factories\DocumentFactory;
 use Illuminate\Support\ServiceProvider as AbstractServiceProvider;
 
 final class ServiceProvider extends AbstractServiceProvider
 {
     /**
-     * {@inheritDoc}
+     * @var array
      */
-    public function register()
-    {
-        $this->app->extend(Engine::class, static function (Engine $engine, Application $app) {
-            return $app->make(EnginePlus::class);
-        });
-    }
+    public $bindings = [
+        Engine::class => EnginePlus::class,
+        DocumentFactoryInterface::class => DocumentFactory::class,
+    ];
 }
