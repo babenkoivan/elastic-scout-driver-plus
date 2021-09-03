@@ -14,6 +14,18 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  */
 final class RoutingFactoryTest extends TestCase
 {
+    /**
+     * @var RoutingFactory
+     */
+    private $routingFactory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->routingFactory = new RoutingFactory();
+    }
+
     public function test_routing_can_be_made_from_models(): void
     {
         $models = factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
@@ -23,6 +35,6 @@ final class RoutingFactoryTest extends TestCase
             $routing->add((string)$model->getScoutKey(), (string)$model->shardRouting());
         }
 
-        $this->assertEquals($routing, RoutingFactory::makeFromModels($models));
+        $this->assertEquals($routing, $this->routingFactory->makeFromModels($models));
     }
 }

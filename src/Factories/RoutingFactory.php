@@ -5,9 +5,9 @@ namespace ElasticScoutDriverPlus\Factories;
 use ElasticAdapter\Documents\Routing;
 use Illuminate\Support\Collection;
 
-class RoutingFactory
+class RoutingFactory implements RoutingFactoryInterface
 {
-    public static function makeFromModels(Collection $models): Routing
+    public function makeFromModels(Collection $models): Routing
     {
         $routing = new Routing();
 
