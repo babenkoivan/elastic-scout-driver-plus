@@ -27,7 +27,8 @@ up: ## Start containers
 		-e MYSQL_DATABASE=${MYSQL_DATABASE} \
 		-e MYSQL_USER=${MYSQL_USER} \
 		-e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
-		${MYSQL_CONTAINER_IMAGE}
+		${MYSQL_CONTAINER_IMAGE} \
+		--default-authentication-plugin=mysql_native_password
 	@printf "\033[92m✔︎ ${MYSQL_CONTAINER_NAME} is started\033[0m\n"
 
 	@printf "\033[93m→ Starting ${ES_CONTAINER_NAME} container\033[0m\n"
