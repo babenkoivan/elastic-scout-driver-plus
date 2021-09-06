@@ -167,12 +167,7 @@ final class SearchRequestBuilderTest extends TestCase
             ]);
 
         $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
-            ->rescoreQuery('match_phrase', [
-                'message' => [
-                    'query' => 'the quick brown',
-                    'slop' => 2,
-                ],
-            ])
+            ->rescoreQuery($rescoreQuery)
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);
@@ -404,11 +399,17 @@ final class SearchRequestBuilderTest extends TestCase
 
     public function test_search_request_with_post_filter_can_be_built(): void
     {
+        $postFilter = [
+            'term' => [
+                'published' => '2020-06-07',
+            ],
+        ];
+
         $expected = (new SearchRequest($this->matchAllQuery))
-            ->postFilter(['term' => ['published' => '2020-06-07']]);
+            ->postFilter($postFilter);
 
         $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
-            ->postFilter(['term' => ['published' => '2020-06-07']])
+            ->postFilter($postFilter)
             ->buildSearchRequest();
 
         $this->assertEquals($expected, $actual);

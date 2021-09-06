@@ -131,9 +131,12 @@ class SearchRequestBuilder
         return $this;
     }
 
-    public function rescoreQuery(string $type, array $query): self
+    /**
+     * @param Closure|QueryBuilderInterface|array $query
+     */
+    public function rescoreQuery($query): self
     {
-        $this->rescore['query']['rescore_query'][$type] = $query;
+        $this->rescore['query']['rescore_query'] = query($query);
         return $this;
     }
 
