@@ -12,11 +12,18 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  *
+ * @uses   \ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Factory
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\ValueParameter
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  * @uses   \ElasticScoutDriverPlus\Support\Arr
+ * @uses   \ElasticScoutDriverPlus\Support\Query
+ * @uses   \ElasticScoutDriverPlus\query
  */
 final class BoolQueryBuilderTest extends TestCase
 {

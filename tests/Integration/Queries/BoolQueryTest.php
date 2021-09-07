@@ -14,9 +14,32 @@ use const SORT_NUMERIC;
 /**
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
- * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
+ * @covers \ElasticScoutDriverPlus\Support\Query
+ *
+ * @uses   \ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\MatchQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\RangeQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Decorators\Hit
+ * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\QueryStringParameter
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\ValueParameter
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
+ * @uses   \ElasticScoutDriverPlus\Searchable
+ * @uses   \ElasticScoutDriverPlus\Support\Arr
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
+ * @uses   \ElasticScoutDriverPlus\query
  */
 final class BoolQueryTest extends TestCase
 {

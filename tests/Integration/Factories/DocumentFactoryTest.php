@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * @covers \ElasticScoutDriverPlus\Factories\DocumentFactory
+ *
+ * @uses   \ElasticScoutDriverPlus\Engine
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \ElasticScoutDriverPlus\Searchable
  */
 final class DocumentFactoryTest extends TestCase
 {

@@ -11,8 +11,21 @@ use const SORT_NUMERIC;
 /**
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\IdsQueryBuilder
- * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Engine
+ * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
+ * @covers \ElasticScoutDriverPlus\Support\Query
+ *
+ * @uses   \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @uses   \ElasticScoutDriverPlus\Decorators\Hit
+ * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
+ * @uses   \ElasticScoutDriverPlus\Searchable
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
+ * @uses   \ElasticScoutDriverPlus\query
  */
 final class IdsQueryTest extends TestCase
 {

@@ -10,7 +10,9 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 /**
  * @covers \ElasticScoutDriverPlus\Factories\RoutingFactory
  *
- * @uses \ElasticScoutDriverPlus\Engine
+ * @uses   \ElasticScoutDriverPlus\Engine
+ * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \ElasticScoutDriverPlus\Searchable
  */
 final class RoutingFactoryTest extends TestCase
 {

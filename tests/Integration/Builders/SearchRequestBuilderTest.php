@@ -13,11 +13,11 @@ use stdClass;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
  *
- * @uses   \ElasticScoutDriverPlus\Builders\RawQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Engine
- * @uses   \ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
+ * @uses   \ElasticScoutDriverPlus\query
  */
 final class SearchRequestBuilderTest extends TestCase
 {

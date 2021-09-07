@@ -11,9 +11,9 @@ use PHPUnit\Framework\TestCase;
  * @covers \ElasticScoutDriverPlus\Builders\NestedQueryBuilder
  *
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Factory
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
+ * @uses   \ElasticScoutDriverPlus\query
  */
 final class NestedQueryBuilderTest extends TestCase
 {

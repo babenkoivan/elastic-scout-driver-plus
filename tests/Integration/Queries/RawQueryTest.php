@@ -19,6 +19,17 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
+ * @covers \ElasticScoutDriverPlus\Support\Query
+ *
+ * @uses   \ElasticScoutDriverPlus\Decorators\Hit
+ * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \ElasticScoutDriverPlus\Paginator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\Searchable
+ * @uses   \ElasticScoutDriverPlus\Support\ModelScope
+ * @uses   \ElasticScoutDriverPlus\query
  */
 final class RawQueryTest extends TestCase
 {

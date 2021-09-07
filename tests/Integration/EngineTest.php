@@ -11,7 +11,9 @@ use stdClass;
 /**
  * @covers \ElasticScoutDriverPlus\Engine
  *
+ * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
  * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \ElasticScoutDriverPlus\Searchable
  */
 final class EngineTest extends TestCase
 {
