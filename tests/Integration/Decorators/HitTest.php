@@ -7,6 +7,7 @@ use ElasticScoutDriverPlus\Decorators\Hit;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @covers \ElasticScoutDriverPlus\Decorators\Hit
@@ -47,10 +48,13 @@ final class HitTest extends TestCase
 
     public function test_model_can_be_retrieved(): void
     {
+        /** @var Model $model */
+        $model = $this->hit->model();
+
         $this->assertSame([
             'id' => 1,
             'title' => 'foo',
-        ], $this->hit->model()->toArray());
+        ], $model->toArray());
     }
 
     public function test_array_casting(): void
