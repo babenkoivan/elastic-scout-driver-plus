@@ -73,7 +73,7 @@ $highlight = $highlights->first();
 $snippets = $highlight->snippets('title');
 ```
 
-### matches
+### hits
 
 You can also retrieve a collection of matches:
 

@@ -4,15 +4,19 @@
 
 ## Boolean
 
-Use `boolSearch` to make a [boolean query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#query-dsl-bool-query):
+You can use `ElasticScoutDriverPlus\Support\Query::bool()` to build a [boolean query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#query-dsl-bool-query):
 
 ```php
-$searchResult = Book::boolSearch()
-    ->must('match', ['title' => 'The Book'])
-    ->execute();
+$query = Query::bool()->must(
+    Query::match()
+        ->field('title')
+        ->query('The Book')
+);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `BoolQueryBuilder`:
+Available methods:
 
 * [filter](#bool-filter)
 * [minimumShouldMatch](#bool-minimum-should-match)
@@ -28,28 +32,33 @@ The query defined with `filter` [must appear in the matching documents](https://
 but won’t contribute to the score:
 
 ```php
-// option 1: use query type and body
-$searchResult = Book::boolSearch()
-    ->filter('term', ['published' => '2020-06-07'])
-    ->execute();
+// you can make a query using builder
+$filter = Query::term()
+    ->field('published')
+    ->value('2020-06-07');
 
-// option 2: use an array
-$searchResult = Book::boolSearch()
-    ->filter(['term' => ['published' => '2020-06-07']])
-    ->execute();
+// or you can define a raw query
+$filter = [
+    'term' => [
+        'published' => '2020-06-07'
+    ]
+];
 
-// option 3: use a query builder
-$searchResult = Book::boolSearch()
-    ->filter((new TermQueryBuilder())->field('published')->value('2020-06-07'))
-    ->execute();
+$query = Query::bool()->filter($filter);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 The same query with `filterRaw` method:
 
 ```php
-$searchResult = Book::boolSearch()
-    ->filterRaw(['term' => ['published' => '2020-06-07']])
-    ->execute();
+$query = Query::bool()->filterRaw([
+    'term' => [
+        'published' => '2020-06-07'
+    ]
+]);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="bool-minimum-should-match"></a> minimumShouldMatch
@@ -58,11 +67,12 @@ You can use `minimumShouldMatch` to specify [the number of `should` queries](htt
 the documents must match:
 
 ```php
-$searchResult = Book::boolSearch()
-    ->should('term', ['published' => '2018-04-23'])
-    ->should('term', ['published' => '2020-03-07'])
-    ->minimumShouldMatch(1)
-    ->execute();
+$query = Query::bool()
+    ->should(Query::term()->field('published')->value('2018-04-23'))
+    ->should(Query::term()->field('published')->value('2020-03-07'))
+    ->minimumShouldMatch(1);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="bool-must"></a> must
@@ -71,28 +81,33 @@ The query defined with `must` [must appear in the matching documents](https://ww
 and will contribute to the score:
 
 ```php
-// option 1: use query type and body
-$searchResult = Book::boolSearch()
-    ->must('match', ['title' => 'The Book'])
-    ->execute();
+// you can make a query using builder
+$must = Query::match()
+    ->field('title')
+    ->value('The Book');
 
-// option 2: use an array
-$searchResult = Book::boolSearch()
-    ->must(['match' => ['title' => 'The Book']])
-    ->execute();
+// or you can define a raw query
+$must = [
+    'match' => [
+        'title' => 'The Book'
+    ]
+];
 
-// option 3: use a query builder
-$searchResult = Book::boolSearch()
-    ->must((new MatchQueryBuilder())->field('title')->query('The Book'))
-    ->execute();
+$query = Query::bool()->must($must);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-There is also a raw version of this method:
+The same query with `mustRaw` method:
 
 ```php
-$searchResult = Book::boolSearch()
-    ->mustRaw(['match' => ['title' => 'The Book']])
-    ->execute();
+$query = Query::bool()->mustRaw([
+    'match' => [
+        'title' => 'The Book'
+    ]
+]);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="bool-must-not"></a> mustNot
@@ -101,28 +116,33 @@ The query defined with `mustNot` [must not appear in the matching documents](htt
 and won’t contribute to the score:
 
 ```php
-// option 1: use query type and body
-$searchResult = Book::boolSearch()
-    ->mustNot('match', ['title' => 'The Book'])
-    ->execute();
+// you can make a query using builder
+$mustNot = Query::match()
+    ->field('title')
+    ->value('The Book');
 
-// option 2: use an array
-$searchResult = Book::boolSearch()
-    ->mustNot(['match' => ['title' => 'The Book']])
-    ->execute();
+// or you can define a raw query
+$mustNot = [
+    'match' => [
+        'title' => 'The Book'
+    ]
+];
 
-// option 3: use a query builder
-$searchResult = Book::boolSearch()
-    ->mustNot((new MatchQueryBuilder())->field('title')->query('The Book'))
-    ->execute();
+$query = Query::bool()->mustNot($mustNot);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-or using `mustNotRaw`:
+The same query with `mustNotRaw` method:
 
 ```php
-$searchResult = Book::boolSearch()
-    ->mustNotRaw(['match' => ['title' => 'The Book']])
-    ->execute();
+$query = Query::bool()->mustNotRaw([
+    'match' => [
+        'title' => 'The Book'
+    ]
+]);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="bool-only-trashed"></a> onlyTrashed
@@ -130,9 +150,11 @@ $searchResult = Book::boolSearch()
 Use `onlyTrashed` method to get [only soft deleted results](https://laravel.com/docs/master/scout#soft-deleting):
 
 ```php
-$searchResult = Book::boolSearch()
-    ->onlyTrashed()
-    ->execute();
+$query = Query::bool()
+    ->must($must)
+    ->onlyTrashed();
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="bool-should"></a> should
@@ -140,28 +162,33 @@ $searchResult = Book::boolSearch()
 The query defined with `should` [should appear in the matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html):
 
 ```php
-// option 1: use query type and body
-$searchResult = Book::boolSearch()
-    ->should('match', ['title' => 'The Book'])
-    ->execute();
+// you can make a query using builder
+$should = Query::match()
+    ->field('title')
+    ->value('The Book');
 
-// option 2: use an array
-$searchResult = Book::boolSearch()
-    ->should(['match' => ['title' => 'The Book']])
-    ->execute();
+// or you can define a raw query
+$should = [
+    'match' => [
+        'title' => 'The Book'
+    ]
+];
 
-// option 3: use a query builder
-$searchResult = Book::boolSearch()
-    ->should((new MatchQueryBuilder())->field('title')->query('The Book'))
-    ->execute();
+$query = Query::bool()->should($should);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-You can also take advantage of `shouldRaw` method:
+The same query with `shouldRaw` method:
 
 ```php
-$searchResult = Book::boolSearch()
-    ->shouldRaw(['match' => ['title' => 'The Book']])
-    ->execute();
+$query = Query::bool()->shouldRaw([
+    'match' => [
+        'title' => 'The Book'
+    ]
+]);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="bool-with-trashed"></a> withTrashed
@@ -170,8 +197,9 @@ You can use `withTrashed` to include [soft deleted results](https://laravel.com/
 in the search result:
 
 ```php
-$searchResult = Book::boolSearch()
-    ->must('match_all')
-    ->withTrashed()
-    ->execute();
+$query = Query::bool()
+    ->must($must)
+    ->withTrashed();
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
