@@ -20,7 +20,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\NullValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  * @uses   \ElasticScoutDriverPlus\Searchable
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  * @uses   \ElasticScoutDriverPlus\query
@@ -38,7 +38,10 @@ final class TermsQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create(['tags' => ['available', 'new']]);
 
-        $query = Query::terms()->terms('tags', ['available', 'new']);
+        $query = Query::terms()
+            ->field('tags')
+            ->values(['available', 'new']);
+
         $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);

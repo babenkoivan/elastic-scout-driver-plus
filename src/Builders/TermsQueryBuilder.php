@@ -4,11 +4,15 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\QueryParameters\Collection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
-use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
-use ElasticScoutDriverPlus\QueryParameters\Validators\NullValidator;
+use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\ValuesParameter;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\ArrayTransformerInterface;
+use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class TermsQueryBuilder extends AbstractParameterizedQueryBuilder
 {
+    use FieldParameter;
+    use ValuesParameter;
     use BoostParameter;
 
     /**
@@ -19,13 +23,17 @@ final class TermsQueryBuilder extends AbstractParameterizedQueryBuilder
     public function __construct()
     {
         $this->parameters = new Collection();
-        $this->parameterValidator = new NullValidator();
-        $this->parameterTransformer = new FlatArrayTransformer();
-    }
 
-    public function terms(string $field, array $terms): self
-    {
-        $this->parameters->put($field, $terms);
-        return $this;
+        $this->parameterValidator = new AllOfValidator(['field', 'values']);
+
+        $this->parameterTransformer = new class implements ArrayTransformerInterface {
+            public function transform(Collection $parameters): array
+            {
+                return array_merge(
+                    [$parameters->get('field') => $parameters->get('values')],
+                    $parameters->except(['field', 'values'])->excludeEmpty()->toArray(),
+                );
+            }
+        };
     }
 }

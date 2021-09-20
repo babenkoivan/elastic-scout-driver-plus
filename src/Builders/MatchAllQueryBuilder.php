@@ -6,10 +6,15 @@ use stdClass;
 
 final class MatchAllQueryBuilder implements QueryBuilderInterface
 {
+    /**
+     * @var string
+     */
+    protected $type = 'match_all';
+
     public function buildQuery(): array
     {
         return [
-            'match_all' => new stdClass(),
+            $this->type => new stdClass(),
         ];
     }
 }
