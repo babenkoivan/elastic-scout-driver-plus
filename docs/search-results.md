@@ -23,7 +23,7 @@ $searchResult = Book::searchQuery($query)->execute();
 * [aggregations](#aggregations)
 * [documents](#documents)
 * [highlights](#highlights)
-* [matches](#matches)
+* [hits](#hits)
 * [models](#models)
 * [suggestions](#suggestions)
 * [total](#total)
