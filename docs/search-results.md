@@ -1,25 +1,21 @@
 # Search Results
 
-Whenever your search request is ready to be executed, you have several options:
+When your search query is ready to be executed, you have several options:
 
 ## Raw
 
 You can get a raw response from Elasticsearch:
 
  ```php
-$rawSearchResults = MyModel::boolSearch()
-    ->must('match_all')
-    ->raw();
+$raw = Book::searchQuery($query)->raw();
  ```
 
 ## SearchResult
 
-You can execute the request and get `ElasticScoutDriverPlus\SearchResult` instance in return:
+You can execute the query and get `ElasticScoutDriverPlus\Decorators\SearchResult` instance in return:
 
 ```php
-$searchResult = MyModel::boolSearch()
-    ->must('match_all')
-    ->execute();
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 `SearchResult` provides easy access to:
@@ -49,7 +45,7 @@ $maxPrice = $aggregations->get('max_price');
 $documents = $searchResult->documents();
 ```
 
-Every document has an id and an indexed content:
+Every document has an id and content:
 
 ```php
 $document = $documents->first();
@@ -75,33 +71,33 @@ $snippets = $highlight->snippets('title');
 
 ### hits
 
-You can also retrieve a collection of matches:
+You can retrieve a collection of hits:
 
 ```php
-$matches = $searchResult->matches();
+$hits = $searchResult->hits();
 ```
 
-Each match includes the related index name, the score, the model, the document and the highlight:
+Each hit provides access to the related index name, the score, the model, the document and the highlight:
 
 ```php
-$firstMatch = $matches->first();
+$hit = $hits->first();
 
-$indexName = $firstMatch->indexName();
-$score = $firstMatch->score();
-$model = $firstMatch->model();
-$document = $firstMatch->document();
-$highlight = $firstMatch->highlight();
+$indexName = $hit->indexName();
+$score = $hit->score();
+$model = $hit->model();
+$document = $hit->document();
+$highlight = $hit->highlight();
 ```
 
 Furthermore, you can get a raw representation of the respective hit:
 
 ```php
-$raw = $firstMatch->raw();
+$raw = $hit->raw();
 ```
 
 ### models
 
-Use `models` to retrieve a collection of matching models:
+You can use `models` to retrieve a collection of matching models:
 
 ```php
 $models = $searchResult->models();
@@ -139,12 +135,10 @@ $total = $searchResult->total();
 
 ## Pagination
 
-Finally, you can paginate the search results:
+Finally, you can paginate search results:
 
 ```php
-$paginator = MyModel::boolSearch()
-    ->must('match_all')
-    ->paginate(10);
+$paginator = Book::searchQuery($query)->paginate(10);
 ```
 
 The paginator provides the same interface as `SearchResult`, which means that you can access models, highlights, etc.:
@@ -153,13 +147,34 @@ The paginator provides the same interface as `SearchResult`, which means that yo
 $models = $paginator->models();
 ```
 
-Unlike the [standard Scout paginator](https://laravel.com/docs/master/scout#pagination), Elastic Scout Driver Plus
-paginates [matches](#matches) and not the models:
+However, Elastic Scout Driver Plus by default paginates [hits](#hits) and not models, this behaviour can be changed:
 
 ```php
-foreach ($paginator as $match) {
-    $model = $match->model();
+// paginate hits
+$paginator = Book::searchQuery($query)
+    ->paginate(10);
+
+foreach ($paginator as $hit) {
+    $model = $hit->model();
+}
+
+// paginate models
+$paginator = Book::searchQuery($query)
+    ->paginate(10)
+    ->onlyModels();
+
+foreach ($paginator as $model) {
+    $id = $model->id;
+}
+
+// paginated documents
+$paginator = Book::searchQuery($query)
+    ->paginate(10)
+    ->onlyDocuments();
+
+foreach ($paginator as $document) {
+    $id = $document->id();
 }
 ```
 
-**Note** that [from](generic-methods.md#from) and [size](generic-methods.md#size) are ignored when paginating the search results.
+**Note** that [from](available-methods.md#from) and [size](available-methods.md#size) are ignored when paginating search results.

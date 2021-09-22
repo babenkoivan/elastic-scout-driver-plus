@@ -33,7 +33,7 @@ $searchResult = Book::searchQuery($query)->execute();
 ## Match Phrase Prefix
 
 You can use `ElasticScoutDriverPlus\Support\Query::matchPhrasePrefix()` to build a query that matches documents, which
-[contain the words of a provided text](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#query-dsl-match-query-phrase-prefix), 
+[contain the words of a provided text](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#query-dsl-match-query-phrase-prefix) 
 in the same order as provided:
 
 ```php
