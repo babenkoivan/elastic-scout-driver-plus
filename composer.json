@@ -30,10 +30,7 @@
     "autoload": {
         "psr-4": {
             "ElasticScoutDriverPlus\\": "src"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

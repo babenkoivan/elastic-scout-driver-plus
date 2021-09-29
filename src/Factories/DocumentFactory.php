@@ -6,7 +6,7 @@ use ElasticScoutDriver\Factories\DocumentFactory as BaseDocumentFactory;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection as BaseCollection;
 
-final class DocumentFactory extends BaseDocumentFactory
+class DocumentFactory extends BaseDocumentFactory
 {
     public function makeFromModels(BaseCollection $models): BaseCollection
     {

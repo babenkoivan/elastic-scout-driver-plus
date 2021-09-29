@@ -3,8 +3,8 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use Closure;
-use function ElasticScoutDriverPlus\query;
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\Factories\ParameterFactory;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\MinimumShouldMatchParameter;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
@@ -25,7 +25,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
 
     public function __construct()
     {
-        $this->parameters = new Collection();
+        $this->parameters = new ParameterCollection();
         $this->parameterValidator = new OneOfValidator(['must', 'must_not', 'should', 'filter']);
         $this->parameterTransformer = new FlatArrayTransformer();
     }
@@ -47,7 +47,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
      */
     public function must($query): self
     {
-        $this->parameters->push('must', query($query));
+        $this->parameters->push('must', ParameterFactory::makeQuery($query));
         return $this;
     }
 
@@ -62,7 +62,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
      */
     public function mustNot($query): self
     {
-        $this->parameters->push('must_not', query($query));
+        $this->parameters->push('must_not', ParameterFactory::makeQuery($query));
         return $this;
     }
 
@@ -77,7 +77,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
      */
     public function should($query): self
     {
-        $this->parameters->push('should', query($query));
+        $this->parameters->push('should', ParameterFactory::makeQuery($query));
         return $this;
     }
 
@@ -92,7 +92,7 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
      */
     public function filter($query): self
     {
-        $this->parameters->push('filter', query($query));
+        $this->parameters->push('filter', ParameterFactory::makeQuery($query));
         return $this;
     }
 

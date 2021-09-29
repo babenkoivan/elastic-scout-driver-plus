@@ -24,12 +24,12 @@ use stdClass;
  * @uses   \ElasticScoutDriverPlus\Decorators\Hit
  * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
  * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\ParameterFactory
  * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
  * @uses   \ElasticScoutDriverPlus\Paginator
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  * @uses   \ElasticScoutDriverPlus\Searchable
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
- * @uses   \ElasticScoutDriverPlus\query
  */
 final class RawQueryTest extends TestCase
 {

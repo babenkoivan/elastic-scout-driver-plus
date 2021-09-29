@@ -4,7 +4,7 @@ namespace ElasticScoutDriverPlus\QueryParameters\Shared;
 
 use Closure;
 use ElasticScoutDriverPlus\Builders\QueryBuilderInterface;
-use function ElasticScoutDriverPlus\query;
+use ElasticScoutDriverPlus\Factories\ParameterFactory;
 
 trait QueryParameter
 {
@@ -13,7 +13,7 @@ trait QueryParameter
      */
     public function query($query): self
     {
-        $this->parameters->put('query', query($query));
+        $this->parameters->put('query', ParameterFactory::makeQuery($query));
         return $this;
     }
 }

@@ -16,8 +16,8 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
  *
  * @uses   \ElasticScoutDriverPlus\Engine
+ * @uses   \ElasticScoutDriverPlus\Factories\ParameterFactory
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
- * @uses   \ElasticScoutDriverPlus\query
  */
 final class SearchRequestBuilderTest extends TestCase
 {

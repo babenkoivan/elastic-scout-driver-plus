@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\IdsQueryBuilder
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  */

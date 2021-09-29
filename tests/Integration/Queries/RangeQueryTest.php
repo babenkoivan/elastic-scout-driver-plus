@@ -17,15 +17,15 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  * @uses   \ElasticScoutDriverPlus\Decorators\Hit
  * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
  * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\ParameterFactory
  * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  * @uses   \ElasticScoutDriverPlus\Searchable
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
- * @uses   \ElasticScoutDriverPlus\query
  */
 final class RangeQueryTest extends TestCase
 {

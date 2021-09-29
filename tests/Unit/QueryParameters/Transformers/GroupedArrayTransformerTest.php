@@ -2,20 +2,20 @@
 
 namespace ElasticScoutDriverPlus\Tests\Unit\QueryParameters\Transformers;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  */
 final class GroupedArrayTransformerTest extends TestCase
 {
     public function test_parameters_can_be_transformed_to_grouped_array(): void
     {
-        $parameters = new Collection([
+        $parameters = new ParameterCollection([
             'field' => 'title',
             'query' => 'The Best Book',
             'operator' => 'AND',

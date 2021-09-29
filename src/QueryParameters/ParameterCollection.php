@@ -6,7 +6,7 @@ use ElasticScoutDriverPlus\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection as BaseCollection;
 
-final class Collection implements Arrayable
+final class ParameterCollection implements Arrayable
 {
     /**
      * @var BaseCollection

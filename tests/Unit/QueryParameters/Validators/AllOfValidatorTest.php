@@ -3,14 +3,14 @@
 namespace ElasticScoutDriverPlus\Tests\Unit\QueryParameters\Validators;
 
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  */
 final class AllOfValidatorTest extends TestCase
 {
@@ -18,7 +18,7 @@ final class AllOfValidatorTest extends TestCase
     {
         $this->expectException(QueryBuilderException::class);
 
-        $parameters = new Collection(['field' => 'title']);
+        $parameters = new ParameterCollection(['field' => 'title']);
         $validator = new AllOfValidator(['field', 'query']);
 
         $validator->validate($parameters);
@@ -26,7 +26,7 @@ final class AllOfValidatorTest extends TestCase
 
     public function test_exception_is_not_thrown_when_all_required_parameters_are_specified(): void
     {
-        $parameters = new Collection(['field' => 'title', 'query' => 'book']);
+        $parameters = new ParameterCollection(['field' => 'title', 'query' => 'book']);
         $validator = new AllOfValidator(['field', 'query']);
 
         $validator->validate($parameters);

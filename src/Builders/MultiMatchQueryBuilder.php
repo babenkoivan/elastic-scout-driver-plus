@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\AnalyzerParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\AutoGenerateSynonymsPhraseQueryParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
@@ -50,7 +50,7 @@ final class MultiMatchQueryBuilder extends AbstractParameterizedQueryBuilder
 
     public function __construct()
     {
-        $this->parameters = new Collection();
+        $this->parameters = new ParameterCollection();
         $this->parameterValidator = new AllOfValidator(['fields', 'query']);
         $this->parameterTransformer = new FlatArrayTransformer();
     }

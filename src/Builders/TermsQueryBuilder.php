@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\ValuesParameter;
@@ -22,12 +22,12 @@ final class TermsQueryBuilder extends AbstractParameterizedQueryBuilder
 
     public function __construct()
     {
-        $this->parameters = new Collection();
+        $this->parameters = new ParameterCollection();
 
         $this->parameterValidator = new AllOfValidator(['field', 'values']);
 
         $this->parameterTransformer = new class implements ArrayTransformerInterface {
-            public function transform(Collection $parameters): array
+            public function transform(ParameterCollection $parameters): array
             {
                 return array_merge(
                     [$parameters->get('field') => $parameters->get('values')],

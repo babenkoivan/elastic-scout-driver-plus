@@ -8,8 +8,8 @@ use ElasticScoutDriverPlus\Decorators\SearchResult;
 use ElasticScoutDriverPlus\Engine;
 use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
+use ElasticScoutDriverPlus\Factories\ParameterFactory;
 use ElasticScoutDriverPlus\Paginator;
-use function ElasticScoutDriverPlus\query;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
 use stdClass;
@@ -92,7 +92,7 @@ class SearchRequestBuilder
      */
     public function __construct($query, Model $model)
     {
-        $this->query = query($query);
+        $this->query = ParameterFactory::makeQuery($query);
         $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
     }
@@ -136,7 +136,7 @@ class SearchRequestBuilder
      */
     public function rescoreQuery($query): self
     {
-        $this->rescore['query']['rescore_query'] = query($query);
+        $this->rescore['query']['rescore_query'] = ParameterFactory::makeQuery($query);
         return $this;
     }
 
@@ -227,7 +227,7 @@ class SearchRequestBuilder
      */
     public function postFilter($query): self
     {
-        $this->postFilter = query($query);
+        $this->postFilter = ParameterFactory::makeQuery($query);
         return $this;
     }
 

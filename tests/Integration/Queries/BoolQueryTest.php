@@ -26,8 +26,9 @@ use const SORT_NUMERIC;
  * @uses   \ElasticScoutDriverPlus\Decorators\Hit
  * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
  * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \ElasticScoutDriverPlus\Factories\ParameterFactory
  * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\QueryStringParameter
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\ValueParameter
@@ -39,7 +40,6 @@ use const SORT_NUMERIC;
  * @uses   \ElasticScoutDriverPlus\Searchable
  * @uses   \ElasticScoutDriverPlus\Support\Arr
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
- * @uses   \ElasticScoutDriverPlus\query
  */
 final class BoolQueryTest extends TestCase
 {

@@ -2,9 +2,9 @@
 
 namespace ElasticScoutDriverPlus\QueryParameters\Validators;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 
 interface ValidatorInterface
 {
-    public function validate(Collection $parameters): void;
+    public function validate(ParameterCollection $parameters): void;
 }

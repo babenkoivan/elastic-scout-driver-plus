@@ -2,19 +2,19 @@
 
 namespace ElasticScoutDriverPlus\Tests\Unit\QueryParameters;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @covers \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  *
  * @uses   \ElasticScoutDriverPlus\Support\Arr
  */
-final class CollectionTest extends TestCase
+final class ParameterCollectionTest extends TestCase
 {
     /**
-     * @var Collection
+     * @var ParameterCollection
      */
     private $collection;
 
@@ -22,7 +22,7 @@ final class CollectionTest extends TestCase
     {
         parent::setUp();
 
-        $this->collection = new Collection([
+        $this->collection = new ParameterCollection([
             'must' => null,
             'should' => ['term' => ['year' => 2020]],
             'filter' => [],

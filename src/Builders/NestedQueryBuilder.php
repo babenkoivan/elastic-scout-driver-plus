@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\IgnoreUnmappedParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\QueryParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\ScoreModeParameter;
@@ -22,7 +22,7 @@ final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
 
     public function __construct()
     {
-        $this->parameters = new Collection();
+        $this->parameters = new ParameterCollection();
         $this->parameterValidator = new AllOfValidator(['path', 'query']);
         $this->parameterTransformer = new FlatArrayTransformer();
     }

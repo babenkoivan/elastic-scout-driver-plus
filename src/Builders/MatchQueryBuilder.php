@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\AnalyzerParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\AutoGenerateSynonymsPhraseQueryParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
@@ -44,7 +44,7 @@ final class MatchQueryBuilder extends AbstractParameterizedQueryBuilder
 
     public function __construct()
     {
-        $this->parameters = new Collection();
+        $this->parameters = new ParameterCollection();
         $this->parameterValidator = new AllOfValidator(['field', 'query']);
         $this->parameterTransformer = new GroupedArrayTransformer('field');
     }
