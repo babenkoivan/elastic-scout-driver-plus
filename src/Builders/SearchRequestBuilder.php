@@ -20,6 +20,10 @@ class SearchRequestBuilder
     use ForwardsCalls;
 
     /**
+     * @var Model
+     */
+    private $model;
+    /**
      * @var ModelScope
      */
     private $modelScope;
@@ -90,9 +94,15 @@ class SearchRequestBuilder
 
     public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
     {
+        $this->model = $model;
         $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
         $this->queryBuilder = $queryBuilder;
+    }
+
+    public function getModel(): Model
+    {
+        return $this->model;
     }
 
     public function highlightRaw(array $highlight): self
