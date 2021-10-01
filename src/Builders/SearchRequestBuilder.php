@@ -235,6 +235,12 @@ class SearchRequestBuilder
         return $this;
     }
 
+    public function setQueryCallback(callable $callback, string $modelClass = null): self
+    {
+        $this->modelScope->setQueryCallback($callback, $modelClass);
+        return $this;
+    }
+
     /**
      * @param int|bool $trackTotalHits
      */
