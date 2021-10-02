@@ -245,9 +245,29 @@ class SearchRequestBuilder
         return $this;
     }
 
+    /**
+     * Set the callback that should have an opportunity to modify the database query.
+     *
+     * @param callable $callback
+     * @param string|null $modelClass
+     * @return $this
+     */
     public function setQueryCallback(callable $callback, string $modelClass = null): self
     {
         $this->modelScope->setQueryCallback($callback, $modelClass);
+        return $this;
+    }
+
+    /**
+     * Set the callback that should have an opportunity to modify the model.
+     *
+     * @param callable $callback
+     * @param string|null $modelClass
+     * @return $this
+     */
+    public function setModelCallback(callable $callback, string $modelClass = null): self
+    {
+        $this->modelScope->setModelCallback($callback, $modelClass);
         return $this;
     }
 
