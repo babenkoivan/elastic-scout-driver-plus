@@ -23,6 +23,10 @@ class SearchRequestBuilder
      */
     private $query;
     /**
+     * @var Model
+     */
+    private $model;
+    /**
      * @var ModelScope
      */
     private $modelScope;
@@ -93,8 +97,14 @@ class SearchRequestBuilder
     public function __construct($query, Model $model)
     {
         $this->query = ParameterFactory::makeQuery($query);
+        $this->model = $model;
         $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
+    }
+
+    public function getModel(): Model
+    {
+        return $this->model;
     }
 
     public function highlightRaw(array $highlight): self
