@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $description
  * @property float  $price
+ * @property string $formatted_price
  * @property array  $tags
  * @property Carbon $published
  * @property Carbon $deleted_at
@@ -64,5 +65,10 @@ class Book extends Model
     public function searchableWith()
     {
         return ['author'];
+    }
+
+    public function getFormattedPriceAttribute(): string
+    {
+        return number_format($this->price, 2, ',', ' ');
     }
 }
