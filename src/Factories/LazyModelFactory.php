@@ -58,10 +58,15 @@ class LazyModelFactory
         $ids = $this->mappedIds[$indexName];
         $model = new $modelClass();
         $relations = $this->modelScope->resolveRelations($modelClass);
+        $queryCallback = $this->modelScope->resolveQueryCallback($modelClass);
 
         $query = in_array(SoftDeletes::class, class_uses_recursive($model), true)
             ? $model->withTrashed()
             : $model->newQuery();
+
+        if (isset($queryCallback)) {
+            $queryCallback($query);
+        }
 
         if (isset($relations)) {
             $query->with($relations);
