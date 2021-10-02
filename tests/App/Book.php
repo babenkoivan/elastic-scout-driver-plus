@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $description
  * @property float  $price
+ * @property string $formatted_price
  * @property Carbon $published
  * @property Carbon $deleted_at
  * @property Author $author
@@ -54,5 +55,10 @@ class Book extends Model
     public function getRoutingPath(): string
     {
         return 'author.name';
+    }
+
+    public function getFormattedPriceAttribute(): string
+    {
+        return number_format($this->price, 2, ',', ' ');
     }
 }

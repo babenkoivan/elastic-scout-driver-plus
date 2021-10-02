@@ -475,6 +475,48 @@ final class RawSearchTest extends TestCase
         });
     }
 
+    public function test_model_callback_executed_in_a_single_model_class(): void
+    {
+        factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->setModelCallback(function(Model $model) {
+                $model->append('formatted_price');
+            })
+            ->execute();
+
+        $found->models()->each(function (Model $model) {
+            $this->assertTrue($model->hasAppended('formatted_price'));
+        });
+    }
+
+    public function test_model_callbacks_executed_in_multiple_model_classes(): void
+    {
+        factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create();
+
+        $found = Book::rawSearch()
+            ->query(['match_all' => new stdClass()])
+            ->join(Author::class)
+            ->setModelCallback(function(Model $model) {
+                $model->append('formatted_price');
+            }, Book::class)
+            ->setModelCallback(function(Model $model) {
+                $model->append('full_name');
+            }, Author::class)
+            ->execute();
+
+        $found->models()->each(function (Model $model) {
+            $attribute = $model instanceof Book ? 'formatted_price' : 'full_name';
+
+            $this->assertTrue($model->hasAppended($attribute));
+        });
+    }
+
     public function test_search_result_can_be_cached(): void
     {
         $source = factory(Book::class, rand(2, 5))

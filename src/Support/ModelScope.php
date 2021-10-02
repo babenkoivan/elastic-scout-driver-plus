@@ -32,6 +32,12 @@ final class ModelScope
      * @var Collection
      */
     private $queryCallbacks;
+    /**
+     * Collection of model callbacks keyed by model class
+     *
+     * @var Collection
+     */
+    private $modelCallbacks;
 
     public function __construct(string $modelClass)
     {
@@ -39,6 +45,7 @@ final class ModelScope
         $this->modelClasses = collect();
         $this->relations = collect();
         $this->queryCallbacks = collect();
+        $this->modelCallbacks = collect();
 
         $this->push($modelClass);
     }
@@ -84,13 +91,6 @@ final class ModelScope
         return $this;
     }
 
-    /**
-     * Set the callback that should have an opportunity to modify the database query.
-     *
-     * @param callable $callback
-     * @param string|null $modelClass
-     * @return $this
-     */
     public function setQueryCallback(callable $callback, ?string $modelClass = null): self
     {
         $modelClass = $modelClass ?? $this->baseModelClass;
@@ -100,6 +100,19 @@ final class ModelScope
         }
 
         $this->queryCallbacks->put($modelClass, $callback);
+
+        return $this;
+    }
+
+    public function setModelCallback(callable $callback, ?string $modelClass = null): self
+    {
+        $modelClass = $modelClass ?? $this->baseModelClass;
+
+        if (!$this->contains($modelClass)) {
+            throw new ModelClassNotFoundInScopeException($modelClass);
+        }
+
+        $this->modelCallbacks->put($modelClass, $callback);
 
         return $this;
     }
@@ -127,5 +140,10 @@ final class ModelScope
     public function resolveQueryCallback(string $modelClass): ?callable
     {
         return $this->queryCallbacks->get($modelClass);
+    }
+
+    public function resolveModelCallback(string $modelClass): ?callable
+    {
+        return $this->modelCallbacks->get($modelClass);
     }
 }
