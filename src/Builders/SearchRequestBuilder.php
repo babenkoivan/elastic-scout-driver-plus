@@ -96,7 +96,7 @@ class SearchRequestBuilder
      */
     public function __construct($query, Model $model)
     {
-        $this->query = ParameterFactory::makeQuery($query);
+        $this->setQuery($query);
         $this->model = $model;
         $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
@@ -105,6 +105,17 @@ class SearchRequestBuilder
     public function getModel(): Model
     {
         return $this->model;
+    }
+
+    /**
+     * @param Closure|QueryBuilderInterface|array $query
+     *
+     * @return $this
+     */
+    public function setQuery($query): self
+    {
+        $this->query = ParameterFactory::makeQuery($query);
+        return $this;
     }
 
     public function highlightRaw(array $highlight): self
