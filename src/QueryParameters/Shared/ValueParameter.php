@@ -4,7 +4,11 @@ namespace ElasticScoutDriverPlus\QueryParameters\Shared;
 
 trait ValueParameter
 {
-    public function value(string $value): self
+    /**
+     * @param int|float|bool|string $value
+     * @return $this
+     */
+    public function value($value): self
     {
         $this->parameters->put('value', $value);
         return $this;
