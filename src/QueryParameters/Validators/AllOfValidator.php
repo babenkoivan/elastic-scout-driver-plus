@@ -3,7 +3,7 @@
 namespace ElasticScoutDriverPlus\QueryParameters\Validators;
 
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 
 final class AllOfValidator implements ValidatorInterface
 {
@@ -17,7 +17,7 @@ final class AllOfValidator implements ValidatorInterface
         $this->required = $required;
     }
 
-    public function validate(Collection $parameters): void
+    public function validate(ParameterCollection $parameters): void
     {
         $isInvalid = $parameters->only($this->required)->excludeEmpty()->count() !== count($this->required);
 

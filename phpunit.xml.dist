@@ -29,10 +29,10 @@
         <env name="APP_ENV" value="testing"/>
         <env name="DB_CONNECTION" value="mysql"/>
         <env name="DB_HOST" value="127.0.0.1"/>
-        <env name="DB_PORT" value="23306"/>
-        <env name="DB_DATABASE" value="test"/>
-        <env name="DB_USERNAME" value="test"/>
-        <env name="DB_PASSWORD" value="test"/>
-        <env name="ELASTIC_HOST" value="127.0.0.1:29200"/>
+        <env name="DB_PORT" value="3306"/>
+        <env name="DB_DATABASE" value="elastic-test"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value=""/>
+        <env name="ELASTIC_HOST" value="127.0.0.1:9200"/>
     </php>
 </phpunit>

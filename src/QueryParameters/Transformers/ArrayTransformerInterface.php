@@ -2,9 +2,9 @@
 
 namespace ElasticScoutDriverPlus\QueryParameters\Transformers;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 
 interface ArrayTransformerInterface
 {
-    public function transform(Collection $parameters): array;
+    public function transform(ParameterCollection $parameters): array;
 }

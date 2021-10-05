@@ -2,15 +2,20 @@
 
 namespace ElasticScoutDriverPlus\Tests\App;
 
-use ElasticScoutDriverPlus\QueryDsl;
+use ElasticScoutDriverPlus\Searchable;
 use Illuminate\Database\Eloquent\Model as BaseModel;
-use Laravel\Scout\Searchable;
 
 abstract class Model extends BaseModel
 {
     use Searchable;
-    use QueryDsl;
 
+    /**
+     * @var array
+     */
+    protected $guarded = [];
+    /**
+     * @var bool
+     */
     public $timestamps = false;
 
     /**

@@ -2,12 +2,15 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\ValuesParameter;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class IdsQueryBuilder extends AbstractParameterizedQueryBuilder
 {
+    use ValuesParameter;
+
     /**
      * @var string
      */
@@ -15,14 +18,8 @@ final class IdsQueryBuilder extends AbstractParameterizedQueryBuilder
 
     public function __construct()
     {
-        $this->parameters = new Collection();
+        $this->parameters = new ParameterCollection();
         $this->parameterValidator = new AllOfValidator(['values']);
         $this->parameterTransformer = new FlatArrayTransformer();
-    }
-
-    public function values(array $values): self
-    {
-        $this->parameters->put('values', $values);
-        return $this;
     }
 }

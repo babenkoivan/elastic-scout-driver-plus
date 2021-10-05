@@ -18,7 +18,7 @@ class CreateBooksTable extends Migration
             $table->text('description')->nullable();
             $table->integer('price');
             $table->date('published');
-            $table->text('tags');
+            $table->json('tags')->nullable();
             $table->softDeletes();
 
             $table->foreign('author_id')->references('id')->on('authors');

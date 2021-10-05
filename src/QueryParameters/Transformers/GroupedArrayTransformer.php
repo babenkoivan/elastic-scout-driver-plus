@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\QueryParameters\Transformers;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 
 final class GroupedArrayTransformer implements ArrayTransformerInterface
 {
@@ -16,7 +16,7 @@ final class GroupedArrayTransformer implements ArrayTransformerInterface
         $this->groupKey = $groupKey;
     }
 
-    public function transform(Collection $parameters): array
+    public function transform(ParameterCollection $parameters): array
     {
         return [
             $parameters->get($this->groupKey) => $parameters->except($this->groupKey)->excludeEmpty()->toArray(),

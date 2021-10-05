@@ -6,10 +6,15 @@ use stdClass;
 
 final class MatchNoneQueryBuilder implements QueryBuilderInterface
 {
+    /**
+     * @var string
+     */
+    protected $type = 'match_none';
+
     public function buildQuery(): array
     {
         return [
-            'match_none' => new stdClass(),
+            $this->type => new stdClass(),
         ];
     }
 }

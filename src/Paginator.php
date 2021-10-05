@@ -2,18 +2,12 @@
 
 namespace ElasticScoutDriverPlus;
 
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use ElasticScoutDriverPlus\Decorators\SearchResult;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection as BaseCollection;
 use RuntimeException;
 
 /**
- * @method BaseCollection aggregations()
- * @method BaseCollection documents()
- * @method BaseCollection highlights()
- * @method BaseCollection matches()
- * @method BaseCollection suggestions()
- * @method EloquentCollection models()
+ * @mixin SearchResult
  */
 final class Paginator extends LengthAwarePaginator
 {
@@ -36,7 +30,7 @@ final class Paginator extends LengthAwarePaginator
         }
 
         parent::__construct(
-            $searchResult->matches()->all(),
+            $searchResult->hits(),
             $searchResult->total(),
             $perPage,
             $currentPage,
@@ -44,6 +38,18 @@ final class Paginator extends LengthAwarePaginator
         );
 
         $this->searchResult = $searchResult;
+    }
+
+    public function onlyModels(): self
+    {
+        $models = $this->models();
+        return $this->setCollection($models);
+    }
+
+    public function onlyDocuments(): self
+    {
+        $documents = $this->documents();
+        return $this->setCollection($documents);
     }
 
     /**
