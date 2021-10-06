@@ -12,10 +12,13 @@ use ElasticScoutDriverPlus\Factories\ParameterFactory;
 use ElasticScoutDriverPlus\Paginator;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Macroable;
 use stdClass;
 
 class SearchRequestBuilder
 {
+    use Macroable;
+
     public const DEFAULT_PAGE_SIZE = 10;
 
     /**
