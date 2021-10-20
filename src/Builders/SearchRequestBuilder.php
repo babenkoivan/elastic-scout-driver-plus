@@ -82,6 +82,17 @@ class SearchRequestBuilder
      * @var float|null
      */
     private $minScore;
+
+    /**
+     * @var array
+     */
+    private $searchAfter = [];
+
+    /**
+     * @var array
+     */
+    private $pit = [];
+
     /**
      * @var array
      */
@@ -258,6 +269,18 @@ class SearchRequestBuilder
         return $this;
     }
 
+    public function searchAfter(array $searchAfter): self
+    {
+        $this->searchAfter = $searchAfter;
+        return $this;
+    }
+
+    public function pit(array $pit): self
+    {
+        $this->pit = $pit;
+        return $this;
+    }
+
     public function boostIndex(string $modelClass, float $boost): self
     {
         if (!$this->modelScope->contains($modelClass)) {
@@ -348,6 +371,14 @@ class SearchRequestBuilder
 
         if (!empty($this->indicesBoost)) {
             $searchRequest->indicesBoost($this->indicesBoost);
+        }
+
+        if (!empty($this->searchAfter)) {
+            $searchRequest->searchAfter($this->searchAfter);
+        }
+
+        if (!empty($this->pit)) {
+            $searchRequest->pit($this->pit);
         }
 
         return $searchRequest;

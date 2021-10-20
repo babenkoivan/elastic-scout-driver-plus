@@ -9,6 +9,7 @@
 * [load](#load)
 * [minScore](#minscore)
 * [postFilter](#postfilter)
+* [searchAfter](#searchAfter)
 * [size](#size)
 * [sort](#sort)
 * [rescore](#rescore)
@@ -195,6 +196,19 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
+### pit
+
+`pit` is used to assign a [point in time to a search query](https://www.elastic.co/guide/en/elasticsearch/reference/current/point-in-time-api.html): 
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->pit([
+        "id" => "46ToAwMDaWR5BXV1aWQyKwZub2RlXzMAAAAAAAAAACoBYwADaWR4BXV1aWQxAgZub2RlXzEAAAAAAAAAAAEBYQADaWR5BXV1aWQyKgZub2RlXzIAAAAAAAAAAAwBYgACBXV1aWQyAAAFdXVpZDEAAQltYXRjaF9hbGw_gAAAAA==", 
+        "keep_alive" => "1m"
+    ])
+    ->execute()
+```
+
 ### postFilter
 
 `postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
@@ -214,6 +228,16 @@ You can also provide a raw query in the `postFilter` method:
 ```php
 $searchResult = Book::searchQuery($query)
     ->postFilter(['term' => ['published' => '2020-06-07']])
+    ->execute();
+```
+
+### searchAfter
+
+`searchAfter` is used to [paginate large data sets](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html#search-after):
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->searchAfter(['4294967298'])
     ->execute();
 ```
 

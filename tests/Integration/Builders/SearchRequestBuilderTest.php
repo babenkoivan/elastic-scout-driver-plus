@@ -499,4 +499,32 @@ final class SearchRequestBuilderTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_search_request_with_search_after_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->searchAfter(['1624169819000']);
+
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
+            ->searchAfter(['1624169819000'])
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_pit_can_be_built(): void
+    {
+        $pit = [
+            'id' => 'pit_id',
+            'keep_alive' => '1m',
+        ];
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->pit($pit);
+
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
+            ->pit($pit)
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
 }

@@ -39,7 +39,7 @@
     },
     "require": {
         "php": "^7.3 || ^8.0",
-        "babenkoivan/elastic-adapter": "^2.0",
+        "babenkoivan/elastic-adapter": "dev-feature/add-search-after-and-pit as 2.0.0",
         "babenkoivan/elastic-scout-driver": "^2.0"
     },
     "require-dev": {
@@ -51,6 +51,10 @@
         "phpstan/phpstan": "^0.12.32",
         "laravel/legacy-factories": "^1.1"
     },
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/exploreorg/elastic-adapter"
+    }],
     "config": {
         "bin-dir": "bin"
     },
