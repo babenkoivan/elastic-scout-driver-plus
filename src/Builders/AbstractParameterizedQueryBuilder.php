@@ -33,4 +33,13 @@ abstract class AbstractParameterizedQueryBuilder implements QueryBuilderInterfac
             $this->type => $this->parameterTransformer->transform($this->parameters),
         ];
     }
+
+    /**
+     * @param string[]|string $key
+     * @return bool
+     */
+    public function hasParameter($key): bool
+    {
+        return $this->parameters->has($key);
+    }
 }

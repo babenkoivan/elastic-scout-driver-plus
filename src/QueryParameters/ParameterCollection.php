@@ -49,6 +49,15 @@ final class ParameterCollection implements Arrayable
     }
 
     /**
+     * @param string[]|string $key
+     * @return bool
+     */
+    public function has($key): bool
+    {
+        return $this->items->has($key);
+    }
+
+    /**
      * @param BaseCollection|array|string $keys
      */
     public function except($keys): self
