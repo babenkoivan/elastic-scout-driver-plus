@@ -103,7 +103,7 @@ final class ModelScopeTest extends TestCase
 
         $this->expectException(ModelClassNotFoundInScopeException::class);
 
-        $this->modelScope->setQueryCallback($queryCallback, Author::class);
+        $this->modelScope->modifyQuery($queryCallback, Author::class);
     }
 
     public function test_query_callback_can_be_resolved(): void
@@ -112,7 +112,7 @@ final class ModelScopeTest extends TestCase
             $query->select('id', 'title', 'description');
         };
 
-        $this->modelScope->setQueryCallback($queryCallback);
+        $this->modelScope->modifyQuery($queryCallback);
 
         $this->assertSame($queryCallback, $this->modelScope->resolveQueryCallback(Book::class));
     }
@@ -125,7 +125,7 @@ final class ModelScopeTest extends TestCase
 
         $this->modelScope
             ->push(Author::class)
-            ->setQueryCallback($queryCallback, Author::class);
+            ->modifyQuery($queryCallback, Author::class);
 
         $this->assertSame($queryCallback, $this->modelScope->resolveQueryCallback(Author::class));
     }

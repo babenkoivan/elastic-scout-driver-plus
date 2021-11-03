@@ -86,12 +86,8 @@ final class ModelScope
 
     /**
      * Set the callback that should have an opportunity to modify the database query.
-     *
-     * @param callable $callback
-     * @param string|null $modelClass
-     * @return $this
      */
-    public function setQueryCallback(callable $callback, ?string $modelClass = null): self
+    public function modifyQuery(callable $callback, ?string $modelClass = null): self
     {
         $modelClass = $modelClass ?? $this->baseModelClass;
 

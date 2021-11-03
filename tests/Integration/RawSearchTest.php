@@ -440,7 +440,7 @@ final class RawSearchTest extends TestCase
         $selectedColumns = ['id', 'title', 'description'];
         $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
-            ->setQueryCallback(function(EloquentBuilder $query) use ($selectedColumns) {
+            ->refineModels(function(EloquentBuilder $query) use ($selectedColumns) {
                 $query->select($selectedColumns);
             })
             ->execute();
@@ -461,10 +461,10 @@ final class RawSearchTest extends TestCase
         $found = Book::rawSearch()
             ->query(['match_all' => new stdClass()])
             ->join(Author::class)
-            ->setQueryCallback(function(EloquentBuilder $query) use ($bookSelectedColumns) {
+            ->refineModels(function(EloquentBuilder $query) use ($bookSelectedColumns) {
                 $query->select($bookSelectedColumns);
             }, Book::class)
-            ->setQueryCallback(function(EloquentBuilder $query) use ($authorSelectedColumns) {
+            ->refineModels(function(EloquentBuilder $query) use ($authorSelectedColumns) {
                 $query->select($authorSelectedColumns);
             }, Author::class)
             ->execute();

@@ -235,9 +235,9 @@ class SearchRequestBuilder
         return $this;
     }
 
-    public function setQueryCallback(callable $callback, string $modelClass = null): self
+    public function refineModels(callable $callback, string $modelClass = null): self
     {
-        $this->modelScope->setQueryCallback($callback, $modelClass);
+        $this->modelScope->modifyQuery($callback, $modelClass);
         return $this;
     }
 
