@@ -32,8 +32,8 @@ class LazyModelFactory
     {
         $this->modelScope = $modelScope;
 
-        foreach ($searchResponse->getHits() as $hit) {
-            $this->mappedIds[$hit->getIndexName()][] = $hit->getDocument()->getId();
+        foreach ($searchResponse->hits() as $hit) {
+            $this->mappedIds[$hit->indexName()][] = $hit->document()->id();
         }
     }
 
@@ -94,8 +94,8 @@ class LazyModelFactory
         // otherwise, we get all aliases for the given index and
         // try to find the one, which is in the scope
         foreach (app(IndexManager::class)->getAliases($indexName) as $alias) {
-            if ($indexNames->contains($alias->getName())) {
-                return $alias->getName();
+            if ($indexNames->contains($alias->name())) {
+                return $alias->name();
             }
         }
 

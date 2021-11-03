@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\QueryParameters\Validators;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 
 final class CompoundValidator implements ValidatorInterface
 {
@@ -16,7 +16,7 @@ final class CompoundValidator implements ValidatorInterface
         $this->validators = $validators;
     }
 
-    public function validate(Collection $parameters): void
+    public function validate(ParameterCollection $parameters): void
     {
         foreach ($this->validators as $validator) {
             $validator->validate($parameters);

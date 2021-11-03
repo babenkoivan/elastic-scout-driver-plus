@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FlagsParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\MaxDeterminizedStatesParameter;
@@ -26,7 +26,7 @@ final class RegexpQueryBuilder extends AbstractParameterizedQueryBuilder
 
     public function __construct()
     {
-        $this->parameters = new Collection();
+        $this->parameters = new ParameterCollection();
         $this->parameterValidator = new AllOfValidator(['field', 'value']);
         $this->parameterTransformer = new GroupedArrayTransformer('field');
     }

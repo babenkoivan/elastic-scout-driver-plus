@@ -2,13 +2,38 @@
 
 namespace ElasticScoutDriverPlus;
 
+use ElasticAdapter\Documents\DocumentManager;
+use ElasticAdapter\Indices\IndexManager;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriver\Engine as BaseEngine;
+use ElasticScoutDriver\Factories\DocumentFactoryInterface;
+use ElasticScoutDriver\Factories\ModelFactoryInterface;
+use ElasticScoutDriver\Factories\SearchRequestFactoryInterface;
+use ElasticScoutDriverPlus\Factories\RoutingFactoryInterface;
 use ElasticScoutDriverPlus\Support\ModelScope;
+use Illuminate\Database\Eloquent\Model;
 
 final class Engine extends BaseEngine
 {
+    /**
+     * @var RoutingFactoryInterface
+     */
+    private $routingFactory;
+
+    public function __construct(
+        DocumentManager $documentManager,
+        DocumentFactoryInterface $documentFactory,
+        SearchRequestFactoryInterface $searchRequestFactory,
+        ModelFactoryInterface $modelFactory,
+        IndexManager $indexManager,
+        RoutingFactoryInterface $routingFactory
+    ) {
+        parent::__construct($documentManager, $documentFactory, $searchRequestFactory, $modelFactory, $indexManager);
+
+        $this->routingFactory = $routingFactory;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -18,12 +43,11 @@ final class Engine extends BaseEngine
             return;
         }
 
-        $model = $models->first();
-        $index = $model->searchableAs();
-        $routingPath = in_array(ShardRouting::class, class_uses_recursive($model)) ? $model->getRoutingPath() : null;
+        $indexName = $models->first()->searchableAs();
+        $routing = $this->routingFactory->makeFromModels($models);
         $documents = $this->documentFactory->makeFromModels($models);
 
-        $this->documentManager->index($index, $documents->all(), $this->refreshDocuments, $routingPath);
+        $this->documentManager->index($indexName, $documents, $this->refreshDocuments, $routing);
     }
 
     /**
@@ -35,12 +59,14 @@ final class Engine extends BaseEngine
             return;
         }
 
-        $model = $models->first();
-        $index = $model->searchableAs();
-        $routingPath = in_array(ShardRouting::class, class_uses_recursive($model)) ? $model->getRoutingPath() : null;
-        $documents = $this->documentFactory->makeFromModels($models);
+        $indexName = $models->first()->searchableAs();
+        $routing = $this->routingFactory->makeFromModels($models);
 
-        $this->documentManager->delete($index, $documents->all(), $this->refreshDocuments, $routingPath);
+        $documentIds = $models->map(static function (Model $model) {
+            return (string)$model->getScoutKey();
+        })->all();
+
+        $this->documentManager->delete($indexName, $documentIds, $this->refreshDocuments, $routing);
     }
 
     public function executeSearchRequest(SearchRequest $searchRequest, ModelScope $modelScope): SearchResponse

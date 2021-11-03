@@ -3,64 +3,85 @@
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
 use ElasticAdapter\Documents\Document;
-use ElasticAdapter\Search\Hit;
+use ElasticAdapter\Search\SearchResponse;
+use ElasticScoutDriverPlus\Decorators\Hit;
+use ElasticScoutDriverPlus\Decorators\SearchResult;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Paginator;
-use ElasticScoutDriverPlus\QueryMatch;
-use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Tests\App\Book;
-use RuntimeException;
+use ElasticScoutDriverPlus\Tests\App\Model;
 
 /**
  * @covers \ElasticScoutDriverPlus\Paginator
  *
- * @uses \ElasticScoutDriverPlus\QueryMatch
- * @uses \ElasticScoutDriverPlus\SearchResult
+ * @uses   \ElasticScoutDriverPlus\Decorators\Hit
+ * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
  */
 final class PaginatorTest extends TestCase
 {
-    public function test_forwards_calls_to_collection(): void
+    /**
+     * @var Paginator
+     */
+    private $paginator;
+
+    protected function setUp(): void
     {
-        $searchResult = new SearchResult(collect(), collect(), collect(), 0);
-        $paginator = new Paginator($searchResult, 2, 1);
+        parent::setUp();
 
-        $models = factory(Book::class, 2)->make();
-        $paginator->setCollection($models);
-
-        $this->assertEquals($models->first(), $paginator->first());
-    }
-
-    public function test_forwards_calls_to_search_result(): void
-    {
-        $factory = $this->createMock(LazyModelFactory::class);
-
-        $documents = collect([
-            new Document('1', ['title' => 'test 1']),
-            new Document('2', ['title' => 'test 2']),
+        $searchResponse = new SearchResponse([
+            'hits' => [
+                'hits' => [
+                    [
+                        '_id' => '1',
+                        '_index' => 'test',
+                        '_source' => ['title' => 'foo'],
+                        '_score' => 1.1,
+                        'highlight' => ['title' => [' <em>foo</em> ']],
+                    ],
+                ],
+                'total' => [
+                    'value' => 1,
+                ],
+            ],
         ]);
 
-        $matches = $documents->map(static function (Document $document) use ($factory) {
-            $hit = new Hit([
-                '_index' => 'books',
-                '_id' => $document->getId(),
-                '_source' => $document->getContent(),
-            ]);
+        $model = new Book([
+            'id' => 1,
+            'title' => 'foo',
+        ]);
 
-            return new QueryMatch($factory, $hit);
-        });
+        $lazyModelFactory = $this->createMock(LazyModelFactory::class);
 
-        $searchResult = new SearchResult($matches, collect(), collect(), $matches->count());
-        $paginator = new Paginator($searchResult, 2, 1);
+        $lazyModelFactory->expects($this->any())
+            ->method('makeByIndexNameAndDocumentId')
+            ->with('test', '1')
+            ->willReturn($model);
 
-        $this->assertEquals($matches, $paginator->matches());
-        $this->assertEquals($documents, $paginator->documents());
+        $searchResult = new SearchResult($searchResponse, $lazyModelFactory);
+        $this->paginator = new Paginator($searchResult, 1);
     }
 
-    public function test_exception_is_thrown_when_search_result_has_no_total_value(): void
+    public function test_only_models_can_be_paginated(): void
     {
-        $this->expectException(RuntimeException::class);
+        $models = $this->paginator->onlyModels();
 
-        $searchResult = new SearchResult(collect(), collect(), collect(), null);
-        new Paginator($searchResult, 10);
+        $this->assertCount(1, $models);
+        $this->assertInstanceOf(Model::class, $models->first());
+        $this->assertSame(1, $models->first()->id);
+    }
+
+    public function test_only_documents_can_be_paginated(): void
+    {
+        $documents = $this->paginator->onlyDocuments();
+
+        $this->assertCount(1, $documents);
+        $this->assertInstanceOf(Document::class, $documents->first());
+        $this->assertSame('1', $documents->first()->id());
+    }
+
+    public function test_call_forwarding(): void
+    {
+        $this->assertInstanceOf(Hit::class, $this->paginator->first());
+        $this->assertInstanceOf(Model::class, $this->paginator->models()->first());
     }
 }

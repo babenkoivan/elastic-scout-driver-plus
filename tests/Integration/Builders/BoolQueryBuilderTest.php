@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
 
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
+use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
 
@@ -11,11 +12,18 @@ use stdClass;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\BoolQueryBuilder
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Factory
+ * @uses   \ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
+ * @uses   \ElasticScoutDriverPlus\Factories\ParameterFactory
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Shared\ValueParameter
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  * @uses   \ElasticScoutDriverPlus\Support\Arr
+ * @uses   \ElasticScoutDriverPlus\Support\Query
  */
 final class BoolQueryBuilderTest extends TestCase
 {
@@ -52,7 +60,7 @@ final class BoolQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->withTrashed()
-            ->must('match_all')
+            ->must(Query::matchAll())
             ->buildQuery();
 
         $this->assertEquals($expected, $actual);
@@ -74,7 +82,7 @@ final class BoolQueryBuilderTest extends TestCase
         ];
 
         $actual = $this->builder
-            ->must('match_all')
+            ->must(Query::matchAll())
             ->onlyTrashed()
             ->buildQuery();
 
@@ -86,13 +94,17 @@ final class BoolQueryBuilderTest extends TestCase
         $expected = [
             'bool' => [
                 'must' => [
-                    ['term' => ['year' => 2020]],
+                    ['term' => ['year' => ['value' => 2020]]],
                 ],
             ],
         ];
 
         $actual = $this->builder
-            ->must('term', ['year' => 2020])
+            ->must(
+                Query::term()
+                    ->field('year')
+                    ->value('2020')
+            )
             ->buildQuery();
 
         $this->assertEquals($expected, $actual);
@@ -121,14 +133,18 @@ final class BoolQueryBuilderTest extends TestCase
             'bool' => [
                 'must' => [
                     ['term' => ['year' => 2019]],
-                    ['term' => ['year' => 2020]],
+                    ['term' => ['year' => ['value' => 2020]]],
                 ],
             ],
         ];
 
         $actual = $this->builder
             ->mustRaw(['term' => ['year' => 2019]])
-            ->must('term', ['year' => 2020])
+            ->must(
+                Query::term()
+                    ->field('year')
+                    ->value('2020')
+            )
             ->buildQuery();
 
         $this->assertEquals($expected, $actual);
@@ -139,13 +155,17 @@ final class BoolQueryBuilderTest extends TestCase
         $expected = [
             'bool' => [
                 'must_not' => [
-                    ['term' => ['year' => 2020]],
+                    ['term' => ['year' => ['value' => 2020]]],
                 ],
             ],
         ];
 
         $actual = $this->builder
-            ->mustNot('term', ['year' => 2020])
+            ->mustNot(
+                Query::term()
+                    ->field('year')
+                    ->value('2020')
+            )
             ->buildQuery();
 
         $this->assertEquals($expected, $actual);
@@ -173,15 +193,23 @@ final class BoolQueryBuilderTest extends TestCase
         $expected = [
             'bool' => [
                 'should' => [
-                    ['term' => ['year' => 2019]],
-                    ['term' => ['year' => 2020]],
+                    ['term' => ['year' => ['value' => 2019]]],
+                    ['term' => ['year' => ['value' => 2020]]],
                 ],
             ],
         ];
 
         $actual = $this->builder
-            ->should('term', ['year' => 2019])
-            ->should('term', ['year' => 2020])
+            ->should(
+                Query::term()
+                    ->field('year')
+                    ->value('2019')
+            )
+            ->should(
+                Query::term()
+                    ->field('year')
+                    ->value('2020')
+            )
             ->buildQuery();
 
         $this->assertEquals($expected, $actual);
@@ -213,16 +241,24 @@ final class BoolQueryBuilderTest extends TestCase
         $expected = [
             'bool' => [
                 'should' => [
-                    ['term' => ['year' => 2019]],
-                    ['term' => ['year' => 2020]],
+                    ['term' => ['year' => ['value' => 2019]]],
+                    ['term' => ['year' => ['value' => 2020]]],
                 ],
                 'minimum_should_match' => 1,
             ],
         ];
 
         $actual = $this->builder
-            ->should('term', ['year' => 2019])
-            ->should('term', ['year' => 2020])
+            ->should(
+                Query::term()
+                    ->field('year')
+                    ->value('2019')
+            )
+            ->should(
+                Query::term()
+                    ->field('year')
+                    ->value('2020')
+            )
             ->minimumShouldMatch(1)
             ->buildQuery();
 
@@ -234,13 +270,17 @@ final class BoolQueryBuilderTest extends TestCase
         $expected = [
             'bool' => [
                 'filter' => [
-                    ['term' => ['year' => 2020]],
+                    ['term' => ['year' => ['value' => 2020]]],
                 ],
             ],
         ];
 
         $actual = $this->builder
-            ->filter('term', ['year' => 2020])
+            ->filter(
+                Query::term()
+                    ->field('year')
+                    ->value('2020')
+            )
             ->buildQuery();
 
         $this->assertEquals($expected, $actual);

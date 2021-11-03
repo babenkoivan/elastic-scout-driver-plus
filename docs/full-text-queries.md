@@ -9,39 +9,42 @@
 
 ## Match All
 
-Use `matchAllSearch` to perform a search request, which 
+You can use `ElasticScoutDriverPlus\Support\Query::matchAll()` to build a query that
 [matches all documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html#query-dsl-match-all-query):
 
 ```php
-$searchResult = Book::matchAllSearch()->execute();
-```
+$query = Query::matchAll();
 
-`MatchAllQueryBuilder` doesn't provide any additional methods.
+$searchResult = Book::searchQuery($query)->execute();
+```
 
 ## Match None
 
-`matchNoneSearch` is [the inverse](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html#query-dsl-match-none-query)
-of [`matchAllSearch`](#match-all):
+You can use `ElasticScoutDriverPlus\Support\Query::matchNone()` to build a query that
+[matches no documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html#query-dsl-match-none-query):
 
 ```php
-$searchResult = Book::matchNoneSearch()->execute();
-```
+$query = Query::matchNone();
 
-`MatchNoneQueryBuilder` doesn't provide any additional methods.
+$searchResult = Book::searchQuery($query)->execute();
+
+```
 
 ## Match Phrase Prefix
 
-Use `matchPhrasePrefixSearch` to search for documents, that [contain the words of a provided text](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#query-dsl-match-query-phrase-prefix), 
+You can use `ElasticScoutDriverPlus\Support\Query::matchPhrasePrefix()` to build a query that matches documents, which
+[contain the words of a provided text](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#query-dsl-match-query-phrase-prefix) 
 in the same order as provided:
 
 ```php
-$searchResult = Book::matchPhrasePrefixSearch()
+$query = Query::matchPhrasePrefix()
     ->field('title')
-    ->query('My boo')
-    ->execute();
+    ->query('My boo');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `MatchPhrasePrefixQueryBuilder`:
+Available methods:
 
 * [analyzer](#match-phrase-prefix-analyzer)
 * [field](#match-phrase-prefix-field)
@@ -55,11 +58,12 @@ Available methods provided by `MatchPhrasePrefixQueryBuilder`:
 `analyzer` is used to [convert the `query` text into tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params):
 
 ```php
-$searchResult = Book::matchPhrasePrefixSearch()
+$query = Query::matchPhrasePrefix()
     ->field('title')
     ->query('My boo')
-    ->analyzer('english')
-    ->execute();
+    ->analyzer('english');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-prefix-field"></a> field
@@ -67,10 +71,11 @@ $searchResult = Book::matchPhrasePrefixSearch()
 Use `field` to specify [the field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-top-level-params):
 
 ```php
-$searchResult = Book::matchPhrasePrefixSearch()
+$query = Query::matchPhrasePrefix()
     ->field('title')
-    ->query('My boo')
-    ->execute();
+    ->query('My boo');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-prefix-max-expansions"></a> maxExpansions
@@ -78,11 +83,12 @@ $searchResult = Book::matchPhrasePrefixSearch()
 You can use `maxExpansions` to specify [maximum number of terms to which the last provided term of the `query` value will expand](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params):
 
 ```php
-$searchResult = Book::matchPhrasePrefixSearch()
+$query = Query::matchPhrasePrefix()
     ->field('title')
     ->query('My boo')
-    ->maxExpansions(50)
-    ->execute();
+    ->maxExpansions(50);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-prefix-query"></a> query
@@ -90,10 +96,11 @@ $searchResult = Book::matchPhrasePrefixSearch()
 Use `query` to set [the text you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params):
 
 ```php
-$searchResult = Book::matchPhrasePrefixSearch()
+$query = Query::matchPhrasePrefix()
     ->field('title')
-    ->query('My boo')
-    ->execute();
+    ->query('My boo');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-prefix-slop"></a> slop
@@ -101,38 +108,42 @@ $searchResult = Book::matchPhrasePrefixSearch()
 Use `slop` to define [the maximum number of positions allowed between matching tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params):
 
 ```php
-$searchResult = Book::matchPhrasePrefixSearch()
+$query = Query::matchPhrasePrefix()
     ->field('title')
     ->query('My boo')
-    ->slop(0)
-    ->execute();
+    ->slop(0);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-prefix-zero-terms-query"></a> zeroTermsQuery
 
 You can define [what to return in case `analyzer` removes all tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#match-phrase-prefix-field-params)
-with `zeroTermsQuery`: 
+using `zeroTermsQuery`: 
 
 ```php
-$searchResult = Book::matchPhrasePrefixSearch()
+$query = Query::matchPhrasePrefix()
     ->field('title')
     ->query('My boo')
-    ->zeroTermsQuery('none')
-    ->execute();
+    ->zeroTermsQuery('none');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Match Phrase
 
-Use `matchPhraseSearch` to search for documents, which [match the given phrase](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html#query-dsl-match-query-phrase):
+You can use `ElasticScoutDriverPlus\Support\Query::matchPhrase()` to build a query that matches documents, which
+[contain the given phrase](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html#query-dsl-match-query-phrase):
 
 ```php
-$searchResult = Book::matchPhraseSearch()
+$query = Query::matchPhrase()
     ->field('title')
-    ->query('My book')
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ``` 
 
-Available methods provided by `MatchPhraseQueryBuilder`:
+Available methods:
 
 * [analyzer](#match-phrase-analyzer)
 * [field](#match-phrase-field)
@@ -145,11 +156,12 @@ Available methods provided by `MatchPhraseQueryBuilder`:
 `analyzer` is used to convert the `query` text into tokens:
 
 ```php
-$searchResult = Book::matchPhraseSearch()
+$query = Query::matchPhrase()
     ->field('title')
     ->query('My book')
-    ->analyzer('english')
-    ->execute();
+    ->analyzer('english');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-field"></a> field
@@ -157,10 +169,11 @@ $searchResult = Book::matchPhraseSearch()
 Use `field` to specify the field you wish to search:
 
 ```php
-$searchResult = Book::matchPhraseSearch()
+$query = Query::matchPhrase()
     ->field('title')
-    ->query('My book')
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-query"></a> query
@@ -168,10 +181,11 @@ $searchResult = Book::matchPhraseSearch()
 Use `query` to set the text you wish to find in the provided `field`:
 
 ```php
-$searchResult = Book::matchPhraseSearch()
+$query = Query::matchPhrase()
     ->field('title')
-    ->query('My book')
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-slop"></a> slop
@@ -179,11 +193,12 @@ $searchResult = Book::matchPhraseSearch()
 Use `slop` to define the maximum number of positions allowed between matching tokens:
 
 ```php
-$searchResult = Book::matchPhraseSearch()
+$query = Query::matchPhrase()
     ->field('title')
     ->query('My book')
-    ->slop(0)
-    ->execute();
+    ->slop(0);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-phrase-zero-terms-query"></a> zeroTermsQuery
@@ -191,25 +206,28 @@ $searchResult = Book::matchPhraseSearch()
 You can define what to return in case `analyzer` removes all tokens with `zeroTermsQuery`: 
 
 ```php
-$searchResult = Book::matchPhraseSearch()
+$query = Query::matchPhrase()
     ->field('title')
     ->query('My book')
-    ->zeroTermsQuery('none')
-    ->execute();
+    ->zeroTermsQuery('none'));
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Match
 
-Use `matchSearch` for [full-text search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query):
+You can use `ElasticScoutDriverPlus\Support\Query::match()` to build a query that matches documents, which 
+[contain a provided text, number, date or boolean value](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
-    ->query('My book')
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `MatchQueryBuilder`:
+Available methods:
 
 * [analyzer](#match-analyzer)
 * [autoGenerateSynonymsPhraseQuery](#match-auto-generate-synonyms-phrase-query)
@@ -231,36 +249,39 @@ Available methods provided by `MatchQueryBuilder`:
 `analyzer` is used to [convert the `query` text into tokens](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
-    ->analyzer('english')
-    ->execute();
+    ->analyzer('english');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-auto-generate-synonyms-phrase-query"></a> autoGenerateSynonymsPhraseQuery
 
-`autoGenerateSynonymsPhraseQuery` allows you to define, if match phrase queries have to be [automatically created
+`autoGenerateSynonymsPhraseQuery` allows you to define if match phrase queries have to be [automatically created
 for multi-term synonyms](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
-    ->autoGenerateSynonymsPhraseQuery(true)
-    ->execute();
+    ->autoGenerateSynonymsPhraseQuery(true);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-boost"></a> boost 
 
-`boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html):
+`boost` method allows you to [decrease or increase the relevance scores of the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html):
 
  ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
-    ->boost(2)
-    ->execute();
+    ->boost(2);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-field"></a> field
@@ -268,10 +289,11 @@ $searchResult = Book::matchSearch()
 Use `field` to specify [the field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-top-level-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
-    ->query('My book')
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-fuzziness"></a> fuzziness
@@ -279,11 +301,12 @@ $searchResult = Book::matchSearch()
 `fuzziness` controls [maximum edit distance allowed for matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
-    ->fuzziness('AUTO')
-    ->execute();
+    ->fuzziness('AUTO');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-fuzzy-rewrite"></a> fuzzyRewrite
@@ -291,11 +314,12 @@ $searchResult = Book::matchSearch()
 `fuzzyRewrite` is used to [rewrite the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
-    ->fuzzyRewrite('constant_score')
-    ->execute();
+    ->fuzzyRewrite('constant_score');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-fuzzy-transpositions"></a> fuzzyTranspositions
@@ -303,12 +327,13 @@ $searchResult = Book::matchSearch()
 Use `fuzzyTranspositions` to allow [transpositions for two adjacent characters](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
     ->fuzziness('AUTO')
-    ->fuzzyTranspositions(true)
-    ->execute();
+    ->fuzzyTranspositions(true);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-lenient"></a> lenient
@@ -316,11 +341,12 @@ $searchResult = Book::matchSearch()
 Use `lenient` to [ignore format-based errors](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('price')
     ->query('My book')
-    ->lenient(true)
-    ->execute();
+    ->lenient(true);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-max-expansions"></a> maxExpansions
@@ -328,11 +354,12 @@ $searchResult = Book::matchSearch()
 You can use `maxExpansions` to specify [maximum number of terms to which the query will expand](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
-    ->maxExpansions(50)
-    ->execute();
+    ->maxExpansions(50);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-minimum-should-match"></a> minimumShouldMatch
@@ -340,12 +367,13 @@ $searchResult = Book::matchSearch()
 `minimumShouldMatch` defines [minimum number of clauses that must match for a document to be returned](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
     ->operator('OR')
-    ->minimumShouldMatch(1)
-    ->execute();
+    ->minimumShouldMatch(1);
+
+$searchResult = Book::searchQuery($query)->execute();
 ``` 
 
 ### <a name="match-operator"></a> operator
@@ -353,11 +381,12 @@ $searchResult = Book::matchSearch()
 Use `operator` to define [the boolean logic used to interpret the `query` text](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
-    ->operator('OR')
-    ->execute();
+    ->operator('OR');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-prefix-length"></a> prefixLength
@@ -365,12 +394,13 @@ $searchResult = Book::matchSearch()
 `prefixLength` is used to determine [the number of beginning characters left unchanged for fuzzy matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')
     ->fuzziness('AUTO')
-    ->prefixLength(0)
-    ->execute();
+    ->prefixLength(0);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-query"></a> query
@@ -378,10 +408,11 @@ $searchResult = Book::matchSearch()
 Use `query` to set [the text you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#match-field-params):
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
-    ->query('My book')  
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="match-zero-terms-query"></a> zeroTermsQuery
@@ -390,25 +421,28 @@ You can define [what to return in case `analyzer` removes all tokens](https://ww
 with `zeroTermsQuery`: 
 
 ```php
-$searchResult = Book::matchSearch()
+$query = Query::match()
     ->field('title')
     ->query('My book')  
-    ->zeroTermsQuery('none')
-    ->execute();
+    ->zeroTermsQuery('none');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Multi-Match
 
-Use `multiMatchSearch` to preform [full-text search in multiple fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#query-dsl-multi-match-query):
+You can use `ElasticScoutDriverPlus\Support\Query::multiMatch()` to build a query that matches documents, which
+[contain a provided text, number, date or boolean value in multiple fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#query-dsl-multi-match-query):
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
-    ->query('My book')
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `MultiMatchQueryBuilder`:
+Available methods:
 
 * [analyzer](#multi-match-analyzer)
 * [autoGenerateSynonymsPhraseQuery](#multi-match-auto-generate-synonyms-phrase-query)
@@ -433,11 +467,12 @@ Available methods provided by `MultiMatchQueryBuilder`:
 `analyzer` is used to convert the `query` text into tokens:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->analyzer('english')
-    ->execute();
+    ->analyzer('english');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-auto-generate-synonyms-phrase-query"></a> autoGenerateSynonymsPhraseQuery 
@@ -446,11 +481,12 @@ $searchResult = Book::multiMatchSearch()
 for multi-term synonyms:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->autoGenerateSynonymsPhraseQuery(true)
-    ->execute();
+    ->autoGenerateSynonymsPhraseQuery(true);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-boost"></a> boost 
@@ -458,11 +494,12 @@ $searchResult = Book::multiMatchSearch()
 `boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html):
 
  ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->boost(2)
-    ->execute();
+    ->boost(2);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-fields"></a> fields 
@@ -470,10 +507,11 @@ $searchResult = Book::multiMatchSearch()
 Use `fields` to define [the fields you wish to search in](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#field-boost):
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
-    ->query('My book')
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-fuzziness"></a> fuzziness 
@@ -481,11 +519,12 @@ $searchResult = Book::multiMatchSearch()
 `fuzziness` controls maximum edit distance allowed for matching:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->fuzziness('AUTO')
-    ->execute();
+    ->fuzziness('AUTO');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-fuzzy-rewrite"></a> fuzzyRewrite 
@@ -493,11 +532,12 @@ $searchResult = Book::multiMatchSearch()
 `fuzzyRewrite` is used to rewrite the query:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->fuzzyRewrite('constant_score')
-    ->execute();
+    ->fuzzyRewrite('constant_score');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-fuzzy-transpositions"></a> fuzzyTranspositions 
@@ -505,12 +545,13 @@ $searchResult = Book::multiMatchSearch()
 Use `fuzzyTranspositions` to allow transpositions for two adjacent characters:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
     ->fuzziness('AUTO')
-    ->fuzzyTranspositions(true)
-    ->execute();
+    ->fuzzyTranspositions(true);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-lenient"></a> lenient 
@@ -518,11 +559,12 @@ $searchResult = Book::multiMatchSearch()
 Use `lenient` to ignore format-based errors:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->lenient(true)
-    ->execute();
+    ->lenient(true);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-max-expansions"></a> maxExpansions 
@@ -530,11 +572,12 @@ $searchResult = Book::multiMatchSearch()
 You can use `maxExpansions` to specify maximum number of terms to which the query will expand:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->maxExpansions(50)
-    ->execute();
+    ->maxExpansions(50);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-minimum-should-match"></a> minimumShouldMatch 
@@ -542,12 +585,13 @@ $searchResult = Book::multiMatchSearch()
 `minimumShouldMatch` defines minimum number of clauses that must match for a document to be returned:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
     ->operator('OR')
-    ->minimumShouldMatch(1)
-    ->execute();
+    ->minimumShouldMatch(1);
+
+$searchResult = Book::searchQuery($query)->execute();
 ``` 
 
 ### <a name="multi-match-operator"></a> operator 
@@ -555,11 +599,12 @@ $searchResult = Book::multiMatchSearch()
 Use `operator` to define the boolean logic used to interpret the `query` text:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->operator('OR')
-    ->execute();
+    ->operator('OR');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-prefix-length"></a> prefixLength 
@@ -567,12 +612,13 @@ $searchResult = Book::multiMatchSearch()
 `prefixLength` is used to determine the number of beginning characters left unchanged for fuzzy matching:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
     ->fuzziness('AUTO')
-    ->prefixLength(0)
-    ->execute();
+    ->prefixLength(0);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-query"></a> query 
@@ -580,10 +626,11 @@ $searchResult = Book::multiMatchSearch()
 Use `query` to set the text you wish to find in the provided `fields`:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
-    ->query('My book')
-    ->execute();
+    ->query('My book');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-phrase-slop"></a> slop 
@@ -591,11 +638,12 @@ $searchResult = Book::multiMatchSearch()
 Use `slop` to define the maximum number of positions allowed between matching tokens:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->slop(0)
-    ->execute();
+    ->slop(0);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-tie-breaker"></a> tieBreaker 
@@ -604,11 +652,12 @@ $searchResult = Book::multiMatchSearch()
 of documents matching the query:
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->tieBreaker(0.3)
-    ->execute();
+    ->tieBreaker(0.3);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="multi-match-type"></a> type 
@@ -616,14 +665,15 @@ $searchResult = Book::multiMatchSearch()
 Use `type` to define [how the query must be executed](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#multi-match-types):
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->type('best_fields')
-    ->execute();
+    ->type('best_fields');
+
+$searchResult = Book::searchQuery($query)->execute();
 ``` 
 
-**Note**, that not all the available methods make sense with every type. Read [the documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#multi-match-types) 
+**Note** that not all available methods make sense with every type. Read [the documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#multi-match-types) 
 carefully.
 
 ### <a name="multi-match-zero-terms-query"></a> zeroTermsQuery 
@@ -631,9 +681,10 @@ carefully.
 You can define what to return in case `analyzer` removes all tokens with `zeroTermsQuery`: 
 
 ```php
-$searchResult = Book::multiMatchSearch()
+$query = Query::multiMatch()
     ->fields(['title', 'description'])
     ->query('My book')
-    ->zeroTermsQuery('none')
-    ->execute();
+    ->zeroTermsQuery('none');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```

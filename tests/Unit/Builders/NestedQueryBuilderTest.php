@@ -10,8 +10,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\NestedQueryBuilder
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Factory
+ * @uses   \ElasticScoutDriverPlus\Factories\ParameterFactory
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  */

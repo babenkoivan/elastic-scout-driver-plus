@@ -3,7 +3,7 @@
 .DEFAULT_GOAL := help
 
 ## mysql config
-MYSQL_VERSION ?= 5.6
+MYSQL_VERSION ?= 8.0
 MYSQL_CONTAINER_IMAGE := mysql:${MYSQL_VERSION}
 MYSQL_CONTAINER_NAME := elastic-scout-driver-plus-mysql
 MYSQL_HOST_PORT := 23306
@@ -27,7 +27,8 @@ up: ## Start containers
 		-e MYSQL_DATABASE=${MYSQL_DATABASE} \
 		-e MYSQL_USER=${MYSQL_USER} \
 		-e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
-		${MYSQL_CONTAINER_IMAGE}
+		${MYSQL_CONTAINER_IMAGE} \
+		--default-authentication-plugin=mysql_native_password
 	@printf "\033[92m✔︎ ${MYSQL_CONTAINER_NAME} is started\033[0m\n"
 
 	@printf "\033[93m→ Starting ${ES_CONTAINER_NAME} container\033[0m\n"
@@ -72,7 +73,7 @@ coverage: ## Run tests and generate the code coverage report
 
 style-check: ## Check the code style
 	@printf "\033[93m→ Checking the code style\033[0m\n"
-	@bin/php-cs-fixer fix --allow-risky=yes --dry-run --diff-format=udiff --show-progress=dots --verbose
+	@bin/php-cs-fixer fix --allow-risky=yes --dry-run --diff --show-progress=dots --verbose
 	@printf "\n\033[92m✔︎ Code style is checked\033[0m\n"
 
 static-analysis: ## Do static code analysis

@@ -2,23 +2,26 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
+use Closure;
 use ElasticAdapter\Search\SearchRequest;
+use ElasticScoutDriverPlus\Decorators\SearchResult;
 use ElasticScoutDriverPlus\Engine;
 use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
-use ElasticScoutDriverPlus\Factories\SearchResultFactory;
+use ElasticScoutDriverPlus\Factories\LazyModelFactory;
+use ElasticScoutDriverPlus\Factories\ParameterFactory;
 use ElasticScoutDriverPlus\Paginator;
-use ElasticScoutDriverPlus\SearchResult;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Traits\ForwardsCalls;
 use stdClass;
 
 class SearchRequestBuilder
 {
     public const DEFAULT_PAGE_SIZE = 10;
 
-    use ForwardsCalls;
-
+    /**
+     * @var array
+     */
+    private $query;
     /**
      * @var ModelScope
      */
@@ -27,10 +30,6 @@ class SearchRequestBuilder
      * @var Engine
      */
     private $engine;
-    /**
-     * @var QueryBuilderInterface
-     */
-    private $queryBuilder;
     /**
      * @var array
      */
@@ -88,11 +87,14 @@ class SearchRequestBuilder
      */
     private $indicesBoost = [];
 
-    public function __construct(Model $model, QueryBuilderInterface $queryBuilder)
+    /**
+     * @param Closure|QueryBuilderInterface|array $query
+     */
+    public function __construct($query, Model $model)
     {
+        $this->query = ParameterFactory::makeQuery($query);
         $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
-        $this->queryBuilder = $queryBuilder;
     }
 
     public function highlightRaw(array $highlight): self
@@ -129,9 +131,12 @@ class SearchRequestBuilder
         return $this;
     }
 
-    public function rescoreQuery(string $type, array $query): self
+    /**
+     * @param Closure|QueryBuilderInterface|array $query
+     */
+    public function rescoreQuery($query): self
     {
-        $this->rescore['query']['rescore_query'][$type] = $query;
+        $this->rescore['query']['rescore_query'] = ParameterFactory::makeQuery($query);
         return $this;
     }
 
@@ -217,15 +222,12 @@ class SearchRequestBuilder
         return $this;
     }
 
-    public function postFilter(string $type, array $query): self
+    /**
+     * @param Closure|QueryBuilderInterface|array $query
+     */
+    public function postFilter($query): self
     {
-        $this->postFilter[$type] = $query;
-        return $this;
-    }
-
-    public function postFilterRaw(array $filter): self
-    {
-        $this->postFilter = $filter;
+        $this->postFilter = ParameterFactory::makeQuery($query);
         return $this;
     }
 
@@ -274,64 +276,84 @@ class SearchRequestBuilder
         return $this;
     }
 
+    /**
+     * @param mixed         $value
+     * @param callable      $callback
+     * @param callable|null $default
+     *
+     * @return mixed
+     */
+    public function when($value, $callback, $default = null)
+    {
+        if ($value) {
+            return $callback($this, $value) ?? $this;
+        }
+
+        if ($default) {
+            return $default($this, $value) ?? $this;
+        }
+
+        return $this;
+    }
+
     public function buildSearchRequest(): SearchRequest
     {
-        $searchRequest = new SearchRequest($this->queryBuilder->buildQuery());
+        $searchRequest = new SearchRequest($this->query);
 
         if (!empty($this->highlight)) {
-            $searchRequest->setHighlight($this->highlight);
+            $searchRequest->highlight($this->highlight);
         }
 
         if (!empty($this->sort)) {
-            $searchRequest->setSort($this->sort);
+            $searchRequest->sort($this->sort);
         }
 
         if (!empty($this->rescore)) {
-            $searchRequest->setRescore($this->rescore);
+            $searchRequest->rescore($this->rescore);
         }
 
         if (isset($this->from)) {
-            $searchRequest->setFrom($this->from);
+            $searchRequest->from($this->from);
         }
 
         if (isset($this->size)) {
-            $searchRequest->setSize($this->size);
+            $searchRequest->size($this->size);
         }
 
         if (!empty($this->suggest)) {
-            $searchRequest->setSuggest($this->suggest);
+            $searchRequest->suggest($this->suggest);
         }
 
         if (isset($this->source)) {
-            $searchRequest->setSource($this->source);
+            $searchRequest->source($this->source);
         }
 
         if (!empty($this->collapse)) {
-            $searchRequest->setCollapse($this->collapse);
+            $searchRequest->collapse($this->collapse);
         }
 
         if (!empty($this->aggregations)) {
-            $searchRequest->setAggregations($this->aggregations);
+            $searchRequest->aggregations($this->aggregations);
         }
 
         if (!empty($this->postFilter)) {
-            $searchRequest->setPostFilter($this->postFilter);
+            $searchRequest->postFilter($this->postFilter);
         }
 
         if (isset($this->trackTotalHits)) {
-            $searchRequest->setTrackTotalHits($this->trackTotalHits);
+            $searchRequest->trackTotalHits($this->trackTotalHits);
         }
 
         if (isset($this->trackScores)) {
-            $searchRequest->setTrackScores($this->trackScores);
+            $searchRequest->trackScores($this->trackScores);
         }
 
         if (isset($this->minScore)) {
-            $searchRequest->setMinScore($this->minScore);
+            $searchRequest->minScore($this->minScore);
         }
 
         if (!empty($this->indicesBoost)) {
-            $searchRequest->setIndicesBoost($this->indicesBoost);
+            $searchRequest->indicesBoost($this->indicesBoost);
         }
 
         return $searchRequest;
@@ -340,14 +362,9 @@ class SearchRequestBuilder
     public function execute(): SearchResult
     {
         $searchResponse = $this->engine->executeSearchRequest($this->buildSearchRequest(), $this->modelScope);
-        return SearchResultFactory::makeFromSearchResponseUsingModelScope($searchResponse, $this->modelScope);
-    }
+        $lazyModelFactory = new LazyModelFactory($searchResponse, $this->modelScope);
 
-    public function raw(): array
-    {
-        return $this->engine
-            ->executeSearchRequest($this->buildSearchRequest(), $this->modelScope)
-            ->getRaw();
+        return new SearchResult($searchResponse, $lazyModelFactory);
     }
 
     public function paginate(
@@ -373,29 +390,10 @@ class SearchRequestBuilder
         );
     }
 
-    /**
-     * @param mixed         $value
-     * @param callable      $callback
-     * @param callable|null $default
-     *
-     * @return mixed
-     */
-    public function when($value, $callback, $default = null)
+    public function raw(): array
     {
-        if ($value) {
-            return $callback($this, $value) ?? $this;
-        }
-
-        if ($default) {
-            return $default($this, $value) ?? $this;
-        }
-
-        return $this;
-    }
-
-    public function __call(string $method, array $parameters): self
-    {
-        $this->forwardCallTo($this->queryBuilder, $method, $parameters);
-        return $this;
+        return $this->engine
+            ->executeSearchRequest($this->buildSearchRequest(), $this->modelScope)
+            ->raw();
     }
 }

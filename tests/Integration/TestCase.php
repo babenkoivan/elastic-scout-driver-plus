@@ -5,7 +5,10 @@ namespace ElasticScoutDriverPlus\Tests\Integration;
 use ElasticClient\ServiceProvider as ElasticClientServiceProvider;
 use ElasticMigrations\ServiceProvider as ElasticMigrationsServiceProvider;
 use ElasticScoutDriver\ServiceProvider as ElasticScoutDriverServiceProvider;
+use ElasticScoutDriverPlus\Decorators\SearchResult;
 use ElasticScoutDriverPlus\ServiceProvider as ElasticScoutDriverPlusServiceProvider;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Laravel\Scout\ScoutServiceProvider;
 use Orchestra\Testbench\TestCase as TestbenchTestCase;
 
@@ -48,5 +51,16 @@ class TestCase extends TestbenchTestCase
         $this->artisan('migrate:reset')->run();
 
         parent::tearDown();
+    }
+
+    protected function assertFoundModel(Model $model, SearchResult $searchResult): void
+    {
+        $this->assertCount(1, $searchResult->models());
+        $this->assertEquals($model->toArray(), $searchResult->models()->first()->toArray());
+    }
+
+    protected function assertFoundModels(Collection $models, SearchResult $searchResult): void
+    {
+        $this->assertEquals($models->values()->toArray(), $searchResult->models()->values()->toArray());
     }
 }

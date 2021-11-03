@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\RelationParameter;
@@ -26,7 +26,7 @@ final class RangeQueryBuilder extends AbstractParameterizedQueryBuilder
 
     public function __construct()
     {
-        $this->parameters = new Collection();
+        $this->parameters = new ParameterCollection();
 
         $this->parameterValidator = new CompoundValidator(
             new AllOfValidator(['field']),

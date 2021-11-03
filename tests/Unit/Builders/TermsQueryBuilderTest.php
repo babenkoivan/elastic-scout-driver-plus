@@ -9,9 +9,9 @@ use PHPUnit\Framework\TestCase;
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \ElasticScoutDriverPlus\Builders\TermsQueryBuilder
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\NullValidator
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  */
 final class TermsQueryBuilderTest extends TestCase
 {
@@ -36,7 +36,8 @@ final class TermsQueryBuilderTest extends TestCase
         ];
 
         $actual = $this->builder
-            ->terms('programming_languages', ['c++', 'java', 'php'])
+            ->field('programming_languages')
+            ->values(['c++', 'java', 'php'])
             ->buildQuery();
 
         $this->assertSame($expected, $actual);
@@ -52,7 +53,8 @@ final class TermsQueryBuilderTest extends TestCase
         ];
 
         $actual = $this->builder
-            ->terms('programming_languages', ['c++', 'java', 'php'])
+            ->field('programming_languages')
+            ->values(['c++', 'java', 'php'])
             ->boost(1.1)
             ->buildQuery();
 

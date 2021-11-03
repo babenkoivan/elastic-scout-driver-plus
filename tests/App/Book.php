@@ -3,7 +3,6 @@
 namespace ElasticScoutDriverPlus\Tests\App;
 
 use Carbon\Carbon;
-use ElasticScoutDriverPlus\ShardRouting;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -13,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $title
  * @property string $description
  * @property float  $price
+ * @property array  $tags
  * @property Carbon $published
  * @property Carbon $deleted_at
  * @property Author $author
@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Book extends Model
 {
     use SoftDeletes;
-    use ShardRouting;
 
     protected $hidden = [
         'deleted_at',
@@ -51,8 +50,19 @@ class Book extends Model
         return $searchable;
     }
 
-    public function getRoutingPath(): string
+    /**
+     * @return string
+     */
+    public function shardRouting()
     {
-        return 'author.name';
+        return $this->author->name;
+    }
+
+    /**
+     * @return array
+     */
+    public function searchableWith()
+    {
+        return ['author'];
     }
 }

@@ -12,28 +12,29 @@
 
 ## Exists
 
-`existsSearch` returns documents that [contain an indexed value for a `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html#query-dsl-exists-query):
+You can use `ElasticScoutDriverPlus\Support\Query::exists()` to build a query that matches documents, which
+[contain an indexed value for a `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html#query-dsl-exists-query):
 
 ```php
-$searchResult = Book::existsSearch()
-    ->field('description')
-    ->execute();
-```
+$query = Query::exists()->field('description');
 
-`ExistsQueryBuilder` doesn't provide any additional methods.
+$searchResult = Book::searchQuery($query)->execute();
+```
 
 ## Fuzzy
 
-`fuzzySearch` returns documents that [contain terms similar to the search term](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#query-dsl-fuzzy-query):
+You can use `ElasticScoutDriverPlus\Support\Query::fuzzy()` to build a query that matches documents, which
+[contain terms similar to the search term](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#query-dsl-fuzzy-query):
 
 ```php
-$searchResult = Book::fuzzySearch()
+$query = Query::fuzzy()
     ->field('title')
-    ->value('boko')
-    ->execute();
+    ->value('boko');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `FuzzyQueryBuilder`:
+Available methods:
 
 * [field](#fuzzy-field)
 * [fuzziness](#fuzzy-fuzziness)
@@ -48,10 +49,11 @@ Available methods provided by `FuzzyQueryBuilder`:
 Use `field` to specify the [field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#fuzzy-query-top-level-params):
 
 ```php
-$searchResult = Book::fuzzySearch()
+$query = Query::fuzzy()
     ->field('title')
-    ->value('boko')
-    ->execute();
+    ->value('boko');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="fuzzy-fuzziness"></a> fuzziness
@@ -59,11 +61,12 @@ $searchResult = Book::fuzzySearch()
 `fuzziness` controls [maximum edit distance allowed for matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#fuzzy-query-field-params):
 
 ```php
-$searchResult = Book::fuzzySearch()
+$query = Query::fuzzy()
     ->field('title')
     ->value('boko')
-    ->fuzziness('AUTO')
-    ->execute();
+    ->fuzziness('AUTO');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="fuzzy-max-expansions"></a> maxExpansions
@@ -71,11 +74,12 @@ $searchResult = Book::fuzzySearch()
 You can use `maxExpansions` to specify [maximum number of terms to which the query will expand](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#fuzzy-query-field-params):
 
 ```php
-$searchResult = Book::fuzzySearch()
+$query = Query::fuzzy()
     ->field('title')
     ->value('boko')
-    ->maxExpansions(50)
-    ->execute();
+    ->maxExpansions(50);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="fuzzy-prefix-length"></a> prefixLength
@@ -83,11 +87,12 @@ $searchResult = Book::fuzzySearch()
 `prefixLength` is used to determine [the number of beginning characters left unchanged when creating expansions](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#fuzzy-query-field-params):
 
 ```php
-$searchResult = Book::fuzzySearch()
+$query = Query::fuzzy()
     ->field('title')
     ->value('boko')
-    ->prefixLength(0)
-    ->execute();
+    ->prefixLength(0);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="fuzzy-rewrite"></a> rewrite
@@ -95,11 +100,12 @@ $searchResult = Book::fuzzySearch()
 `rewrite` is used to [rewrite the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#fuzzy-query-field-params):
 
 ```php
-$searchResult = Book::fuzzySearch()
+$query = Query::fuzzy()
     ->field('title')
     ->value('boko')
-    ->rewrite('constant_score')
-    ->execute();
+    ->rewrite('constant_score');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="fuzzy-transpositions"></a> transpositions
@@ -107,11 +113,12 @@ $searchResult = Book::fuzzySearch()
 `transpositions` allows to [include transpositions of two adjacent characters](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#fuzzy-query-field-params):
 
 ```php
-$searchResult = Book::fuzzySearch()
+$query = Query::fuzzy()
     ->field('title')
     ->value('boko')
-    ->transpositions(true)
-    ->execute();
+    ->transpositions(true);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="fuzzy-value"></a> value
@@ -119,34 +126,38 @@ $searchResult = Book::fuzzySearch()
 With `value` you can define a [term you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html#fuzzy-query-field-params):
 
 ```php
-$searchResult = Book::fuzzySearch()
+$query = Query::fuzzy()
     ->field('title')
-    ->value('boko')
-    ->execute();
+    ->value('boko');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Ids
 
-`idsSearch` returns documents [based on their IDs](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-ids-query.html#query-dsl-ids-query):
+You can use `ElasticScoutDriverPlus\Support\Query::ids()` to build a query that matches documents
+[based on their IDs](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-ids-query.html#query-dsl-ids-query):
 
 ```php
-$searchResult = Book::idsSearch()
-    ->values(['1', '2', '3'])
-    ->execute();
+$query = Query::ids()->values(['1', '2', '3']);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Prefix
 
-`prefixSearch` returns documents that [contain a specific prefix in a provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html#query-dsl-prefix-query):
+You can use `ElasticScoutDriverPlus\Support\Query::prefix()` to build a query that matches documents, which
+[contain a specific prefix in a provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html#query-dsl-prefix-query):
 
 ```php
-$searchResult = Book::prefixSearch()
+$query = Query::prefix()
     ->field('title')
-    ->value('boo')
-    ->execute();
+    ->value('boo');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `PrefixQueryBuilder`:
+Available methods:
 
 * [field](#prefix-field)
 * [rewrite](#prefix-rewrite)
@@ -157,10 +168,11 @@ Available methods provided by `PrefixQueryBuilder`:
 Use `field` to specify the [field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html#prefix-query-top-level-params):
 
 ```php
-$searchResult = Book::prefixSearch()
+$query = Query::prefix()
     ->field('title')
-    ->value('boo')
-    ->execute();
+    ->value('boo');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="prefix-rewrite"></a> rewrite
@@ -168,11 +180,12 @@ $searchResult = Book::prefixSearch()
 `rewrite` is used to [rewrite the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html#prefix-query-field-params):
 
 ```php
-$searchResult = Book::prefixSearch()
+$query = Query::prefix()
     ->field('title')
     ->value('boo')
-    ->rewrite('constant_score')
-    ->execute();
+    ->rewrite('constant_score');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="prefix-value"></a> value
@@ -180,24 +193,27 @@ $searchResult = Book::prefixSearch()
 With `value` you can define [beginning characters of terms you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html#prefix-query-field-params):
 
 ```php
-$searchResult = Book::prefixSearch()
+$query = Query::prefix()
     ->field('title')
-    ->value('boo')
-    ->execute();
+    ->value('boo');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Range
 
-`rangeSearch` returns documents that [contain terms within a provided range](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#query-dsl-range-query):
+You can use `ElasticScoutDriverPlus\Support\Query::range()` to build a query that matches documents, which
+[contain terms within a provided range](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#query-dsl-range-query):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('price')
-    ->gt(100)
-    ->execute();
+    ->gt(100);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `RangeQueryBuilder`:
+Available methods:
 
 * [boost](#range-boost)
 * [field](#range-field)
@@ -214,11 +230,12 @@ Available methods provided by `RangeQueryBuilder`:
 `boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-field-params):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('price')
     ->gt(100)
-    ->boost(2)
-    ->execute();
+    ->boost(2);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="range-field"></a> field
@@ -226,10 +243,11 @@ $searchResult = Book::rangeSearch()
 Use `field` to specify the [field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-top-level-params):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('price')
-    ->gt(100)
-    ->execute();
+    ->gt(100);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="range-format"></a> format
@@ -237,11 +255,12 @@ $searchResult = Book::rangeSearch()
 `format` is used to [convert date values in the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-field-params):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('updated_at')
     ->gt('2020-10-18')
-    ->format('yyyy-MM-dd')
-    ->execute();
+    ->format('yyyy-MM-dd');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="range-gt"></a> gt
@@ -249,10 +268,11 @@ $searchResult = Book::rangeSearch()
 `gt` defines a [greater than range](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-field-params):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('price')
-    ->gt(100)
-    ->execute();
+    ->gt(100);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="range-gte"></a> gte
@@ -260,10 +280,11 @@ $searchResult = Book::rangeSearch()
 `gte` defines a [greater than or equal to range](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-field-params):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('price')
-    ->gte(100)
-    ->execute();
+    ->gte(100);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="range-lt"></a> lt
@@ -271,10 +292,11 @@ $searchResult = Book::rangeSearch()
 `lt` defines a [less than range](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-field-params):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('price')
-    ->lt(100)
-    ->execute();
+    ->lt(100);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="range-lte"></a> lte
@@ -282,10 +304,11 @@ $searchResult = Book::rangeSearch()
 `lte` defines a [less than or equal to range](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-field-params):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('price')
-    ->lte(100)
-    ->execute();
+    ->lte(100);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="range-relation"></a> relation
@@ -293,12 +316,13 @@ $searchResult = Book::rangeSearch()
 You can use `relation` to specify how the range query [matches values for range fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-field-params): 
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('price')
     ->gt(50)
     ->lt(100)
-    ->relation('INTERSECTS')
-    ->execute();
+    ->relation('INTERSECTS');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="range-time-zone"></a> timeZone
@@ -306,25 +330,28 @@ $searchResult = Book::rangeSearch()
 `timeZone` is used to [convert date values in the query to UTC](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-field-params):
 
 ```php
-$searchResult = Book::rangeSearch()
+$query = Query::range()
     ->field('updated_at')
     ->gt('2020-10-18')
-    ->timeZone('+01:00')
-    ->execute();
+    ->timeZone('+01:00');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Regexp
 
-`regexpSearch` returns documents that [contain terms matching a regular expression](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#query-dsl-regexp-query):
+You can use `ElasticScoutDriverPlus\Support\Query::regexp()` to build a query that matches documents, which
+[contain terms corresponding to regular expression](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#query-dsl-regexp-query):
 
 ```php
-$searchResult = Book::regexpSearch()
+$query = Query::regexp()
     ->field('title')
-    ->value('b.*k')
-    ->execute();
+    ->value('b.*k');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `RegexpQueryBuilder`:
+Available methods:
 
 * [field](#regexp-field)
 * [flags](#regexp-flags)
@@ -337,10 +364,11 @@ Available methods provided by `RegexpQueryBuilder`:
 Use `field` to specify the [field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#regexp-top-level-params):
 
 ```php
-$searchResult = Book::regexpSearch()
+$query = Query::regexp()
     ->field('title')
-    ->value('b.*k')
-    ->execute();
+    ->value('b.*k');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="regexp-flags"></a> flags
@@ -348,11 +376,12 @@ $searchResult = Book::regexpSearch()
 Use `flags` to [enable optional operators for the regular expression](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#regexp-query-field-params):
 
 ```php
-$searchResult = Book::regexpSearch()
+$query = Query::regexp()
     ->field('title')
     ->value('b.*k')
-    ->flags('ALL')
-    ->execute();
+    ->flags('ALL');
+
+$searchResult = Book::searchQuery($query)->execute();
 ``` 
 
 ### <a name="regexp-max-determinized-states"></a> maxDeterminizedStates
@@ -360,11 +389,12 @@ $searchResult = Book::regexpSearch()
 `maxDeterminizedStates` defines the [maximum number of automation states required for the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#regexp-query-field-params):
 
 ```php
-$searchResult = Book::regexpSearch()
+$query = Query::regexp()
     ->field('title')
     ->value('b.*k')
-    ->maxDeterminizedStates(10000)
-    ->execute();
+    ->maxDeterminizedStates(10000);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="regexp-rewrite"></a> rewrite
@@ -372,11 +402,12 @@ $searchResult = Book::regexpSearch()
 `rewrite` is used to [rewrite the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#regexp-query-field-params):
 
 ```php
-$searchResult = Book::regexpSearch()
+$query = Query::regexp()
     ->field('title')
     ->value('b.*k')
-    ->rewrite('constant_score')
-    ->execute();
+    ->rewrite('constant_score');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="regexp-value"></a> value
@@ -384,24 +415,27 @@ $searchResult = Book::regexpSearch()
 With `value` you can define a [regular expression for terms you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#regexp-query-field-params):
 
 ```php
-$searchResult = Book::regexpSearch()
+$query = Query::regexp()
     ->field('title')
-    ->value('b.*k')
-    ->execute();
+    ->value('b.*k');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Term
 
-`termSearch` returns documents that [contain an exact term in a provided field](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#query-dsl-term-query):
+You can use `ElasticScoutDriverPlus\Support\Query::term()` to build a query that matches documents, which
+[contain an exact term in a provided field](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#query-dsl-term-query):
 
 ```php
-$searchResult = Book::termSearch()
+$query = Query::term()
     ->field('price')
-    ->value('300')
-    ->execute();
+    ->value('300');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `TermQueryBuilder`:
+Available methods:
 
 * [boost](#term-boost)
 * [field](#term-field)
@@ -412,11 +446,12 @@ Available methods provided by `TermQueryBuilder`:
 `boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#term-field-params):
 
 ```php
-$searchResult = Book::termSearch()
+$query = Query::term()
     ->field('price')
     ->value('300')
-    ->boost(2)
-    ->execute();
+    ->boost(2);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="term-field"></a> field
@@ -424,10 +459,11 @@ $searchResult = Book::termSearch()
 Use `field` to specify the [field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#term-top-level-params):
 
 ```php
-$searchResult = Book::termSearch()
+$query = Query::term()
     ->field('price')
-    ->value('300')
-    ->execute();
+    ->value('300');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="term-value"></a> value
@@ -435,60 +471,83 @@ $searchResult = Book::termSearch()
 With `value` you can define a [term you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#term-field-params):
 
 ```php
-$searchResult = Book::termSearch()
+$query = Query::term()
     ->field('price')
-    ->value('300')
-    ->execute();
+    ->value('300');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Terms
 
-`termsSearch` returns documents that [contain one or more exact terms in a provided field](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-query):
+You can use `ElasticScoutDriverPlus\Support\Query::terms()` to build a query that matches documents, which
+[contain one or more exact terms in a provided field](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-query):
 
 ```php
-$searchResult = Book::termsSearch()
-    ->terms('tags', ['available', 'new'])
-    ->execute();
+$query = Query::terms()
+    ->field('tags')
+    ->values(['available', 'new']);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `TermsQueryBuilder`: 
+Available methods: 
 
 * [boost](#terms-boost)
-* [terms](#terms-terms)
+* [field](#terms-field)
+* [values](#terms-values)
 
 ### <a name="terms-boost"></a> boost
 
 `boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#terms-top-level-params):
 
 ```php
-$searchResult = Book::termsSearch()
-    ->terms('tags', ['available', 'new'])
-    ->boost(2)
-    ->execute();
+$query = Query::terms()
+    ->field('tags')
+    ->values(['available', 'new'])
+    ->boost(2);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-### <a name="terms-terms"></a> terms
+### <a name="terms-field"></a> field
 
-Use `terms` to define array of terms you [wish to find in the provided field](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#terms-top-level-params):
+Use `field` to specify the [field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#terms-top-level-params):
 
 ```php
-$searchResult = Book::termsSearch()
-    ->terms('tags', ['available', 'new'])
-    ->execute();
+$query = Query::terms()
+    ->field('tags')
+    ->values(['available', 'new']);
+
+$searchResult = Book::searchQuery($query)->execute();
+```
+
+### <a name="terms-values"></a> values
+
+With `value` you can define [terms you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#terms-top-level-params):
+
+```php
+$query = Query::terms()
+    ->field('tags')
+    ->values(['available', 'new']);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ## Wildcard
 
-`wildcardSearch` returns documents that [contain terms matching a wildcard pattern](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#query-dsl-wildcard-query):
+You can use `ElasticScoutDriverPlus\Support\Query::wildcard()` to build a query that matches documents, which
+[contain terms corresponding to wildcard pattern](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#query-dsl-wildcard-query):
 
 ```php
-$searchResult = Book::wildcardSearch()
+$query = ElasticScoutDriverPlus\Support\Query::wildcard()
     ->field('title')
-    ->value('bo*k')
-    ->execute();
+    ->value('bo*k');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
-Available methods provided by `WildcardQueryBuilder`:
+Available methods:
 
 * [boost](#wildcard-boost)
 * [field](#wildcard-field)
@@ -500,11 +559,12 @@ Available methods provided by `WildcardQueryBuilder`:
 `boost` method allows you to [decrease or increase the relevance scores of a query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-query-field-params):
 
 ```php
-$searchResult = Book::wildcardSearch()
+$query = ElasticScoutDriverPlus\Support\Query::wildcard()
     ->field('title')
     ->value('bo*k')
-    ->boost(2)
-    ->execute();
+    ->boost(2);
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="wildcard-field"></a> field
@@ -512,10 +572,11 @@ $searchResult = Book::wildcardSearch()
 Use `field` to specify the [field you wish to search](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-top-level-params):
 
 ```php
-$searchResult = Book::wildcardSearch()
+$query = ElasticScoutDriverPlus\Support\Query::wildcard()
     ->field('title')
-    ->value('bo*k')
-    ->execute();
+    ->value('bo*k');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="wildcard-rewrite"></a> rewrite
@@ -523,11 +584,12 @@ $searchResult = Book::wildcardSearch()
 `rewrite` is used to [rewrite the query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-query-field-params):
 
 ```php
-$searchResult = Book::wildcardSearch()
+$query = ElasticScoutDriverPlus\Support\Query::wildcard()
     ->field('title')
     ->value('bo*k')
-    ->rewrite('constant_score')
-    ->execute();
+    ->rewrite('constant_score');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```
 
 ### <a name="wildcard-value"></a> value
@@ -535,8 +597,9 @@ $searchResult = Book::wildcardSearch()
 With `value` you can define a [wildcard pattern for terms you wish to find in the provided `field`](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-query-field-params):
 
 ```php
-$searchResult = Book::wildcardSearch()
+$query = ElasticScoutDriverPlus\Support\Query::wildcard()
     ->field('title')
-    ->value('bo*k')
-    ->execute();
+    ->value('bo*k');
+
+$searchResult = Book::searchQuery($query)->execute();
 ```

@@ -3,7 +3,7 @@
 namespace ElasticScoutDriverPlus\Tests\Unit\QueryParameters\Validators;
 
 use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\QueryParameters\Collection;
+use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 use ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator;
 use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
@@ -12,7 +12,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 /**
  * @covers \ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Collection
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  */
@@ -46,7 +46,7 @@ final class CompoundValidatorTest extends TestCase
     {
         $this->expectException(QueryBuilderException::class);
 
-        $parameters = new Collection($parameters);
+        $parameters = new ParameterCollection($parameters);
 
         $validator = new CompoundValidator(
             new AllOfValidator(['field']),
@@ -61,7 +61,7 @@ final class CompoundValidatorTest extends TestCase
      */
     public function test_exception_is_not_thrown_when_all_validations_succeed(array $parameters): void
     {
-        $parameters = new Collection($parameters);
+        $parameters = new ParameterCollection($parameters);
 
         $validator = new CompoundValidator(
             new AllOfValidator(['field']),
