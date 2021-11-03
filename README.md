@@ -156,6 +156,7 @@ The builder supports various search parameters and provides a number of useful h
 * [size](docs/available-methods.md#size)
 * [sort](docs/available-methods.md#sort)
 * [rescore](docs/available-methods.md#rescore)
+* [refineModels](docs/available-methods.md#refinemodels)
 * [source](docs/available-methods.md#source)
 * [suggest](docs/available-methods.md#suggest)
 * [trackScores](docs/available-methods.md#trackscores)
