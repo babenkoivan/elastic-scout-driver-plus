@@ -64,15 +64,17 @@ class LazyModelFactory
             ? $model->withTrashed()
             : $model->newQuery();
 
-        if (isset($queryCallback)) {
-            $queryCallback($query);
-        }
-
         if (isset($relations)) {
             $query->with($relations);
         }
 
-        $result = $query->whereIn($model->getScoutKeyName(), $ids)->get();
+        $query->whereIn($model->getScoutKeyName(), $ids);
+
+        if (isset($queryCallback)) {
+            $queryCallback($query);
+        }
+
+        $result = $query->get();
 
         return $result->mapWithKeys(static function (Model $model) {
             return [(string)$model->getScoutKey() => $model];
