@@ -97,7 +97,7 @@ final class ModelScopeTest extends TestCase
 
     public function test_exception_is_thrown_when_setting_query_callback_for_out_of_scope_model(): void
     {
-        $queryCallback = static function(EloquentBuilder $query) {
+        $queryCallback = static function (EloquentBuilder $query) {
             $query->select('id', 'name', 'last_name');
         };
 
@@ -108,7 +108,7 @@ final class ModelScopeTest extends TestCase
 
     public function test_query_callback_can_be_resolved(): void
     {
-        $queryCallback = static function(EloquentBuilder $query) {
+        $queryCallback = static function (EloquentBuilder $query) {
             $query->select('id', 'title', 'description');
         };
 
@@ -119,7 +119,7 @@ final class ModelScopeTest extends TestCase
 
     public function test_explicit_model_query_callback_can_be_added_in_scope(): void
     {
-        $queryCallback = static function(EloquentBuilder $query) {
+        $queryCallback = static function (EloquentBuilder $query) {
             $query->select('id', 'name', 'last_name');
         };
 

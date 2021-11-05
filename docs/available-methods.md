@@ -295,7 +295,7 @@ This method allows you to set the callback where you can modify the database que
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 $models = Book::searchQuery($query)
-    ->refineModels(function(EloquentBuilder $query) {
+    ->refineModels(function (EloquentBuilder $query) {
         $query->select(['id', 'title', 'description']);
     })
     ->execute()
@@ -309,10 +309,10 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 $models = Book::searchQuery($query)
     ->join(Author::class)
-    ->refineModels(function(EloquentBuilder $query) {
+    ->refineModels(function (EloquentBuilder $query) {
         $query->select(['id', 'title', 'description']);
     }, Book::class)
-    ->refineModels(function(EloquentBuilder $query) {
+    ->refineModels(function (EloquentBuilder $query) {
         $query->select(['id', 'name', 'last_name']);
     }, Author::class)
     ->execute()
