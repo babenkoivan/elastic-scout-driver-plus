@@ -161,6 +161,7 @@ The builder supports various search parameters and provides a number of useful h
 * [postFilter](docs/available-methods.md#postfilter)
 * [size](docs/available-methods.md#size)
 * [sort](docs/available-methods.md#sort)
+* [refineModels](docs/available-methods.md#refinemodels)
 * [rescore](docs/available-methods.md#rescore)
 * [refineModels](docs/available-methods.md#refinemodels)
 * [source](docs/available-methods.md#source)
