@@ -10,6 +10,7 @@ use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\App\Model;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Facades\Cache;
 use RuntimeException;
 use const SORT_NUMERIC;
@@ -395,6 +396,48 @@ final class RawQueryTest extends TestCase
         $found->models()->each(function (Model $model) {
             $relation = $model instanceof Book ? 'author' : 'books';
             $this->assertTrue($model->relationLoaded($relation));
+        });
+    }
+
+    public function test_query_callback_executed_in_a_single_model_class(): void
+    {
+        factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create();
+
+        $selectedColumns = ['id', 'title', 'description'];
+        $found = Book::searchQuery(['match_all' => new stdClass()])
+            ->refineModels(static function (EloquentBuilder $query) use ($selectedColumns) {
+                $query->select($selectedColumns);
+            })
+            ->execute();
+
+        $found->models()->each(function (Model $model) use ($selectedColumns) {
+            $this->assertEqualsCanonicalizing(array_keys($model->getAttributes()), $selectedColumns);
+        });
+    }
+
+    public function test_query_callbacks_executed_in_multiple_model_classes(): void
+    {
+        factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create();
+
+        $bookSelectedColumns = ['id', 'title', 'description'];
+        $authorSelectedColumns = ['id', 'name', 'last_name'];
+        $found = Book::searchQuery(['match_all' => new stdClass()])
+            ->join(Author::class)
+            ->refineModels(static function (EloquentBuilder $query) use ($bookSelectedColumns) {
+                $query->select($bookSelectedColumns);
+            }, Book::class)
+            ->refineModels(static function (EloquentBuilder $query) use ($authorSelectedColumns) {
+                $query->select($authorSelectedColumns);
+            }, Author::class)
+            ->execute();
+
+        $found->models()->each(function (Model $model) use ($bookSelectedColumns, $authorSelectedColumns) {
+            $columns = $model instanceof Book ? $bookSelectedColumns : $authorSelectedColumns;
+            $this->assertEqualsCanonicalizing(array_keys($model->getAttributes()), $columns);
         });
     }
 

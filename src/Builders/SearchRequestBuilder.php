@@ -237,6 +237,12 @@ class SearchRequestBuilder
         return $this;
     }
 
+    public function refineModels(callable $callback, string $modelClass = null): self
+    {
+        $this->modelScope->modifyQuery($callback, $modelClass);
+        return $this;
+    }
+
     /**
      * @param int|bool $trackTotalHits
      */

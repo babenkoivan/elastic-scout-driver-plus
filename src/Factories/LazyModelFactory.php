@@ -58,6 +58,7 @@ class LazyModelFactory
         $ids = $this->mappedIds[$indexName];
         $model = new $modelClass();
         $relations = $this->modelScope->resolveRelations($modelClass);
+        $queryCallback = $this->modelScope->resolveQueryCallback($modelClass);
 
         $query = in_array(SoftDeletes::class, class_uses_recursive($model), true)
             ? $model->withTrashed()
@@ -67,7 +68,13 @@ class LazyModelFactory
             $query->with($relations);
         }
 
-        $result = $query->whereIn($model->getScoutKeyName(), $ids)->get();
+        $query->whereIn($model->getScoutKeyName(), $ids);
+
+        if (isset($queryCallback)) {
+            $queryCallback($query);
+        }
+
+        $result = $query->get();
 
         return $result->mapWithKeys(static function (Model $model) {
             return [(string)$model->getScoutKey() => $model];
