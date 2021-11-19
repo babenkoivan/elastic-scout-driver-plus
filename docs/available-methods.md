@@ -12,6 +12,7 @@
 * [searchAfter](#searchAfter)
 * [size](#size)
 * [sort](#sort)
+* [refineModels](#refinemodels)
 * [rescore](#rescore)
 * [source](#source)
 * [suggest](#suggest)
@@ -308,6 +309,38 @@ $searchResult = Book::searchQuery($query)
         ]
     ])
     ->execute();
+```
+
+### refinemodels
+
+This method allows you to set the callback where you can modify the database query.
+
+ ```php
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+
+$models = Book::searchQuery($query)
+    ->refineModels(function (EloquentBuilder $query) {
+        $query->select(['id', 'title', 'description']);
+    })
+    ->execute()
+    ->models();
+```
+
+When [searching in multiple indices](#join), you need to explicitly define the model for which you want to set the callback:
+
+```php
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+
+$models = Book::searchQuery($query)
+    ->join(Author::class)
+    ->refineModels(function (EloquentBuilder $query) {
+        $query->select(['id', 'title', 'description']);
+    }, Book::class)
+    ->refineModels(function (EloquentBuilder $query) {
+        $query->select(['id', 'name', 'last_name']);
+    }, Author::class)
+    ->execute()
+    ->models();
 ```
 
 ### source

@@ -7,6 +7,7 @@ use ElasticScoutDriverPlus\Support\ModelScope;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use InvalidArgumentException;
 
 /**
@@ -92,5 +93,40 @@ final class ModelScopeTest extends TestCase
         $this->modelScope->with(['author']);
 
         $this->assertSame(['author'], $this->modelScope->resolveRelations(Book::class));
+    }
+
+    public function test_exception_is_thrown_when_setting_query_callback_for_out_of_scope_model(): void
+    {
+        $queryCallback = static function (EloquentBuilder $query) {
+            $query->select('id', 'name', 'last_name');
+        };
+
+        $this->expectException(ModelClassNotFoundInScopeException::class);
+
+        $this->modelScope->modifyQuery($queryCallback, Author::class);
+    }
+
+    public function test_query_callback_can_be_resolved(): void
+    {
+        $queryCallback = static function (EloquentBuilder $query) {
+            $query->select('id', 'title', 'description');
+        };
+
+        $this->modelScope->modifyQuery($queryCallback);
+
+        $this->assertSame($queryCallback, $this->modelScope->resolveQueryCallback(Book::class));
+    }
+
+    public function test_explicit_model_query_callback_can_be_added_in_scope(): void
+    {
+        $queryCallback = static function (EloquentBuilder $query) {
+            $query->select('id', 'name', 'last_name');
+        };
+
+        $this->modelScope
+            ->push(Author::class)
+            ->modifyQuery($queryCallback, Author::class);
+
+        $this->assertSame($queryCallback, $this->modelScope->resolveQueryCallback(Author::class));
     }
 }
