@@ -47,7 +47,7 @@ final class Hit implements Arrayable
         return $this->forwardCallTo($this->hit, $method, $parameters);
     }
 
-    public function inner_hits()
+    public function innerHits()
     {
         $final_inner_hits = [];
         $raw_hit = $this->hit->raw();
