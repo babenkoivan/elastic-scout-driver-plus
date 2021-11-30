@@ -63,6 +63,13 @@ final class SearchResult implements IteratorAggregate
         })->filter()->values();
     }
 
+    public function inner_hits(): Collection
+    {
+        return $this->hits()->map(static function (Hit $hit) {
+            return $hit->inner_hits();
+        })->filter()->values();
+    }
+
     /**
      * @return ArrayIterator<int, Hit>
      */

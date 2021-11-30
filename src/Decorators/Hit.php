@@ -7,6 +7,7 @@ use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin BaseHit
@@ -46,6 +47,24 @@ final class Hit implements Arrayable
         return $this->forwardCallTo($this->hit, $method, $parameters);
     }
 
+    public function inner_hits()
+    {
+        $final_inner_hits = [];
+        $raw_hit = $this->hit->raw();
+        if (isset($raw_hit['inner_hits'])) {
+            foreach ($raw_hit['inner_hits'] as $key => $inner_hits) {
+                $final_inner_hits[$key] = $final_inner_hits[$key] ?? collect();
+                if ($inner_hits['hits']['total']['value'] > 0) {
+                    foreach ($inner_hits['hits']['hits'] as $inner_hit) {
+                        $final_inner_hits[$key]->push(new BaseHit($inner_hit));
+                    }
+                }
+            }
+        }
+
+        return $final_inner_hits;
+    }
+
     /**
      * @{@inheritDoc}
      */
@@ -56,11 +75,11 @@ final class Hit implements Arrayable
         $highlight = $this->highlight();
 
         return [
-            'model' => isset($model) ? $model->toArray() : null,
+            'model'      => isset($model) ? $model->toArray() : null,
             'index_name' => $this->indexName(),
-            'document' => $document->toArray(),
-            'highlight' => isset($highlight) ? $highlight->raw() : null,
-            'score' => $this->score(),
+            'document'   => $document->toArray(),
+            'highlight'  => isset($highlight) ? $highlight->raw() : null,
+            'score'      => $this->score(),
         ];
     }
 }
