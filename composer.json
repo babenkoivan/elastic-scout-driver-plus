@@ -43,6 +43,7 @@
         "babenkoivan/elastic-scout-driver": "^2.0"
     },
     "require-dev": {
+        "ext-json": "*",
         "phpunit/phpunit": "^9.5",
         "orchestra/testbench": "^6.12",
         "babenkoivan/elastic-migrations": "^2.0",

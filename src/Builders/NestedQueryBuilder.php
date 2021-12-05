@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\IgnoreUnmappedParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\InnerHitsParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\QueryParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\ScoreModeParameter;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
@@ -14,6 +15,7 @@ final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
     use QueryParameter;
     use ScoreModeParameter;
     use IgnoreUnmappedParameter;
+    use InnerHitsParameter;
 
     /**
      * @var string

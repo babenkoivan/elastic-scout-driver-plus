@@ -91,4 +91,64 @@ final class NestedQueryTest extends TestCase
 
         $this->assertFoundModel($target, $found);
     }
+
+    public function test_hits_can_be_found_using_inner_hits(): void
+    {
+        // additional mixin
+        factory(Book::class)->create([
+            'author_id' => factory(Author::class)->create([
+                'phone_number' => '202-555-0165',
+            ]),
+        ]);
+
+        $target = factory(Book::class)->create([
+            'author_id' => factory(Author::class)->create([
+                'phone_number' => '202-555-0139',
+            ]),
+        ]);
+
+        $builder = (new NestedQueryBuilder())
+            ->path('author')
+            ->innerHits(['_source' => false])
+            ->query(
+                (new TermQueryBuilder())
+                    ->field('author.phone_number')
+                    ->value('202-555-0139')
+            );
+
+        $found = Book::searchQuery($builder)->execute();
+        $rawHit = $found->hits()[0]->raw();
+
+        $this->assertArrayHasKey('inner_hits', $rawHit);
+    }
+
+    public function test_hits_can_be_found_using_empty_inner_hits(): void
+    {
+        // additional mixin
+        factory(Book::class)->create([
+            'author_id' => factory(Author::class)->create([
+                'phone_number' => '202-555-0165',
+            ]),
+        ]);
+
+        $target = factory(Book::class)->create([
+            'author_id' => factory(Author::class)->create([
+                'phone_number' => '202-555-0139',
+            ]),
+        ]);
+
+        $builder = (new NestedQueryBuilder())
+            ->path('author')
+            ->innerHits()
+            ->query(
+                (new TermQueryBuilder())
+                    ->field('author.phone_number')
+                    ->value('202-555-0139')
+            );
+
+        $found = Book::searchQuery($builder)->execute();
+        $rawHit = $found->hits()[0]->raw();
+
+        $this->assertArrayHasKey('inner_hits', $rawHit);
+    }
 }

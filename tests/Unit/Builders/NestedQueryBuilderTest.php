@@ -129,4 +129,65 @@ final class NestedQueryBuilderTest extends TestCase
 
         $this->assertSame($expected, $actual);
     }
+
+    public function test_query_with_path_and_query_and_inner_hits_can_be_built(): void
+    {
+        $expected = [
+            'nested' => [
+                'path' => 'obj',
+                'query' => [
+                    'match' => [
+                        'obj.name' => 'foo',
+                    ],
+                ],
+                'inner_hits' => [
+                    '_source' => false
+                ],
+            ],
+        ];
+
+        $actual = $this->builder
+            ->path('obj')
+            ->query([
+                'match' => [
+                    'obj.name' => 'foo',
+                ],
+            ])
+            ->innerHits([
+                '_source' => false
+            ])
+            ->buildQuery();
+
+        $this->assertSame($expected, $actual);
+    }
+
+    public function test_query_with_path_and_query_and_empty_inner_hits_can_be_built(): void
+    {
+        $expected = [
+            'nested' => [
+                'path' => 'obj',
+                'query' => [
+                    'match' => [
+                        'obj.name' => 'foo',
+                    ],
+                ],
+                'inner_hits' => new \stdClass(),
+            ],
+        ];
+
+        $actual = $this->builder
+            ->path('obj')
+            ->query([
+                'match' => [
+                    'obj.name' => 'foo',
+                ],
+            ])
+            ->innerHits()
+            ->buildQuery();
+
+        $this->assertEquals(
+            json_encode($expected, JSON_THROW_ON_ERROR),
+            json_encode($actual, JSON_THROW_ON_ERROR)
+        );
+    }
 }
