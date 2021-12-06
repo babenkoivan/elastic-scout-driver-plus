@@ -5,6 +5,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 use Carbon\Carbon;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
+use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Decorators\Hit;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -407,7 +408,8 @@ final class RawQueryTest extends TestCase
 
         $selectedColumns = ['id', 'title', 'description'];
         $found = Book::searchQuery(['match_all' => new stdClass()])
-            ->setQueryCallback(function(EloquentBuilder $query) use ($selectedColumns) {
+            ->setQueryCallback(function(EloquentBuilder $query, SearchResponse $response) use ($selectedColumns) {
+                $this->assertInstanceOf(SearchResponse::class, $response);
                 $query->select($selectedColumns);
             })
             ->execute();
@@ -427,10 +429,12 @@ final class RawQueryTest extends TestCase
         $authorSelectedColumns = ['id', 'name', 'last_name'];
         $found = Book::searchQuery(['match_all' => new stdClass()])
             ->join(Author::class)
-            ->setQueryCallback(function(EloquentBuilder $query) use ($bookSelectedColumns) {
+            ->setQueryCallback(function(EloquentBuilder $query, SearchResponse $response) use ($bookSelectedColumns) {
+                $this->assertInstanceOf(SearchResponse::class, $response);
                 $query->select($bookSelectedColumns);
             }, Book::class)
-            ->setQueryCallback(function(EloquentBuilder $query) use ($authorSelectedColumns) {
+            ->setQueryCallback(function(EloquentBuilder $query, SearchResponse $response) use ($authorSelectedColumns) {
+                $this->assertInstanceOf(SearchResponse::class, $response);
                 $query->select($authorSelectedColumns);
             }, Author::class)
             ->execute();
@@ -448,7 +452,8 @@ final class RawQueryTest extends TestCase
             ->create();
 
         $found = Book::searchQuery(['match_all' => new stdClass()])
-            ->setModelCallback(function(Model $model) {
+            ->setModelCallback(function(Model $model, SearchResponse $response) {
+                $this->assertInstanceOf(SearchResponse::class, $response);
                 $model->append('formatted_price');
             })
             ->execute();
@@ -466,10 +471,12 @@ final class RawQueryTest extends TestCase
 
         $found = Book::searchQuery(['match_all' => new stdClass()])
             ->join(Author::class)
-            ->setModelCallback(function(Model $model) {
+            ->setModelCallback(function(Model $model, SearchResponse $response) {
+                $this->assertInstanceOf(SearchResponse::class, $response);
                 $model->append('formatted_price');
             }, Book::class)
-            ->setModelCallback(function(Model $model) {
+            ->setModelCallback(function(Model $model, SearchResponse $response) {
+                $this->assertInstanceOf(SearchResponse::class, $response);
                 $model->append('full_name');
             }, Author::class)
             ->execute();

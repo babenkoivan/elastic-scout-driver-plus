@@ -12,6 +12,10 @@ use Illuminate\Support\Collection;
 class LazyModelFactory
 {
     /**
+     * @var SearchResponse
+     */
+    private $searchResponse;
+    /**
      * @var ModelScope
      */
     private $modelScope;
@@ -30,6 +34,7 @@ class LazyModelFactory
 
     public function __construct(SearchResponse $searchResponse, ModelScope $modelScope)
     {
+        $this->searchResponse = $searchResponse;
         $this->modelScope = $modelScope;
 
         foreach ($searchResponse->hits() as $hit) {
@@ -66,7 +71,7 @@ class LazyModelFactory
             : $model->newQuery();
 
         if (isset($queryCallback)) {
-            $queryCallback($query);
+            $queryCallback($query, $this->searchResponse);
         }
 
         if (isset($relations)) {
@@ -75,9 +80,9 @@ class LazyModelFactory
 
         $result = $query->whereIn($model->getScoutKeyName(), $ids)->get();
 
-        return $result->mapWithKeys(static function (Model $model) use ($modelCallback) {
+        return $result->mapWithKeys(function (Model $model) use ($modelCallback) {
             if (isset($modelCallback)) {
-                $modelCallback($model);
+                $modelCallback($model, $this->searchResponse);
             }
 
             return [(string)$model->getScoutKey() => $model];
