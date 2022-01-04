@@ -8,6 +8,7 @@ use ElasticScoutDriverPlus\QueryParameters\Shared\QueryParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\ScoreModeParameter;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
 use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
+use stdClass;
 
 final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
 {
@@ -30,6 +31,12 @@ final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
     public function path(string $path): self
     {
         $this->parameters->put('path', $path);
+        return $this;
+    }
+
+    public function innerHits(array $options = []): self
+    {
+        $this->parameters->put('inner_hits', empty($options) ? new stdClass() : $options);
         return $this;
     }
 }

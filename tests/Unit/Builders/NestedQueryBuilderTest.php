@@ -129,4 +129,35 @@ final class NestedQueryBuilderTest extends TestCase
 
         $this->assertSame($expected, $actual);
     }
+
+    public function test_query_with_path_and_query_and_inner_hits_can_be_built(): void
+    {
+        $expected = [
+            'nested' => [
+                'path' => 'obj',
+                'query' => [
+                    'match' => [
+                        'obj.name' => 'foo',
+                    ],
+                ],
+                'inner_hits' => [
+                    'name' => 'bar',
+                ],
+            ],
+        ];
+
+        $actual = $this->builder
+            ->path('obj')
+            ->query([
+                'match' => [
+                    'obj.name' => 'foo',
+                ],
+            ])
+            ->innerHits([
+                'name' => 'bar',
+            ])
+            ->buildQuery();
+
+        $this->assertSame($expected, $actual);
+    }
 }

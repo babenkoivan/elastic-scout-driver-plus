@@ -39,7 +39,7 @@
     },
     "require": {
         "php": "^7.3 || ^8.0",
-        "babenkoivan/elastic-adapter": "^2.0",
+        "babenkoivan/elastic-adapter": "dev-feature-inner-hits as 2.1",
         "babenkoivan/elastic-scout-driver": "^2.0"
     },
     "require-dev": {
