@@ -36,7 +36,6 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
   * [Search parameters](#search-parameters)
   * [Search results](#search-results)
   * [Custom routing](#custom-routing)
-  * [Custom routing](#custom-routing)
   * [Eager loading relations](#eager-loading-relations)
 
 ## Features
