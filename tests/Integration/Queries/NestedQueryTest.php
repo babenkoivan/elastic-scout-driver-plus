@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
 use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
 use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
+use ElasticScoutDriverPlus\Decorators\Hit;
 use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -57,14 +58,20 @@ final class NestedQueryTest extends TestCase
                 Query::match()
                     ->field('author.name')
                     ->query('Steven')
-            );
+            )
+            ->innerHits(['name' => 'authors']);
 
         $found = Book::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
+
+        /** @var Hit $hit */
+        foreach ($found->hits() as $hit) {
+            $this->assertCount(1, $hit->innerHits()->get('authors'));
+        }
     }
 
-    public function test_models_can_be_found_using_query_builder(): void
+    public function test_models_can_be_found_using_path_and_query_builder(): void
     {
         // additional mixin
         factory(Book::class)->create([

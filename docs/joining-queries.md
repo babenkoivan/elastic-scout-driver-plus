@@ -17,6 +17,7 @@ $searchResult = Book::searchQuery($query)->execute();
 Available methods:
 
 * [ignoreUnmapped](#nested-ignore-unmapped)
+* [innerHits](#nested-inner-hits)
 * [path](#nested-path)
 * [query](#nested-query)
 * [scoreMode](#nested-score-mode)
@@ -30,6 +31,19 @@ $query = Query::nested()
     ->path('author')
     ->query(Query::match()->field('author.name')->field('Steven'))
     ->ignoreUnmapped(true);
+
+$searchResult = Book::searchQuery($query)->execute();
+```
+
+### <a name="nested-inner-hits"></a> innerHits
+
+`innerHits` support [the following options](https://www.elastic.co/guide/en/elasticsearch/reference/current/inner-hits.html#inner-hits-options): from, size, sort, name and some per document features:
+
+```php
+$query = Query::nested()
+    ->path('author')
+    ->query(Query::match()->field('author.name')->field('Steven'))
+    ->innerHits(['name' => 'authors']);
 
 $searchResult = Book::searchQuery($query)->execute();
 ```

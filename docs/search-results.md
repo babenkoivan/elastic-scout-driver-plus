@@ -77,7 +77,7 @@ You can retrieve a collection of hits:
 $hits = $searchResult->hits();
 ```
 
-Each hit provides access to the related index name, the score, the model, the document and the highlight:
+Each hit provides access to the related index name, the score, the model, the document, the highlight and the inner hits:
 
 ```php
 $hit = $hits->first();
@@ -87,6 +87,7 @@ $score = $hit->score();
 $model = $hit->model();
 $document = $hit->document();
 $highlight = $hit->highlight();
+$innerHits = $hit->innerHits();
 ```
 
 Furthermore, you can get a raw representation of the respective hit:
