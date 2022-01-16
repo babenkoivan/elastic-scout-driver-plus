@@ -430,7 +430,7 @@ You can use `ElasticScoutDriverPlus\Support\Query::term()` to build a query that
 ```php
 $query = Query::term()
     ->field('price')
-    ->value('300');
+    ->value(300);
 
 $searchResult = Book::searchQuery($query)->execute();
 ```
@@ -448,7 +448,7 @@ Available methods:
 ```php
 $query = Query::term()
     ->field('price')
-    ->value('300')
+    ->value(300)
     ->boost(2);
 
 $searchResult = Book::searchQuery($query)->execute();
@@ -461,7 +461,7 @@ Use `field` to specify the [field you wish to search](https://www.elastic.co/gui
 ```php
 $query = Query::term()
     ->field('price')
-    ->value('300');
+    ->value(300);
 
 $searchResult = Book::searchQuery($query)->execute();
 ```
@@ -473,7 +473,7 @@ With `value` you can define a [term you wish to find in the provided `field`](ht
 ```php
 $query = Query::term()
     ->field('price')
-    ->value('300');
+    ->value(300);
 
 $searchResult = Book::searchQuery($query)->execute();
 ```
