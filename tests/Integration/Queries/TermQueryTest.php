@@ -40,7 +40,7 @@ final class TermQueryTest extends TestCase
 
         $query = Query::term()
             ->field('price')
-            ->value('300');
+            ->value(300);
 
         $found = Book::searchQuery($query)->execute();
 

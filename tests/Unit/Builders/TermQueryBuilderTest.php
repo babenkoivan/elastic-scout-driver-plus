@@ -69,7 +69,7 @@ final class TermQueryBuilderTest extends TestCase
         $expected = [
             'term' => [
                 'price' => [
-                    'value' => '100',
+                    'value' => 100,
                     'boost' => 1.0,
                 ],
             ],
@@ -77,7 +77,7 @@ final class TermQueryBuilderTest extends TestCase
 
         $actual = $this->builder
             ->field('price')
-            ->value('100')
+            ->value(100)
             ->boost(1.0)
             ->buildQuery();
 
