@@ -28,6 +28,8 @@ final class ServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        Scout::$removeFromSearchJob = RemoveFromSearch::class;
+        if (property_exists(Scout::class, 'removeFromSearchJob')) {
+            Scout::$removeFromSearchJob = RemoveFromSearch::class;
+        }
     }
 }
