@@ -16,6 +16,11 @@ parameters:
 			path: src/Factories/LazyModelFactory.php
 
 		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getScoutKey\\(\\)\\.$#"
+			count: 1
+			path: src/Jobs/RemoveFromSearch.php
+
+		-
 			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:searchableAs\\(\\)\\.$#"
 			count: 1
 			path: src/Support/ModelScope.php

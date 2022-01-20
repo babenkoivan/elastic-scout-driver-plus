@@ -10,6 +10,7 @@ use stdClass;
 
 /**
  * @covers \ElasticScoutDriverPlus\Engine
+ * @covers \ElasticScoutDriverPlus\Jobs\RemoveFromSearch
  *
  * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
  * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
@@ -29,8 +30,21 @@ final class EngineTest extends TestCase
         $this->documentManager = resolve(DocumentManager::class);
     }
 
-    public function test_models_can_be_indexed(): void
+    public function queueConfigProvider(): array
     {
+        return [
+            [['scout.queue' => true]],
+            [['scout.queue' => false]],
+        ];
+    }
+
+    /**
+     * @dataProvider queueConfigProvider
+     */
+    public function test_models_can_be_indexed(array $config): void
+    {
+        config($config);
+
         $models = factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
 
         // find all indexed models
@@ -49,8 +63,13 @@ final class EngineTest extends TestCase
         $this->assertEquals($modelIds, $documentIds);
     }
 
-    public function test_models_can_be_deleted(): void
+    /**
+     * @dataProvider queueConfigProvider
+     */
+    public function test_models_can_be_deleted(array $config): void
     {
+        config($config);
+
         $models = factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
 
         // delete newly created models
