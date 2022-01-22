@@ -26,6 +26,11 @@ parameters:
 			path: src/Support/ModelScope.php
 
 		-
+			message: "#^Method ElasticScoutDriverPlus\\\\Tests\\\\App\\\\Model\\:\\:queueRemoveFromSearch\\(\\) with return type void returns mixed but should not return anything\\.$#"
+			count: 1
+			path: tests/App/Model.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: tests/App/Model.php

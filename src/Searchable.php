@@ -5,6 +5,8 @@ namespace ElasticScoutDriverPlus;
 use Closure;
 use ElasticScoutDriverPlus\Builders\QueryBuilderInterface;
 use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
+use ElasticScoutDriverPlus\Jobs\RemoveFromSearch;
+use Illuminate\Database\Eloquent\Collection;
 use Laravel\Scout\Searchable as BaseSearchable;
 
 trait Searchable
@@ -33,5 +35,25 @@ trait Searchable
     public function searchableWith()
     {
         return null;
+    }
+
+    /**
+     * @param Collection $models
+     *
+     * @return void
+     */
+    public function queueRemoveFromSearch($models)
+    {
+        if ($models->isEmpty()) {
+            return;
+        }
+
+        if (!config('scout.queue')) {
+            return $models->first()->searchableUsing()->delete($models);
+        }
+
+        dispatch(new RemoveFromSearch($models))
+            ->onQueue($models->first()->syncWithSearchUsingQueue())
+            ->onConnection($models->first()->syncWithSearchUsing());
     }
 }
