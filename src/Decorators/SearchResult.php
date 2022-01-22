@@ -6,13 +6,14 @@ use ArrayIterator;
 use ElasticAdapter\Search\Hit as BaseHit;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Traits\ForwardsCalls;
 use IteratorAggregate;
 
 /**
  * @mixin SearchResponse
- * @mixin Collection
+ * @mixin BaseCollection
  *
  * @implements IteratorAggregate<int, Hit>
  */
@@ -35,28 +36,30 @@ final class SearchResult implements IteratorAggregate
         $this->lazyModelFactory = $lazyModelFactory;
     }
 
-    public function hits(): Collection
+    public function hits(): BaseCollection
     {
         return $this->searchResponse->hits()->map(function (BaseHit $hit) {
             return new Hit($hit, $this->lazyModelFactory);
         });
     }
 
-    public function models(): Collection
+    public function models(): EloquentCollection
     {
-        return $this->hits()->map(static function (Hit $hit) {
+        $models = $this->hits()->map(static function (Hit $hit) {
             return $hit->model();
         })->filter()->values();
+
+        return new EloquentCollection($models);
     }
 
-    public function documents(): Collection
+    public function documents(): BaseCollection
     {
         return $this->hits()->map(static function (Hit $hit) {
             return $hit->document();
         })->filter()->values();
     }
 
-    public function highlights(): Collection
+    public function highlights(): BaseCollection
     {
         return $this->hits()->map(static function (Hit $hit) {
             return $hit->highlight();
