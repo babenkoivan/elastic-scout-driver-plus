@@ -28,7 +28,7 @@ final class ServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        if (property_exists(Scout::class, 'removeFromSearchJob')) {
+        if (config('scout.driver') === 'elastic' && property_exists(Scout::class, 'removeFromSearchJob')) {
             Scout::$removeFromSearchJob = RemoveFromSearch::class;
         }
     }
