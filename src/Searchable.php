@@ -11,7 +11,9 @@ use Laravel\Scout\Searchable as BaseSearchable;
 
 trait Searchable
 {
-    use BaseSearchable;
+    use BaseSearchable {
+        queueRemoveFromSearch as public parentQueueRemoveFromSearch;
+    }
 
     /**
      * @param Closure|QueryBuilderInterface|array $query
@@ -46,6 +48,10 @@ trait Searchable
     {
         if ($models->isEmpty()) {
             return;
+        }
+        
+        if (config('scout.driver') !== 'elastic') {
+            return $this->parentQueueRemoveFromSearch($models);
         }
 
         if (!config('scout.queue')) {
