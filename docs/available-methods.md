@@ -30,7 +30,7 @@ $searchResult = Book::searchQuery()
         'max' => [
             'field' => 'price',
         ],
-	])
+    ])
     ->execute();
 ```
 
