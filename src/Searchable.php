@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace ElasticScoutDriverPlus;
 
@@ -11,7 +12,9 @@ use Laravel\Scout\Searchable as BaseSearchable;
 
 trait Searchable
 {
-    use BaseSearchable;
+    use BaseSearchable {
+        queueRemoveFromSearch as baseQueueRemoveFromSearch;
+    }
 
     /**
      * @param Closure|QueryBuilderInterface|array $query
@@ -44,16 +47,27 @@ trait Searchable
      */
     public function queueRemoveFromSearch($models)
     {
+        if (!$this->usesElasticDriver()) {
+            $this->baseQueueRemoveFromSearch($models);
+            return;
+        }
+
         if ($models->isEmpty()) {
             return;
         }
 
         if (!config('scout.queue')) {
-            return $models->first()->searchableUsing()->delete($models);
+            $models->first()->searchableUsing()->delete($models);
+            return;
         }
 
         dispatch(new RemoveFromSearch($models))
             ->onQueue($models->first()->syncWithSearchUsingQueue())
             ->onConnection($models->first()->syncWithSearchUsing());
+    }
+
+    protected function usesElasticDriver(): bool
+    {
+        return is_a($this->searchableUsing(), Engine::class);
     }
 }
