@@ -17,9 +17,9 @@ trait Searchable
     }
 
     /**
-     * @param Closure|QueryBuilderInterface|array $query
+     * @param Closure|QueryBuilderInterface|array|null $query
      */
-    public static function searchQuery($query): SearchRequestBuilder
+    public static function searchQuery($query = null): SearchRequestBuilder
     {
         return new SearchRequestBuilder($query, new static());
     }

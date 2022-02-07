@@ -265,7 +265,7 @@ final class RawQueryTest extends TestCase
         $minPrice = $source->min('price');
         $maxPrice = $source->max('price');
 
-        $found = Book::searchQuery(['match_all' => new stdClass()])
+        $found = Book::searchQuery()
             ->aggregateRaw([
                 'min_price' => [
                     'min' => [
@@ -278,7 +278,6 @@ final class RawQueryTest extends TestCase
                     ],
                 ],
             ])
-            ->size(0)
             ->execute();
 
         $this->assertEquals($minPrice, $found->aggregations()->get('min_price')->raw()['value']);
@@ -291,13 +290,12 @@ final class RawQueryTest extends TestCase
             ->state('belongs_to_author')
             ->create();
 
-        $found = Book::searchQuery(['match_all' => new stdClass()])
+        $found = Book::searchQuery()
             ->aggregate('max_price', [
                 'max' => [
                     'field' => 'price',
                 ],
             ])
-            ->size(0)
             ->execute();
 
         $this->assertEquals($source->max('price'), $found->aggregations()->get('max_price')->raw()['value']);

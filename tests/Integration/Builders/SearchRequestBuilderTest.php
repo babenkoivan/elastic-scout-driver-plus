@@ -358,10 +358,10 @@ final class SearchRequestBuilderTest extends TestCase
             ],
         ];
 
-        $expected = (new SearchRequest($this->matchAllQuery))
+        $expected = (new SearchRequest())
             ->aggregations($aggregations);
 
-        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
+        $actual = (new SearchRequestBuilder(null, new Book()))
             ->aggregateRaw($aggregations)
             ->buildSearchRequest();
 

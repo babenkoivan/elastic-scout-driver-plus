@@ -25,7 +25,7 @@ This method can be used to [aggregate data](https://www.elastic.co/guide/en/elas
 based on a search query;
 
 ```php
-$searchResult = Book::searchQuery($query)
+$searchResult = Book::searchQuery()
     ->aggregate('max_price', [
         'max' => [
             'field' => 'price',
@@ -37,7 +37,7 @@ $searchResult = Book::searchQuery($query)
 Alternatively you can use the `aggregateRaw` method:
 
 ```php
-$searchResult = Book::searchQuery($query)
+$searchResult = Book::searchQuery()
     ->aggregateRaw([
         'max_price' => [
             'max' => [

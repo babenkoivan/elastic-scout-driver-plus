@@ -19,7 +19,7 @@ class SearchRequestBuilder
     public const DEFAULT_PAGE_SIZE = 10;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $query;
     /**
@@ -88,11 +88,11 @@ class SearchRequestBuilder
     private $indicesBoost = [];
 
     /**
-     * @param Closure|QueryBuilderInterface|array $query
+     * @param Closure|QueryBuilderInterface|array|null $query
      */
     public function __construct($query, Model $model)
     {
-        $this->query = ParameterFactory::makeQuery($query);
+        $this->query = isset($query) ? ParameterFactory::makeQuery($query) : null;
         $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
     }
