@@ -9,10 +9,12 @@
 * [load](#load)
 * [minScore](#minscore)
 * [postFilter](#postfilter)
-* [size](#size)
-* [sort](#sort)
+* [preference](#preference)
 * [refineModels](#refinemodels)
 * [rescore](#rescore)
+* [searchType](#searchtype)
+* [size](#size)
+* [sort](#sort)
 * [source](#source)
 * [suggest](#suggest)
 * [trackScores](#trackscores)
@@ -218,6 +220,16 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
+### preference
+
+`preference` defines [nodes and shards used for the search](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-search-api-query-params):
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->preference('_local')
+    ->execute();
+```
+
 ### size
 
 `size` method [limits the number of hits to return](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html):
@@ -244,6 +256,38 @@ In case you need more advanced sorting algorithm use `sortRaw`:
 $searchResult = Book::searchQuery($query)
     ->sortRaw([['price' => 'asc'], ['published' => 'asc']])
     ->execute();
+```
+
+### refinemodels
+
+This method allows you to set the callback where you can modify the database query.
+
+ ```php
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+
+$models = Book::searchQuery($query)
+    ->refineModels(function (EloquentBuilder $query) {
+        $query->select(['id', 'title', 'description']);
+    })
+    ->execute()
+    ->models();
+```
+
+When [searching in multiple indices](#join), you need to explicitly define the model for which you want to set the callback:
+
+```php
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+
+$models = Book::searchQuery($query)
+    ->join(Author::class)
+    ->refineModels(function (EloquentBuilder $query) {
+        $query->select(['id', 'title', 'description']);
+    }, Book::class)
+    ->refineModels(function (EloquentBuilder $query) {
+        $query->select(['id', 'name', 'last_name']);
+    }, Author::class)
+    ->execute()
+    ->models();
 ```
 
 ### rescore
@@ -287,36 +331,14 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
-### refinemodels
+### searchType
 
-This method allows you to set the callback where you can modify the database query.
-
- ```php
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-
-$models = Book::searchQuery($query)
-    ->refineModels(function (EloquentBuilder $query) {
-        $query->select(['id', 'title', 'description']);
-    })
-    ->execute()
-    ->models();
-```
-
-When [searching in multiple indices](#join), you need to explicitly define the model for which you want to set the callback:
+`searchType` defines [how distributed term frequencies are calculated for relevance scoring](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-search-api-query-params):
 
 ```php
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-
-$models = Book::searchQuery($query)
-    ->join(Author::class)
-    ->refineModels(function (EloquentBuilder $query) {
-        $query->select(['id', 'title', 'description']);
-    }, Book::class)
-    ->refineModels(function (EloquentBuilder $query) {
-        $query->select(['id', 'name', 'last_name']);
-    }, Author::class)
-    ->execute()
-    ->models();
+$searchResult = Book::searchQuery($query)
+    ->searchType('query_then_fetch')
+    ->execute();
 ```
 
 ### source

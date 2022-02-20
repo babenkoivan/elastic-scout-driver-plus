@@ -499,4 +499,28 @@ final class SearchRequestBuilderTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_search_request_with_search_type_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->searchType('query_then_fetch');
+
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
+            ->searchType('query_then_fetch')
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_request_with_preference_can_be_built(): void
+    {
+        $expected = (new SearchRequest($this->matchAllQuery))
+            ->preference('_local');
+
+        $actual = (new SearchRequestBuilder($this->matchAllQuery, new Book()))
+            ->preference('_local')
+            ->buildSearchRequest();
+
+        $this->assertEquals($expected, $actual);
+    }
 }

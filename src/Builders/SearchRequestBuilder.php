@@ -86,6 +86,14 @@ class SearchRequestBuilder
      * @var array
      */
     private $indicesBoost = [];
+    /**
+     * @var string|null
+     */
+    private $searchType;
+    /**
+     * @var string|null
+     */
+    private $preference;
 
     /**
      * @param Closure|QueryBuilderInterface|array|null $query
@@ -276,6 +284,18 @@ class SearchRequestBuilder
         return $this;
     }
 
+    public function searchType(string $searchType): self
+    {
+        $this->searchType = $searchType;
+        return $this;
+    }
+
+    public function preference(string $preference): self
+    {
+        $this->preference = $preference;
+        return $this;
+    }
+
     /**
      * @param mixed         $value
      * @param callable      $callback
@@ -354,6 +374,14 @@ class SearchRequestBuilder
 
         if (!empty($this->indicesBoost)) {
             $searchRequest->indicesBoost($this->indicesBoost);
+        }
+
+        if (isset($this->searchType)) {
+            $searchRequest->searchType($this->searchType);
+        }
+
+        if (isset($this->preference)) {
+            $searchRequest->preference($this->preference);
         }
 
         return $searchRequest;
