@@ -5,6 +5,7 @@ namespace ElasticScoutDriverPlus\Support;
 use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
 use ElasticScoutDriverPlus\Builders\ExistsQueryBuilder;
 use ElasticScoutDriverPlus\Builders\FuzzyQueryBuilder;
+use ElasticScoutDriverPlus\Builders\GeoDistanceQueryBuilder;
 use ElasticScoutDriverPlus\Builders\IdsQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder;
 use ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder;
@@ -108,5 +109,10 @@ class Query
     public static function wildcard(): WildcardQueryBuilder
     {
         return new WildcardQueryBuilder();
+    }
+
+    public static function geoDistance(): GeoDistanceQueryBuilder
+    {
+        return new GeoDistanceQueryBuilder();
     }
 }

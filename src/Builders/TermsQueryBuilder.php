@@ -6,7 +6,7 @@ use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\ValuesParameter;
-use ElasticScoutDriverPlus\QueryParameters\Transformers\ArrayTransformerInterface;
+use ElasticScoutDriverPlus\QueryParameters\Transformers\CallbackArrayTransformer;
 use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class TermsQueryBuilder extends AbstractParameterizedQueryBuilder
@@ -26,14 +26,11 @@ final class TermsQueryBuilder extends AbstractParameterizedQueryBuilder
 
         $this->parameterValidator = new AllOfValidator(['field', 'values']);
 
-        $this->parameterTransformer = new class implements ArrayTransformerInterface {
-            public function transform(ParameterCollection $parameters): array
-            {
-                return array_merge(
-                    [$parameters->get('field') => $parameters->get('values')],
-                    $parameters->except(['field', 'values'])->excludeEmpty()->toArray(),
-                );
-            }
-        };
+        $this->parameterTransformer = new CallbackArrayTransformer(static function (ParameterCollection $parameters) {
+            return array_merge(
+                [$parameters->get('field') => $parameters->get('values')],
+                $parameters->except(['field', 'values'])->excludeEmpty()->toArray(),
+            );
+        });
     }
 }

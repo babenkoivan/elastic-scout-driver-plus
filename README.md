@@ -110,6 +110,7 @@ Available methods are listed below:
 * [bool](docs/compound-queries.md#boolean)
 * [exists](docs/term-queries.md#exists)
 * [fuzzy](docs/term-queries.md#fuzzy)
+* [geoDistance](docs/geo-queries.md#geo-distance)
 * [ids](docs/term-queries.md#ids)
 * [matchAll](docs/full-text-queries.md#match-all)
 * [matchNone](docs/full-text-queries.md#match-none)

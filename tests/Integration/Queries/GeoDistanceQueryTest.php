@@ -3,12 +3,12 @@
 namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
 use ElasticScoutDriverPlus\Support\Query;
-use ElasticScoutDriverPlus\Tests\App\Book;
+use ElasticScoutDriverPlus\Tests\App\Store;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
  * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
- * @covers \ElasticScoutDriverPlus\Builders\TermsQueryBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\GeoDistanceQueryBuilder
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @covers \ElasticScoutDriverPlus\Support\Query
@@ -25,24 +25,28 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  * @uses   \ElasticScoutDriverPlus\Searchable
  * @uses   \ElasticScoutDriverPlus\Support\ModelScope
  */
-final class TermsQueryTest extends TestCase
+final class GeoDistanceQueryTest extends TestCase
 {
-    public function test_models_can_be_found_using_terms(): void
+    public function test_models_can_be_found_using_field_and_distance_and_lat_lon(): void
     {
         // additional mixin
-        factory(Book::class)
-            ->state('belongs_to_author')
-            ->create(['tags' => ['bestseller', 'discount']]);
+        factory(Store::class, rand(2, 10))->create([
+            'lat' => 20,
+            'lon' => 20,
+        ]);
 
-        $target = factory(Book::class)
-            ->state('belongs_to_author')
-            ->create(['tags' => ['available', 'new']]);
+        $target = factory(Store::class)->create([
+            'lat' => 10,
+            'lon' => 10,
+        ]);
 
-        $query = Query::terms()
-            ->field('tags')
-            ->values(['available', 'new']);
+        $query = Query::geoDistance()
+            ->field('location')
+            ->distance('500km')
+            ->lat(8)
+            ->lon(8);
 
-        $found = Book::searchQuery($query)->execute();
+        $found = Store::searchQuery($query)->execute();
 
         $this->assertFoundModel($target, $found);
     }

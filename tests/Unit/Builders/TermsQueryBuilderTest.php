@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \ElasticScoutDriverPlus\Builders\TermsQueryBuilder
  *
  * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
+ * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\CallbackArrayTransformer
  * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  */
 final class TermsQueryBuilderTest extends TestCase

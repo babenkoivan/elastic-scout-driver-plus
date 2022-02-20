@@ -21,6 +21,7 @@ final class CreateAuthorsIndex implements MigrationInterface
     public function up(): void
     {
         Index::create('book-authors', static function (Mapping $mapping, Settings $settings) {
+            $mapping->integer('id');
             $mapping->text('name');
             $mapping->text('last_name');
             $mapping->keyword('phone_number');
