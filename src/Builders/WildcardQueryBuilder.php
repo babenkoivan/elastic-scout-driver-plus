@@ -13,11 +13,11 @@ use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class WildcardQueryBuilder extends AbstractParameterizedQueryBuilder
 {
-    use CaseInsensitiveParameter;
     use FieldParameter;
     use ValueParameter;
     use BoostParameter;
     use RewriteParameter;
+    use CaseInsensitiveParameter;
 
     /**
      * @var string

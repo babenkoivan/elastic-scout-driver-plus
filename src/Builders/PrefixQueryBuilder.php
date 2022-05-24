@@ -12,10 +12,10 @@ use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class PrefixQueryBuilder extends AbstractParameterizedQueryBuilder
 {
-    use CaseInsensitiveParameter;
     use FieldParameter;
     use ValueParameter;
     use RewriteParameter;
+    use CaseInsensitiveParameter;
 
     /**
      * @var string

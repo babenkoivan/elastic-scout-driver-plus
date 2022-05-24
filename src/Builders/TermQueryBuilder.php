@@ -11,9 +11,9 @@ use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class TermQueryBuilder extends AbstractParameterizedQueryBuilder
 {
-    use CaseInsensitiveParameter;
     use FieldParameter;
     use BoostParameter;
+    use CaseInsensitiveParameter;
 
     /**
      * @var string

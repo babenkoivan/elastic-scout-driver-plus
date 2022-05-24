@@ -14,12 +14,12 @@ use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class RegexpQueryBuilder extends AbstractParameterizedQueryBuilder
 {
-    use CaseInsensitiveParameter;
     use FieldParameter;
     use ValueParameter;
     use FlagsParameter;
     use MaxDeterminizedStatesParameter;
     use RewriteParameter;
+    use CaseInsensitiveParameter;
 
     /**
      * @var string

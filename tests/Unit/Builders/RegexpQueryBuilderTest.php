@@ -64,26 +64,6 @@ final class RegexpQueryBuilderTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function test_query_with_field_and_value_and_case_insensitive_can_be_built(): void
-    {
-        $expected = [
-            'regexp' => [
-                'title' => [
-                    'value' => 'b.*k',
-                    'case_insensitive' => true,
-                ],
-            ],
-        ];
-
-        $actual = $this->builder
-            ->field('title')
-            ->value('b.*k')
-            ->caseInsensitive(true)
-            ->buildQuery();
-
-        $this->assertSame($expected, $actual);
-    }
-
     public function test_query_with_field_and_value_and_flags_can_be_built(): void
     {
         $expected = [
@@ -139,6 +119,26 @@ final class RegexpQueryBuilderTest extends TestCase
             ->field('title')
             ->value('b.*k')
             ->rewrite('constant_score')
+            ->buildQuery();
+
+        $this->assertSame($expected, $actual);
+    }
+
+    public function test_query_with_field_and_value_and_case_insensitive_can_be_built(): void
+    {
+        $expected = [
+            'regexp' => [
+                'title' => [
+                    'value' => 'b.*k',
+                    'case_insensitive' => true,
+                ],
+            ],
+        ];
+
+        $actual = $this->builder
+            ->field('title')
+            ->value('b.*k')
+            ->caseInsensitive(true)
             ->buildQuery();
 
         $this->assertSame($expected, $actual);
