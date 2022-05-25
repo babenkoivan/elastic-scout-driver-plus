@@ -379,7 +379,7 @@ Available methods:
 `caseInsensitive` is used to [allow case insensitive matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#regexp-query-field-params):
 
 ```php
-$query = Query::prefix()
+$query = Query::regexp()
     ->field('title')
     ->value('b.*k')
     ->caseInsensitive(true);
@@ -488,7 +488,7 @@ $searchResult = Book::searchQuery($query)->execute();
 `caseInsensitive` is used to [allow ASCII case insensitive matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#term-field-params):
 
 ```php
-$query = Query::prefix()
+$query = Query::term()
     ->field('price')
     ->value(300)
     ->caseInsensitive(true);
@@ -615,7 +615,7 @@ $searchResult = Book::searchQuery($query)->execute();
 `caseInsensitive` is used to [allow case insensitive matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-query-field-params):
 
 ```php
-$query = Query::prefix()
+$query = ElasticScoutDriverPlus\Support\Query::wildcard()
     ->field('title')
     ->value('bo*k')
     ->caseInsensitive(true);
