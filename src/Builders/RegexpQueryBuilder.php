@@ -3,6 +3,7 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\CaseInsensitiveParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FlagsParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\MaxDeterminizedStatesParameter;
@@ -18,6 +19,7 @@ final class RegexpQueryBuilder extends AbstractParameterizedQueryBuilder
     use FlagsParameter;
     use MaxDeterminizedStatesParameter;
     use RewriteParameter;
+    use CaseInsensitiveParameter;
 
     /**
      * @var string

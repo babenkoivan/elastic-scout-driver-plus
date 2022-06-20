@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\CaseInsensitiveParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\RewriteParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\ValueParameter;
@@ -16,6 +17,7 @@ final class WildcardQueryBuilder extends AbstractParameterizedQueryBuilder
     use ValueParameter;
     use BoostParameter;
     use RewriteParameter;
+    use CaseInsensitiveParameter;
 
     /**
      * @var string

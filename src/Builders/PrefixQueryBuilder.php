@@ -3,6 +3,7 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
+use ElasticScoutDriverPlus\QueryParameters\Shared\CaseInsensitiveParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\RewriteParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\ValueParameter;
@@ -14,6 +15,7 @@ final class PrefixQueryBuilder extends AbstractParameterizedQueryBuilder
     use FieldParameter;
     use ValueParameter;
     use RewriteParameter;
+    use CaseInsensitiveParameter;
 
     /**
      * @var string

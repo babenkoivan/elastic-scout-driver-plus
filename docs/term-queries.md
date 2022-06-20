@@ -159,9 +159,23 @@ $searchResult = Book::searchQuery($query)->execute();
 
 Available methods:
 
+* [caseInsensitive](#prefix-caseinsensitive)
 * [field](#prefix-field)
 * [rewrite](#prefix-rewrite)
 * [value](#prefix-value)
+
+### <a name="prefix-caseinsensitive"></a> caseInsensitive
+
+`caseInsensitive` is used to [allow ASCII case insensitive matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html#prefix-query-field-params):
+
+```php
+$query = Query::prefix()
+    ->field('title')
+    ->value('boo')
+    ->caseInsensitive(true);
+
+$searchResult = Book::searchQuery($query)->execute();
+```
 
 ### <a name="prefix-field"></a> field
 
@@ -353,11 +367,25 @@ $searchResult = Book::searchQuery($query)->execute();
 
 Available methods:
 
+* [caseInsensitive](#regexp-caseinsensitive)
 * [field](#regexp-field)
 * [flags](#regexp-flags)
 * [maxDeterminizedStates](#regexp-max-determinized-states)
 * [rewrite](#regexp-rewrite)
 * [value](#regexp-value)
+
+### <a name="regexp-caseinsensitive"></a> caseInsensitive
+
+`caseInsensitive` is used to [allow case insensitive matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#regexp-query-field-params):
+
+```php
+$query = Query::regexp()
+    ->field('title')
+    ->value('b.*k')
+    ->caseInsensitive(true);
+
+$searchResult = Book::searchQuery($query)->execute();
+```
 
 ### <a name="regexp-field"></a> field
 
@@ -438,6 +466,7 @@ $searchResult = Book::searchQuery($query)->execute();
 Available methods:
 
 * [boost](#term-boost)
+* [caseInsensitive](#term-caseinsensitive)
 * [field](#term-field)
 * [value](#term-value)
 
@@ -450,6 +479,19 @@ $query = Query::term()
     ->field('price')
     ->value(300)
     ->boost(2);
+
+$searchResult = Book::searchQuery($query)->execute();
+```
+
+### <a name="term-caseinsensitive"></a> caseInsensitive
+
+`caseInsensitive` is used to [allow ASCII case insensitive matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#term-field-params):
+
+```php
+$query = Query::term()
+    ->field('price')
+    ->value(300)
+    ->caseInsensitive(true);
 
 $searchResult = Book::searchQuery($query)->execute();
 ```
@@ -550,6 +592,7 @@ $searchResult = Book::searchQuery($query)->execute();
 Available methods:
 
 * [boost](#wildcard-boost)
+* [caseInsensitive](#wildcard-caseinsensitive)
 * [field](#wildcard-field)
 * [rewrite](#wildcard-rewrite)
 * [value](#wildcard-value)
@@ -563,6 +606,19 @@ $query = ElasticScoutDriverPlus\Support\Query::wildcard()
     ->field('title')
     ->value('bo*k')
     ->boost(2);
+
+$searchResult = Book::searchQuery($query)->execute();
+```
+
+### <a name="wildcard-caseinsensitive"></a> caseInsensitive
+
+`caseInsensitive` is used to [allow case insensitive matching](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html#wildcard-query-field-params):
+
+```php
+$query = ElasticScoutDriverPlus\Support\Query::wildcard()
+    ->field('title')
+    ->value('bo*k')
+    ->caseInsensitive(true);
 
 $searchResult = Book::searchQuery($query)->execute();
 ```

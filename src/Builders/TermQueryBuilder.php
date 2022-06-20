@@ -4,6 +4,7 @@ namespace ElasticScoutDriverPlus\Builders;
 
 use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
+use ElasticScoutDriverPlus\QueryParameters\Shared\CaseInsensitiveParameter;
 use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
 use ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
 use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
@@ -12,6 +13,7 @@ final class TermQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     use FieldParameter;
     use BoostParameter;
+    use CaseInsensitiveParameter;
 
     /**
      * @var string

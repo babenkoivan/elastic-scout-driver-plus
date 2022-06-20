@@ -83,4 +83,24 @@ final class PrefixQueryBuilderTest extends TestCase
 
         $this->assertSame($expected, $actual);
     }
+
+    public function test_query_with_field_and_value_and_case_insensitive_can_be_built(): void
+    {
+        $expected = [
+            'prefix' => [
+                'title' => [
+                    'value' => 'bo',
+                    'case_insensitive' => true,
+                ],
+            ],
+        ];
+
+        $actual = $this->builder
+            ->field('title')
+            ->value('bo')
+            ->caseInsensitive(true)
+            ->buildQuery();
+
+        $this->assertSame($expected, $actual);
+    }
 }
