@@ -6,6 +6,5 @@ parameters:
   checkMissingIterableValueType: false
   paths:
     - src
-    - tests
   excludePaths:
     - tests/App/database/factories
