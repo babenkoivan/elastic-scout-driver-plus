@@ -7,23 +7,23 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        php: [7.3, 7.4, 8.0]
+        php: [7.4, 8.0, 8.1]
         include:
-          - php: 7.3
-            scout: 8.0
-            testbench: 4.0
-            phpunit: 9.5
-            elastic-search: 7.6.0
-
           - php: 7.4
-            scout: 8.0
+            scout: 7.0
             testbench: 5.0
             phpunit: 9.5
             elastic-search: 7.10.1
 
           - php: 8.0
-            scout: 9.0
+            scout: 8.0
             testbench: 6.0
+            phpunit: 9.5
+            elastic-search: 7.10.1
+
+          - php: 8.1
+            scout: 9.0
+            testbench: 7.0
             phpunit: 9.5
             elastic-search: 7.10.1
     steps:
@@ -47,10 +47,6 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
-
-      - name: Remove legacy factories and other dependeincies for old testbench version
-        run: composer remove --dev --no-interaction orchestra/testbench laravel/legacy-factories phpunit/phpunit laravel/scout
-        if: ${{ matrix.testbench == '4.0' }}
 
       - name: Install dependencies
         run: composer require --no-interaction --with-all-dependencies orchestra/testbench:^${{ matrix.testbench }} phpunit/phpunit:^${{ matrix.phpunit }} laravel/scout:^${{ matrix.scout }}

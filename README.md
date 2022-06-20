@@ -48,11 +48,10 @@ Elastic Scout Driver Plus supports:
 
 The current version of Elastic Scout Driver Plus has been tested with the following configuration:
 
-* PHP 7.3-8.0
+* PHP 7.4-8.0
 * Elasticsearch 7.x
-* Laravel 6.x-8.x
+* Laravel 7.x-9.x
 * Laravel Scout 7.x-9.x
-* Elastic Scout Driver 2.x
 
 ## Installation
 
