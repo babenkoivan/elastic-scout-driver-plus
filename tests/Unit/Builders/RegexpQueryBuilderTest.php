@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class RegexpQueryBuilderTest extends TestCase
 {
-    /**
-     * @var RegexpQueryBuilder
-     */
-    private $builder;
+    private RegexpQueryBuilder $builder;
 
     protected function setUp(): void
     {

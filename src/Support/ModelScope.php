@@ -10,28 +10,10 @@ use Laravel\Scout\Searchable;
 
 final class ModelScope
 {
-    /**
-     * @var string
-     */
-    private $baseModelClass;
-    /**
-     * Collection of model classes keyed by index name
-     *
-     * @var Collection
-     */
-    private $modelClasses;
-    /**
-     * Collection of relations keyed by model class
-     *
-     * @var Collection
-     */
-    private $relations;
-    /**
-     * Collection of query callbacks keyed by model class
-     *
-     * @var Collection
-     */
-    private $queryCallbacks;
+    private string $baseModelClass;
+    private Collection $modelClasses;
+    private Collection $relations;
+    private Collection $queryCallbacks;
 
     public function __construct(string $modelClass)
     {

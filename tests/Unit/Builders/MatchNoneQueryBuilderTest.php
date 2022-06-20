@@ -11,10 +11,7 @@ use stdClass;
  */
 final class MatchNoneQueryBuilderTest extends TestCase
 {
-    /**
-     * @var MatchNoneQueryBuilder
-     */
-    private $builder;
+    private MatchNoneQueryBuilder $builder;
 
     protected function setUp(): void
     {

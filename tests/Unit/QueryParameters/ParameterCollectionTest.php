@@ -13,10 +13,7 @@ use stdClass;
  */
 final class ParameterCollectionTest extends TestCase
 {
-    /**
-     * @var ParameterCollection
-     */
-    private $collection;
+    private ParameterCollection $collection;
 
     protected function setUp(): void
     {

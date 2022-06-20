@@ -18,10 +18,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class RangeQueryBuilderTest extends TestCase
 {
-    /**
-     * @var RangeQueryBuilder
-     */
-    private $builder;
+    private RangeQueryBuilder $builder;
 
     protected function setUp(): void
     {

@@ -12,10 +12,7 @@ use Illuminate\Support\ServiceProvider as AbstractServiceProvider;
 
 final class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * @var array
-     */
-    public $bindings = [
+    public array $bindings = [
         Engine::class => EnginePlus::class,
         DocumentFactoryInterface::class => DocumentFactory::class,
         RoutingFactoryInterface::class => RoutingFactory::class,

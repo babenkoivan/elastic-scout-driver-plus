@@ -18,10 +18,7 @@ use stdClass;
  */
 final class EngineTest extends TestCase
 {
-    /**
-     * @var DocumentManager
-     */
-    private $documentManager;
+    private DocumentManager $documentManager;
 
     protected function setUp(): void
     {
@@ -55,10 +52,7 @@ final class EngineTest extends TestCase
 
         // assert that documents have the same ids as created models
         $modelIds = $models->pluck($models->first()->getKeyName())->all();
-
-        $documentIds = collect($searchResponse->hits())->map(static function (Hit $hit) {
-            return $hit->document()->id();
-        })->all();
+        $documentIds = collect($searchResponse->hits())->map(static fn (Hit $hit) => $hit->document()->id())->all();
 
         $this->assertEquals($modelIds, $documentIds);
     }

@@ -15,14 +15,8 @@ final class Hit implements Arrayable
 {
     use ForwardsCalls;
 
-    /**
-     * @var BaseHit
-     */
-    private $hit;
-    /**
-     * @var LazyModelFactory
-     */
-    private $lazyModelFactory;
+    private BaseHit $hit;
+    private LazyModelFactory $lazyModelFactory;
 
     public function __construct(BaseHit $hit, LazyModelFactory $lazyModelFactory)
     {
@@ -47,7 +41,7 @@ final class Hit implements Arrayable
     }
 
     /**
-     * @{@inheritDoc}
+     * {@inheritDoc}
      */
     public function toArray()
     {

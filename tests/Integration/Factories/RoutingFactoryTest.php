@@ -16,10 +16,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  */
 final class RoutingFactoryTest extends TestCase
 {
-    /**
-     * @var RoutingFactory
-     */
-    private $routingFactory;
+    private RoutingFactory $routingFactory;
 
     protected function setUp(): void
     {

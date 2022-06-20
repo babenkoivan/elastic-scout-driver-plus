@@ -7,10 +7,7 @@ use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 
 final class AllOfValidator implements ValidatorInterface
 {
-    /**
-     * @var array
-     */
-    private $required;
+    private array $required;
 
     public function __construct(array $required)
     {

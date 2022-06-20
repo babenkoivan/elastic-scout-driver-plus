@@ -16,10 +16,7 @@ use Illuminate\Support\Facades\DB;
  */
 final class DocumentFactoryTest extends TestCase
 {
-    /**
-     * @var DocumentFactory
-     */
-    private $documentFactory;
+    private DocumentFactory $documentFactory;
 
     protected function setUp(): void
     {

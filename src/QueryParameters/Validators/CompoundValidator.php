@@ -6,10 +6,7 @@ use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 
 final class CompoundValidator implements ValidatorInterface
 {
-    /**
-     * @var ValidatorInterface[]
-     */
-    private $validators;
+    private array $validators;
 
     public function __construct(ValidatorInterface ...$validators)
     {

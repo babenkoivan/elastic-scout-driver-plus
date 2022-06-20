@@ -16,10 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 
 final class Engine extends BaseEngine
 {
-    /**
-     * @var RoutingFactoryInterface
-     */
-    private $routingFactory;
+    private RoutingFactoryInterface $routingFactory;
 
     public function __construct(
         DocumentManager $documentManager,
@@ -61,10 +58,7 @@ final class Engine extends BaseEngine
 
         $indexName = $models->first()->searchableAs();
         $routing = $this->routingFactory->makeFromModels($models);
-
-        $documentIds = $models->map(static function (Model $model) {
-            return (string)$model->getScoutKey();
-        })->all();
+        $documentIds = $models->map(static fn (Model $model) => (string)$model->getScoutKey())->all();
 
         $this->documentManager->delete($indexName, $documentIds, $this->refreshDocuments, $routing);
     }

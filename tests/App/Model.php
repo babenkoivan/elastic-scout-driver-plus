@@ -9,13 +9,7 @@ abstract class Model extends BaseModel
 {
     use Searchable;
 
-    /**
-     * @var array
-     */
     protected $guarded = [];
-    /**
-     * @var bool
-     */
     public $timestamps = false;
 
     /**

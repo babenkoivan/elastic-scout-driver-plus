@@ -15,10 +15,7 @@ final class TermsQueryBuilder extends AbstractParameterizedQueryBuilder
     use ValuesParameter;
     use BoostParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'terms';
+    protected string $type = 'terms';
 
     public function __construct()
     {
@@ -26,11 +23,11 @@ final class TermsQueryBuilder extends AbstractParameterizedQueryBuilder
 
         $this->parameterValidator = new AllOfValidator(['field', 'values']);
 
-        $this->parameterTransformer = new CallbackArrayTransformer(static function (ParameterCollection $parameters) {
-            return array_merge(
+        $this->parameterTransformer = new CallbackArrayTransformer(
+            static fn (ParameterCollection $parameters) => array_merge(
                 [$parameters->get('field') => $parameters->get('values')],
                 $parameters->except(['field', 'values'])->excludeEmpty()->toArray(),
-            );
-        });
+            )
+        );
     }
 }

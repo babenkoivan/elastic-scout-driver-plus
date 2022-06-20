@@ -22,15 +22,13 @@ final class CallbackArrayTransformerTest extends TestCase
             'lon' => 70,
         ]);
 
-        $transformer = new CallbackArrayTransformer(static function (ParameterCollection $parameters) {
-            return [
-                'distance' => $parameters->get('distance'),
-                $parameters->get('field') => [
-                    'lat' => $parameters->get('lat'),
-                    'lon' => $parameters->get('lon'),
-                ],
-            ];
-        });
+        $transformer = new CallbackArrayTransformer(static fn (ParameterCollection $parameters) => [
+            'distance' => $parameters->get('distance'),
+            $parameters->get('field') => [
+                'lat' => $parameters->get('lat'),
+                'lon' => $parameters->get('lon'),
+            ],
+        ]);
 
         $this->assertSame(
             [

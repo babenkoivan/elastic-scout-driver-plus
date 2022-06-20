@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class GeoDistanceQueryBuilderTest extends TestCase
 {
-    /**
-     * @var GeoDistanceQueryBuilder
-     */
-    private $builder;
+    private GeoDistanceQueryBuilder $builder;
 
     protected function setUp(): void
     {

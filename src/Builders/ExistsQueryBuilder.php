@@ -11,10 +11,7 @@ final class ExistsQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     use FieldParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'exists';
+    protected string $type = 'exists';
 
     public function __construct()
     {

@@ -141,11 +141,11 @@ final class RawQueryTest extends TestCase
 
     public function test_terms_can_be_suggested(): void
     {
-        $target = collect(['world', 'word'])->map(static function (string $title) {
-            return factory(Book::class)
+        $target = collect(['world', 'word'])->map(
+            static fn (string $title) => factory(Book::class)
                 ->state('belongs_to_author')
-                ->create(compact('title'));
-        });
+                ->create(compact('title'))
+        );
 
         $found = Book::searchQuery(['match_none' => new stdClass()])
             ->suggest('title', [
@@ -218,9 +218,7 @@ final class RawQueryTest extends TestCase
 
         // additional mixin
         factory(Book::class, 10)->create([
-            'price' => static function () {
-                return random_int(500, 1000);
-            },
+            'price' => static fn () => random_int(500, 1000),
             'author_id' => $firstTarget->author_id,
         ]);
 
@@ -241,9 +239,7 @@ final class RawQueryTest extends TestCase
 
         // additional mixin
         factory(Book::class, 10)->create([
-            'published' => static function () use ($target) {
-                return $target->published->subDays(rand(1, 10));
-            },
+            'published' => static fn () => $target->published->subDays(rand(1, 10)),
             'author_id' => $target->author_id,
         ]);
 

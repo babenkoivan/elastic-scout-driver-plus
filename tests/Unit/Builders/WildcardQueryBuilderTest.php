@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class WildcardQueryBuilderTest extends TestCase
 {
-    /**
-     * @var WildcardQueryBuilder
-     */
-    private $builder;
+    private WildcardQueryBuilder $builder;
 
     protected function setUp(): void
     {

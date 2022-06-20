@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class MultiMatchQueryBuilderTest extends TestCase
 {
-    /**
-     * @var MultiMatchQueryBuilder
-     */
-    private $builder;
+    private MultiMatchQueryBuilder $builder;
 
     protected function setUp(): void
     {

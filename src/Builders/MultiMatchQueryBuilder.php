@@ -43,10 +43,7 @@ final class MultiMatchQueryBuilder extends AbstractParameterizedQueryBuilder
     use TieBreakerParameter;
     use SlopParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'multi_match';
+    protected string $type = 'multi_match';
 
     public function __construct()
     {

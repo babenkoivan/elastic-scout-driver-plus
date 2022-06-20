@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class PrefixQueryBuilderTest extends TestCase
 {
-    /**
-     * @var PrefixQueryBuilder
-     */
-    private $builder;
+    private PrefixQueryBuilder $builder;
 
     protected function setUp(): void
     {

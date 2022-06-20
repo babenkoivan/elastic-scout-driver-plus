@@ -21,14 +21,8 @@ final class SearchResult implements IteratorAggregate
 {
     use ForwardsCalls;
 
-    /**
-     * @var SearchResponse
-     */
-    private $searchResponse;
-    /**
-     * @var LazyModelFactory
-     */
-    private $lazyModelFactory;
+    private SearchResponse $searchResponse;
+    private LazyModelFactory $lazyModelFactory;
 
     public function __construct(SearchResponse $searchResponse, LazyModelFactory $lazyModelFactory)
     {
@@ -38,32 +32,32 @@ final class SearchResult implements IteratorAggregate
 
     public function hits(): BaseCollection
     {
-        return $this->searchResponse->hits()->map(function (BaseHit $hit) {
-            return new Hit($hit, $this->lazyModelFactory);
-        });
+        return $this->searchResponse->hits()->map(
+            fn (BaseHit $hit) => new Hit($hit, $this->lazyModelFactory)
+        );
     }
 
     public function models(): EloquentCollection
     {
-        $models = $this->hits()->map(static function (Hit $hit) {
-            return $hit->model();
-        })->filter()->values();
+        $models = $this->hits()->map(
+            static fn (Hit $hit) => $hit->model()
+        )->filter()->values();
 
         return new EloquentCollection($models);
     }
 
     public function documents(): BaseCollection
     {
-        return $this->hits()->map(static function (Hit $hit) {
-            return $hit->document();
-        })->filter()->values();
+        return $this->hits()->map(
+            static fn (Hit $hit) => $hit->document()
+        );
     }
 
     public function highlights(): BaseCollection
     {
-        return $this->hits()->map(static function (Hit $hit) {
-            return $hit->highlight();
-        })->filter()->values();
+        return $this->hits()->map(
+            static fn (Hit $hit) => $hit->highlight()
+        )->filter()->values();
     }
 
     /**

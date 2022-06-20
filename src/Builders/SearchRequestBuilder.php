@@ -18,82 +18,32 @@ class SearchRequestBuilder
 {
     public const DEFAULT_PAGE_SIZE = 10;
 
-    /**
-     * @var array|null
-     */
-    private $query;
-    /**
-     * @var ModelScope
-     */
-    private $modelScope;
-    /**
-     * @var Engine
-     */
-    private $engine;
-    /**
-     * @var array
-     */
-    private $highlight = [];
-    /**
-     * @var array
-     */
-    private $sort = [];
-    /**
-     * @var array
-     */
-    private $rescore = [];
-    /**
-     * @var int|null
-     */
-    private $from;
-    /**
-     * @var int|null
-     */
-    private $size;
-    /**
-     * @var array
-     */
-    private $suggest = [];
+    private ?array $query;
+    private ModelScope $modelScope;
+    private Engine $engine;
+    private array $highlight = [];
+    private array $sort = [];
+    private array $rescore = [];
+    private ?int $from;
+    private ?int $size;
+    private array $suggest = [];
+    private array $collapse = [];
+    private array $aggregations = [];
+    private array $postFilter = [];
+    private ?bool $trackScores;
+    private ?float $minScore;
+    private array $indicesBoost = [];
+    private ?string $searchType;
+    private ?string $preference;
+
     /**
      * @var bool|string|array|null
      */
     private $source;
     /**
-     * @var array
-     */
-    private $collapse = [];
-    /**
-     * @var array
-     */
-    private $aggregations = [];
-    /**
-     * @var array
-     */
-    private $postFilter = [];
-    /**
      * @var int|bool|null
      */
     private $trackTotalHits;
-    /**
-     * @var bool|null
-     */
-    private $trackScores;
-    /**
-     * @var float|null
-     */
-    private $minScore;
-    /**
-     * @var array
-     */
-    private $indicesBoost = [];
-    /**
-     * @var string|null
-     */
-    private $searchType;
-    /**
-     * @var string|null
-     */
-    private $preference;
 
     /**
      * @param Closure|QueryBuilderInterface|array|null $query
@@ -150,7 +100,7 @@ class SearchRequestBuilder
 
     public function rescoreWindowSize(int $windowSize): self
     {
-        $this->rescore['window_size'] =  $windowSize;
+        $this->rescore['window_size'] = $windowSize;
         return $this;
     }
 

@@ -21,10 +21,7 @@ final class FuzzyQueryBuilder extends AbstractParameterizedQueryBuilder
     use PrefixLengthParameter;
     use RewriteParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'fuzzy';
+    protected string $type = 'fuzzy';
 
     public function __construct()
     {

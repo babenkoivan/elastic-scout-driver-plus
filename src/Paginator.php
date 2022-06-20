@@ -11,10 +11,7 @@ use RuntimeException;
  */
 final class Paginator extends LengthAwarePaginator
 {
-    /**
-     * @var SearchResult
-     */
-    private $searchResult;
+    private SearchResult $searchResult;
 
     public function __construct(
         SearchResult $searchResult,
@@ -53,7 +50,7 @@ final class Paginator extends LengthAwarePaginator
     }
 
     /**
-     * @{@inheritDoc}
+     * {@inheritDoc}
      */
     public function __call($method, $parameters)
     {

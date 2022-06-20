@@ -19,10 +19,7 @@ use ElasticScoutDriverPlus\Tests\App\Model;
  */
 final class PaginatorTest extends TestCase
 {
-    /**
-     * @var Paginator
-     */
-    private $paginator;
+    private Paginator $paginator;
 
     protected function setUp(): void
     {

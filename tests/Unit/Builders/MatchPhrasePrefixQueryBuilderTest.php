@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class MatchPhrasePrefixQueryBuilderTest extends TestCase
 {
-    /**
-     * @var MatchPhrasePrefixQueryBuilder
-     */
-    private $builder;
+    private MatchPhrasePrefixQueryBuilder $builder;
 
     protected function setUp(): void
     {

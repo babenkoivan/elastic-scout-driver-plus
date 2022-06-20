@@ -17,10 +17,7 @@ final class PrefixQueryBuilder extends AbstractParameterizedQueryBuilder
     use RewriteParameter;
     use CaseInsensitiveParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'prefix';
+    protected string $type = 'prefix';
 
     public function __construct()
     {

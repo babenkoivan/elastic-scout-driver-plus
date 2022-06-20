@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ExistsQueryBuilderTest extends TestCase
 {
-    /**
-     * @var ExistsQueryBuilder
-     */
-    private $builder;
+    private ExistsQueryBuilder $builder;
 
     protected function setUp(): void
     {

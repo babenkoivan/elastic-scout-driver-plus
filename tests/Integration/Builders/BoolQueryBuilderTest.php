@@ -27,10 +27,7 @@ use stdClass;
  */
 final class BoolQueryBuilderTest extends TestCase
 {
-    /**
-     * @var BoolQueryBuilder
-     */
-    private $builder;
+    private BoolQueryBuilder $builder;
 
     protected function setUp(): void
     {

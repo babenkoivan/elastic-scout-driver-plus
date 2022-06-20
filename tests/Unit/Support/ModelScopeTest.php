@@ -17,10 +17,7 @@ use InvalidArgumentException;
  */
 final class ModelScopeTest extends TestCase
 {
-    /**
-     * @var ModelScope
-     */
-    private $modelScope;
+    private ModelScope $modelScope;
 
     protected function setUp(): void
     {

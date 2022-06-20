@@ -6,10 +6,7 @@ use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
 
 final class GroupedArrayTransformer implements ArrayTransformerInterface
 {
-    /**
-     * @var string
-     */
-    private $groupKey;
+    private string $groupKey;
 
     public function __construct(string $groupKey)
     {

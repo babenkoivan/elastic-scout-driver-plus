@@ -21,10 +21,7 @@ final class MatchPhrasePrefixQueryBuilder extends AbstractParameterizedQueryBuil
     use SlopParameter;
     use ZeroTermsQueryParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'match_phrase_prefix';
+    protected string $type = 'match_phrase_prefix';
 
     public function __construct()
     {

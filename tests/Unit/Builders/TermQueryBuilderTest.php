@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class TermQueryBuilderTest extends TestCase
 {
-    /**
-     * @var TermQueryBuilder
-     */
-    private $builder;
+    private TermQueryBuilder $builder;
 
     protected function setUp(): void
     {

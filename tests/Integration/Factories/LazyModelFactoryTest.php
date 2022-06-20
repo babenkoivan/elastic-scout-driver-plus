@@ -26,12 +26,15 @@ final class LazyModelFactoryTest extends TestCase
     {
         $model = new Book();
 
-        $factory = new LazyModelFactory(new SearchResponse([
-            'hits' => [
-                'total' => ['value' => 0],
-                'hits' => [],
-            ],
-        ]), new ModelScope(get_class($model)));
+        $factory = new LazyModelFactory(
+            new SearchResponse([
+                'hits' => [
+                    'total' => ['value' => 0],
+                    'hits' => [],
+                ],
+            ]),
+            new ModelScope(get_class($model))
+        );
 
         $this->assertNull($factory->makeByIndexNameAndDocumentId($model->searchableAs(), '123'));
     }
@@ -50,19 +53,19 @@ final class LazyModelFactoryTest extends TestCase
         $connection = DB::connection();
         $connection->enableQueryLog();
 
-        $factory = new LazyModelFactory(new SearchResponse([
-            'hits' => [
-                'total' => ['value' => $models->count()],
-                'hits' => $models->map(static function ($model) {
-                    /** @var Author|Book $model */
-                    return [
+        $factory = new LazyModelFactory(
+            new SearchResponse([
+                'hits' => [
+                    'total' => ['value' => $models->count()],
+                    'hits' => $models->map(static fn ($model) => [
                         '_id' => (string)$model->getKey(),
                         '_index' => $model->searchableAs(),
                         '_source' => [],
-                    ];
-                })->all(),
-            ],
-        ]), $modelScope);
+                    ])->all(),
+                ],
+            ]),
+            $modelScope
+        );
 
         // assert that related to search response models are returned
         $models->each(function ($expected) use ($factory) {

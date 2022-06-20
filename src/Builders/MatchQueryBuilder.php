@@ -37,10 +37,7 @@ final class MatchQueryBuilder extends AbstractParameterizedQueryBuilder
     use ZeroTermsQueryParameter;
     use BoostParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'match';
+    protected string $type = 'match';
 
     public function __construct()
     {

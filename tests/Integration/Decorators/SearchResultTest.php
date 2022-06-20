@@ -19,10 +19,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  */
 final class SearchResultTest extends TestCase
 {
-    /**
-     * @var SearchResult
-     */
-    private $searchResult;
+    private SearchResult $searchResult;
 
     protected function setUp(): void
     {

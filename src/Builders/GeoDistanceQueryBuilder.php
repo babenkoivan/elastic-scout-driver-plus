@@ -19,10 +19,7 @@ final class GeoDistanceQueryBuilder extends AbstractParameterizedQueryBuilder
     use ValidationMethodParameter;
     use IgnoreUnmappedParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'geo_distance';
+    protected string $type = 'geo_distance';
 
     public function __construct()
     {
@@ -30,12 +27,12 @@ final class GeoDistanceQueryBuilder extends AbstractParameterizedQueryBuilder
 
         $this->parameterValidator = new AllOfValidator(['field', 'distance', 'lat', 'lon']);
 
-        $this->parameterTransformer = new CallbackArrayTransformer(static function (ParameterCollection $parameters) {
-            return array_merge(
+        $this->parameterTransformer = new CallbackArrayTransformer(
+            static fn (ParameterCollection $parameters) => array_merge(
                 [$parameters->get('field') => $parameters->only(['lat', 'lon'])->toArray()],
                 $parameters->except(['field', 'lat', 'lon'])->excludeEmpty()->toArray()
-            );
-        });
+            )
+        );
     }
 
     public function distance(string $distance): self

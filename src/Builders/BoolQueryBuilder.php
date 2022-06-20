@@ -14,14 +14,8 @@ final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
 {
     use MinimumShouldMatchParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'bool';
-    /**
-     * @var int|null
-     */
-    private $softDeleted = 0;
+    protected string $type = 'bool';
+    private ?int $softDeleted = 0;
 
     public function __construct()
     {

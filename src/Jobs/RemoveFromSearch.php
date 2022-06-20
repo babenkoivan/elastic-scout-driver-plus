@@ -14,27 +14,18 @@ final class RemoveFromSearch implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var string
-     */
-    public $indexName;
-    /**
-     * @var Routing
-     */
-    public $routing;
-    /**
-     * @var string[]
-     */
-    public $documentIds;
+    public string $indexName;
+    public Routing $routing;
+    public array $documentIds;
 
     public function __construct(Collection $models)
     {
         $this->indexName = $models->first()->searchableAs();
         $this->routing = app(RoutingFactoryInterface::class)->makeFromModels($models);
 
-        $this->documentIds = $models->map(static function (Model $model) {
-            return (string)$model->getScoutKey();
-        })->all();
+        $this->documentIds = $models->map(
+            static fn (Model $model) => (string)$model->getScoutKey()
+        )->all();
     }
 
     public function handle(DocumentManager $documentManager): void

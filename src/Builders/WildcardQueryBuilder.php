@@ -19,10 +19,7 @@ final class WildcardQueryBuilder extends AbstractParameterizedQueryBuilder
     use RewriteParameter;
     use CaseInsensitiveParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'wildcard';
+    protected string $type = 'wildcard';
 
     public function __construct()
     {

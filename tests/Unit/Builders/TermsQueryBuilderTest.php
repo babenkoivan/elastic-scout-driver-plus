@@ -15,10 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class TermsQueryBuilderTest extends TestCase
 {
-    /**
-     * @var TermsQueryBuilder
-     */
-    private $builder;
+    private TermsQueryBuilder $builder;
 
     protected function setUp(): void
     {

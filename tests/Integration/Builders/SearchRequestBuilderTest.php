@@ -21,14 +21,8 @@ use stdClass;
  */
 final class SearchRequestBuilderTest extends TestCase
 {
-    /**
-     * @var array
-     */
-    private $matchAllQuery;
-    /**
-     * @var array
-     */
-    private $matchNoneQuery;
+    private array $matchAllQuery;
+    private array $matchNoneQuery;
 
     protected function setUp(): void
     {

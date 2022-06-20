@@ -19,10 +19,7 @@ final class RangeQueryBuilder extends AbstractParameterizedQueryBuilder
     use BoostParameter;
     use TimeZoneParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'range';
+    protected string $type = 'range';
 
     public function __construct()
     {

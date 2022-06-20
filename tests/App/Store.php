@@ -10,9 +10,6 @@ namespace ElasticScoutDriverPlus\Tests\App;
  */
 final class Store extends Model
 {
-    /**
-     * @var string[]
-     */
     protected $hidden = ['lat', 'lon'];
 
     /**

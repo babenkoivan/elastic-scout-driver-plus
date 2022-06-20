@@ -15,10 +15,7 @@ final class TermQueryBuilder extends AbstractParameterizedQueryBuilder
     use BoostParameter;
     use CaseInsensitiveParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'term';
+    protected string $type = 'term';
 
     public function __construct()
     {

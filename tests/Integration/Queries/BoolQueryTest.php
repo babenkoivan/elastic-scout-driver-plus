@@ -9,6 +9,7 @@ use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+
 use const SORT_NUMERIC;
 
 /**
@@ -88,15 +89,15 @@ final class BoolQueryTest extends TestCase
 
     public function test_models_can_be_found_using_should(): void
     {
-        $source = collect(['2018-04-23', '2003-01-14', '2020-03-07'])->map(static function (string $published) {
-            return factory(Book::class)
+        $source = collect(['2018-04-23', '2003-01-14', '2020-03-07'])->map(
+            static fn (string $published) => factory(Book::class)
                 ->state('belongs_to_author')
-                ->create(['published' => Carbon::createFromFormat('Y-m-d', $published)]);
-        });
+                ->create(['published' => Carbon::createFromFormat('Y-m-d', $published)])
+        );
 
-        $target = $source->filter(static function (Book $model) {
-            return $model->published->year > 2003;
-        })->sortBy('id', SORT_NUMERIC);
+        $target = $source->filter(
+            static fn (Book $model) => $model->published->year > 2003
+        )->sortBy('id', SORT_NUMERIC);
 
         $query = Query::bool()
             ->should(

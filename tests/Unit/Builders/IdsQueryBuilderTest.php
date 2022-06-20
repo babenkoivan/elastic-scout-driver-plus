@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class IdsQueryBuilderTest extends TestCase
 {
-    /**
-     * @var IdsQueryBuilder
-     */
-    private $builder;
+    private IdsQueryBuilder $builder;
 
     protected function setUp(): void
     {

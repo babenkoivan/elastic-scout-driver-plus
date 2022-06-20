@@ -4,9 +4,6 @@ namespace ElasticScoutDriverPlus\QueryParameters\Shared;
 
 trait FieldsParameter
 {
-    /**
-     * @param string[] $fields
-     */
     public function fields(array $fields): self
     {
         $this->parameters->put('fields', $fields);

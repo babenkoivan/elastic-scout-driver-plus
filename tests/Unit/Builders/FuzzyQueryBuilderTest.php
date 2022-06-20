@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FuzzyQueryBuilderTest extends TestCase
 {
-    /**
-     * @var FuzzyQueryBuilder
-     */
-    private $builder;
+    private FuzzyQueryBuilder $builder;
 
     protected function setUp(): void
     {

@@ -19,10 +19,7 @@ final class MatchPhraseQueryBuilder extends AbstractParameterizedQueryBuilder
     use AnalyzerParameter;
     use ZeroTermsQueryParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'match_phrase';
+    protected string $type = 'match_phrase';
 
     public function __construct()
     {

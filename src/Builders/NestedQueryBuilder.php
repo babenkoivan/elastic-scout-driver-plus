@@ -16,10 +16,7 @@ final class NestedQueryBuilder extends AbstractParameterizedQueryBuilder
     use ScoreModeParameter;
     use IgnoreUnmappedParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'nested';
+    protected string $type = 'nested';
 
     public function __construct()
     {

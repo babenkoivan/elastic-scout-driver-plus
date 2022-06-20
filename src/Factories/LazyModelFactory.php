@@ -11,22 +11,9 @@ use Illuminate\Support\Collection;
 
 class LazyModelFactory
 {
-    /**
-     * @var ModelScope
-     */
-    private $modelScope;
-    /**
-     * List of model ids keyed by index name
-     *
-     * @var array
-     */
-    private $mappedIds = [];
-    /**
-     * List of models keyed by index name
-     *
-     * @var array
-     */
-    private $mappedModels = [];
+    private ModelScope $modelScope;
+    private array $mappedIds = [];
+    private array $mappedModels = [];
 
     public function __construct(SearchResponse $searchResponse, ModelScope $modelScope)
     {
@@ -76,9 +63,9 @@ class LazyModelFactory
 
         $result = $query->get();
 
-        return $result->mapWithKeys(static function (Model $model) {
-            return [(string)$model->getScoutKey() => $model];
-        });
+        return $result->mapWithKeys(
+            static fn (Model $model) => [(string)$model->getScoutKey() => $model]
+        );
     }
 
     private function resolveAlias(string $indexName): ?string

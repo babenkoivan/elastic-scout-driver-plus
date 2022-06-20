@@ -21,10 +21,7 @@ final class RegexpQueryBuilder extends AbstractParameterizedQueryBuilder
     use RewriteParameter;
     use CaseInsensitiveParameter;
 
-    /**
-     * @var string
-     */
-    protected $type = 'regexp';
+    protected string $type = 'regexp';
 
     public function __construct()
     {

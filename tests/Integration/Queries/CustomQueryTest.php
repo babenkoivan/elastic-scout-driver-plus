@@ -31,9 +31,7 @@ final class CustomQueryTest extends TestCase
     public function test_models_can_be_found_using_custom_query(): void
     {
         // custom query
-        Query::macro('tagged', static function () {
-            return Query::exists()->field('tags');
-        });
+        Query::macro('tagged', static fn () => Query::exists()->field('tags'));
 
         // additional mixin
         factory(Book::class, rand(2, 10))

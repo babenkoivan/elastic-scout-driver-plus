@@ -8,22 +8,10 @@ use ElasticScoutDriverPlus\QueryParameters\Validators\ValidatorInterface;
 
 abstract class AbstractParameterizedQueryBuilder implements QueryBuilderInterface
 {
-    /**
-     * @var string
-     */
-    protected $type;
-    /**
-     * @var ParameterCollection
-     */
-    protected $parameters;
-    /**
-     * @var ValidatorInterface
-     */
-    protected $parameterValidator;
-    /**
-     * @var ArrayTransformerInterface
-     */
-    protected $parameterTransformer;
+    protected string $type;
+    protected ParameterCollection $parameters;
+    protected ValidatorInterface $parameterValidator;
+    protected ArrayTransformerInterface $parameterTransformer;
 
     public function buildQuery(): array
     {

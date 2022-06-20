@@ -14,10 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class HitTest extends TestCase
 {
-    /**
-     * @var Hit
-     */
-    private $hit;
+    private Hit $hit;
 
     protected function setUp(): void
     {

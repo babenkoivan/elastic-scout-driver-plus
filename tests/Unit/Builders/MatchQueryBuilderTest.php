@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class MatchQueryBuilderTest extends TestCase
 {
-    /**
-     * @var MatchQueryBuilder
-     */
-    private $builder;
+    private MatchQueryBuilder $builder;
 
     protected function setUp(): void
     {

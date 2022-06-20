@@ -17,10 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class NestedQueryBuilderTest extends TestCase
 {
-    /**
-     * @var NestedQueryBuilder
-     */
-    private $builder;
+    private NestedQueryBuilder $builder;
 
     protected function setUp(): void
     {
