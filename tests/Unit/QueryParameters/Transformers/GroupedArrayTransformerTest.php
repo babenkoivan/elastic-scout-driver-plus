@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\QueryParameters\Transformers;
+namespace Elastic\ScoutDriverPlus\Tests\Unit\QueryParameters\Transformers;
 
-use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
-use ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
+ * @covers \Elastic\ScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
  */
 final class GroupedArrayTransformerTest extends TestCase
 {

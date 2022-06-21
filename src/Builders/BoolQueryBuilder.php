@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Builders;
+namespace Elastic\ScoutDriverPlus\Builders;
 
 use Closure;
-use ElasticScoutDriverPlus\Factories\ParameterFactory;
-use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
-use ElasticScoutDriverPlus\QueryParameters\Shared\MinimumShouldMatchParameter;
-use ElasticScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
-use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
-use ElasticScoutDriverPlus\Support\Arr;
+use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\MinimumShouldMatchParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
+use Elastic\ScoutDriverPlus\Support\Arr;
 
 final class BoolQueryBuilder extends AbstractParameterizedQueryBuilder
 {

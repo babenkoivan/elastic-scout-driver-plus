@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Decorators;
+namespace Elastic\ScoutDriverPlus\Decorators;
 
 use Elastic\Adapter\Search\Hit as BaseHit;
-use ElasticScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\ForwardsCalls;

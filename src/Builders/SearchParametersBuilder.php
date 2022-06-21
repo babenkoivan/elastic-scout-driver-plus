@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Builders;
+namespace Elastic\ScoutDriverPlus\Builders;
 
 use Closure;
 use Elastic\Adapter\Search\SearchParameters;
-use ElasticScoutDriverPlus\Decorators\SearchResult;
-use ElasticScoutDriverPlus\Engine;
-use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
-use ElasticScoutDriverPlus\Factories\LazyModelFactory;
-use ElasticScoutDriverPlus\Factories\ParameterFactory;
-use ElasticScoutDriverPlus\Paginator;
-use ElasticScoutDriverPlus\Support\ModelScope;
+use Elastic\ScoutDriverPlus\Decorators\SearchResult;
+use Elastic\ScoutDriverPlus\Engine;
+use Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
+use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
+use Elastic\ScoutDriverPlus\Paginator;
+use Elastic\ScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
 use stdClass;
 

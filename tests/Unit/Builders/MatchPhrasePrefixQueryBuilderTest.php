@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\Builders;
+namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
-use ElasticScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
-use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
- * @covers \ElasticScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder
+ * @covers \Elastic\ScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
+ * @covers \Elastic\ScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  */
 final class MatchPhrasePrefixQueryBuilderTest extends TestCase
 {

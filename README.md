@@ -69,7 +69,7 @@ already use Elastic Scout Driver, I recommend you to update it before installing
 composer update babenkoivan/elastic-scout-driver
 ```
 
-After installing the libraries, you need to add `ElasticScoutDriverPlus\Searchable` trait to your models. In case 
+After installing the libraries, you need to add `Elastic\ScoutDriverPlus\Searchable` trait to your models. In case 
 some models already use the standard `Laravel\Scout\Searchable` trait, you should replace it with the one provided by 
 Elastic Scout Driver Plus.
 
@@ -84,7 +84,7 @@ Before you begin searching a model, you should define a query. You can either us
 with an array:
 
 ```php
-use ElasticScoutDriverPlus\Support\Query;
+use Elastic\ScoutDriverPlus\Support\Query;
 
 // using a query builder
 $query = Query::match()
@@ -103,7 +103,7 @@ $query = [
 ];
 ```
 
-Each method of `ElasticScoutDriverPlus\Support\Query` factory creates a query builder for the respective type. 
+Each method of `Elastic\ScoutDriverPlus\Support\Query` factory creates a query builder for the respective type. 
 Available methods are listed below:
 
 * [bool](docs/compound-queries.md#boolean)
@@ -190,7 +190,7 @@ for your model, override the `shardRouting` method:
 ```php
 class Book extends Model
 {
-    use ElasticScoutDriverPlus\Searchable;
+    use Elastic\ScoutDriverPlus\Searchable;
     
     public function shardRouting()
     {
@@ -208,7 +208,7 @@ Sometimes you need to index your model with related data:
 ```php
 class Book extends Model
 {
-    use ElasticScoutDriverPlus\Searchable;
+    use Elastic\ScoutDriverPlus\Searchable;
     
     public function toSearchableArray()
     {
@@ -226,7 +226,7 @@ You can improve the performance of bulk operations by overriding the `searchable
 ```php
 class Book extends Model
 {
-    use ElasticScoutDriverPlus\Searchable;
+    use Elastic\ScoutDriverPlus\Searchable;
     
     public function toSearchableArray()
     {

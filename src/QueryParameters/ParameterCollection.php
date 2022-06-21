@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\QueryParameters;
+namespace Elastic\ScoutDriverPlus\QueryParameters;
 
-use ElasticScoutDriverPlus\Support\Arr;
+use Elastic\ScoutDriverPlus\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection as BaseCollection;
 

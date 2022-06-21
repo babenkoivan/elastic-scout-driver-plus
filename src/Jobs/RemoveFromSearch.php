@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Jobs;
+namespace Elastic\ScoutDriverPlus\Jobs;
 
 use Elastic\Adapter\Documents\DocumentManager;
 use Elastic\Adapter\Documents\Routing;
-use ElasticScoutDriverPlus\Factories\RoutingFactoryInterface;
+use Elastic\ScoutDriverPlus\Factories\RoutingFactoryInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;

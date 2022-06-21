@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\App;
+namespace Elastic\ScoutDriverPlus\Tests\App;
 
 /**
  * @property int    $id

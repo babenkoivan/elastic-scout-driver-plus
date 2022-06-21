@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration;
+namespace Elastic\ScoutDriverPlus\Tests\Integration;
 
-use ElasticScoutDriverPlus\Tests\App\Book;
+use Elastic\ScoutDriverPlus\Tests\App\Book;
 
 /**
- * @covers \ElasticScoutDriverPlus\Engine
- * @covers \ElasticScoutDriverPlus\Jobs\RemoveFromSearch
+ * @covers \Elastic\ScoutDriverPlus\Engine
+ * @covers \Elastic\ScoutDriverPlus\Jobs\RemoveFromSearch
  *
- * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
- * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\Searchable
+ * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \Elastic\ScoutDriverPlus\Searchable
  */
 final class EngineTest extends TestCase
 {

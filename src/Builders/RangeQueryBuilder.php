@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Builders;
+namespace Elastic\ScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
-use ElasticScoutDriverPlus\QueryParameters\Shared\BoostParameter;
-use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
-use ElasticScoutDriverPlus\QueryParameters\Shared\RelationParameter;
-use ElasticScoutDriverPlus\QueryParameters\Shared\TimeZoneParameter;
-use ElasticScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
-use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
-use ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator;
-use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\BoostParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\FieldParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\RelationParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\TimeZoneParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\CompoundValidator;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
 
 final class RangeQueryBuilder extends AbstractParameterizedQueryBuilder
 {

@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Decorators;
+namespace Elastic\ScoutDriverPlus\Decorators;
 
 use ArrayIterator;
 use Elastic\Adapter\Search\Hit as BaseHit;
 use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
-use ElasticScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Traits\ForwardsCalls;

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus;
+namespace Elastic\ScoutDriverPlus;
 
 use Elastic\Adapter\Documents\DocumentManager;
 use Elastic\Adapter\Indices\IndexManager;
@@ -10,8 +10,8 @@ use Elastic\ScoutDriver\Engine as BaseEngine;
 use Elastic\ScoutDriver\Factories\DocumentFactoryInterface;
 use Elastic\ScoutDriver\Factories\ModelFactoryInterface;
 use Elastic\ScoutDriver\Factories\SearchParametersFactoryInterface;
-use ElasticScoutDriverPlus\Factories\RoutingFactoryInterface;
-use ElasticScoutDriverPlus\Support\ModelScope;
+use Elastic\ScoutDriverPlus\Factories\RoutingFactoryInterface;
+use Elastic\ScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
 
 final class Engine extends BaseEngine

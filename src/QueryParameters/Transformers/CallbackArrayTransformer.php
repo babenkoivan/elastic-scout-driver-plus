@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\QueryParameters\Transformers;
+namespace Elastic\ScoutDriverPlus\QueryParameters\Transformers;
 
 use Closure;
-use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
 
 final class CallbackArrayTransformer implements ArrayTransformerInterface
 {

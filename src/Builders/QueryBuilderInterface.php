@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Builders;
+namespace Elastic\ScoutDriverPlus\Builders;
 
 interface QueryBuilderInterface
 {

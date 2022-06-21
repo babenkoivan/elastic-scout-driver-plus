@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus;
+namespace Elastic\ScoutDriverPlus;
 
 use Closure;
-use ElasticScoutDriverPlus\Builders\QueryBuilderInterface;
-use ElasticScoutDriverPlus\Builders\SearchParametersBuilder;
-use ElasticScoutDriverPlus\Jobs\RemoveFromSearch;
+use Elastic\ScoutDriverPlus\Builders\QueryBuilderInterface;
+use Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder;
+use Elastic\ScoutDriverPlus\Jobs\RemoveFromSearch;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Scout\Searchable as BaseSearchable;
 

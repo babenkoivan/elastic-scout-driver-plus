@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration;
+namespace Elastic\ScoutDriverPlus\Tests\Integration;
 
 use Elastic\Client\ServiceProvider as ElasticClientServiceProvider;
 use Elastic\Migrations\ServiceProvider as ElasticMigrationsServiceProvider;
 use Elastic\ScoutDriver\ServiceProvider as ElasticScoutDriverServiceProvider;
-use ElasticScoutDriverPlus\Decorators\SearchResult;
-use ElasticScoutDriverPlus\ServiceProvider as ElasticScoutDriverPlusServiceProvider;
+use Elastic\ScoutDriverPlus\Decorators\SearchResult;
+use Elastic\ScoutDriverPlus\ServiceProvider as ElasticScoutDriverPlusServiceProvider;
 use Illuminate\Config\Repository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\QueryParameters\Shared;
+namespace Elastic\ScoutDriverPlus\QueryParameters\Shared;
 
 trait TypeParameter
 {

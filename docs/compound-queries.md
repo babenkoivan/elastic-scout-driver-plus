@@ -4,7 +4,7 @@
 
 ## Boolean
 
-You can use `ElasticScoutDriverPlus\Support\Query::bool()` to build a [boolean query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#query-dsl-bool-query):
+You can use `Elastic\ScoutDriverPlus\Support\Query::bool()` to build a [boolean query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#query-dsl-bool-query):
 
 ```php
 $query = Query::bool()->must(

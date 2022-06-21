@@ -12,7 +12,7 @@ $raw = Book::searchQuery($query)->raw();
 
 ## SearchResult
 
-You can execute the query and get `ElasticScoutDriverPlus\Decorators\SearchResult` instance in return:
+You can execute the query and get `Elastic\ScoutDriverPlus\Decorators\SearchResult` instance in return:
 
 ```php
 $searchResult = Book::searchQuery($query)->execute();

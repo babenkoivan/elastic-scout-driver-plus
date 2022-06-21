@@ -1,23 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration\Builders;
+namespace Elastic\ScoutDriverPlus\Tests\Integration\Builders;
 
 use Elastic\Adapter\Search\SearchParameters;
-use ElasticScoutDriverPlus\Builders\SearchParametersBuilder;
-use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
-use ElasticScoutDriverPlus\Tests\App\Author;
-use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder;
+use Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
+use Elastic\ScoutDriverPlus\Tests\App\Author;
+use Elastic\ScoutDriverPlus\Tests\App\Book;
+use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use InvalidArgumentException;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\SearchParametersBuilder
- * @covers \ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
+ * @covers \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
+ * @covers \Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
  *
- * @uses   \ElasticScoutDriverPlus\Engine
- * @uses   \ElasticScoutDriverPlus\Factories\ParameterFactory
- * @uses   \ElasticScoutDriverPlus\Support\ModelScope
+ * @uses   \Elastic\ScoutDriverPlus\Engine
+ * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
+ * @uses   \Elastic\ScoutDriverPlus\Support\ModelScope
  */
 final class SearchParametersBuilderTest extends TestCase
 {

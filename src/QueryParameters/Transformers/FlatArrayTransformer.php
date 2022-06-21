@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\QueryParameters\Transformers;
+namespace Elastic\ScoutDriverPlus\QueryParameters\Transformers;
 
-use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
 
 final class FlatArrayTransformer implements ArrayTransformerInterface
 {

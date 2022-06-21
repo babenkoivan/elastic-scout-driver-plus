@@ -1,21 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration\Decorators;
+namespace Elastic\ScoutDriverPlus\Tests\Integration\Decorators;
 
 use Elastic\Adapter\Documents\Document;
 use Elastic\Adapter\Search\Highlight;
 use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
-use ElasticScoutDriverPlus\Decorators\Hit;
-use ElasticScoutDriverPlus\Decorators\SearchResult;
-use ElasticScoutDriverPlus\Factories\LazyModelFactory;
-use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\App\Model;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Elastic\ScoutDriverPlus\Decorators\Hit;
+use Elastic\ScoutDriverPlus\Decorators\SearchResult;
+use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Tests\App\Book;
+use Elastic\ScoutDriverPlus\Tests\App\Model;
+use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\Decorators\SearchResult
+ * @covers \Elastic\ScoutDriverPlus\Decorators\SearchResult
  *
- * @uses   \ElasticScoutDriverPlus\Decorators\Hit
+ * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
  */
 final class SearchResultTest extends TestCase
 {

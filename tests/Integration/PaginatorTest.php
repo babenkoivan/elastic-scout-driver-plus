@@ -1,21 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration;
+namespace Elastic\ScoutDriverPlus\Tests\Integration;
 
 use Elastic\Adapter\Documents\Document;
 use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
-use ElasticScoutDriverPlus\Decorators\Hit;
-use ElasticScoutDriverPlus\Decorators\SearchResult;
-use ElasticScoutDriverPlus\Factories\LazyModelFactory;
-use ElasticScoutDriverPlus\Paginator;
-use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\App\Model;
+use Elastic\ScoutDriverPlus\Decorators\Hit;
+use Elastic\ScoutDriverPlus\Decorators\SearchResult;
+use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Paginator;
+use Elastic\ScoutDriverPlus\Tests\App\Book;
+use Elastic\ScoutDriverPlus\Tests\App\Model;
 
 /**
- * @covers \ElasticScoutDriverPlus\Paginator
+ * @covers \Elastic\ScoutDriverPlus\Paginator
  *
- * @uses   \ElasticScoutDriverPlus\Decorators\Hit
- * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
+ * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
+ * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
  */
 final class PaginatorTest extends TestCase
 {

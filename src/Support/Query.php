@@ -1,25 +1,25 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Support;
+namespace Elastic\ScoutDriverPlus\Support;
 
-use ElasticScoutDriverPlus\Builders\BoolQueryBuilder;
-use ElasticScoutDriverPlus\Builders\ExistsQueryBuilder;
-use ElasticScoutDriverPlus\Builders\FuzzyQueryBuilder;
-use ElasticScoutDriverPlus\Builders\GeoDistanceQueryBuilder;
-use ElasticScoutDriverPlus\Builders\IdsQueryBuilder;
-use ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder;
-use ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder;
-use ElasticScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
-use ElasticScoutDriverPlus\Builders\MatchPhraseQueryBuilder;
-use ElasticScoutDriverPlus\Builders\MatchQueryBuilder;
-use ElasticScoutDriverPlus\Builders\MultiMatchQueryBuilder;
-use ElasticScoutDriverPlus\Builders\NestedQueryBuilder;
-use ElasticScoutDriverPlus\Builders\PrefixQueryBuilder;
-use ElasticScoutDriverPlus\Builders\RangeQueryBuilder;
-use ElasticScoutDriverPlus\Builders\RegexpQueryBuilder;
-use ElasticScoutDriverPlus\Builders\TermQueryBuilder;
-use ElasticScoutDriverPlus\Builders\TermsQueryBuilder;
-use ElasticScoutDriverPlus\Builders\WildcardQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\BoolQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\ExistsQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\FuzzyQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\GeoDistanceQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\IdsQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\MatchAllQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\MatchNoneQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\MatchPhraseQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\MatchQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\MultiMatchQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\NestedQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\PrefixQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\RangeQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\RegexpQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\TermQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\TermsQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\WildcardQueryBuilder;
 use Illuminate\Support\Traits\Macroable;
 
 class Query

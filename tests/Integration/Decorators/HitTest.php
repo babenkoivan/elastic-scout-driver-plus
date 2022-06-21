@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration\Decorators;
+namespace Elastic\ScoutDriverPlus\Tests\Integration\Decorators;
 
 use Elastic\Adapter\Search\Hit as BaseHit;
-use ElasticScoutDriverPlus\Decorators\Hit;
-use ElasticScoutDriverPlus\Factories\LazyModelFactory;
-use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Elastic\ScoutDriverPlus\Decorators\Hit;
+use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Tests\App\Book;
+use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @covers \ElasticScoutDriverPlus\Decorators\Hit
+ * @covers \Elastic\ScoutDriverPlus\Decorators\Hit
  */
 final class HitTest extends TestCase
 {

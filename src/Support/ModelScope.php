@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Support;
+namespace Elastic\ScoutDriverPlus\Support;
 
-use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
+use Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;

@@ -1,19 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\Support;
+namespace Elastic\ScoutDriverPlus\Tests\Unit\Support;
 
-use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
-use ElasticScoutDriverPlus\Support\ModelScope;
-use ElasticScoutDriverPlus\Tests\App\Author;
-use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
+use Elastic\ScoutDriverPlus\Support\ModelScope;
+use Elastic\ScoutDriverPlus\Tests\App\Author;
+use Elastic\ScoutDriverPlus\Tests\App\Book;
+use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use InvalidArgumentException;
 
 /**
- * @covers \ElasticScoutDriverPlus\Support\ModelScope
+ * @covers \Elastic\ScoutDriverPlus\Support\ModelScope
  *
- * @uses   \ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
+ * @uses   \Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
  */
 final class ModelScopeTest extends TestCase
 {

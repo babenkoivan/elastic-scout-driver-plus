@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Factories;
+namespace Elastic\ScoutDriverPlus\Factories;
 
 use Elastic\Adapter\Documents\Routing;
 use Illuminate\Support\Collection;

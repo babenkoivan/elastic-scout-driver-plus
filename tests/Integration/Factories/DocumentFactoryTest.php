@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration\Factories;
+namespace Elastic\ScoutDriverPlus\Tests\Integration\Factories;
 
-use ElasticScoutDriverPlus\Factories\DocumentFactory;
-use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Elastic\ScoutDriverPlus\Factories\DocumentFactory;
+use Elastic\ScoutDriverPlus\Tests\App\Book;
+use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @covers \ElasticScoutDriverPlus\Factories\DocumentFactory
+ * @covers \Elastic\ScoutDriverPlus\Factories\DocumentFactory
  *
- * @uses   \ElasticScoutDriverPlus\Engine
- * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\Searchable
+ * @uses   \Elastic\ScoutDriverPlus\Engine
+ * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \Elastic\ScoutDriverPlus\Searchable
  */
 final class DocumentFactoryTest extends TestCase
 {

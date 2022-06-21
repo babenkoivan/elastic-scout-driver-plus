@@ -1,27 +1,27 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
+namespace Elastic\ScoutDriverPlus\Tests\Integration\Queries;
 
 use Elastic\Adapter\Search\Suggestion;
-use ElasticScoutDriverPlus\Support\Query;
-use ElasticScoutDriverPlus\Tests\App\Book;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Elastic\ScoutDriverPlus\Support\Query;
+use Elastic\ScoutDriverPlus\Tests\App\Book;
+use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\MatchNoneQueryBuilder
- * @covers \ElasticScoutDriverPlus\Engine
- * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
- * @covers \ElasticScoutDriverPlus\Support\Query
+ * @covers \Elastic\ScoutDriverPlus\Builders\MatchNoneQueryBuilder
+ * @covers \Elastic\ScoutDriverPlus\Engine
+ * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
+ * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
- * @uses   \ElasticScoutDriverPlus\Builders\SearchParametersBuilder
- * @uses   \ElasticScoutDriverPlus\Decorators\Hit
- * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
- * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory
- * @uses   \ElasticScoutDriverPlus\Factories\ParameterFactory
- * @uses   \ElasticScoutDriverPlus\Factories\RoutingFactory
- * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
- * @uses   \ElasticScoutDriverPlus\Searchable
- * @uses   \ElasticScoutDriverPlus\Support\ModelScope
+ * @uses   \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
+ * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
+ * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
+ * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
+ * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
+ * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
+ * @uses   \Elastic\ScoutDriverPlus\Searchable
+ * @uses   \Elastic\ScoutDriverPlus\Support\ModelScope
  */
 final class MatchNoneQueryTest extends TestCase
 {

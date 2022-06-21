@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\QueryParameters\Shared;
+namespace Elastic\ScoutDriverPlus\QueryParameters\Shared;
 
 use Closure;
-use ElasticScoutDriverPlus\Builders\QueryBuilderInterface;
-use ElasticScoutDriverPlus\Factories\ParameterFactory;
+use Elastic\ScoutDriverPlus\Builders\QueryBuilderInterface;
+use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
 
 trait QueryParameter
 {

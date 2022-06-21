@@ -4,7 +4,7 @@
 
 ## Geo-Distance
 
-You can use `ElasticScoutDriverPlus\Support\Query::geoDistance()` to build a [geo-distance query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-distance-query.html#query-dsl-geo-distance-query):
+You can use `Elastic\ScoutDriverPlus\Support\Query::geoDistance()` to build a [geo-distance query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-distance-query.html#query-dsl-geo-distance-query):
 
 ```php
 $query = Query::geoDistance()

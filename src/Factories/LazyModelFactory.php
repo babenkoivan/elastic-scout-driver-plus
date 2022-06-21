@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Factories;
+namespace Elastic\ScoutDriverPlus\Factories;
 
 use Elastic\Adapter\Indices\IndexManager;
 use Elastic\Adapter\Search\SearchResult;
-use ElasticScoutDriverPlus\Support\ModelScope;
+use Elastic\ScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;

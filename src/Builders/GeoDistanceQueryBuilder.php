@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Builders;
+namespace Elastic\ScoutDriverPlus\Builders;
 
-use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
-use ElasticScoutDriverPlus\QueryParameters\Shared\FieldParameter;
-use ElasticScoutDriverPlus\QueryParameters\Shared\IgnoreUnmappedParameter;
-use ElasticScoutDriverPlus\QueryParameters\Shared\LatParameter;
-use ElasticScoutDriverPlus\QueryParameters\Shared\LonParameter;
-use ElasticScoutDriverPlus\QueryParameters\Shared\ValidationMethodParameter;
-use ElasticScoutDriverPlus\QueryParameters\Transformers\CallbackArrayTransformer;
-use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\FieldParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\IgnoreUnmappedParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\LatParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\LonParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\ValidationMethodParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Transformers\CallbackArrayTransformer;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
 
 final class GeoDistanceQueryBuilder extends AbstractParameterizedQueryBuilder
 {

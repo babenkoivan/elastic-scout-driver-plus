@@ -1,20 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\QueryParameters\Validators;
+namespace Elastic\ScoutDriverPlus\Tests\Unit\QueryParameters\Validators;
 
-use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
-use ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
-use ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator;
-use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
-use ElasticScoutDriverPlus\Tests\Integration\TestCase;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\CompoundValidator;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
+use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 
 /**
- * @covers \ElasticScoutDriverPlus\QueryParameters\Validators\CompoundValidator
+ * @covers \Elastic\ScoutDriverPlus\QueryParameters\Validators\CompoundValidator
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- * @uses   \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  */
 final class CompoundValidatorTest extends TestCase
 {

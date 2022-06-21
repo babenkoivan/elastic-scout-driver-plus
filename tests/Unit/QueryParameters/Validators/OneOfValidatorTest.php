@@ -1,17 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace ElasticScoutDriverPlus\Tests\Unit\QueryParameters\Validators;
+namespace Elastic\ScoutDriverPlus\Tests\Unit\QueryParameters\Validators;
 
-use ElasticScoutDriverPlus\Exceptions\QueryBuilderException;
-use ElasticScoutDriverPlus\QueryParameters\ParameterCollection;
-use ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\QueryParameters\Validators\OneOfValidator
+ * @covers \Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  *
- * @uses   \ElasticScoutDriverPlus\QueryParameters\ParameterCollection
+ * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
  */
 final class OneOfValidatorTest extends TestCase
 {

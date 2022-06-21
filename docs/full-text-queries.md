@@ -9,7 +9,7 @@
 
 ## Match All
 
-You can use `ElasticScoutDriverPlus\Support\Query::matchAll()` to build a query that
+You can use `Elastic\ScoutDriverPlus\Support\Query::matchAll()` to build a query that
 [matches all documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html#query-dsl-match-all-query):
 
 ```php
@@ -20,7 +20,7 @@ $searchResult = Book::searchQuery($query)->execute();
 
 ## Match None
 
-You can use `ElasticScoutDriverPlus\Support\Query::matchNone()` to build a query that
+You can use `Elastic\ScoutDriverPlus\Support\Query::matchNone()` to build a query that
 [matches no documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html#query-dsl-match-none-query):
 
 ```php
@@ -32,7 +32,7 @@ $searchResult = Book::searchQuery($query)->execute();
 
 ## Match Phrase Prefix
 
-You can use `ElasticScoutDriverPlus\Support\Query::matchPhrasePrefix()` to build a query that matches documents, which
+You can use `Elastic\ScoutDriverPlus\Support\Query::matchPhrasePrefix()` to build a query that matches documents, which
 [contain the words of a provided text](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html#query-dsl-match-query-phrase-prefix) 
 in the same order as provided:
 
@@ -132,7 +132,7 @@ $searchResult = Book::searchQuery($query)->execute();
 
 ## Match Phrase
 
-You can use `ElasticScoutDriverPlus\Support\Query::matchPhrase()` to build a query that matches documents, which
+You can use `Elastic\ScoutDriverPlus\Support\Query::matchPhrase()` to build a query that matches documents, which
 [contain the given phrase](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html#query-dsl-match-query-phrase):
 
 ```php
@@ -216,7 +216,7 @@ $searchResult = Book::searchQuery($query)->execute();
 
 ## Match
 
-You can use `ElasticScoutDriverPlus\Support\Query::match()` to build a query that matches documents, which 
+You can use `Elastic\ScoutDriverPlus\Support\Query::match()` to build a query that matches documents, which 
 [contain a provided text, number, date or boolean value](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query):
 
 ```php
@@ -431,7 +431,7 @@ $searchResult = Book::searchQuery($query)->execute();
 
 ## Multi-Match
 
-You can use `ElasticScoutDriverPlus\Support\Query::multiMatch()` to build a query that matches documents, which
+You can use `Elastic\ScoutDriverPlus\Support\Query::multiMatch()` to build a query that matches documents, which
 [contain a provided text, number, date or boolean value in multiple fields](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#query-dsl-multi-match-query):
 
 ```php
