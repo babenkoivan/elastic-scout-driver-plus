@@ -34,7 +34,7 @@ class TestCase extends TestbenchTestCase
 
         $this->config = $app['config'];
         $this->config->set('scout.driver', 'elastic');
-        $this->config->set('elastic.migrations.storage_directory', dirname(__DIR__) . '/App/elastic/migrations');
+        $this->config->set('elastic.migrations.storage.default_path', dirname(__DIR__) . '/App/elastic/migrations');
         $this->config->set('elastic.scout_driver.refresh_documents', true);
     }
 
