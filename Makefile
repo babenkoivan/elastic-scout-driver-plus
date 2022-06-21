@@ -12,7 +12,7 @@ MYSQL_USER := test
 MYSQL_PASSWORD := test
 
 ## elasticsearch config
-ES_VERSION ?= 7.10.1
+ES_VERSION ?= 8.2.0
 ES_CONTAINER_IMAGE := elasticsearch:${ES_VERSION}
 ES_CONTAINER_NAME := elastic-scout-driver-plus-elasticsearch
 ES_HOST_PORT := 29200
@@ -36,6 +36,7 @@ up: ## Start containers
     		--name ${ES_CONTAINER_NAME} \
     		-p ${ES_HOST_PORT}:9200 \
     		-e discovery.type=${ES_DISCOVERY_TYPE} \
+            -e xpack.security.enabled=false \
     		${ES_CONTAINER_IMAGE}
 	@printf "\033[92m✔︎ ${ES_CONTAINER_NAME} is started\033[0m\n"
 

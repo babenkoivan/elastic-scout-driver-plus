@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
-use ElasticAdapter\Search\Suggestion;
+use Elastic\Adapter\Search\Suggestion;
 use ElasticScoutDriverPlus\Support\Query;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;
@@ -13,7 +13,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @covers \ElasticScoutDriverPlus\Support\Query
  *
- * @uses   \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\SearchParametersBuilder
  * @uses   \ElasticScoutDriverPlus\Decorators\Hit
  * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
  * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory

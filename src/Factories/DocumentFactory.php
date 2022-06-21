@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Factories;
 
-use ElasticScoutDriver\Factories\DocumentFactory as BaseDocumentFactory;
+use Elastic\ScoutDriver\Factories\DocumentFactory as BaseDocumentFactory;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection as BaseCollection;
 

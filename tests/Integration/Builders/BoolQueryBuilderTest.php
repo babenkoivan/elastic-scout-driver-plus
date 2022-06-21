@@ -65,7 +65,7 @@ final class BoolQueryBuilderTest extends TestCase
 
     public function test_query_with_only_trashed_can_be_built(): void
     {
-        $this->app['config']->set('scout.soft_delete', true);
+        $this->config->set('scout.soft_delete', true);
 
         $expected = [
             'bool' => [
@@ -302,7 +302,7 @@ final class BoolQueryBuilderTest extends TestCase
 
     public function test_query_with_raw_filter_and_soft_deletes_can_be_built(): void
     {
-        $this->app['config']->set('scout.soft_delete', true);
+        $this->config->set('scout.soft_delete', true);
 
         $expected = [
             'bool' => [

@@ -3,16 +3,17 @@
 namespace ElasticScoutDriverPlus\Decorators;
 
 use ArrayIterator;
-use ElasticAdapter\Search\Hit as BaseHit;
-use ElasticAdapter\Search\SearchResponse;
+use Elastic\Adapter\Search\Hit as BaseHit;
+use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Traits\ForwardsCalls;
 use IteratorAggregate;
+use Traversable;
 
 /**
- * @mixin SearchResponse
+ * @mixin BaseSearchResult
  * @mixin BaseCollection
  *
  * @implements IteratorAggregate<int, Hit>
@@ -21,18 +22,18 @@ final class SearchResult implements IteratorAggregate
 {
     use ForwardsCalls;
 
-    private SearchResponse $searchResponse;
+    private BaseSearchResult $baseSearchResult;
     private LazyModelFactory $lazyModelFactory;
 
-    public function __construct(SearchResponse $searchResponse, LazyModelFactory $lazyModelFactory)
+    public function __construct(BaseSearchResult $baseSearchResult, LazyModelFactory $lazyModelFactory)
     {
-        $this->searchResponse = $searchResponse;
+        $this->baseSearchResult = $baseSearchResult;
         $this->lazyModelFactory = $lazyModelFactory;
     }
 
     public function hits(): BaseCollection
     {
-        return $this->searchResponse->hits()->map(
+        return $this->baseSearchResult->hits()->map(
             fn (BaseHit $hit) => new Hit($hit, $this->lazyModelFactory)
         );
     }
@@ -61,9 +62,9 @@ final class SearchResult implements IteratorAggregate
     }
 
     /**
-     * @return ArrayIterator<int, Hit>
+     * @return ArrayIterator|Traversable
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->hits()->getIterator();
     }
@@ -73,6 +74,6 @@ final class SearchResult implements IteratorAggregate
      */
     public function __call(string $method, array $parameters)
     {
-        return $this->forwardCallTo($this->searchResponse, $method, $parameters);
+        return $this->forwardCallTo($this->baseSearchResult, $method, $parameters);
     }
 }

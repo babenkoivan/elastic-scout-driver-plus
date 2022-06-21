@@ -2,8 +2,8 @@
 
 namespace ElasticScoutDriverPlus;
 
-use ElasticScoutDriver\Engine;
-use ElasticScoutDriver\Factories\DocumentFactoryInterface;
+use Elastic\ScoutDriver\Engine;
+use Elastic\ScoutDriver\Factories\DocumentFactoryInterface;
 use ElasticScoutDriverPlus\Engine as EnginePlus;
 use ElasticScoutDriverPlus\Factories\DocumentFactory;
 use ElasticScoutDriverPlus\Factories\RoutingFactory;

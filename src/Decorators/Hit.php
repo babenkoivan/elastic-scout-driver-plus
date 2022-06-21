@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Decorators;
 
-use ElasticAdapter\Search\Hit as BaseHit;
+use Elastic\Adapter\Search\Hit as BaseHit;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
@@ -15,12 +15,12 @@ final class Hit implements Arrayable
 {
     use ForwardsCalls;
 
-    private BaseHit $hit;
+    private BaseHit $baseHit;
     private LazyModelFactory $lazyModelFactory;
 
-    public function __construct(BaseHit $hit, LazyModelFactory $lazyModelFactory)
+    public function __construct(BaseHit $baseHit, LazyModelFactory $lazyModelFactory)
     {
-        $this->hit = $hit;
+        $this->baseHit = $baseHit;
         $this->lazyModelFactory = $lazyModelFactory;
     }
 
@@ -37,7 +37,7 @@ final class Hit implements Arrayable
      */
     public function __call(string $method, array $parameters)
     {
-        return $this->forwardCallTo($this->hit, $method, $parameters);
+        return $this->forwardCallTo($this->baseHit, $method, $parameters);
     }
 
     /**

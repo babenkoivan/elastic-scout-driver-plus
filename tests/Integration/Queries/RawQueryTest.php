@@ -3,8 +3,8 @@
 namespace ElasticScoutDriverPlus\Tests\Integration\Queries;
 
 use Carbon\Carbon;
-use ElasticAdapter\Documents\Document;
-use ElasticAdapter\Search\Highlight;
+use Elastic\Adapter\Documents\Document;
+use Elastic\Adapter\Search\Highlight;
 use ElasticScoutDriverPlus\Decorators\Hit;
 use ElasticScoutDriverPlus\Tests\App\Author;
 use ElasticScoutDriverPlus\Tests\App\Book;
@@ -17,7 +17,7 @@ use const SORT_NUMERIC;
 use stdClass;
 
 /**
- * @covers \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @covers \ElasticScoutDriverPlus\Builders\SearchParametersBuilder
  * @covers \ElasticScoutDriverPlus\Engine
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @covers \ElasticScoutDriverPlus\Support\Query

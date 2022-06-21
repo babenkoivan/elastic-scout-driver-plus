@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-use ElasticAdapter\Indices\Mapping;
-use ElasticMigrations\Facades\Index;
-use ElasticMigrations\MigrationInterface;
-use Elasticsearch\Client;
+use Elastic\Adapter\Indices\Mapping;
+use Elastic\Elasticsearch\Client;
+use Elastic\Migrations\Facades\Index;
+use Elastic\Migrations\MigrationInterface;
 
 final class CreateAuthorsIndex implements MigrationInterface
 {

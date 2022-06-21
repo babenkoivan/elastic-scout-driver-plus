@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Factories;
 
-use ElasticAdapter\Documents\Routing;
+use Elastic\Adapter\Documents\Routing;
 use ElasticScoutDriverPlus\Factories\RoutingFactory;
 use ElasticScoutDriverPlus\Tests\App\Book;
 use ElasticScoutDriverPlus\Tests\Integration\TestCase;

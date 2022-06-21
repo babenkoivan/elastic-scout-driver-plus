@@ -13,7 +13,7 @@ use const SORT_NUMERIC;
  * @covers \ElasticScoutDriverPlus\Factories\LazyModelFactory
  * @covers \ElasticScoutDriverPlus\Support\Query
  *
- * @uses   \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\SearchParametersBuilder
  * @uses   \ElasticScoutDriverPlus\Decorators\Hit
  * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
  * @uses   \ElasticScoutDriverPlus\Factories\DocumentFactory

@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Decorators;
 
-use ElasticAdapter\Search\Hit as BaseHit;
+use Elastic\Adapter\Search\Hit as BaseHit;
 use ElasticScoutDriverPlus\Decorators\Hit;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
 use ElasticScoutDriverPlus\Tests\App\Book;

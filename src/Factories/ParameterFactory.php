@@ -12,6 +12,7 @@ class ParameterFactory
      */
     public static function makeQuery($query): array
     {
+        /** @var QueryBuilderInterface|array $query */
         $query = value($query);
 
         return $query instanceof QueryBuilderInterface ? $query->buildQuery() : $query;

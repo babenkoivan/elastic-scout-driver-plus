@@ -2,8 +2,8 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
-use ElasticAdapter\Documents\Document;
-use ElasticAdapter\Search\SearchResponse;
+use Elastic\Adapter\Documents\Document;
+use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
 use ElasticScoutDriverPlus\Decorators\Hit;
 use ElasticScoutDriverPlus\Decorators\SearchResult;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
@@ -25,7 +25,7 @@ final class PaginatorTest extends TestCase
     {
         parent::setUp();
 
-        $searchResponse = new SearchResponse([
+        $baseSearchResult = new BaseSearchResult([
             'hits' => [
                 'hits' => [
                     [
@@ -54,7 +54,7 @@ final class PaginatorTest extends TestCase
             ->with('test', '1')
             ->willReturn($model);
 
-        $searchResult = new SearchResult($searchResponse, $lazyModelFactory);
+        $searchResult = new SearchResult($baseSearchResult, $lazyModelFactory);
         $this->paginator = new Paginator($searchResult, 1);
     }
 

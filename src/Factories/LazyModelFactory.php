@@ -2,8 +2,8 @@
 
 namespace ElasticScoutDriverPlus\Factories;
 
-use ElasticAdapter\Indices\IndexManager;
-use ElasticAdapter\Search\SearchResponse;
+use Elastic\Adapter\Indices\IndexManager;
+use Elastic\Adapter\Search\SearchResult;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,11 +15,11 @@ class LazyModelFactory
     private array $mappedIds = [];
     private array $mappedModels = [];
 
-    public function __construct(SearchResponse $searchResponse, ModelScope $modelScope)
+    public function __construct(SearchResult $searchResult, ModelScope $modelScope)
     {
         $this->modelScope = $modelScope;
 
-        foreach ($searchResponse->hits() as $hit) {
+        foreach ($searchResult->hits() as $hit) {
             $this->mappedIds[$hit->indexName()][] = $hit->document()->id();
         }
     }
@@ -43,6 +43,7 @@ class LazyModelFactory
         }
 
         $ids = $this->mappedIds[$indexName];
+        /** @var Model $model */
         $model = new $modelClass();
         $relations = $this->modelScope->resolveRelations($modelClass);
         $queryCallback = $this->modelScope->resolveQueryCallback($modelClass);
@@ -80,9 +81,13 @@ class LazyModelFactory
 
         // otherwise, we get all aliases for the given index and
         // try to find the one, which is in the scope
-        foreach (app(IndexManager::class)->getAliases($indexName) as $alias) {
-            if ($indexNames->contains($alias->name())) {
-                return $alias->name();
+        /** @var IndexManager $indexManager */
+        $indexManager = resolve(IndexManager::class);
+
+        foreach ($indexManager->getAliases($indexName) as $alias) {
+            /** @var string $alias */
+            if ($indexNames->contains($alias)) {
+                return $alias;
             }
         }
 

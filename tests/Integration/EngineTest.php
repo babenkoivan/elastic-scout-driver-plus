@@ -2,11 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration;
 
-use ElasticAdapter\Documents\DocumentManager;
-use ElasticAdapter\Search\Hit;
-use ElasticAdapter\Search\SearchRequest;
 use ElasticScoutDriverPlus\Tests\App\Book;
-use stdClass;
 
 /**
  * @covers \ElasticScoutDriverPlus\Engine
@@ -18,13 +14,15 @@ use stdClass;
  */
 final class EngineTest extends TestCase
 {
-    private DocumentManager $documentManager;
-
-    protected function setUp(): void
+    public function test_models_can_be_found_using_default_search(): void
     {
-        parent::setUp();
+        factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
 
-        $this->documentManager = resolve(DocumentManager::class);
+        $target = factory(Book::class)->state('belongs_to_author')->create(['title' => uniqid('test')]);
+        $found = Book::search($target->title)->orderBy('id')->get();
+
+        $this->assertCount(1, $found);
+        $this->assertEquals($target->toArray(), $found->first()->toArray());
     }
 
     public function queueConfigProvider(): array
@@ -42,19 +40,13 @@ final class EngineTest extends TestCase
     {
         config($config);
 
-        $models = factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
+        $source = factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
+        $found = Book::search()->get();
 
-        // find all indexed models
-        $searchResponse = $this->documentManager->search(
-            $models->first()->searchableAs(),
-            (new SearchRequest(['match_all' => new stdClass()]))->sort(['id'])
-        );
-
-        // assert that documents have the same ids as created models
-        $modelIds = $models->pluck($models->first()->getKeyName())->all();
-        $documentIds = collect($searchResponse->hits())->map(static fn (Hit $hit) => $hit->document()->id())->all();
-
-        $this->assertEquals($modelIds, $documentIds);
+        // assert that the amount of created models corresponds number of found models
+        $this->assertSame($source->count(), $found->count());
+        // assert that all source models are found
+        $this->assertCount(0, $source->pluck('id')->diff($found->pluck('id')));
     }
 
     /**
@@ -64,31 +56,15 @@ final class EngineTest extends TestCase
     {
         config($config);
 
-        $models = factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
+        $source = factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
 
         // delete newly created models
-        $models->each(static function (Book $model) {
+        $source->each(static function (Book $model) {
             $model->delete();
         });
 
-        // find all indexed models
-        $searchResponse = $this->documentManager->search(
-            $models->first()->searchableAs(),
-            new SearchRequest(['match_all' => new stdClass()])
-        );
-
-        // assert that there is no documents in the index
-        $this->assertSame(0, $searchResponse->total());
-    }
-
-    public function test_models_can_be_found_using_default_search(): void
-    {
-        factory(Book::class, rand(2, 10))->state('belongs_to_author')->create();
-
-        $target = factory(Book::class)->state('belongs_to_author')->create(['title' => uniqid('test')]);
-        $found = Book::search($target->title)->orderBy('id')->get();
-
-        $this->assertCount(1, $found);
-        $this->assertEquals($target->toArray(), $found->first()->toArray());
+        // assert that there are no documents in the index
+        $found = Book::search()->get();
+        $this->assertSame(0, $found->count());
     }
 }

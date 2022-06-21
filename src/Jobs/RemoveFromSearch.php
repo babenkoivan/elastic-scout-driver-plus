@@ -2,8 +2,8 @@
 
 namespace ElasticScoutDriverPlus\Jobs;
 
-use ElasticAdapter\Documents\DocumentManager;
-use ElasticAdapter\Documents\Routing;
+use Elastic\Adapter\Documents\DocumentManager;
+use Elastic\Adapter\Documents\Routing;
 use ElasticScoutDriverPlus\Factories\RoutingFactoryInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,6 +30,7 @@ final class RemoveFromSearch implements ShouldQueue
 
     public function handle(DocumentManager $documentManager): void
     {
+        /** @var bool $refreshDocuments */
         $refreshDocuments = config('elastic.scout_driver.refresh_documents');
         $documentManager->delete($this->indexName, $this->documentIds, $refreshDocuments, $this->routing);
     }

@@ -2,7 +2,7 @@
 
 namespace ElasticScoutDriverPlus\Factories;
 
-use ElasticAdapter\Documents\Routing;
+use Elastic\Adapter\Documents\Routing;
 use Illuminate\Support\Collection;
 
 interface RoutingFactoryInterface

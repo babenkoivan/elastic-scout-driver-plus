@@ -3,7 +3,7 @@
 namespace ElasticScoutDriverPlus\Builders;
 
 use Closure;
-use ElasticAdapter\Search\SearchRequest;
+use Elastic\Adapter\Search\SearchParameters;
 use ElasticScoutDriverPlus\Decorators\SearchResult;
 use ElasticScoutDriverPlus\Engine;
 use ElasticScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
@@ -14,7 +14,7 @@ use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
 use stdClass;
 
-class SearchRequestBuilder
+class SearchParametersBuilder
 {
     public const DEFAULT_PAGE_SIZE = 10;
 
@@ -45,14 +45,19 @@ class SearchRequestBuilder
      */
     private $trackTotalHits;
 
+    public function __construct(Model $model)
+    {
+        $this->modelScope = new ModelScope(get_class($model));
+        $this->engine = $model->searchableUsing();
+    }
+
     /**
      * @param Closure|QueryBuilderInterface|array|null $query
      */
-    public function __construct($query, Model $model)
+    public function query($query): self
     {
         $this->query = isset($query) ? ParameterFactory::makeQuery($query) : null;
-        $this->modelScope = new ModelScope(get_class($model));
-        $this->engine = $model->searchableUsing();
+        return $this;
     }
 
     public function highlightRaw(array $highlight): self
@@ -266,83 +271,87 @@ class SearchRequestBuilder
         return $this;
     }
 
-    public function buildSearchRequest(): SearchRequest
+    public function buildSearchParameters(): SearchParameters
     {
-        $searchRequest = new SearchRequest($this->query);
+        $searchParameters = new SearchParameters();
+
+        if (isset($this->query)) {
+            $searchParameters->query($this->query);
+        }
 
         if (!empty($this->highlight)) {
-            $searchRequest->highlight($this->highlight);
+            $searchParameters->highlight($this->highlight);
         }
 
         if (!empty($this->sort)) {
-            $searchRequest->sort($this->sort);
+            $searchParameters->sort($this->sort);
         }
 
         if (!empty($this->rescore)) {
-            $searchRequest->rescore($this->rescore);
+            $searchParameters->rescore($this->rescore);
         }
 
         if (isset($this->from)) {
-            $searchRequest->from($this->from);
+            $searchParameters->from($this->from);
         }
 
         if (isset($this->size)) {
-            $searchRequest->size($this->size);
+            $searchParameters->size($this->size);
         }
 
         if (!empty($this->suggest)) {
-            $searchRequest->suggest($this->suggest);
+            $searchParameters->suggest($this->suggest);
         }
 
         if (isset($this->source)) {
-            $searchRequest->source($this->source);
+            $searchParameters->source($this->source);
         }
 
         if (!empty($this->collapse)) {
-            $searchRequest->collapse($this->collapse);
+            $searchParameters->collapse($this->collapse);
         }
 
         if (!empty($this->aggregations)) {
-            $searchRequest->aggregations($this->aggregations);
+            $searchParameters->aggregations($this->aggregations);
         }
 
         if (!empty($this->postFilter)) {
-            $searchRequest->postFilter($this->postFilter);
+            $searchParameters->postFilter($this->postFilter);
         }
 
         if (isset($this->trackTotalHits)) {
-            $searchRequest->trackTotalHits($this->trackTotalHits);
+            $searchParameters->trackTotalHits($this->trackTotalHits);
         }
 
         if (isset($this->trackScores)) {
-            $searchRequest->trackScores($this->trackScores);
+            $searchParameters->trackScores($this->trackScores);
         }
 
         if (isset($this->minScore)) {
-            $searchRequest->minScore($this->minScore);
+            $searchParameters->minScore($this->minScore);
         }
 
         if (!empty($this->indicesBoost)) {
-            $searchRequest->indicesBoost($this->indicesBoost);
+            $searchParameters->indicesBoost($this->indicesBoost);
         }
 
         if (isset($this->searchType)) {
-            $searchRequest->searchType($this->searchType);
+            $searchParameters->searchType($this->searchType);
         }
 
         if (isset($this->preference)) {
-            $searchRequest->preference($this->preference);
+            $searchParameters->preference($this->preference);
         }
 
-        return $searchRequest;
+        return $searchParameters;
     }
 
     public function execute(): SearchResult
     {
-        $searchResponse = $this->engine->executeSearchRequest($this->buildSearchRequest(), $this->modelScope);
-        $lazyModelFactory = new LazyModelFactory($searchResponse, $this->modelScope);
+        $searchResult = $this->engine->searchWithParameters($this->buildSearchParameters(), $this->modelScope);
+        $lazyModelFactory = new LazyModelFactory($searchResult, $this->modelScope);
 
-        return new SearchResult($searchResponse, $lazyModelFactory);
+        return new SearchResult($searchResult, $lazyModelFactory);
     }
 
     public function paginate(
@@ -371,7 +380,7 @@ class SearchRequestBuilder
     public function raw(): array
     {
         return $this->engine
-            ->executeSearchRequest($this->buildSearchRequest(), $this->modelScope)
+            ->searchWithParameters($this->buildSearchParameters(), $this->modelScope)
             ->raw();
     }
 }

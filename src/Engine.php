@@ -2,14 +2,14 @@
 
 namespace ElasticScoutDriverPlus;
 
-use ElasticAdapter\Documents\DocumentManager;
-use ElasticAdapter\Indices\IndexManager;
-use ElasticAdapter\Search\SearchRequest;
-use ElasticAdapter\Search\SearchResponse;
-use ElasticScoutDriver\Engine as BaseEngine;
-use ElasticScoutDriver\Factories\DocumentFactoryInterface;
-use ElasticScoutDriver\Factories\ModelFactoryInterface;
-use ElasticScoutDriver\Factories\SearchRequestFactoryInterface;
+use Elastic\Adapter\Documents\DocumentManager;
+use Elastic\Adapter\Indices\IndexManager;
+use Elastic\Adapter\Search\SearchParameters;
+use Elastic\Adapter\Search\SearchResult;
+use Elastic\ScoutDriver\Engine as BaseEngine;
+use Elastic\ScoutDriver\Factories\DocumentFactoryInterface;
+use Elastic\ScoutDriver\Factories\ModelFactoryInterface;
+use Elastic\ScoutDriver\Factories\SearchParametersFactoryInterface;
 use ElasticScoutDriverPlus\Factories\RoutingFactoryInterface;
 use ElasticScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
@@ -21,12 +21,12 @@ final class Engine extends BaseEngine
     public function __construct(
         DocumentManager $documentManager,
         DocumentFactoryInterface $documentFactory,
-        SearchRequestFactoryInterface $searchRequestFactory,
+        SearchParametersFactoryInterface $searchParametersFactory,
         ModelFactoryInterface $modelFactory,
         IndexManager $indexManager,
         RoutingFactoryInterface $routingFactory
     ) {
-        parent::__construct($documentManager, $documentFactory, $searchRequestFactory, $modelFactory, $indexManager);
+        parent::__construct($documentManager, $documentFactory, $searchParametersFactory, $modelFactory, $indexManager);
 
         $this->routingFactory = $routingFactory;
     }
@@ -63,9 +63,9 @@ final class Engine extends BaseEngine
         $this->documentManager->delete($indexName, $documentIds, $this->refreshDocuments, $routing);
     }
 
-    public function executeSearchRequest(SearchRequest $searchRequest, ModelScope $modelScope): SearchResponse
+    public function searchWithParameters(SearchParameters $searchParameters, ModelScope $modelScope): SearchResult
     {
         $indexName = $modelScope->resolveIndexNames()->join(',');
-        return $this->documentManager->search($indexName, $searchRequest);
+        return $this->documentManager->search($indexName, $searchParameters);
     }
 }

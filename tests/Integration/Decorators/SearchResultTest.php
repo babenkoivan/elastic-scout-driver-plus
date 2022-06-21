@@ -2,9 +2,9 @@
 
 namespace ElasticScoutDriverPlus\Tests\Integration\Decorators;
 
-use ElasticAdapter\Documents\Document;
-use ElasticAdapter\Search\Highlight;
-use ElasticAdapter\Search\SearchResponse;
+use Elastic\Adapter\Documents\Document;
+use Elastic\Adapter\Search\Highlight;
+use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
 use ElasticScoutDriverPlus\Decorators\Hit;
 use ElasticScoutDriverPlus\Decorators\SearchResult;
 use ElasticScoutDriverPlus\Factories\LazyModelFactory;
@@ -25,7 +25,7 @@ final class SearchResultTest extends TestCase
     {
         parent::setUp();
 
-        $searchResponse = new SearchResponse([
+        $baseSearchResult = new BaseSearchResult([
             'hits' => [
                 'hits' => [
                     [
@@ -51,7 +51,7 @@ final class SearchResultTest extends TestCase
             ->with('test', '1')
             ->willReturn($model);
 
-        $this->searchResult = new SearchResult($searchResponse, $lazyModelFactory);
+        $this->searchResult = new SearchResult($baseSearchResult, $lazyModelFactory);
     }
 
     public function test_hits_can_be_retrieved(): void

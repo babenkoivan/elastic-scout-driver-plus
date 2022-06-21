@@ -5,7 +5,7 @@ namespace ElasticScoutDriverPlus;
 
 use Closure;
 use ElasticScoutDriverPlus\Builders\QueryBuilderInterface;
-use ElasticScoutDriverPlus\Builders\SearchRequestBuilder;
+use ElasticScoutDriverPlus\Builders\SearchParametersBuilder;
 use ElasticScoutDriverPlus\Jobs\RemoveFromSearch;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Scout\Searchable as BaseSearchable;
@@ -19,9 +19,15 @@ trait Searchable
     /**
      * @param Closure|QueryBuilderInterface|array|null $query
      */
-    public static function searchQuery($query = null): SearchRequestBuilder
+    public static function searchQuery($query = null): SearchParametersBuilder
     {
-        return new SearchRequestBuilder($query, new static());
+        $builder = new SearchParametersBuilder(new static());
+
+        if (isset($query)) {
+            $builder->query($query);
+        }
+
+        return $builder;
     }
 
     /**

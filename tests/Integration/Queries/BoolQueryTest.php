@@ -22,7 +22,7 @@ use const SORT_NUMERIC;
  * @uses   \ElasticScoutDriverPlus\Builders\MatchAllQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Builders\MatchQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Builders\RangeQueryBuilder
- * @uses   \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\SearchParametersBuilder
  * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Decorators\Hit
  * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
@@ -142,7 +142,7 @@ final class BoolQueryTest extends TestCase
 
     public function test_not_trashed_models_can_be_found(): void
     {
-        $this->app['config']->set('scout.soft_delete', true);
+        $this->config->set('scout.soft_delete', true);
 
         $source = factory(Book::class, rand(2, 10))
             ->state('belongs_to_author')
@@ -165,7 +165,7 @@ final class BoolQueryTest extends TestCase
 
     public function test_trashed_models_can_be_found(): void
     {
-        $this->app['config']->set('scout.soft_delete', true);
+        $this->config->set('scout.soft_delete', true);
 
         $target = factory(Book::class, rand(2, 10))
             ->state('belongs_to_author')
@@ -188,7 +188,7 @@ final class BoolQueryTest extends TestCase
 
     public function test_only_trashed_models_can_be_found(): void
     {
-        $this->app['config']->set('scout.soft_delete', true);
+        $this->config->set('scout.soft_delete', true);
 
         $source = factory(Book::class, rand(2, 10))
             ->state('belongs_to_author')
@@ -208,7 +208,7 @@ final class BoolQueryTest extends TestCase
 
     public function test_only_trashed_models_can_be_found_in_multiple_indices(): void
     {
-        $this->app['config']->set('scout.soft_delete', true);
+        $this->config->set('scout.soft_delete', true);
 
         $target = factory(Book::class)
             ->state('belongs_to_author')

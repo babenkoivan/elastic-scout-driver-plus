@@ -18,7 +18,7 @@ use ElasticScoutDriverPlus\Tests\Integration\TestCase;
  * @covers \ElasticScoutDriverPlus\Support\Query
  *
  * @uses   \ElasticScoutDriverPlus\Builders\MatchQueryBuilder
- * @uses   \ElasticScoutDriverPlus\Builders\SearchRequestBuilder
+ * @uses   \ElasticScoutDriverPlus\Builders\SearchParametersBuilder
  * @uses   \ElasticScoutDriverPlus\Builders\TermQueryBuilder
  * @uses   \ElasticScoutDriverPlus\Decorators\Hit
  * @uses   \ElasticScoutDriverPlus\Decorators\SearchResult
