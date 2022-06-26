@@ -1,7 +1,6 @@
 # Available Methods
 
 * [aggregate](#aggregate)
-* [boostIndex](#boostindex)
 * [collapse](#collapse)
 * [from](#from)
 * [highlight](#highlight)
@@ -55,17 +54,6 @@ You can retrieve the aggregated data from the search result as follows:
 ```php
 $aggregations = $searchResult->aggregations();
 $maxPrice = $aggregations->get('max_price');
-```
-
-### boostIndex
-
-When searching in multiple indices, you can [boost results from a specific index](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multiple-indices.html#index-boost):
-
-```php
-$searchResult = Author::searchQuery($query)
-    ->join(Book::class)
-    ->boostIndex(Book::class, 2)
-    ->execute();
 ```
 
 ### collapse
@@ -159,13 +147,21 @@ $searchResult = Author::searchQuery($query)
     ->execute();
 ```
 
-In the example above, we search for an author with name `John` or a book with title `The Book` in two different indices. 
-It does not matter if we start the query from `Book` or `Author` model. Remember though, that the result collection of models 
-includes both types in this case:
+In the example above, we search for an author with name `John` or a book with title `The Book` in two different indices.
+Note that the result collection of models includes both types:
 
 ```php
 // every model is either Author or Book
 $models = $searchResult->models();
+```
+
+When searching in multiple indices, you can [boost results from a specific index](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multiple-indices.html#index-boost)
+by providing the second argument in `join` method:
+
+```php
+$searchResult = Author::searchQuery($query)
+    ->join(Book::class, 2)
+    ->execute();
 ```
 
 ### load

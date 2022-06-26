@@ -22,15 +22,16 @@ use stdClass;
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
  * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
+ * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
  * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
+ * @uses   \Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException
  * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
  * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
  * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
  * @uses   \Elastic\ScoutDriverPlus\Paginator
  * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
  * @uses   \Elastic\ScoutDriverPlus\Searchable
- * @uses   \Elastic\ScoutDriverPlus\Support\ModelScope
  */
 final class RawQueryTest extends TestCase
 {
@@ -510,8 +511,7 @@ final class RawQueryTest extends TestCase
         $secondTarget = $firstTarget->author;
 
         $found = Book::searchQuery(['match_all' => new stdClass()])
-            ->join(Author::class)
-            ->boostIndex(Book::class, 2)
+            ->join(Author::class, 0.5)
             ->execute();
 
         $this->assertFoundModels(collect([$firstTarget, $secondTarget]), $found);

@@ -2,7 +2,7 @@
 
 namespace Elastic\ScoutDriverPlus\Tests\Unit\QueryParameters\Validators;
 
-use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
 use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
 use Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +17,7 @@ final class OneOfValidatorTest extends TestCase
 {
     public function test_exception_is_thrown_when_all_required_parameters_are_missing(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $parameters = new ParameterCollection(['minimum_should_match' => 1]);
         $validator = new OneOfValidator(['must', 'should']);

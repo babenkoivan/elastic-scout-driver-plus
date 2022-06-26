@@ -6,11 +6,13 @@ use Closure;
 use Elastic\Adapter\Search\SearchParameters;
 use Elastic\ScoutDriverPlus\Decorators\SearchResult;
 use Elastic\ScoutDriverPlus\Engine;
-use Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
+use Elastic\ScoutDriverPlus\Exceptions\ModelNotJoinedException;
+use Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException;
 use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
 use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
 use Elastic\ScoutDriverPlus\Paginator;
-use Elastic\ScoutDriverPlus\Support\ModelScope;
+use Elastic\ScoutDriverPlus\Searchable;
+use Elastic\ScoutDriverPlus\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use stdClass;
 
@@ -18,37 +20,43 @@ class SearchParametersBuilder
 {
     public const DEFAULT_PAGE_SIZE = 10;
 
-    private ?array $query;
-    private ModelScope $modelScope;
     private Engine $engine;
+    /**
+     * @var array<string, DatabaseQueryBuilder>
+     */
+    private array $databaseQueryBuilders;
+    /**
+     * @var array<string, string>
+     */
+    private array $indexNames;
+    private ?array $query;
     private array $highlight = [];
     private array $sort = [];
     private array $rescore = [];
     private ?int $from;
     private ?int $size;
     private array $suggest = [];
+    /**
+     * @var bool|string|array|null
+     */
+    private $source;
     private array $collapse = [];
     private array $aggregations = [];
     private array $postFilter = [];
+    /**
+     * @var int|bool|null
+     */
+    private $trackTotalHits;
     private ?bool $trackScores;
     private ?float $minScore;
     private array $indicesBoost = [];
     private ?string $searchType;
     private ?string $preference;
 
-    /**
-     * @var bool|string|array|null
-     */
-    private $source;
-    /**
-     * @var int|bool|null
-     */
-    private $trackTotalHits;
-
     public function __construct(Model $model)
     {
-        $this->modelScope = new ModelScope(get_class($model));
         $this->engine = $model->searchableUsing();
+        $this->join(get_class($model));
     }
 
     /**
@@ -179,9 +187,27 @@ class SearchParametersBuilder
         return $this;
     }
 
-    public function join(string ...$modelClasses): self
+    public function join(string $modelClass, float $boost = null): self
     {
-        $this->modelScope->push(...$modelClasses);
+        if (
+            !is_a($modelClass, Model::class, true) ||
+            !in_array(Searchable::class, class_uses_recursive($modelClass), true)
+        ) {
+            throw new NotSearchableModelException($modelClass);
+        }
+
+        /** @var Model $model */
+        $model = new $modelClass();
+        /** @var string $indexName */
+        $indexName = $model->searchableAs();
+
+        $this->indexNames[$modelClass] = $indexName;
+        $this->databaseQueryBuilders[$indexName] = new DatabaseQueryBuilder($model);
+
+        if (isset($boost)) {
+            $this->indicesBoost[] = [$indexName => $boost];
+        }
+
         return $this;
     }
 
@@ -196,13 +222,17 @@ class SearchParametersBuilder
 
     public function load(array $relations, string $modelClass = null): self
     {
-        $this->modelScope->with($relations, $modelClass);
+        $indexName = $this->resolveJoinedIndexName($modelClass);
+        $this->databaseQueryBuilders[$indexName]->with($relations);
+
         return $this;
     }
 
-    public function refineModels(callable $callback, string $modelClass = null): self
+    public function refineModels(Closure $callback, string $modelClass = null): self
     {
-        $this->modelScope->modifyQuery($callback, $modelClass);
+        $indexName = $this->resolveJoinedIndexName($modelClass);
+        $this->databaseQueryBuilders[$indexName]->callback($callback);
+
         return $this;
     }
 
@@ -224,18 +254,6 @@ class SearchParametersBuilder
     public function minScore(float $minScore): self
     {
         $this->minScore = $minScore;
-        return $this;
-    }
-
-    public function boostIndex(string $modelClass, float $boost): self
-    {
-        if (!$this->modelScope->contains($modelClass)) {
-            throw new ModelClassNotFoundInScopeException($modelClass);
-        }
-
-        $indexName = $this->modelScope->resolveIndexName($modelClass);
-        $this->indicesBoost[] = [$indexName => $boost];
-
         return $this;
     }
 
@@ -348,10 +366,16 @@ class SearchParametersBuilder
 
     public function execute(): SearchResult
     {
-        $searchResult = $this->engine->searchWithParameters($this->buildSearchParameters(), $this->modelScope);
-        $lazyModelFactory = new LazyModelFactory($searchResult, $this->modelScope);
+        $baseSearchResult = $this->engine->searchWithParameters($this->indexNames, $this->buildSearchParameters());
 
-        return new SearchResult($searchResult, $lazyModelFactory);
+        $documentIds = [];
+        foreach ($baseSearchResult->hits() as $hit) {
+            $documentIds[$hit->indexName()][] = $hit->document()->id();
+        }
+
+        $lazyModelFactory = new LazyModelFactory($this->databaseQueryBuilders, $documentIds);
+
+        return new SearchResult($baseSearchResult, $lazyModelFactory);
     }
 
     public function paginate(
@@ -380,7 +404,20 @@ class SearchParametersBuilder
     public function raw(): array
     {
         return $this->engine
-            ->searchWithParameters($this->buildSearchParameters(), $this->modelScope)
+            ->searchWithParameters($this->indexNames, $this->buildSearchParameters())
             ->raw();
+    }
+
+    private function resolveJoinedIndexName(?string $modelClass): string
+    {
+        if (isset($modelClass)) {
+            if (isset($this->indexNames[$modelClass])) {
+                return $this->indexNames[$modelClass];
+            }
+
+            throw new ModelNotJoinedException($modelClass);
+        }
+
+        return Arr::first($this->indexNames);
     }
 }

@@ -3,7 +3,7 @@
 namespace Elastic\ScoutDriverPlus\Tests\Integration\Builders;
 
 use Elastic\ScoutDriverPlus\Builders\BoolQueryBuilder;
-use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
 use Elastic\ScoutDriverPlus\Support\Query;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use stdClass;
@@ -38,7 +38,7 @@ final class BoolQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_building_query_with_empty_clauses(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->withTrashed()

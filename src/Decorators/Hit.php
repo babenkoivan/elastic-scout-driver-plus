@@ -26,7 +26,7 @@ final class Hit implements Arrayable
 
     public function model(): ?Model
     {
-        return $this->lazyModelFactory->makeByIndexNameAndDocumentId(
+        return $this->lazyModelFactory->makeFromIndexNameAndDocumentId(
             $this->indexName(),
             $this->document()->id()
         );

@@ -2,76 +2,78 @@
 
 namespace Elastic\ScoutDriverPlus\Tests\Integration\Factories;
 
-use Elastic\Adapter\Search\SearchResult;
+use Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder;
 use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
-use Elastic\ScoutDriverPlus\Support\ModelScope;
 use Elastic\ScoutDriverPlus\Tests\App\Author;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
  *
+ * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Engine
  * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
  * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
  * @uses   \Elastic\ScoutDriverPlus\Searchable
- * @uses   \Elastic\ScoutDriverPlus\Support\ModelScope
  */
 final class LazyModelFactoryTest extends TestCase
 {
-    public function test_null_value_is_returned_when_trying_to_make_model_from_empty_search_result(): void
+    public function test_null_is_returned_when_document_ids_are_empty(): void
     {
-        $model = new Book();
+        $model = factory(Author::class)->create();
+        $databaseQueryBuilder = new DatabaseQueryBuilder($model);
+        $factory = new LazyModelFactory([$model->searchableAs() => $databaseQueryBuilder], []);
 
-        $factory = new LazyModelFactory(
-            new SearchResult([
-                'hits' => [
-                    'total' => ['value' => 0],
-                    'hits' => [],
-                ],
-            ]),
-            new ModelScope(get_class($model))
+        $this->assertNull(
+            $factory->makeFromIndexNameAndDocumentId(
+                $model->searchableAs(),
+                (string)$model->getScoutKey()
+            )
         );
-
-        $this->assertNull($factory->makeByIndexNameAndDocumentId($model->searchableAs(), '123'));
     }
 
-    public function test_models_can_be_lazy_made_from_not_empty_search_result(): void
+    public function test_null_is_returned_when_database_query_builder_can_not_be_resolved(): void
+    {
+        $model = factory(Author::class)->create();
+        $factory = new LazyModelFactory([], [$model->searchableAs() => [(string)$model->getScoutKey()]]);
+
+        $this->assertNull(
+            $factory->makeFromIndexNameAndDocumentId(
+                $model->searchableAs(),
+                (string)$model->getScoutKey()
+            )
+        );
+    }
+
+    public function test_models_are_returned_when_document_ids_are_not_empty(): void
     {
         $author = factory(Author::class)->create();
         $book = factory(Book::class)->create(['author_id' => $author->getKey()]);
-
         $models = collect([$author, $book]);
 
-        $modelScope = new ModelScope(Author::class);
-        $modelScope->push(Book::class);
+        $databaseQueryBuilders = $models->mapWithKeys(
+            static fn (Model $model) => [$model->searchableAs() => new DatabaseQueryBuilder($model)]
+        )->all();
+
+        $documentIds = $models->mapWithKeys(
+            static fn (Model $model) => [$model->searchableAs() => [(string)$model->getScoutKey()]]
+        )->all();
+
+        $factory = new LazyModelFactory($databaseQueryBuilders, $documentIds);
 
         /** @var Connection $connection */
         $connection = DB::connection();
         $connection->enableQueryLog();
 
-        $factory = new LazyModelFactory(
-            new SearchResult([
-                'hits' => [
-                    'total' => ['value' => $models->count()],
-                    'hits' => $models->map(static fn ($model) => [
-                        '_id' => (string)$model->getKey(),
-                        '_index' => $model->searchableAs(),
-                        '_source' => [],
-                    ])->all(),
-                ],
-            ]),
-            $modelScope
-        );
-
         // assert that related to search response models are returned
-        $models->each(function ($expected) use ($factory) {
+        $models->each(function (Model $expected) use ($factory) {
             /** @var Author|Book $expected */
             /** @var Author|Book $actual */
-            $actual = $factory->makeByIndexNameAndDocumentId(
+            $actual = $factory->makeFromIndexNameAndDocumentId(
                 $expected->searchableAs(),
                 (string)$expected->getScoutKey()
             );
@@ -81,6 +83,6 @@ final class LazyModelFactoryTest extends TestCase
         });
 
         // assert that only one query per index is made
-        $this->assertCount(2, $connection->getQueryLog());
+        $this->assertCount($models->count(), $connection->getQueryLog());
     }
 }

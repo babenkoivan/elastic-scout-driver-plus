@@ -3,7 +3,7 @@
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
 use Elastic\ScoutDriverPlus\Builders\RangeQueryBuilder;
-use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -29,7 +29,7 @@ final class RangeQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_field_is_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->gt(10)
@@ -38,7 +38,7 @@ final class RangeQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_range_is_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->field('age')

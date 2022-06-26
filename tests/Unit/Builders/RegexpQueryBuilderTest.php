@@ -3,7 +3,7 @@
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
 use Elastic\ScoutDriverPlus\Builders\RegexpQueryBuilder;
-use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class RegexpQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_field_is_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->value('b.*k')
@@ -36,7 +36,7 @@ final class RegexpQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_value_is_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->field('title')

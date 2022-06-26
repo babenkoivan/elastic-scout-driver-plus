@@ -19,6 +19,7 @@ use const SORT_NUMERIC;
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
  * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
+ * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Builders\MatchAllQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Builders\MatchQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Builders\RangeQueryBuilder
@@ -40,7 +41,6 @@ use const SORT_NUMERIC;
  * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  * @uses   \Elastic\ScoutDriverPlus\Searchable
  * @uses   \Elastic\ScoutDriverPlus\Support\Arr
- * @uses   \Elastic\ScoutDriverPlus\Support\ModelScope
  */
 final class BoolQueryTest extends TestCase
 {

@@ -4,20 +4,19 @@ namespace Elastic\ScoutDriverPlus\Tests\Integration\Builders;
 
 use Elastic\Adapter\Search\SearchParameters;
 use Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder;
-use Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException;
+use Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException;
 use Elastic\ScoutDriverPlus\Tests\App\Author;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
-use InvalidArgumentException;
 use stdClass;
 
 /**
  * @covers \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
- * @covers \Elastic\ScoutDriverPlus\Exceptions\ModelClassNotFoundInScopeException
+ * @covers \Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException
  *
+ * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Engine
  * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
- * @uses   \Elastic\ScoutDriverPlus\Support\ModelScope
  */
 final class SearchParametersBuilderTest extends TestCase
 {
@@ -358,9 +357,20 @@ final class SearchParametersBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_joining_not_a_searchable_model(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(NotSearchableModelException::class);
 
         (new SearchParametersBuilder(new Book()))->join(__CLASS__);
+    }
+
+    public function test_joined_model_can_be_boosted(): void
+    {
+        $expected = (new SearchParameters())->indicesBoost([['authors' => 2]]);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->join(Author::class, 2)
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
     }
 
     public function test_search_parameters_with_post_filter_can_be_built(): void
@@ -425,24 +435,6 @@ final class SearchParametersBuilderTest extends TestCase
 
         $actual = (new SearchParametersBuilder(new Book()))
             ->trackScores(true)
-            ->buildSearchParameters();
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    public function test_exception_is_thrown_when_trying_to_boost_out_of_scope_index(): void
-    {
-        $this->expectException(ModelClassNotFoundInScopeException::class);
-
-        (new SearchParametersBuilder(new Book()))->boostIndex(Author::class, 2);
-    }
-
-    public function test_search_parameters_with_index_boost_can_be_built(): void
-    {
-        $expected = (new SearchParameters())->indicesBoost([['books' => 2]]);
-
-        $actual = (new SearchParametersBuilder(new Book()))
-            ->boostIndex(Book::class, 2)
             ->buildSearchParameters();
 
         $this->assertEquals($expected, $actual);

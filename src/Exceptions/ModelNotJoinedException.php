@@ -2,14 +2,14 @@
 
 namespace Elastic\ScoutDriverPlus\Exceptions;
 
-use RuntimeException;
+use Elastic\Transport\Exception\InvalidArgumentException;
 
-final class ModelClassNotFoundInScopeException extends RuntimeException
+final class ModelNotJoinedException extends InvalidArgumentException
 {
     public function __construct(string $modelClass)
     {
         parent::__construct(sprintf(
-            '%s is not found in the model scope',
+            '%s must be added to search via "join" method',
             $modelClass
         ));
     }

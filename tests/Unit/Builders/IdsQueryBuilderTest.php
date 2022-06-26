@@ -3,7 +3,7 @@
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
 use Elastic\ScoutDriverPlus\Builders\IdsQueryBuilder;
-use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class IdsQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_values_are_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->buildQuery();

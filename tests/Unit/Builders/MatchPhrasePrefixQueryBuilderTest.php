@@ -3,7 +3,7 @@
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
 use Elastic\ScoutDriverPlus\Builders\MatchPhrasePrefixQueryBuilder;
-use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class MatchPhrasePrefixQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_field_is_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->query('this is a test')
@@ -36,7 +36,7 @@ final class MatchPhrasePrefixQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_text_is_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->field('message')

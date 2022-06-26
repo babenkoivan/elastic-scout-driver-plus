@@ -16,6 +16,7 @@ use const SORT_NUMERIC;
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
  * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
+ * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
  * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
@@ -26,7 +27,6 @@ use const SORT_NUMERIC;
  * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
  * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator
  * @uses   \Elastic\ScoutDriverPlus\Searchable
- * @uses   \Elastic\ScoutDriverPlus\Support\ModelScope
  */
 final class IdsQueryTest extends TestCase
 {

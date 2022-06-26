@@ -50,7 +50,7 @@ final class PaginatorTest extends TestCase
         $lazyModelFactory = $this->createMock(LazyModelFactory::class);
 
         $lazyModelFactory->expects($this->any())
-            ->method('makeByIndexNameAndDocumentId')
+            ->method('makeFromIndexNameAndDocumentId')
             ->with('test', '1')
             ->willReturn($model);
 

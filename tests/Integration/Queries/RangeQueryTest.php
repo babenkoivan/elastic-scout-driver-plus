@@ -13,6 +13,7 @@ use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
  * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
+ * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
  * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
@@ -25,7 +26,6 @@ use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
  * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\CompoundValidator
  * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator
  * @uses   \Elastic\ScoutDriverPlus\Searchable
- * @uses   \Elastic\ScoutDriverPlus\Support\ModelScope
  */
 final class RangeQueryTest extends TestCase
 {

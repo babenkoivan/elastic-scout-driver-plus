@@ -11,7 +11,6 @@ use Elastic\ScoutDriver\Factories\DocumentFactoryInterface;
 use Elastic\ScoutDriver\Factories\ModelFactoryInterface;
 use Elastic\ScoutDriver\Factories\SearchParametersFactoryInterface;
 use Elastic\ScoutDriverPlus\Factories\RoutingFactoryInterface;
-use Elastic\ScoutDriverPlus\Support\ModelScope;
 use Illuminate\Database\Eloquent\Model;
 
 final class Engine extends BaseEngine
@@ -63,9 +62,8 @@ final class Engine extends BaseEngine
         $this->documentManager->delete($indexName, $documentIds, $this->refreshDocuments, $routing);
     }
 
-    public function searchWithParameters(SearchParameters $searchParameters, ModelScope $modelScope): SearchResult
+    public function searchWithParameters(array $indexNames, SearchParameters $searchParameters): SearchResult
     {
-        $indexName = $modelScope->resolveIndexNames()->join(',');
-        return $this->documentManager->search($indexName, $searchParameters);
+        return $this->documentManager->search(implode(',', $indexNames), $searchParameters);
     }
 }

@@ -3,7 +3,7 @@
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
 use Elastic\ScoutDriverPlus\Builders\NestedQueryBuilder;
-use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderException;
+use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,7 +28,7 @@ final class NestedQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_path_is_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->query([
@@ -41,7 +41,7 @@ final class NestedQueryBuilderTest extends TestCase
 
     public function test_exception_is_thrown_when_query_is_not_specified(): void
     {
-        $this->expectException(QueryBuilderException::class);
+        $this->expectException(QueryBuilderValidationException::class);
 
         $this->builder
             ->path('obj')

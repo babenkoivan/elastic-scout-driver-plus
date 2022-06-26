@@ -12,4 +12,3 @@ parameters:
   ignoreErrors:
     - '#Parameter .+? of method Illuminate\\Support\\Collection<.+?>::.+?\(\) expects .+? given#'
     - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::(getScoutKey|getScoutKeyName|getScoutModelsByIds|queryScoutModelsByIds|searchableAs|searchableUsing|scoutMetadata|pushSoftDeleteMetadata|toSearchableArray|withTrashed|shardRouting)\(\)#'
-    - '#Unable to resolve the template type (TKey|TValue) in call to function collect#'
