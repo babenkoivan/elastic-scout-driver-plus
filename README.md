@@ -31,6 +31,7 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
   * [Search results](#search-results)
   * [Custom routing](#custom-routing)
   * [Eager loading relations](#eager-loading-relations)
+  * [Multiple connections](#multiple-connections)
 
 ## Features
 
@@ -185,14 +186,14 @@ You can get more familiar with the `$searchResult` object and learn how to pagin
 ### Custom Routing
 
 If you want to use a [custom shard routing](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html)
-for your model, override the `shardRouting` method:
+for your model, override the `searchableRouting` method:
 
 ```php
 class Book extends Model
 {
     use Elastic\ScoutDriverPlus\Searchable;
     
-    public function shardRouting()
+    public function searchableRouting()
     {
         return $this->user->id;
     }
@@ -246,3 +247,20 @@ class Book extends Model
 
 In case you are looking for a way to preload relations for models matching a search query, check the builder's
 `load` method [documentation](docs/available-methods.md#load).
+
+### Multiple Connections
+
+You can configure multiple connections to Elasticsearch in the [client's configuration file](https://github.com/babenkoivan/elastic-client/tree/master#configuration).
+If you want to change a connection used by a model, you need to override the `searchableConnection` method:
+
+```php
+class Book extends Model
+{
+    use Elastic\ScoutDriverPlus\Searchable;
+    
+    public function searchableConnection(): ?string
+    {
+        return 'books';
+    }
+}
+```

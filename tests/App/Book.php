@@ -52,7 +52,7 @@ class Book extends Model
     /**
      * @return string
      */
-    public function shardRouting()
+    public function searchableRouting()
     {
         return $this->author->name;
     }

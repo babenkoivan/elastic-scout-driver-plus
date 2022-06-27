@@ -66,4 +66,12 @@ final class Engine extends BaseEngine
     {
         return $this->documentManager->search(implode(',', $indexNames), $searchParameters);
     }
+
+    public function connection(string $connection): self
+    {
+        $self = clone $this;
+        $self->documentManager = $self->documentManager->connection($connection);
+        $self->indexManager = $self->indexManager->connection($connection);
+        return $self;
+    }
 }

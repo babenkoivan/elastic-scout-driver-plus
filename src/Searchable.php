@@ -14,6 +14,7 @@ trait Searchable
 {
     use BaseSearchable {
         queueRemoveFromSearch as baseQueueRemoveFromSearch;
+        searchableUsing as baseSearchableUsing;
     }
 
     /**
@@ -33,7 +34,7 @@ trait Searchable
     /**
      * @return string|int|null
      */
-    public function shardRouting()
+    public function searchableRouting()
     {
         return null;
     }
@@ -44,6 +45,23 @@ trait Searchable
     public function searchableWith()
     {
         return null;
+    }
+
+    public function searchableConnection(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @return Engine
+     */
+    public function searchableUsing()
+    {
+        /** @var Engine $engine */
+        $engine = $this->baseSearchableUsing();
+        $connection = $this->searchableConnection();
+
+        return isset($connection) ? $engine->connection($connection) : $engine;
     }
 
     /**

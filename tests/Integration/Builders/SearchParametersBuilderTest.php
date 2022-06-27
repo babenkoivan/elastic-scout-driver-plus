@@ -17,6 +17,7 @@ use stdClass;
  * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Engine
  * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
+ * @uses   \Elastic\ScoutDriverPlus\Searchable
  */
 final class SearchParametersBuilderTest extends TestCase
 {

@@ -14,7 +14,7 @@ class RoutingFactory implements RoutingFactoryInterface
 
         foreach ($models as $model) {
             /** @var Model $model */
-            if ($value = $model->shardRouting()) {
+            if ($value = $model->searchableRouting()) {
                 $routing->add((string)$model->getScoutKey(), (string)$value);
             }
         }
