@@ -8,7 +8,7 @@ use Elastic\ScoutDriverPlus\Decorators\SearchResult;
 use Elastic\ScoutDriverPlus\Engine;
 use Elastic\ScoutDriverPlus\Exceptions\ModelNotJoinedException;
 use Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException;
-use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Factories\ModelFactory;
 use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
 use Elastic\ScoutDriverPlus\Paginator;
 use Elastic\ScoutDriverPlus\Searchable;
@@ -367,15 +367,8 @@ class SearchParametersBuilder
     public function execute(): SearchResult
     {
         $baseSearchResult = $this->engine->searchWithParameters($this->indexNames, $this->buildSearchParameters());
-
-        $documentIds = [];
-        foreach ($baseSearchResult->hits() as $hit) {
-            $documentIds[$hit->indexName()][] = $hit->document()->id();
-        }
-
-        $lazyModelFactory = new LazyModelFactory($this->databaseQueryBuilders, $documentIds);
-
-        return new SearchResult($baseSearchResult, $lazyModelFactory);
+        $modelFactory = new ModelFactory($this->databaseQueryBuilders);
+        return new SearchResult($baseSearchResult, $modelFactory);
     }
 
     public function paginate(

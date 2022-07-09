@@ -126,6 +126,12 @@ $length = $firstSuggestion->length();
 $options = $firstSuggestion->options();
 ```
 
+You can also resolve the related models when [the completion suggester](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html#completion-suggester) is used:
+
+```php
+$models = $firstSuggestion->models();
+```
+
 ### total
 
 This method returns the total number of matching documents:

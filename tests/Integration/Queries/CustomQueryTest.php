@@ -10,6 +10,7 @@ use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
  * @covers \Elastic\ScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
  * @covers \Elastic\ScoutDriverPlus\Engine
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
+ * @covers \Elastic\ScoutDriverPlus\Factories\ModelFactory
  * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
  * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder

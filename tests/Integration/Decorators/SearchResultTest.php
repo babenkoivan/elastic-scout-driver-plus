@@ -7,15 +7,18 @@ use Elastic\Adapter\Search\Highlight;
 use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
 use Elastic\ScoutDriverPlus\Decorators\Hit;
 use Elastic\ScoutDriverPlus\Decorators\SearchResult;
-use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Factories\ModelFactory;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\App\Model;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @covers \Elastic\ScoutDriverPlus\Decorators\SearchResult
  *
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
+ * @uses   \Elastic\ScoutDriverPlus\Decorators\Suggestion
+ * @uses   \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
  */
 final class SearchResultTest extends TestCase
 {
@@ -37,6 +40,15 @@ final class SearchResultTest extends TestCase
                     ],
                 ],
             ],
+            'suggest' => [
+                'bar' => [
+                    [
+                        'text' => 'foo',
+                        'offset' => 0,
+                        'length' => 3,
+                    ],
+                ],
+            ],
         ]);
 
         $model = new Book([
@@ -44,14 +56,14 @@ final class SearchResultTest extends TestCase
             'title' => 'foo',
         ]);
 
-        $lazyModelFactory = $this->createMock(LazyModelFactory::class);
+        $modelFactory = $this->createMock(ModelFactory::class);
 
-        $lazyModelFactory->expects($this->any())
-            ->method('makeFromIndexNameAndDocumentId')
-            ->with('test', '1')
-            ->willReturn($model);
+        $modelFactory->expects($this->any())
+            ->method('makeFromIndexNameAndDocumentIds')
+            ->with('test', [(string)$model->getScoutKey()])
+            ->willReturn(new Collection([$model]));
 
-        $this->searchResult = new SearchResult($baseSearchResult, $lazyModelFactory);
+        $this->searchResult = new SearchResult($baseSearchResult, $modelFactory);
     }
 
     public function test_hits_can_be_retrieved(): void
@@ -96,5 +108,14 @@ final class SearchResultTest extends TestCase
             $this->assertInstanceOf(Hit::class, $hit);
             $this->assertSame('test', $hit->indexName());
         }
+    }
+
+    public function test_suggestions_can_be_retrieved(): void
+    {
+        $suggestions = $this->searchResult->suggestions();
+
+        $this->assertCount(1, $suggestions);
+        $this->assertCount(1, $suggestions->get('bar'));
+        $this->assertSame('foo', $suggestions->get('bar')->first()->text());
     }
 }

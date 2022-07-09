@@ -20,11 +20,13 @@ use stdClass;
  * @covers \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
  * @covers \Elastic\ScoutDriverPlus\Engine
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
+ * @covers \Elastic\ScoutDriverPlus\Factories\ModelFactory
  * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
  * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
  * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
+ * @uses   \Elastic\ScoutDriverPlus\Decorators\Suggestion
  * @uses   \Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException
  * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
  * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
@@ -444,7 +446,7 @@ final class RawQueryTest extends TestCase
             ->sortBy('id', SORT_NUMERIC);
 
         $cacheStore = Cache::store('file');
-        $cacheStore->delete('raw_search_result');
+        $cacheStore->clear();
 
         $found = $cacheStore->rememberForever('raw_search_result', static function () {
             return Book::searchQuery(['match_all' => new stdClass()])
@@ -515,5 +517,26 @@ final class RawQueryTest extends TestCase
             ->execute();
 
         $this->assertFoundModels(collect([$firstTarget, $secondTarget]), $found);
+    }
+
+    public function test_models_can_be_retrieved_from_suggestions(): void
+    {
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['title' => 'The Book']);
+
+        $found = Book::searchQuery()
+            ->suggest('suggestion', [
+                'prefix' => 'the',
+                'completion' => [
+                    'field' => 'suggest',
+                ],
+            ])
+            ->execute();
+
+        $suggestion = $found->suggestions()->get('suggestion')->first();
+
+        $this->assertCount(1, $suggestion->models());
+        $this->assertEquals($target->toArray(), $suggestion->models()->first()->toArray());
     }
 }

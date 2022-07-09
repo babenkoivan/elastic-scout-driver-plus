@@ -14,6 +14,7 @@ use const SORT_NUMERIC;
  * @covers \Elastic\ScoutDriverPlus\Builders\IdsQueryBuilder
  * @covers \Elastic\ScoutDriverPlus\Engine
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
+ * @covers \Elastic\ScoutDriverPlus\Factories\ModelFactory
  * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
  * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder

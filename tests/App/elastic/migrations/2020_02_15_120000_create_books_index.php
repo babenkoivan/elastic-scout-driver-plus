@@ -13,6 +13,7 @@ final class CreateBooksIndex implements MigrationInterface
             $mapping->integer('id');
             $mapping->integer('author_id');
             $mapping->text('title');
+            $mapping->completion('suggest');
             $mapping->text('description');
             $mapping->integer('price');
             $mapping->date('published', ['format' => 'yyyy-MM-dd']);

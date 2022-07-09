@@ -11,12 +11,14 @@ use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
  * @covers \Elastic\ScoutDriverPlus\Builders\MatchNoneQueryBuilder
  * @covers \Elastic\ScoutDriverPlus\Engine
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
+ * @covers \Elastic\ScoutDriverPlus\Factories\ModelFactory
  * @covers \Elastic\ScoutDriverPlus\Support\Query
  *
  * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
  * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
+ * @uses   \Elastic\ScoutDriverPlus\Decorators\Suggestion
  * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
  * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
  * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
