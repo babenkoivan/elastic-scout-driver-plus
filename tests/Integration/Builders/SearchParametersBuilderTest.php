@@ -13,6 +13,7 @@ use stdClass;
 /**
  * @covers \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
  * @covers \Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException
+ * @covers \Elastic\ScoutDriverPlus\Support\Conditionable
  *
  * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
  * @uses   \Elastic\ScoutDriverPlus\Engine
@@ -424,6 +425,34 @@ final class SearchParametersBuilderTest extends TestCase
                 $builder->from(111);
             }, static function (SearchParametersBuilder $builder) {
                 $builder->from(333);
+            })
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_callback_is_applied_unless_value_is_true(): void
+    {
+        $expected = (new SearchParameters())->minScore(1);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->unless(false, static function (SearchParametersBuilder $builder) {
+                $builder->minScore(1);
+            })
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_default_callback_is_applied_unless_value_is_false(): void
+    {
+        $expected = (new SearchParameters())->minScore(2);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->unless(true, static function (SearchParametersBuilder $builder) {
+                $builder->minScore(1);
+            }, static function (SearchParametersBuilder $builder) {
+                $builder->minScore(2);
             })
             ->buildSearchParameters();
 

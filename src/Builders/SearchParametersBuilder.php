@@ -13,8 +13,8 @@ use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
 use Elastic\ScoutDriverPlus\Paginator;
 use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Support\Arr;
+use Elastic\ScoutDriverPlus\Support\Conditionable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Traits\Conditionable;
 use stdClass;
 
 class SearchParametersBuilder

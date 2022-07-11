@@ -5,7 +5,7 @@ namespace Elastic\ScoutDriverPlus\Builders;
 use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
 use Elastic\ScoutDriverPlus\QueryParameters\Transformers\ArrayTransformerInterface;
 use Elastic\ScoutDriverPlus\QueryParameters\Validators\ValidatorInterface;
-use Illuminate\Support\Traits\Conditionable;
+use Elastic\ScoutDriverPlus\Support\Conditionable;
 
 abstract class AbstractParameterizedQueryBuilder implements QueryBuilderInterface
 {
