@@ -14,10 +14,13 @@ use Elastic\ScoutDriverPlus\Paginator;
 use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Conditionable;
 use stdClass;
 
 class SearchParametersBuilder
 {
+    use Conditionable;
+
     public const DEFAULT_PAGE_SIZE = 10;
 
     private Engine $engine;
@@ -266,26 +269,6 @@ class SearchParametersBuilder
     public function preference(string $preference): self
     {
         $this->preference = $preference;
-        return $this;
-    }
-
-    /**
-     * @param mixed         $value
-     * @param callable      $callback
-     * @param callable|null $default
-     *
-     * @return mixed
-     */
-    public function when($value, $callback, $default = null)
-    {
-        if ($value) {
-            return $callback($this, $value) ?? $this;
-        }
-
-        if ($default) {
-            return $default($this, $value) ?? $this;
-        }
-
         return $this;
     }
 

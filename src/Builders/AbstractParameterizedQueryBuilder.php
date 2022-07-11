@@ -5,9 +5,12 @@ namespace Elastic\ScoutDriverPlus\Builders;
 use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
 use Elastic\ScoutDriverPlus\QueryParameters\Transformers\ArrayTransformerInterface;
 use Elastic\ScoutDriverPlus\QueryParameters\Validators\ValidatorInterface;
+use Illuminate\Support\Traits\Conditionable;
 
 abstract class AbstractParameterizedQueryBuilder implements QueryBuilderInterface
 {
+    use Conditionable;
+
     protected string $type;
     protected ParameterCollection $parameters;
     protected ValidatorInterface $parameterValidator;

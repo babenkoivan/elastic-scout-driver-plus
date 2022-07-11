@@ -18,6 +18,7 @@
 * [suggest](#suggest)
 * [trackScores](#trackscores)
 * [trackTotalHits](#tracktotalhits)
+* [unless](#unless)
 * [when](#when)
 
 ### aggregate
@@ -423,9 +424,34 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
+### unless
+
+This method will execute the given callback unless the first argument given to the method evaluates to `true`:
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->unless($orderBy, function ($builder, $orderBy) {
+        return $builder->sort($orderBy, 'asc');
+    })
+    ->execute();
+```
+
+You may also pass another closure as a third argument to the `unless` method. This closure will be only executed
+if the first argument evaluates to `true`:
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->unless($orderBy, function ($builder, $orderBy) {
+        return $builder->sort($orderBy, 'asc');
+    }, function ($builder) {
+         return $builder->sort('price', 'asc');
+     })
+    ->execute();
+```
+
 ### when
 
-This method can be used to apply certain clauses based on another condition:
+This method will execute the given callback when the first argument given to the method evaluates to `true`:
 
 ```php
 $searchResult = Book::searchQuery($query)
@@ -436,7 +462,7 @@ $searchResult = Book::searchQuery($query)
 ```
 
 You may also pass another closure as a third argument to the `when` method. This closure will be only executed
-if the first argument evaluates as `false`:
+if the first argument evaluates to `false`:
 
 ```php
 $searchResult = Book::searchQuery($query)
