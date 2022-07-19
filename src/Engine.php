@@ -4,6 +4,7 @@ namespace Elastic\ScoutDriverPlus;
 
 use Elastic\Adapter\Documents\DocumentManager;
 use Elastic\Adapter\Indices\IndexManager;
+use Elastic\Adapter\Search\PointInTimeManager;
 use Elastic\Adapter\Search\SearchParameters;
 use Elastic\Adapter\Search\SearchResult;
 use Elastic\ScoutDriver\Engine as BaseEngine;
@@ -16,18 +17,21 @@ use Illuminate\Database\Eloquent\Model;
 final class Engine extends BaseEngine
 {
     private RoutingFactoryInterface $routingFactory;
+    private PointInTimeManager $pointInTimeManager;
 
     public function __construct(
         DocumentManager $documentManager,
+        IndexManager $indexManager,
+        PointInTimeManager $pointInTimeManager,
         DocumentFactoryInterface $documentFactory,
         SearchParametersFactoryInterface $searchParametersFactory,
         ModelFactoryInterface $modelFactory,
-        IndexManager $indexManager,
         RoutingFactoryInterface $routingFactory
     ) {
         parent::__construct($documentManager, $documentFactory, $searchParametersFactory, $modelFactory, $indexManager);
 
         $this->routingFactory = $routingFactory;
+        $this->pointInTimeManager = $pointInTimeManager;
     }
 
     /**
@@ -62,9 +66,9 @@ final class Engine extends BaseEngine
         $this->documentManager->delete($indexName, $documentIds, $this->refreshDocuments, $routing);
     }
 
-    public function searchWithParameters(array $indexNames, SearchParameters $searchParameters): SearchResult
+    public function searchWithParameters(SearchParameters $searchParameters): SearchResult
     {
-        return $this->documentManager->search(implode(',', $indexNames), $searchParameters);
+        return $this->documentManager->search($searchParameters);
     }
 
     public function connection(string $connection): self
@@ -73,5 +77,15 @@ final class Engine extends BaseEngine
         $self->documentManager = $self->documentManager->connection($connection);
         $self->indexManager = $self->indexManager->connection($connection);
         return $self;
+    }
+
+    public function openPointInTime(string $indexName, ?string $keepAlive = null): string
+    {
+        return $this->pointInTimeManager->open($indexName, $keepAlive);
+    }
+
+    public function closePointInTime(string $pointInTimeId): void
+    {
+        $this->pointInTimeManager->close($pointInTimeId);
     }
 }

@@ -67,4 +67,12 @@ final class EngineTest extends TestCase
         $found = Book::search()->get();
         $this->assertSame(0, $found->count());
     }
+
+    public function test_point_in_time_can_be_opened_and_closed(): void
+    {
+        $pit = Book::openPointInTime('1m');
+        $this->assertNotNull($pit);
+
+        Book::closePointInTime($pit);
+    }
 }

@@ -55,6 +55,8 @@ class SearchParametersBuilder
     private array $indicesBoost = [];
     private ?string $searchType;
     private ?string $preference;
+    private ?array $pointInTime;
+    private ?array $searchAfter;
 
     public function __construct(Model $model)
     {
@@ -272,9 +274,32 @@ class SearchParametersBuilder
         return $this;
     }
 
+    public function pointInTime(string $pointInTimeId, ?string $keepAlive = null): self
+    {
+        $this->pointInTime = ['id' => $pointInTimeId];
+
+        if (isset($keepAlive)) {
+            $this->pointInTime['keep_alive'] = $keepAlive;
+        }
+
+        return $this;
+    }
+
+    public function searchAfter(array $searchAfter): self
+    {
+        $this->searchAfter = $searchAfter;
+        return $this;
+    }
+
     public function buildSearchParameters(): SearchParameters
     {
         $searchParameters = new SearchParameters();
+
+        if (isset($this->pointInTime)) {
+            $searchParameters->pointInTime($this->pointInTime);
+        } else {
+            $searchParameters->index(...$this->indexNames);
+        }
 
         if (isset($this->query)) {
             $searchParameters->query($this->query);
@@ -344,12 +369,16 @@ class SearchParametersBuilder
             $searchParameters->preference($this->preference);
         }
 
+        if (isset($this->searchAfter)) {
+            $searchParameters->searchAfter($this->searchAfter);
+        }
+
         return $searchParameters;
     }
 
     public function execute(): SearchResult
     {
-        $baseSearchResult = $this->engine->searchWithParameters($this->indexNames, $this->buildSearchParameters());
+        $baseSearchResult = $this->engine->searchWithParameters($this->buildSearchParameters());
         $modelFactory = new ModelFactory($this->databaseQueryBuilders);
         return new SearchResult($baseSearchResult, $modelFactory);
     }
@@ -380,7 +409,7 @@ class SearchParametersBuilder
     public function raw(): array
     {
         return $this->engine
-            ->searchWithParameters($this->indexNames, $this->buildSearchParameters())
+            ->searchWithParameters($this->buildSearchParameters())
             ->raw();
     }
 

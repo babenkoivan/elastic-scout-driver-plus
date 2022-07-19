@@ -90,6 +90,23 @@ trait Searchable
             ->onConnection($models->first()->syncWithSearchUsing());
     }
 
+    public static function openPointInTime(?string $keepAlive = null): string
+    {
+        $self = new static();
+        $engine = $self->searchableUsing();
+        $indexName = $self->searchableAs();
+
+        return $engine->openPointInTime($indexName, $keepAlive);
+    }
+
+    public static function closePointInTime(string $pointInTimeId): void
+    {
+        $self = new static();
+        $engine = $self->searchableUsing();
+
+        $engine->closePointInTime($pointInTimeId);
+    }
+
     protected function usesElasticDriver(): bool
     {
         return is_a($this->searchableUsing(), Engine::class);
