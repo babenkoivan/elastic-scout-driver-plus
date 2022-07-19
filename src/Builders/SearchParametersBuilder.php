@@ -298,7 +298,7 @@ class SearchParametersBuilder
         if (isset($this->pointInTime)) {
             $searchParameters->pointInTime($this->pointInTime);
         } else {
-            $searchParameters->index(...$this->indexNames);
+            $searchParameters->index(...array_values($this->indexNames));
         }
 
         if (isset($this->query)) {
