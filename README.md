@@ -37,13 +37,14 @@ Extension for [Elastic Scout Driver](https://github.com/babenkoivan/elastic-scou
 
 Elastic Scout Driver Plus supports:
 
-* [Search across multiple indices](docs/available-methods.md#join)
 * [Aggregations](docs/available-methods.md#aggregate)
-* [Highlighting](docs/available-methods.md#highlight)
-* [Suggesters](docs/available-methods.md#suggest)
-* [Source filtering](docs/available-methods.md#source)
-* [Field collapsing](docs/available-methods.md#collapse)
 * [Custom routing](#custom-routing)
+* [Highlighting](docs/available-methods.md#highlight)
+* [Multiple connections](#multiple-connections)
+* [Search across multiple indices](docs/available-methods.md#join)
+* [Search after](docs/available-methods.md#searchAfter)
+* [Source filtering](docs/available-methods.md#source)
+* [Suggesters](docs/available-methods.md#suggest)
 
 ## Compatibility
 

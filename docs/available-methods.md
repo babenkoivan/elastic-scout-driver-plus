@@ -7,10 +7,12 @@
 * [join](#join)
 * [load](#load)
 * [minScore](#minscore)
+* [pointInTime](#pointInTime)
 * [postFilter](#postfilter)
 * [preference](#preference)
 * [refineModels](#refinemodels)
 * [rescore](#rescore)
+* [searchAfter](#searchAfter)
 * [searchType](#searchtype)
 * [size](#size)
 * [sort](#sort)
@@ -195,6 +197,19 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
+### pointInTime
+
+`pointInTime` allows you to set a [point in time](https://www.elastic.co/guide/en/elasticsearch/reference/current/point-in-time-api.html#point-in-time-api) 
+that should be used for the search:
+
+```php
+$pit = Book::openPointInTime('1m');
+
+$searchResult = Book::searchQuery($query)
+    ->pointInTime($pit, '5m')
+    ->execute();
+```
+
 ### postFilter
 
 `postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
@@ -224,34 +239,6 @@ $searchResult = Book::searchQuery($query)
 ```php
 $searchResult = Book::searchQuery($query)
     ->preference('_local')
-    ->execute();
-```
-
-### size
-
-`size` method [limits the number of hits to return](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html):
-
-```php
-$searchResult = Book::searchQuery($query)
-    ->size(2)
-    ->execute();
-```
-
-### sort
-
-This method [sorts](https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html) the search results:
-
-```php
-$searchResult = Book::searchQuery($query)
-    ->sort('price', 'asc')
-    ->execute();
-```
-
-In case you need more advanced sorting algorithm use `sortRaw`:
-
-```php
-$searchResult = Book::searchQuery($query)
-    ->sortRaw([['price' => 'asc'], ['published' => 'asc']])
     ->execute();
 ```
 
@@ -289,8 +276,8 @@ $models = Book::searchQuery($query)
 
 ### rescore
 
-This method allows you to [rescore](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#rescore) 
-the search results. In addition, you can also use `rescoreWeights` and `rescoreWindowSize` to set `query_weight`, 
+This method allows you to [rescore](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#rescore)
+the search results. In addition, you can also use `rescoreWeights` and `rescoreWindowSize` to set `query_weight`,
 `rescore_query_weight` and `window_size`:
 
 ```php
@@ -328,6 +315,23 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
+### searchAfter
+
+You can use `searchAfter` [to retrieve the next page of hits using a set of sort values from the previous page](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html#search-after):
+
+```php
+$firstPage = Book::searchQuery($query)
+    ->pointInTime($pit)
+    ->execute();
+
+$searchAfter = $firstPage->hits()->last()->sort();
+
+$secondPage = Book::searchQuery($query)
+    ->pointInTime($pit)
+    ->searchAfter($searchAfter)
+    ->execute();
+```
+
 ### searchType
 
 `searchType` defines [how distributed term frequencies are calculated for relevance scoring](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-search-api-query-params):
@@ -335,6 +339,34 @@ $searchResult = Book::searchQuery($query)
 ```php
 $searchResult = Book::searchQuery($query)
     ->searchType('query_then_fetch')
+    ->execute();
+```
+
+### size
+
+`size` method [limits the number of hits to return](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html):
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->size(2)
+    ->execute();
+```
+
+### sort
+
+This method [sorts](https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html) the search results:
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->sort('price', 'asc')
+    ->execute();
+```
+
+In case you need more advanced sorting algorithm use `sortRaw`:
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->sortRaw([['price' => 'asc'], ['published' => 'asc']])
     ->execute();
 ```
 
@@ -348,7 +380,7 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
-`sourceRaw` allows you to use a single wildcard pattern, an array of fields or a boolean value in case you want to 
+`sourceRaw` allows you to use a single wildcard pattern, an array of fields or a boolean value in case you want to
 exclude document source from the result:
 
 ```php
