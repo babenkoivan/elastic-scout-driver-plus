@@ -581,4 +581,26 @@ final class RawQueryTest extends TestCase
         // cleanup
         Author::closePointInTime($pit);
     }
+
+    public function test_models_can_be_found_with_custom_routing(): void
+    {
+        $target = factory(Book::class)->create([
+            'author_id' => factory(Author::class)->create([
+                'name' => 'John Doe',
+            ]),
+        ]);
+
+        // additional mixin
+        factory(Book::class, rand(2, 5))->create([
+            'author_id' => factory(Author::class)->create([
+                'name' => 'Jane Roe',
+            ]),
+        ]);
+
+        $found = Book::searchQuery()
+            ->routing([$target->searchableRouting()])
+            ->execute();
+
+        $this->assertFoundModel($target, $found);
+    }
 }

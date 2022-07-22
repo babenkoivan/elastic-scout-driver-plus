@@ -27,7 +27,7 @@ final class SearchParametersBuilderTest extends TestCase
         $matchAllQuery = ['match_all' => new stdClass()];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->query($matchAllQuery);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -49,7 +49,7 @@ final class SearchParametersBuilderTest extends TestCase
         ];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->highlight($rawHighlight);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -62,7 +62,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_highlight_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->highlight([
                 'fields' => [
                     'body' => new stdClass(),
@@ -88,7 +88,7 @@ final class SearchParametersBuilderTest extends TestCase
         ];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->sort($rawSort);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -101,7 +101,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_sort_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->sort([
                 ['post_date' => 'asc'],
                 ['name' => 'desc'],
@@ -134,7 +134,7 @@ final class SearchParametersBuilderTest extends TestCase
         ];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->rescore($rawRescore);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -156,7 +156,7 @@ final class SearchParametersBuilderTest extends TestCase
         ];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->rescore([
                 'query' => [
                     'rescore_query' => $rescoreQuery,
@@ -173,7 +173,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_rescore_weights_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->rescore([
                 'query' => [
                     'query_weight' => 0.7,
@@ -191,7 +191,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_rescore_window_size_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->rescore([
                 'window_size' => 10,
             ]);
@@ -208,7 +208,7 @@ final class SearchParametersBuilderTest extends TestCase
         $from = rand(2, 1000);
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->from($from);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -223,7 +223,7 @@ final class SearchParametersBuilderTest extends TestCase
         $size = rand(2, 1000);
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->size($size);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -245,7 +245,7 @@ final class SearchParametersBuilderTest extends TestCase
         ];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->suggest($rawSuggest);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -258,7 +258,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_suggest_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->suggest([
                 'color_suggestion' => [
                     'text' => 'red',
@@ -297,7 +297,7 @@ final class SearchParametersBuilderTest extends TestCase
         $rawSource = false;
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->source($rawSource);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -312,7 +312,7 @@ final class SearchParametersBuilderTest extends TestCase
         $source = ['title', 'description'];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->source($source);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -327,7 +327,7 @@ final class SearchParametersBuilderTest extends TestCase
         $rawCollapse = ['field' => 'user'];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->collapse($rawCollapse);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -340,7 +340,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_collapse_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->collapse(['field' => 'user']);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -366,7 +366,7 @@ final class SearchParametersBuilderTest extends TestCase
         ];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->aggregations($rawAggregations);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -379,7 +379,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_aggregate_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->aggregations([
                 'max_price' => [
                     'max' => [
@@ -405,7 +405,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_joined_model_can_be_boosted(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs(), (new Author())->searchableAs())
+            ->indices([(new Book())->searchableAs(), (new Author())->searchableAs()])
             ->indicesBoost([['authors' => 2]]);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -424,7 +424,7 @@ final class SearchParametersBuilderTest extends TestCase
         ];
 
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->postFilter($postFilter);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -437,7 +437,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_track_total_hits_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->trackTotalHits(100);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -450,7 +450,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_callback_is_applied_when_value_is_true(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->size(999);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -465,7 +465,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_default_callback_is_applied_when_value_is_false(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->from(333);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -482,7 +482,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_callback_is_applied_unless_value_is_true(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->minScore(1);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -497,7 +497,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_default_callback_is_applied_unless_value_is_false(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->minScore(2);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -514,7 +514,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_track_scores_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->trackScores(true);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -527,7 +527,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_min_score_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->minScore(0.5);
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -540,7 +540,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_search_type_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->searchType('query_then_fetch');
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -553,7 +553,7 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_preference_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->preference('_local');
 
         $actual = (new SearchParametersBuilder(new Book()))
@@ -563,7 +563,7 @@ final class SearchParametersBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_point_in_time_can_be_built(): void
+    public function test_search_parameters_with_point_in_time_can_be_built(): void
     {
         $expected = (new SearchParameters())
             ->pointInTime([
@@ -578,10 +578,10 @@ final class SearchParametersBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_search_request_with_search_after_can_be_built(): void
+    public function test_search_parameters_with_search_after_can_be_built(): void
     {
         $expected = (new SearchParameters())
-            ->index((new Book())->searchableAs())
+            ->indices([(new Book())->searchableAs()])
             ->searchAfter([
                 '2021-05-20T05:30:04.832Z',
                 4294967298,
@@ -592,6 +592,19 @@ final class SearchParametersBuilderTest extends TestCase
                 '2021-05-20T05:30:04.832Z',
                 4294967298,
             ])
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_parameters_with_routing_can_be_built(): void
+    {
+        $expected = (new SearchParameters())
+            ->indices([(new Book())->searchableAs()])
+            ->routing(['author1', 'author2']);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->routing(['author1', 'author2'])
             ->buildSearchParameters();
 
         $this->assertEquals($expected, $actual);

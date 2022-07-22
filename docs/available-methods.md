@@ -12,6 +12,7 @@
 * [preference](#preference)
 * [refineModels](#refinemodels)
 * [rescore](#rescore)
+* [routing](#routing)
 * [searchAfter](#searchAfter)
 * [searchType](#searchtype)
 * [size](#size)
@@ -210,6 +211,9 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
+**Note**, that [join](#join), [preference](#preference) and [routing](#routing) parameters are ignored 
+when `pointInTime` is used.
+
 ### postFilter
 
 `postFilter` is used to [filter search results](https://www.elastic.co/guide/en/elasticsearch/reference/current/filter-search-results.html#post-filter):
@@ -312,6 +316,16 @@ $searchResult = Book::searchQuery($query)
             'rescore_query_weight' => 1.2,
         ]
     ])
+    ->execute();
+```
+
+### routing
+
+This method allows you to [search with custom routing](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-routing-field.html#_searching_with_custom_routing):
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->routing(['author1', 'author2'])
     ->execute();
 ```
 

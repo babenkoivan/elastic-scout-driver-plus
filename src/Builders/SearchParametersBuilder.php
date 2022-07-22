@@ -57,6 +57,7 @@ class SearchParametersBuilder
     private ?string $preference;
     private ?array $pointInTime;
     private ?array $searchAfter;
+    private ?array $routing;
 
     public function __construct(Model $model)
     {
@@ -291,6 +292,12 @@ class SearchParametersBuilder
         return $this;
     }
 
+    public function routing(array $routing): self
+    {
+        $this->routing = $routing;
+        return $this;
+    }
+
     public function buildSearchParameters(): SearchParameters
     {
         $searchParameters = new SearchParameters();
@@ -298,7 +305,15 @@ class SearchParametersBuilder
         if (isset($this->pointInTime)) {
             $searchParameters->pointInTime($this->pointInTime);
         } else {
-            $searchParameters->index(...array_values($this->indexNames));
+            $searchParameters->indices($this->indexNames);
+
+            if (isset($this->preference)) {
+                $searchParameters->preference($this->preference);
+            }
+
+            if (isset($this->routing)) {
+                $searchParameters->routing($this->routing);
+            }
         }
 
         if (isset($this->query)) {
@@ -363,10 +378,6 @@ class SearchParametersBuilder
 
         if (isset($this->searchType)) {
             $searchParameters->searchType($this->searchType);
-        }
-
-        if (isset($this->preference)) {
-            $searchParameters->preference($this->preference);
         }
 
         if (isset($this->searchAfter)) {
