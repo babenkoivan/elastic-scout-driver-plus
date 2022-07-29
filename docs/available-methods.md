@@ -446,6 +446,8 @@ $offset = $firstSuggestion->offset();
 $length = $firstSuggestion->length();
 // an arbitrary number of options
 $options = $firstSuggestion->options();
+// related models (only some suggesters support this feature)
+$models = $firstSuggestion->models();
 // an array representation of the suggestion
 $raw = $firstSuggestion->raw();
 ```
