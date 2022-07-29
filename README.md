@@ -42,7 +42,7 @@ Elastic Scout Driver Plus supports:
 * [Highlighting](docs/available-methods.md#highlight)
 * [Multiple connections](#multiple-connections)
 * [Search across multiple indices](docs/available-methods.md#join)
-* [Search after](docs/available-methods.md#searchAfter)
+* [Search after](docs/available-methods.md#searchafter)
 * [Source filtering](docs/available-methods.md#source)
 * [Suggesters](docs/available-methods.md#suggest)
 
