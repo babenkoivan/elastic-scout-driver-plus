@@ -246,7 +246,7 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
-### refinemodels
+### refineModels
 
 This method allows you to set the callback where you can modify the database query.
 
