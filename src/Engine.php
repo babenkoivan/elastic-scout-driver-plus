@@ -14,7 +14,7 @@ use Elastic\ScoutDriver\Factories\SearchParametersFactoryInterface;
 use Elastic\ScoutDriverPlus\Factories\RoutingFactoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
-final class Engine extends BaseEngine
+class Engine extends BaseEngine
 {
     private RoutingFactoryInterface $routingFactory;
     private PointInTimeManager $pointInTimeManager;

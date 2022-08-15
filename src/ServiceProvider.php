@@ -8,7 +8,10 @@ use Elastic\ScoutDriverPlus\Engine as EnginePlus;
 use Elastic\ScoutDriverPlus\Factories\DocumentFactory;
 use Elastic\ScoutDriverPlus\Factories\RoutingFactory;
 use Elastic\ScoutDriverPlus\Factories\RoutingFactoryInterface;
+use Elastic\ScoutDriverPlus\Jobs\RemoveFromSearch;
 use Illuminate\Support\ServiceProvider as AbstractServiceProvider;
+use Laravel\Scout\Jobs\RemoveFromSearch as DefaultRemoveFromSearch;
+use Laravel\Scout\Scout;
 
 final class ServiceProvider extends AbstractServiceProvider
 {
@@ -17,4 +20,18 @@ final class ServiceProvider extends AbstractServiceProvider
         DocumentFactoryInterface::class => DocumentFactory::class,
         RoutingFactoryInterface::class => RoutingFactory::class,
     ];
+
+    /**
+     * @return void
+     */
+    public function boot()
+    {
+        if (
+            config('scout.driver') === 'elastic' &&
+            property_exists(Scout::class, 'removeFromSearchJob') &&
+            Scout::$removeFromSearchJob === DefaultRemoveFromSearch::class
+        ) {
+            Scout::removeFromSearchUsing(RemoveFromSearch::class);
+        }
+    }
 }
