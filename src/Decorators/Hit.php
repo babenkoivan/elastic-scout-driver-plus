@@ -6,6 +6,7 @@ use Elastic\Adapter\Search\Hit as BaseHit;
 use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Traits\ForwardsCalls;
 
 /**
@@ -29,6 +30,15 @@ final class Hit implements Arrayable
         return $this->lazyModelFactory->makeFromIndexNameAndDocumentId(
             $this->indexName(),
             $this->document()->id()
+        );
+    }
+
+    public function innerHits(): BaseCollection
+    {
+        return $this->baseHit->innerHits()->map(
+            fn (BaseCollection $baseInnerHits) => $baseInnerHits->map(
+                fn (BaseHit $baseInnerHit) => new self($baseInnerHit, $this->lazyModelFactory)
+            )
         );
     }
 

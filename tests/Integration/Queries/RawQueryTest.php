@@ -227,11 +227,21 @@ final class RawQueryTest extends TestCase
 
         // find the cheapest books by author
         $found = Book::searchQuery(['match_all' => new stdClass()])
-            ->collapseRaw(['field' => 'author_id'])
-            ->sort('price', 'asc')
+            ->collapseRaw([
+                'field' => 'author_id',
+                'inner_hits' => [
+                    'name' => 'cheapest',
+                    'size' => 5,
+                    'sort' => [['price' => 'asc']],
+                ],
+            ])
+            ->sort('price')
             ->execute();
 
         $this->assertFoundModels(collect([$firstTarget, $secondTarget]), $found);
+
+        $this->assertCount(5, $found->hits()->first()->innerHits()->get('cheapest')->map->model());
+        $this->assertCount(1, $found->hits()->last()->innerHits()->get('cheapest')->map->model());
     }
 
     public function test_models_can_be_found_using_field_collapsing(): void

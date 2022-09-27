@@ -5,18 +5,25 @@ namespace Elastic\ScoutDriverPlus\Factories;
 use Elastic\Adapter\Search\Hit as BaseHit;
 use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection as BaseCollection;
 
 class LazyModelFactory
 {
-    private array $documentIds;
+    private array $documentIds = [];
     private ModelFactory $modelFactory;
     private array $models = [];
 
     public function __construct(BaseSearchResult $searchResult, ModelFactory $modelFactory)
     {
-        $this->documentIds = $searchResult->hits()->mapToGroups(
-            static fn (BaseHit $baseHit) => [$baseHit->indexName() => $baseHit->document()->id()]
-        )->toArray();
+        $searchResult->hits()->each(function (BaseHit $baseHit) {
+            $this->documentIds[$baseHit->indexName()][] = $baseHit->document()->id();
+
+            $baseHit->innerHits()->each(function (BaseCollection $baseInnerHits) {
+                $baseInnerHits->each(function (BaseHit $baseInnerHit) {
+                    $this->documentIds[$baseInnerHit->indexName()][] = $baseInnerHit->document()->id();
+                });
+            });
+        });
 
         $this->modelFactory = $modelFactory;
     }
