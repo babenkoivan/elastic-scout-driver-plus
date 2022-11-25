@@ -58,6 +58,7 @@ class SearchParametersBuilder
     private ?array $pointInTime;
     private ?array $searchAfter;
     private ?array $routing;
+    private ?bool $explain;
 
     public function __construct(Model $model)
     {
@@ -298,6 +299,12 @@ class SearchParametersBuilder
         return $this;
     }
 
+    public function explain(bool $explain): self
+    {
+        $this->explain = $explain;
+        return $this;
+    }
+
     public function buildSearchParameters(): SearchParameters
     {
         $searchParameters = new SearchParameters();
@@ -382,6 +389,10 @@ class SearchParametersBuilder
 
         if (isset($this->searchAfter)) {
             $searchParameters->searchAfter($this->searchAfter);
+        }
+
+        if (isset($this->explain)) {
+            $searchParameters->explain($this->explain);
         }
 
         return $searchParameters;

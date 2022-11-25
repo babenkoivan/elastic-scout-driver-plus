@@ -146,8 +146,8 @@ $builder = Book::searchQuery($query)
 The builder supports various search parameters and provides a number of useful helpers: 
 
 * [aggregate](docs/available-methods.md#aggregate)
-* [boostIndex](docs/available-methods.md#boostindex)
 * [collapse](docs/available-methods.md#collapse)
+* [explain](docs/available-methods.md#explain)
 * [from](docs/available-methods.md#from)
 * [highlight](docs/available-methods.md#highlight)
 * [join](docs/available-methods.md#join)

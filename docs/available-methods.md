@@ -2,6 +2,7 @@
 
 * [aggregate](#aggregate)
 * [collapse](#collapse)
+* [explain](#explain)
 * [from](#from)
 * [highlight](#highlight)
 * [join](#join)
@@ -79,6 +80,26 @@ $searchResult = Book::searchQuery($query)
     ->collapseRaw(['field' => 'author_id'])
     ->sort('price', 'asc')
     ->execute();
+```
+
+### explain
+
+When set to `true`, every hit includes detailed information about score computation:
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->explain(true)
+    ->execute();
+
+$hits = $searchResult->hits();
+$explanation = $hits->first()->explanation();
+
+// every explanation includes a value, a description and details
+// it is also possible to get its raw representation
+$value = $explanation->value();
+$description = $explanation->description();
+$details = $explanation->details();
+$raw = $explanation->raw();
 ```
 
 ### from

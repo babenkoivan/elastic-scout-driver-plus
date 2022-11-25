@@ -613,4 +613,19 @@ final class RawQueryTest extends TestCase
 
         $this->assertFoundModel($target, $found);
     }
+
+    public function test_query_can_be_explained(): void
+    {
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['title' => 'test']);
+
+        $found = Book::searchQuery([
+            'match' => [
+                'title' => $target->title,
+            ],
+        ])->explain(true)->execute();
+
+        $this->assertGreaterThan(0, $found->hits()->first()->explanation()->value());
+    }
 }
