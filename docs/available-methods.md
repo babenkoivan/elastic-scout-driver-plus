@@ -84,7 +84,7 @@ $searchResult = Book::searchQuery($query)
 
 ### explain
 
-When set to `true`, every hit includes detailed information about score computation:
+When set to `true` every hit includes detailed information about score computation:
 
 ```php
 $searchResult = Book::searchQuery($query)
