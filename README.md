@@ -112,6 +112,7 @@ Available methods are listed below:
 * [exists](docs/term-queries.md#exists)
 * [fuzzy](docs/term-queries.md#fuzzy)
 * [geoDistance](docs/geo-queries.md#geo-distance)
+* [geoBoundingBox](docs/geo-queries.md#geo-bounding-box)
 * [ids](docs/term-queries.md#ids)
 * [matchAll](docs/full-text-queries.md#match-all)
 * [matchNone](docs/full-text-queries.md#match-none)

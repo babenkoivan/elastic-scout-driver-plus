@@ -1,6 +1,7 @@
 # Geo Queries
 
 * [Geo-Distance](#geo-distance)
+* [Geo-Bounding-Box](#geo-bounding-box)
 
 ## Geo-Distance
 
@@ -123,6 +124,64 @@ $query = Query::geoDistance()
     ->lat(40)
     ->lon(-70)
     ->validationMethod('IGNORE_MALFORMED');
+
+$searchResult = Store::searchQuery($query)->execute();
+```
+
+## Geo-Bounding-Box
+
+You can use `Elastic\ScoutDriverPlus\Support\Query::geoBoundingBox()` to build a [geo-bounding box query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-bounding-box-query.html#query-dsl-geo-bounding-box-query):
+
+```php
+$query = Query::geoBoundingBox()
+    ->field('location')
+    ->topLeft(40.73, -74.1)
+    ->bottomRight(40.01, -71.12);
+
+$searchResult = Store::searchQuery($query)->execute();
+```
+
+Available methods:
+
+* [field](#geo-bounding-box-field)
+* [topLeft](#geo-bounding-box-top-left)
+* [bottomRight](#geo-bounding-box-bottom-right)
+
+### <a name="geo-bounding-box-field"></a> field
+
+Use `field` to specify the field, which represents the geo point:
+
+```php
+$query = Query::geoBoundingBox()
+    ->field('location')
+    ->topLeft(40.73, -74.1)
+    ->bottomRight(40.01, -71.12);
+
+$searchResult = Store::searchQuery($query)->execute();
+```
+
+### <a name="geo-bounding-box-top-left"></a> topLeft
+
+`topLeft` To define the box, provide geopoint values for two opposite corners:
+
+```php
+$query = Query::geoBoundingBox()
+    ->field('location')
+    ->topLeft(40.73, -74.1)
+    ->bottomRight(40.01, -71.12);
+
+$searchResult = Store::searchQuery($query)->execute();
+```
+
+### <a name="geo-bounding-box-bottom-right"></a> bottomRight
+
+`bottomRight` To define the box, provide geopoint values for two opposite corners:
+
+```php
+$query = Query::geoBoundingBox()
+    ->field('location')
+    ->topLeft(40.73, -74.1)
+    ->bottomRight(40.01, -71.12);
 
 $searchResult = Store::searchQuery($query)->execute();
 ```

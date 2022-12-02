@@ -5,6 +5,7 @@ namespace Elastic\ScoutDriverPlus\Support;
 use Elastic\ScoutDriverPlus\Builders\BoolQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\ExistsQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\FuzzyQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\GeoBoundingBoxQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\GeoDistanceQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\IdsQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\MatchAllQueryBuilder;
@@ -114,5 +115,10 @@ class Query
     public static function geoDistance(): GeoDistanceQueryBuilder
     {
         return new GeoDistanceQueryBuilder();
+    }
+
+    public static function geoBoundingBox(): GeoBoundingBoxQueryBuilder
+    {
+        return new GeoBoundingBoxQueryBuilder();
     }
 }
