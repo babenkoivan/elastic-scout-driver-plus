@@ -69,7 +69,7 @@ final class SearchResult implements IteratorAggregate
     /**
      * @return ArrayIterator<int, Hit>
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return $this->hits()->getIterator();
     }
