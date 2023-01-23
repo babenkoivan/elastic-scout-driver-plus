@@ -18,7 +18,7 @@
 
 ## Running the Test Suite
 
-To run tests locally you need PHP (7.2 or higher), [Composer](https://getcomposer.org/download/) and [Docker](https://www.docker.com/products/docker-desktop).
+To run tests locally you need PHP (7.4 or higher) with MySQL extension, [Composer](https://getcomposer.org/download/) and [Docker](https://www.docker.com/products/docker-desktop).
 
 Install the project dependencies:
 ```
