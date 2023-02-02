@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Traits\ForwardsCalls;
 use IteratorAggregate;
+use Traversable;
 
 /**
  * @mixin SearchResponse
@@ -67,9 +68,9 @@ final class SearchResult implements IteratorAggregate
     }
 
     /**
-     * @return ArrayIterator<int, Hit>
+     * @return ArrayIterator|Traversable
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->hits()->getIterator();
     }
