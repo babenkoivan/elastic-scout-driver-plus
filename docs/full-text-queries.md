@@ -209,7 +209,7 @@ You can define what to return in case `analyzer` removes all tokens with `zeroTe
 $query = Query::matchPhrase()
     ->field('title')
     ->query('My book')
-    ->zeroTermsQuery('none'));
+    ->zeroTermsQuery('none');
 
 $searchResult = Book::searchQuery($query)->execute();
 ```
