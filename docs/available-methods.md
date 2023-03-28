@@ -12,6 +12,7 @@
 * [postFilter](#postfilter)
 * [preference](#preference)
 * [refineModels](#refinemodels)
+* [requestCache](#requestcache)
 * [rescore](#rescore)
 * [routing](#routing)
 * [searchAfter](#searchafter)
@@ -298,6 +299,16 @@ $models = Book::searchQuery($query)
     }, Author::class)
     ->execute()
     ->models();
+```
+
+### requestCache
+
+This method allows you to [enable or disable cache per request](https://www.elastic.co/guide/en/elasticsearch/reference/current/shard-request-cache.html#_enabling_and_disabling_caching_per_request):
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->requestCache(true)
+    ->execute();
 ```
 
 ### rescore

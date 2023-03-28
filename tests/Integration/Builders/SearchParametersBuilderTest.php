@@ -635,4 +635,17 @@ final class SearchParametersBuilderTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_search_parameters_with_request_cache_can_be_built(): void
+    {
+        $expected = (new SearchParameters())
+            ->indices([(new Book())->searchableAs()])
+            ->requestCache(true);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->requestCache(true)
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
