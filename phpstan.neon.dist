@@ -10,3 +10,4 @@ parameters:
   ignoreErrors:
     - '#Parameter .+? of method Illuminate\\Support\\Collection<.+?>::.+?\(\) expects .+? given#'
     - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::(getScoutKey|getScoutKeyName|getScoutModelsByIds|queryScoutModelsByIds|searchableAs|searchableUsing|scoutMetadata|pushSoftDeleteMetadata|toSearchableArray|withTrashed|searchableRouting)\(\)#'
+    - '#Call to an undefined method Illuminate\\Support\\Collection::withSearchableRelations\(\)#'

@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Suggestion
  * @uses   \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
+ * @uses   \Elastic\ScoutDriverPlus\Searchable
  */
 final class SearchResultTest extends TestCase
 {

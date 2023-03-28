@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @covers \Elastic\ScoutDriverPlus\Decorators\Hit
+ *
+ * @uses \Elastic\ScoutDriverPlus\Searchable
  */
 final class HitTest extends TestCase
 {

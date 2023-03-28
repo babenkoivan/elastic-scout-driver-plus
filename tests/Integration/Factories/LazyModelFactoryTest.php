@@ -9,8 +9,6 @@ use Elastic\ScoutDriverPlus\Factories\ModelFactory;
 use Elastic\ScoutDriverPlus\Tests\App\Author;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
-use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @covers \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
@@ -73,28 +71,24 @@ final class LazyModelFactoryTest extends TestCase
 
     public function test_models_are_returned_when_documents_are_in_search_result(): void
     {
-        /** @var Connection $connection */
-        $connection = DB::connection();
-        $connection->enableQueryLog();
+        $this->assertDatabaseQueriesCount(1, function () {
+            $this->assertEquals(
+                $this->author->toArray(),
+                $this->lazyModelFactory->makeFromIndexNameAndDocumentId(
+                    $this->author->searchableAs(),
+                    (string)$this->author->getScoutKey()
+                )->toArray()
+            );
+        });
 
-        // assert that expected models are returned
-        $this->assertEquals(
-            $this->author->toArray(),
-            $this->lazyModelFactory->makeFromIndexNameAndDocumentId(
-                $this->author->searchableAs(),
-                (string)$this->author->getScoutKey()
-            )->toArray()
-        );
-
-        $this->assertEquals(
-            $this->book->toArray(),
-            $this->lazyModelFactory->makeFromIndexNameAndDocumentId(
-                $this->book->searchableAs(),
-                (string)$this->book->getScoutKey()
-            )->toArray()
-        );
-
-        // assert that only one query per index is made
-        $this->assertCount(2, $connection->getQueryLog());
+        $this->assertDatabaseQueriesCount(1, function () {
+            $this->assertEquals(
+                $this->book->toArray(),
+                $this->lazyModelFactory->makeFromIndexNameAndDocumentId(
+                    $this->book->searchableAs(),
+                    (string)$this->book->getScoutKey()
+                )->toArray()
+            );
+        });
     }
 }

@@ -12,7 +12,7 @@ class RoutingFactory implements RoutingFactoryInterface
     {
         $routing = new Routing();
 
-        foreach ($models as $model) {
+        foreach ($models->withSearchableRelations() as $model) {
             /** @var Model $model */
             if ($value = $model->searchableRouting()) {
                 $routing->add((string)$model->getScoutKey(), (string)$value);

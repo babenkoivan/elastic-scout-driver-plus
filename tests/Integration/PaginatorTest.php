@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
  * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
  * @uses   \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
+ * @uses   \Elastic\ScoutDriverPlus\Searchable
  */
 final class PaginatorTest extends TestCase
 {

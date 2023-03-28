@@ -10,6 +10,7 @@ use Elastic\ScoutDriverPlus\ServiceProvider as ElasticScoutDriverPlusServiceProv
 use Illuminate\Config\Repository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\ScoutServiceProvider;
 use Orchestra\Testbench\TestCase as TestbenchTestCase;
 
@@ -66,5 +67,14 @@ class TestCase extends TestbenchTestCase
     protected function assertFoundModels(Collection $models, SearchResult $searchResult): void
     {
         $this->assertEquals($models->values()->toArray(), $searchResult->models()->values()->toArray());
+    }
+
+    protected function assertDatabaseQueriesCount(int $expectedCount, callable $callback): void
+    {
+        DB::enableQueryLog();
+        $callback();
+        $queryLog = DB::getQueryLog();
+        $this->assertCount($expectedCount, $queryLog);
+        DB::flushQueryLog();
     }
 }

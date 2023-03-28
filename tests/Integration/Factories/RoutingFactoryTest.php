@@ -36,4 +36,16 @@ final class RoutingFactoryTest extends TestCase
 
         $this->assertEquals($routing, $this->routingFactory->makeFromModels($models));
     }
+
+    public function test_relations_can_be_preloaded(): void
+    {
+        $models = factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create()
+            ->fresh();
+
+        $this->assertDatabaseQueriesCount(1, function () use ($models) {
+            $this->routingFactory->makeFromModels($models);
+        });
+    }
 }

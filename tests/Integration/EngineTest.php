@@ -75,4 +75,15 @@ final class EngineTest extends TestCase
 
         Book::closePointInTime($pit);
     }
+
+    public function test_relations_can_be_preloaded_when_indexing_all_models(): void
+    {
+        factory(Book::class, 10)
+            ->state('belongs_to_author')
+            ->create();
+
+        $this->assertDatabaseQueriesCount(2, static function () {
+            Book::makeAllSearchable();
+        });
+    }
 }

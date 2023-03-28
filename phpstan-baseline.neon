@@ -16,11 +16,6 @@ parameters:
 			path: src/Engine.php
 
 		-
-			message: "#^Cannot call method searchableWith\\(\\) on Illuminate\\\\Database\\\\Eloquent\\\\Model\\|null\\.$#"
-			count: 1
-			path: src/Factories/DocumentFactory.php
-
-		-
 			message: "#^Cannot call method makeFromModels\\(\\) on mixed\\.$#"
 			count: 1
 			path: src/Jobs/RemoveFromSearch.php
