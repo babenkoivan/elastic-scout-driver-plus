@@ -20,6 +20,7 @@
 * [sort](#sort)
 * [source](#source)
 * [suggest](#suggest)
+* [terminateAfter](#terminateafter)
 * [trackScores](#trackscores)
 * [trackTotalHits](#tracktotalhits)
 * [unless](#unless)
@@ -471,6 +472,16 @@ $options = $firstSuggestion->options();
 $models = $firstSuggestion->models();
 // an array representation of the suggestion
 $raw = $firstSuggestion->raw();
+```
+
+### terminateAfter
+
+This method allows you to set the maximum number of documents to collect for each shard:
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->terminateAfter(10)
+    ->execute();
 ```
 
 ### trackScores

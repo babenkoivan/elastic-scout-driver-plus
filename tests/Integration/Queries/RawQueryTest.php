@@ -628,4 +628,15 @@ final class RawQueryTest extends TestCase
 
         $this->assertGreaterThan(0, $found->hits()->first()->explanation()->value());
     }
+
+    public function test_query_can_be_terminated(): void
+    {
+        factory(Book::class, 10)->create([
+            'author_id' => factory(Author::class)->create(),
+        ]);
+
+        $found = Book::searchQuery()->terminateAfter(1)->execute();
+
+        $this->assertCount(1, $found);
+    }
 }

@@ -622,4 +622,17 @@ final class SearchParametersBuilderTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_search_parameters_with_terminate_after_can_be_built(): void
+    {
+        $expected = (new SearchParameters())
+            ->indices([(new Book())->searchableAs()])
+            ->terminateAfter(10);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->terminateAfter(10)
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
