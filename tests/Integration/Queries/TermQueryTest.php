@@ -47,4 +47,19 @@ final class TermQueryTest extends TestCase
 
         $this->assertFoundModel($target, $found);
     }
+
+    public function test_models_can_be_found_when_using_empty_string_as_value(): void
+    {
+        $target = factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['tags' => '']);
+
+        $query = Query::term()
+            ->field('tags')
+            ->value('');
+
+        $found = Book::searchQuery($query)->execute();
+
+        $this->assertFoundModel($target, $found);
+    }
 }

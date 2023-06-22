@@ -66,7 +66,7 @@ final class ParameterCollection implements Arrayable
     public function excludeEmpty(): self
     {
         $items = $this->items->filter(
-            static fn ($value) => isset($value) && $value !== '' && $value !== []
+            static fn ($value) => isset($value) && $value !== []
         )->all();
 
         return new self($items);
