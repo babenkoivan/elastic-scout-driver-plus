@@ -18,7 +18,7 @@ final class FlatArrayTransformerTest extends TestCase
         $parameters = new ParameterCollection([
             'fields' => ['title', 'year'],
             'query' => 2020,
-            'type' => '',
+            'type' => null,
         ]);
 
         $transformer = new FlatArrayTransformer();

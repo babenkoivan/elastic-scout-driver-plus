@@ -19,7 +19,6 @@ final class GroupedArrayTransformerTest extends TestCase
             'field' => 'title',
             'query' => 'The Best Book',
             'operator' => 'AND',
-            'analyzer' => '',
             'lenient' => null,
         ]);
 
