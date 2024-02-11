@@ -15,14 +15,14 @@ return $config
     ->setRules([
         '@PSR2' => true,
         'array_syntax' => ['syntax' => 'short'],
-        'compact_nullable_typehint' => true,
+        'compact_nullable_type_declaration' => true,
         'concat_space' => ['spacing' => 'one'],
         'declare_strict_types' => true,
         'dir_constant' => true,
         'self_static_accessor' => false,
         'fully_qualified_strict_types' => true,
         'function_to_constant' => true,
-        'function_typehint_space' => true,
+        'type_declaration_spaces' => true,
         'header_comment' => false,
         'list_syntax' => ['syntax' => 'short'],
         'lowercase_cast' => true,
@@ -82,5 +82,5 @@ return $config
         'visibility_required' => true,
         'yoda_style' => false,
         'use_arrow_functions' => true,
-        'phpdoc_to_property_type' => true,
+        'phpdoc_to_property_type' => ['scalar_types' => true, 'union_types' => false],
     ]);
