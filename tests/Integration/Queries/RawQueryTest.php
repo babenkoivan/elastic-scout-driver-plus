@@ -360,6 +360,35 @@ final class RawQueryTest extends TestCase
         $this->assertEquals($target->last()->values()->toArray(), $secondPage->models()->toArray());
     }
 
+    public function test_models_can_be_simple_paginated(): void
+    {
+        $target = factory(Book::class, 5)
+            ->state('belongs_to_author')
+            ->create()
+            ->sortBy('id', SORT_NUMERIC)
+            ->chunk(3);
+
+        $builder = Book::searchQuery(['match_all' => new stdClass()])
+            ->sort('id');
+
+        $firstPage = $builder->simplePaginate(3, 'customName', 1);
+        $secondPage = $builder->simplePaginate(3, 'customName', 2);
+
+        // assert each paginator has expected attributes
+        $this->assertSame(1, $firstPage->currentPage());
+        $this->assertSame(2, $secondPage->currentPage());
+
+        $this->assertSame(3, $firstPage->perPage());
+        $this->assertSame(3, $secondPage->perPage());
+
+        $this->assertCount(3, $firstPage->items());
+        $this->assertCount(2, $secondPage->items());
+
+        // assert each page contains expected models
+        $this->assertEquals($target->first()->values()->toArray(), $firstPage->models()->toArray());
+        $this->assertEquals($target->last()->values()->toArray(), $secondPage->models()->toArray());
+    }
+
     public function test_exception_is_thrown_when_paginating_search_results_but_total_hits_are_not_tracked(): void
     {
         $this->expectException(RuntimeException::class);

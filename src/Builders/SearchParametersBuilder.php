@@ -12,6 +12,7 @@ use Elastic\ScoutDriverPlus\Factories\ModelFactory;
 use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
 use Elastic\ScoutDriverPlus\Paginator;
 use Elastic\ScoutDriverPlus\Searchable;
+use Elastic\ScoutDriverPlus\SimplePaginator;
 use Elastic\ScoutDriverPlus\Support\Arr;
 use Elastic\ScoutDriverPlus\Support\Conditionable;
 use Illuminate\Database\Eloquent\Model;
@@ -447,6 +448,29 @@ class SearchParametersBuilder
             $page,
             [
                 'path' => Paginator::resolveCurrentPath(),
+                'pageName' => $pageName,
+            ]
+        );
+    }
+
+    public function simplePaginate(
+        int $perPage = self::DEFAULT_PAGE_SIZE,
+        string $pageName = 'page',
+        int $page = null
+    ): SimplePaginator {
+        $page = $page ?? SimplePaginator::resolveCurrentPage($pageName);
+
+        $builder = clone $this;
+        $builder->from(($page - 1) * $perPage);
+        $builder->size($perPage);
+        $searchResult = $builder->execute();
+
+        return new SimplePaginator(
+            $searchResult,
+            $perPage,
+            $page,
+            [
+                'path' => SimplePaginator::resolveCurrentPath(),
                 'pageName' => $pageName,
             ]
         );

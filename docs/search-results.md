@@ -184,5 +184,10 @@ foreach ($paginator as $document) {
     $id = $document->id();
 }
 ```
+Therefore, if you only need to display simple "Next" and "Previous" links in your application's UI, you may use the simplePaginate method:
+```php
+$paginator = Book::searchQuery($query)
+    ->simplePaginate(10);
+```
 
 **Note** that [from](available-methods.md#from) and [size](available-methods.md#size) are ignored when paginating search results.
