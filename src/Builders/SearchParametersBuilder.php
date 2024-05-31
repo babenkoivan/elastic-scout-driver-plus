@@ -15,11 +15,13 @@ use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Support\Arr;
 use Elastic\ScoutDriverPlus\Support\Conditionable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Macroable;
 use stdClass;
 
 class SearchParametersBuilder
 {
     use Conditionable;
+    use Macroable;
 
     public const DEFAULT_PAGE_SIZE = 10;
 
