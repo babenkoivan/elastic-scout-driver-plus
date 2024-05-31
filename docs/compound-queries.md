@@ -61,6 +61,8 @@ $query = Query::bool()->filterRaw([
 $searchResult = Book::searchQuery($query)->execute();
 ```
 
+Note that `filterRaw` completely replaces the `filter` clause of the query.
+
 ### <a name="bool-minimum-should-match"></a> minimumShouldMatch
 
 You can use `minimumShouldMatch` to specify [the number of `should` queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html#bool-min-should-match)
@@ -110,6 +112,8 @@ $query = Query::bool()->mustRaw([
 $searchResult = Book::searchQuery($query)->execute();
 ```
 
+Note that `mustRaw` completely replaces the `must` clause of the query.
+
 ### <a name="bool-must-not"></a> mustNot
 
 The query defined with `mustNot` [must not appear in the matching documents](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
@@ -144,6 +148,8 @@ $query = Query::bool()->mustNotRaw([
 
 $searchResult = Book::searchQuery($query)->execute();
 ```
+
+Note that `mustNotRaw` completely replaces the `must_not` clause of the query.
 
 ### <a name="bool-only-trashed"></a> onlyTrashed
 
@@ -190,6 +196,8 @@ $query = Query::bool()->shouldRaw([
 
 $searchResult = Book::searchQuery($query)->execute();
 ```
+
+Note that `shouldRaw` completely replaces the `should` clause of the query.
 
 ### <a name="bool-with-trashed"></a> withTrashed
 
