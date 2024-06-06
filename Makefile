@@ -12,7 +12,7 @@ MYSQL_USER := test
 MYSQL_PASSWORD := test
 
 ## elasticsearch config
-ES_VERSION ?= 8.2.0
+ES_VERSION ?= 8.6.0
 ES_CONTAINER_IMAGE := elasticsearch:${ES_VERSION}
 ES_CONTAINER_NAME := elastic-scout-driver-plus-elasticsearch
 ES_HOST_PORT := 29200

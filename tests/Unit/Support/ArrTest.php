@@ -3,11 +3,10 @@
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Support;
 
 use Elastic\ScoutDriverPlus\Support\Arr;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Support\Arr
- */
+#[CoversClass(Arr::class)]
 final class ArrTest extends TestCase
 {
     public function test_normal_array_can_not_be_wrapped(): void

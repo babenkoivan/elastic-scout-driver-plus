@@ -3,12 +3,11 @@
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
 use Elastic\ScoutDriverPlus\Builders\MatchNoneQueryBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Builders\MatchNoneQueryBuilder
- */
+#[CoversClass(MatchNoneQueryBuilder::class)]
 final class MatchNoneQueryBuilderTest extends TestCase
 {
     private MatchNoneQueryBuilder $builder;

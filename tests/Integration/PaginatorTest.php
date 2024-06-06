@@ -6,20 +6,21 @@ use Elastic\Adapter\Documents\Document;
 use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
 use Elastic\ScoutDriverPlus\Decorators\Hit;
 use Elastic\ScoutDriverPlus\Decorators\SearchResult;
+use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
 use Elastic\ScoutDriverPlus\Factories\ModelFactory;
 use Elastic\ScoutDriverPlus\Paginator;
+use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\App\Model;
 use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Paginator
- *
- * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
- * @uses   \Elastic\ScoutDriverPlus\Decorators\SearchResult
- * @uses   \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
- * @uses   \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(Paginator::class)]
+#[UsesClass(Hit::class)]
+#[UsesClass(SearchResult::class)]
+#[UsesClass(LazyModelFactory::class)]
+#[UsesClass(Searchable::class)]
 final class PaginatorTest extends TestCase
 {
     private Paginator $paginator;

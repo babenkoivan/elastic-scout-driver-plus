@@ -7,20 +7,22 @@ use Elastic\Adapter\Search\Highlight;
 use Elastic\Adapter\Search\SearchResult as BaseSearchResult;
 use Elastic\ScoutDriverPlus\Decorators\Hit;
 use Elastic\ScoutDriverPlus\Decorators\SearchResult;
+use Elastic\ScoutDriverPlus\Decorators\Suggestion;
+use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
 use Elastic\ScoutDriverPlus\Factories\ModelFactory;
+use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\App\Model;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Decorators\SearchResult
- *
- * @uses   \Elastic\ScoutDriverPlus\Decorators\Hit
- * @uses   \Elastic\ScoutDriverPlus\Decorators\Suggestion
- * @uses   \Elastic\ScoutDriverPlus\Factories\LazyModelFactory
- * @uses   \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(SearchResult::class)]
+#[UsesClass(Hit::class)]
+#[UsesClass(Suggestion::class)]
+#[UsesClass(LazyModelFactory::class)]
+#[UsesClass(Searchable::class)]
 final class SearchResultTest extends TestCase
 {
     private SearchResult $searchResult;

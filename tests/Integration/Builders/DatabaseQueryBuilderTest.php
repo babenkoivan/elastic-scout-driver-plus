@@ -3,19 +3,22 @@
 namespace Elastic\ScoutDriverPlus\Tests\Integration\Builders;
 
 use Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder;
+use Elastic\ScoutDriverPlus\Engine;
+use Elastic\ScoutDriverPlus\Factories\DocumentFactory;
+use Elastic\ScoutDriverPlus\Factories\RoutingFactory;
+use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Tests\App\Author;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Eloquent\Builder;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
- *
- * @uses \Elastic\ScoutDriverPlus\Engine
- * @uses \Elastic\ScoutDriverPlus\Factories\DocumentFactory
- * @uses \Elastic\ScoutDriverPlus\Factories\RoutingFactory
- * @uses \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(DatabaseQueryBuilder::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(DocumentFactory::class)]
+#[UsesClass(RoutingFactory::class)]
+#[UsesClass(Searchable::class)]
 final class DatabaseQueryBuilderTest extends TestCase
 {
     public function test_query_with_model_that_supports_soft_deletes(): void

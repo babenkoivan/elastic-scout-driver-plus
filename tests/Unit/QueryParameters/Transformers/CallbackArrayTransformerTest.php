@@ -4,13 +4,12 @@ namespace Elastic\ScoutDriverPlus\Tests\Unit\QueryParameters\Transformers;
 
 use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
 use Elastic\ScoutDriverPlus\QueryParameters\Transformers\CallbackArrayTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\QueryParameters\Transformers\CallbackArrayTransformer
- *
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
- */
+#[CoversClass(CallbackArrayTransformer::class)]
+#[UsesClass(ParameterCollection::class)]
 final class CallbackArrayTransformerTest extends TestCase
 {
     public function test_callback_can_transform_parameters_to_array(): void

@@ -5,22 +5,25 @@ namespace Elastic\ScoutDriverPlus\Tests\Integration\Decorators;
 use Elastic\Adapter\Search\Suggestion as BaseSuggestion;
 use Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder;
 use Elastic\ScoutDriverPlus\Decorators\Suggestion;
+use Elastic\ScoutDriverPlus\Engine;
+use Elastic\ScoutDriverPlus\Factories\DocumentFactory;
 use Elastic\ScoutDriverPlus\Factories\ModelFactory;
+use Elastic\ScoutDriverPlus\Factories\RoutingFactory;
+use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Tests\App\Author;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Decorators\Suggestion
- *
- * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
- * @uses   \Elastic\ScoutDriverPlus\Engine
- * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
- * @uses   \Elastic\ScoutDriverPlus\Factories\ModelFactory
- * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
- * @uses   \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(Suggestion::class)]
+#[UsesClass(DatabaseQueryBuilder::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(DocumentFactory::class)]
+#[UsesClass(ModelFactory::class)]
+#[UsesClass(RoutingFactory::class)]
+#[UsesClass(Searchable::class)]
 final class SuggestionTest extends TestCase
 {
     private Collection $models;

@@ -3,14 +3,14 @@
 namespace Elastic\ScoutDriverPlus\Tests\Unit\QueryParameters;
 
 use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\Support\Arr;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
- *
- * @uses   \Elastic\ScoutDriverPlus\Support\Arr
- */
+#[CoversClass(ParameterCollection::class)]
+#[UsesClass(Arr::class)]
 final class ParameterCollectionTest extends TestCase
 {
     private ParameterCollection $collection;
