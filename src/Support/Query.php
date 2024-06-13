@@ -6,6 +6,7 @@ use Elastic\ScoutDriverPlus\Builders\BoolQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\ExistsQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\FuzzyQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\GeoDistanceQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\GeoShapeQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\IdsQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\MatchAllQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\MatchNoneQueryBuilder;
@@ -114,5 +115,10 @@ class Query
     public static function geoDistance(): GeoDistanceQueryBuilder
     {
         return new GeoDistanceQueryBuilder();
+    }
+
+    public static function geoShape(): GeoShapeQueryBuilder
+    {
+        return new GeoShapeQueryBuilder();
     }
 }
