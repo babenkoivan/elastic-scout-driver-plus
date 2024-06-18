@@ -2,29 +2,40 @@
 
 namespace Elastic\ScoutDriverPlus\Tests\Integration\Builders;
 
+use Elastic\ScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\BoolQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\MatchAllQueryBuilder;
+use Elastic\ScoutDriverPlus\Builders\TermQueryBuilder;
 use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
+use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\FieldParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Shared\ValueParameter;
+use Elastic\ScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
+use Elastic\ScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator;
+use Elastic\ScoutDriverPlus\Support\Arr;
 use Elastic\ScoutDriverPlus\Support\Query;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
- * @covers \Elastic\ScoutDriverPlus\Builders\BoolQueryBuilder
- *
- * @uses   \Elastic\ScoutDriverPlus\Builders\MatchAllQueryBuilder
- * @uses   \Elastic\ScoutDriverPlus\Builders\TermQueryBuilder
- * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Shared\FieldParameter
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Shared\ValueParameter
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Transformers\GroupedArrayTransformer
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\OneOfValidator
- * @uses   \Elastic\ScoutDriverPlus\Support\Arr
- * @uses   \Elastic\ScoutDriverPlus\Support\Query
- */
+#[CoversClass(AbstractParameterizedQueryBuilder::class)]
+#[CoversClass(BoolQueryBuilder::class)]
+#[UsesClass(MatchAllQueryBuilder::class)]
+#[UsesClass(TermQueryBuilder::class)]
+#[UsesClass(ParameterFactory::class)]
+#[UsesClass(ParameterCollection::class)]
+#[UsesClass(FieldParameter::class)]
+#[UsesClass(ValueParameter::class)]
+#[UsesClass(FlatArrayTransformer::class)]
+#[UsesClass(GroupedArrayTransformer::class)]
+#[UsesClass(AllOfValidator::class)]
+#[UsesClass(OneOfValidator::class)]
+#[UsesClass(Arr::class)]
+#[UsesClass(Query::class)]
 final class BoolQueryBuilderTest extends TestCase
 {
     private BoolQueryBuilder $builder;

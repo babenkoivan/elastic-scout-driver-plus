@@ -3,11 +3,11 @@ includes:
 
 parameters:
   level: max
-  checkMissingIterableValueType: false
-  checkGenericClassInNonGenericObjectType: false
   paths:
     - src
   ignoreErrors:
+    - identifier: missingType.iterableValue
+    - identifier: missingType.generics
     - '#Parameter .+? of method Illuminate\\Support\\Collection<.+?>::.+?\(\) expects .+? given#'
     - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::(getScoutKey|getScoutKeyName|getScoutModelsByIds|queryScoutModelsByIds|searchableAs|searchableUsing|scoutMetadata|pushSoftDeleteMetadata|toSearchableArray|withTrashed|searchableRouting)\(\)#'
     - '#Call to an undefined method Illuminate\\Support\\Collection::withSearchableRelations\(\)#'

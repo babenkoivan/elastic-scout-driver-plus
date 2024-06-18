@@ -3,23 +3,27 @@
 namespace Elastic\ScoutDriverPlus\Tests\Integration\Builders;
 
 use Elastic\Adapter\Search\SearchParameters;
+use Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder;
+use Elastic\ScoutDriverPlus\Engine;
 use Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException;
+use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
+use Elastic\ScoutDriverPlus\Searchable;
+use Elastic\ScoutDriverPlus\Support\Conditionable;
 use Elastic\ScoutDriverPlus\Tests\App\Author;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder
- * @covers \Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException
- * @covers \Elastic\ScoutDriverPlus\Support\Conditionable
- *
- * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
- * @uses   \Elastic\ScoutDriverPlus\Engine
- * @uses   \Elastic\ScoutDriverPlus\Factories\ParameterFactory
- * @uses   \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(SearchParametersBuilder::class)]
+#[CoversClass(NotSearchableModelException::class)]
+#[CoversClass(Conditionable::class)]
+#[UsesClass(DatabaseQueryBuilder::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(ParameterFactory::class)]
+#[UsesClass(Searchable::class)]
 final class SearchParametersBuilderTest extends TestCase
 {
     public function test_search_parameters_with_query_can_be_built(): void

@@ -3,20 +3,23 @@
 namespace Elastic\ScoutDriverPlus\Tests\Integration\Factories;
 
 use Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder;
+use Elastic\ScoutDriverPlus\Engine;
+use Elastic\ScoutDriverPlus\Factories\DocumentFactory;
 use Elastic\ScoutDriverPlus\Factories\ModelFactory;
+use Elastic\ScoutDriverPlus\Factories\RoutingFactory;
+use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Tests\App\Author;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Factories\ModelFactory
- *
- * @uses   \Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder
- * @uses   \Elastic\ScoutDriverPlus\Engine
- * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
- * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
- * @uses   \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(ModelFactory::class)]
+#[UsesClass(DatabaseQueryBuilder::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(DocumentFactory::class)]
+#[UsesClass(RoutingFactory::class)]
+#[UsesClass(Searchable::class)]
 final class ModelFactoryTest extends TestCase
 {
     private Author $author;

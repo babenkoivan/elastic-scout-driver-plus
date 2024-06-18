@@ -2,18 +2,21 @@
 
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
+use Elastic\ScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\MultiMatchQueryBuilder;
 use Elastic\ScoutDriverPlus\Exceptions\QueryBuilderValidationException;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
- * @covers \Elastic\ScoutDriverPlus\Builders\MultiMatchQueryBuilder
- *
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Transformers\FlatArrayTransformer
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- */
+#[CoversClass(AbstractParameterizedQueryBuilder::class)]
+#[CoversClass(MultiMatchQueryBuilder::class)]
+#[UsesClass(ParameterCollection::class)]
+#[UsesClass(FlatArrayTransformer::class)]
+#[UsesClass(AllOfValidator::class)]
 final class MultiMatchQueryBuilderTest extends TestCase
 {
     private MultiMatchQueryBuilder $builder;

@@ -2,16 +2,21 @@
 
 namespace Elastic\ScoutDriverPlus\Tests\Integration;
 
+use Elastic\ScoutDriverPlus\Engine;
+use Elastic\ScoutDriverPlus\Factories\DocumentFactory;
+use Elastic\ScoutDriverPlus\Factories\RoutingFactory;
+use Elastic\ScoutDriverPlus\Jobs\RemoveFromSearch;
+use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Engine
- * @covers \Elastic\ScoutDriverPlus\Jobs\RemoveFromSearch
- *
- * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
- * @uses   \Elastic\ScoutDriverPlus\Factories\RoutingFactory
- * @uses   \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(Engine::class)]
+#[CoversClass(RemoveFromSearch::class)]
+#[UsesClass(DocumentFactory::class)]
+#[UsesClass(RoutingFactory::class)]
+#[UsesClass(Searchable::class)]
 final class EngineTest extends TestCase
 {
     public function test_models_can_be_found_using_default_search(): void
@@ -25,7 +30,7 @@ final class EngineTest extends TestCase
         $this->assertEquals($target->toArray(), $found->first()->toArray());
     }
 
-    public function queueConfigProvider(): array
+    public static function queueConfigProvider(): array
     {
         return [
             [['scout.queue' => true]],
@@ -33,9 +38,7 @@ final class EngineTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider queueConfigProvider
-     */
+    #[DataProvider('queueConfigProvider')]
     public function test_models_can_be_indexed(array $config): void
     {
         config($config);
@@ -49,9 +52,7 @@ final class EngineTest extends TestCase
         $this->assertCount(0, $source->pluck('id')->diff($found->pluck('id')));
     }
 
-    /**
-     * @dataProvider queueConfigProvider
-     */
+    #[DataProvider('queueConfigProvider')]
     public function test_models_can_be_deleted(array $config): void
     {
         config($config);

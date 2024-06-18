@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method Elastic\\\\ScoutDriverPlus\\\\Builders\\\\SearchParametersBuilder\\:\\:resolveJoinedIndexName\\(\\) should return string but returns mixed\\.$#"
+			message: "#^Method Elastic\\\\ScoutDriverPlus\\\\Builders\\\\SearchParametersBuilder\\:\\:resolveJoinedIndexName\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
 			path: src/Builders/SearchParametersBuilder.php
 

@@ -4,14 +4,13 @@ namespace Elastic\ScoutDriverPlus\Tests\Unit\Factories;
 
 use Elastic\ScoutDriverPlus\Builders\MatchAllQueryBuilder;
 use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Factories\ParameterFactory
- *
- * @uses   \Elastic\ScoutDriverPlus\Builders\MatchAllQueryBuilder
- */
+#[CoversClass(ParameterFactory::class)]
+#[UsesClass(MatchAllQueryBuilder::class)]
 final class ParameterFactoryTest extends TestCase
 {
     public function test_query_can_be_made_from_builder(): void

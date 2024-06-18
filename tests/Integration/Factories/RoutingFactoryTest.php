@@ -3,17 +3,19 @@
 namespace Elastic\ScoutDriverPlus\Tests\Integration\Factories;
 
 use Elastic\Adapter\Documents\Routing;
+use Elastic\ScoutDriverPlus\Engine;
+use Elastic\ScoutDriverPlus\Factories\DocumentFactory;
 use Elastic\ScoutDriverPlus\Factories\RoutingFactory;
+use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Factories\RoutingFactory
- *
- * @uses   \Elastic\ScoutDriverPlus\Engine
- * @uses   \Elastic\ScoutDriverPlus\Factories\DocumentFactory
- * @uses   \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(RoutingFactory::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(DocumentFactory::class)]
+#[UsesClass(Searchable::class)]
 final class RoutingFactoryTest extends TestCase
 {
     private RoutingFactory $routingFactory;

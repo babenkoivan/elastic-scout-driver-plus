@@ -5,15 +5,15 @@ namespace Elastic\ScoutDriverPlus\Tests\Integration\Decorators;
 use Elastic\Adapter\Search\Hit as BaseHit;
 use Elastic\ScoutDriverPlus\Decorators\Hit;
 use Elastic\ScoutDriverPlus\Factories\LazyModelFactory;
+use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use Elastic\ScoutDriverPlus\Tests\Integration\TestCase;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Decorators\Hit
- *
- * @uses \Elastic\ScoutDriverPlus\Searchable
- */
+#[CoversClass(Hit::class)]
+#[UsesClass(Searchable::class)]
 final class HitTest extends TestCase
 {
     private Hit $hit;

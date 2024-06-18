@@ -2,17 +2,20 @@
 
 namespace Elastic\ScoutDriverPlus\Tests\Unit\Builders;
 
+use Elastic\ScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\TermsQueryBuilder;
+use Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection;
+use Elastic\ScoutDriverPlus\QueryParameters\Transformers\CallbackArrayTransformer;
+use Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\ScoutDriverPlus\Builders\AbstractParameterizedQueryBuilder
- * @covers \Elastic\ScoutDriverPlus\Builders\TermsQueryBuilder
- *
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\ParameterCollection
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Transformers\CallbackArrayTransformer
- * @uses   \Elastic\ScoutDriverPlus\QueryParameters\Validators\AllOfValidator
- */
+#[CoversClass(AbstractParameterizedQueryBuilder::class)]
+#[CoversClass(TermsQueryBuilder::class)]
+#[UsesClass(ParameterCollection::class)]
+#[UsesClass(CallbackArrayTransformer::class)]
+#[UsesClass(AllOfValidator::class)]
 final class TermsQueryBuilderTest extends TestCase
 {
     private TermsQueryBuilder $builder;
