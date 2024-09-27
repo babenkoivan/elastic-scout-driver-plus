@@ -11,21 +11,6 @@ parameters:
 			path: src/Decorators/SearchResult.php
 
 		-
-			message: "#^Cannot call method searchableAs\\(\\) on Illuminate\\\\Database\\\\Eloquent\\\\Model\\|null\\.$#"
-			count: 2
-			path: src/Engine.php
-
-		-
-			message: "#^Method Elastic\\\\ScoutDriverPlus\\\\Factories\\\\ModelFactory\\:\\:makeFromIndexNameAndDocumentIds\\(\\) should return Illuminate\\\\Database\\\\Eloquent\\\\Collection but returns array\\<Illuminate\\\\Database\\\\Eloquent\\\\Builder\\>\\|Illuminate\\\\Database\\\\Eloquent\\\\Collection\\.$#"
-			count: 1
-			path: src/Factories/ModelFactory.php
-
-		-
-			message: "#^Cannot call method makeFromModels\\(\\) on mixed\\.$#"
-			count: 1
-			path: src/Jobs/RemoveFromSearch.php
-
-		-
 			message: "#^Cannot call method searchableAs\\(\\) on mixed\\.$#"
 			count: 1
 			path: src/Jobs/RemoveFromSearch.php
@@ -34,8 +19,3 @@ parameters:
 			message: "#^Method Elastic\\\\ScoutDriverPlus\\\\NullEngine\\:\\:map\\(\\) should return Illuminate\\\\Database\\\\Eloquent\\\\Collection but returns Illuminate\\\\Support\\\\Collection\\<\\*NEVER\\*, \\*NEVER\\*\\>\\.$#"
 			count: 1
 			path: src/NullEngine.php
-
-		-
-			message: "#^Cannot call method extend\\(\\) on mixed\\.$#"
-			count: 1
-			path: src/ServiceProvider.php
