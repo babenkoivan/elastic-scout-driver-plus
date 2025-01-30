@@ -29,7 +29,7 @@ You can use `ignoreUnmapped` to query multiple indices that may not contain the 
 ```php
 $query = Query::nested()
     ->path('author')
-    ->query(Query::match()->field('author.name')->field('Steven'))
+    ->query(Query::match()->field('author.name')->query('Steven'))
     ->ignoreUnmapped(true);
 
 $searchResult = Book::searchQuery($query)->execute();
@@ -42,7 +42,7 @@ $searchResult = Book::searchQuery($query)->execute();
 ```php
 $query = Query::nested()
     ->path('author')
-    ->query(Query::match()->field('author.name')->field('Steven'))
+    ->query(Query::match()->field('author.name')->query('Steven'))
     ->innerHits(['name' => 'authors']);
 
 $searchResult = Book::searchQuery($query)->execute();
@@ -55,7 +55,7 @@ Use `path` to set a path to the nested field you wish to search in:
 ```php
 $query = Query::nested()
     ->path('author')
-    ->query(Query::match()->field('author.name')->field('Steven'));
+    ->query(Query::match()->field('author.name')->query('Steven'));
 
 $searchResult = Book::searchQuery($query)->execute();
 ``` 
@@ -69,7 +69,7 @@ $searchResult = Book::searchQuery($query)->execute();
 // you can make a query using builder
 $query = Query::nested()
     ->path('author')
-    ->query(Query::match()->field('author.name')->field('Steven'));
+    ->query(Query::match()->field('author.name')->query('Steven'));
 
 // or you can define a raw query
 $query = [
