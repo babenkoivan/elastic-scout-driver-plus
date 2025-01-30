@@ -9,7 +9,7 @@ You can use `Elastic\ScoutDriverPlus\Support\Query::nested()` to build a [nested
 ```php
 $query = Query::nested()
     ->path('author')
-    ->query(Query::match()->field('author.name')->field('Steven'));
+    ->query(Query::match()->field('author.name')->query('Steven'));
 
 $searchResult = Book::searchQuery($query)->execute();
 ```
@@ -93,7 +93,7 @@ $searchResult = Book::searchQuery($query)->execute();
 ```php
 $query = Query::nested()
     ->path('author')
-    ->query(Query::match()->field('author.name')->field('Steven'))
+    ->query(Query::match()->field('author.name')->query('Steven'))
     ->scoreMode('avg');
 
 $searchResult = Book::searchQuery($query)->execute();
