@@ -472,11 +472,12 @@ final class RawQueryTest extends TestCase
         $cacheStore = Cache::store('file');
         $cacheStore->clear();
 
-        $found = $cacheStore->rememberForever('raw_search_result', static function () {
-            return Book::searchQuery(['match_all' => new stdClass()])
+        $found = $cacheStore->rememberForever(
+            'raw_search_result',
+            static fn () => Book::searchQuery(['match_all' => new stdClass()])
                 ->sort('id')
-                ->execute();
-        });
+                ->execute()
+        );
 
         $this->assertFoundModels($target, $found);
     }
