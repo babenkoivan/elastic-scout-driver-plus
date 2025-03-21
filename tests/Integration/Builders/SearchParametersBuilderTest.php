@@ -652,4 +652,26 @@ final class SearchParametersBuilderTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_search_parameters_with_script_fields_can_be_built(): void
+    {
+        $scriptFields = [
+            "title_length" => [
+                "script"=> [
+                    "lang"=> "painless",
+                    "source"=> "doc['title'].value.length()",
+                ],
+            ],
+        ];
+
+        $expected = (new SearchParameters())
+          ->indices([(new Book())->searchableAs()])
+          ->scriptFields($scriptFields);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+          ->scriptFields($scriptFields)
+          ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
