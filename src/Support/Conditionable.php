@@ -13,7 +13,7 @@ trait Conditionable
     /**
      * @param mixed $value
      */
-    public function when($value, callable $callback, callable $default = null): self
+    public function when($value, callable $callback, ?callable $default = null): self
     {
         $value = $value instanceof Closure ? $value($this) : $value;
 
@@ -33,7 +33,7 @@ trait Conditionable
      *
      * @return $this
      */
-    public function unless($value, callable $callback, callable $default = null): self
+    public function unless($value, callable $callback, ?callable $default = null): self
     {
         $value = $value instanceof Closure ? $value($this) : $value;
 

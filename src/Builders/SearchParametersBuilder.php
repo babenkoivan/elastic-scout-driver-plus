@@ -198,7 +198,7 @@ class SearchParametersBuilder
         return $this;
     }
 
-    public function join(string $modelClass, float $boost = null): self
+    public function join(string $modelClass, ?float $boost = null): self
     {
         if (
             !is_a($modelClass, Model::class, true) ||
@@ -231,7 +231,7 @@ class SearchParametersBuilder
         return $this;
     }
 
-    public function load(array $relations, string $modelClass = null): self
+    public function load(array $relations, ?string $modelClass = null): self
     {
         $indexName = $this->resolveJoinedIndexName($modelClass);
         $this->databaseQueryBuilders[$indexName]->with($relations);
@@ -239,7 +239,7 @@ class SearchParametersBuilder
         return $this;
     }
 
-    public function refineModels(Closure $callback, string $modelClass = null): self
+    public function refineModels(Closure $callback, ?string $modelClass = null): self
     {
         $indexName = $this->resolveJoinedIndexName($modelClass);
         $this->databaseQueryBuilders[$indexName]->callback($callback);
@@ -432,7 +432,7 @@ class SearchParametersBuilder
     public function paginate(
         int $perPage = self::DEFAULT_PAGE_SIZE,
         string $pageName = 'page',
-        int $page = null
+        ?int $page = null
     ): Paginator {
         $page = $page ?? Paginator::resolveCurrentPage($pageName);
 
