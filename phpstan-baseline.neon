@@ -14,8 +14,3 @@ parameters:
 			message: "#^Cannot call method searchableAs\\(\\) on mixed\\.$#"
 			count: 1
 			path: src/Jobs/RemoveFromSearch.php
-
-		-
-			message: "#^Method Elastic\\\\ScoutDriverPlus\\\\NullEngine\\:\\:map\\(\\) should return Illuminate\\\\Database\\\\Eloquent\\\\Collection but returns Illuminate\\\\Support\\\\Collection\\<\\*NEVER\\*, \\*NEVER\\*\\>\\.$#"
-			count: 1
-			path: src/NullEngine.php
