@@ -167,6 +167,7 @@ The builder supports various search parameters and provides a number of useful h
 * [trackScores](docs/available-methods.md#trackscores)
 * [trackTotalHits](docs/available-methods.md#tracktotalhits)
 * [when](docs/available-methods.md#when)
+* [scriptFields](docs/available-methods.md#scriptfields)
 
 ### Search Results
 
