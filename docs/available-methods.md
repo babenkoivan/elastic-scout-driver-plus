@@ -564,3 +564,16 @@ $searchResult = Book::searchQuery($query)
      })
     ->execute();
 ```
+
+### scriptFields
+
+This method allows you to [write scripts](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-using.html):
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->scriptFields('title_length', [
+        'lang' => 'painless',
+        'source' => "doc['title'].value.length()",
+    ])
+    ->execute();
+```
