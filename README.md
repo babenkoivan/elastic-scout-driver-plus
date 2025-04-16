@@ -162,12 +162,12 @@ The builder supports various search parameters and provides a number of useful h
 * [refineModels](docs/available-methods.md#refinemodels)
 * [rescore](docs/available-methods.md#rescore)
 * [refineModels](docs/available-methods.md#refinemodels)
+* [scriptFields](docs/available-methods.md#scriptfields)
 * [source](docs/available-methods.md#source)
 * [suggest](docs/available-methods.md#suggest)
 * [trackScores](docs/available-methods.md#trackscores)
 * [trackTotalHits](docs/available-methods.md#tracktotalhits)
 * [when](docs/available-methods.md#when)
-* [scriptFields](docs/available-methods.md#scriptfields)
 
 ### Search Results
 

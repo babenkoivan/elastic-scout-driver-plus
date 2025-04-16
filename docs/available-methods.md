@@ -15,6 +15,7 @@
 * [requestCache](#requestcache)
 * [rescore](#rescore)
 * [routing](#routing)
+* [scriptFields](#scriptfields)
 * [searchAfter](#searchafter)
 * [searchType](#searchtype)
 * [size](#size)
@@ -362,6 +363,46 @@ $searchResult = Book::searchQuery($query)
     ->execute();
 ```
 
+### scriptFields
+
+This method allows you to [retrieve a script evaluation](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/retrieve-selected-fields#script-fields):
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->scriptFields('final_price', [
+        'lang' => 'painless',
+        'source' => "doc['price'].value * params.factor",
+        'params' => [
+            'factor' => 2,
+        ],
+    ])
+    ->execute();
+```
+
+You can also make use of the `scriptFieldsRaw` method:
+
+```php
+$searchResult = Book::searchQuery($query)
+    ->scriptFieldsRaw([
+        'final_price' => [
+            'script' => [
+                'lang' => 'painless',
+                'source' => "doc['price'].value * params.factor",
+                'params' => [
+                    'factor' => 2,
+                ],
+            ],
+        ],
+    ])
+    ->execute();
+```
+
+You can access evaluated values as follows:
+
+```php
+$finalPrice = $searchResult->hits()->first()->raw()['fields']['final_price'];
+```
+
 ### searchAfter
 
 You can use `searchAfter` [to retrieve the next page of hits using a set of sort values from the previous page](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html#search-after):
@@ -562,18 +603,5 @@ $searchResult = Book::searchQuery($query)
     }, function ($builder) {
          return $builder->sort('price', 'asc');
      })
-    ->execute();
-```
-
-### scriptFields
-
-This method allows you to [write scripts](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-using.html):
-
-```php
-$searchResult = Book::searchQuery($query)
-    ->scriptFields('title_length', [
-        'lang' => 'painless',
-        'source' => "doc['title'].value.length()",
-    ])
     ->execute();
 ```

@@ -63,7 +63,7 @@ class SearchParametersBuilder
     private ?bool $explain;
     private ?int $terminateAfter;
     private ?bool $requestCache;
-    private array $scriptFields;
+    private array $scriptFields = [];
 
     public function __construct(Model $model)
     {
@@ -328,12 +328,9 @@ class SearchParametersBuilder
         return $this;
     }
 
-    public function scriptFields(string $script, array $parameters): self
+    public function scriptFields(string $field, array $parameters): self
     {
-        if (!isset($this->scriptFields)) {
-            $this->scriptFields = [];
-        }
-        $this->scriptFields[$script] = ['script' => $parameters];
+        $this->scriptFields[$field] = ['script' => $parameters];
         return $this;
     }
 
@@ -435,7 +432,7 @@ class SearchParametersBuilder
             $searchParameters->requestCache($this->requestCache);
         }
 
-        if (isset($this->scriptFields)) {
+        if (!empty($this->scriptFields)) {
             $searchParameters->scriptFields($this->scriptFields);
         }
 

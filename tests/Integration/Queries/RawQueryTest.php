@@ -654,4 +654,24 @@ final class RawQueryTest extends TestCase
 
         $this->assertCount(1, $found);
     }
+
+    public function test_models_can_be_found_with_script_fields(): void
+    {
+        factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['price' => 10]);
+
+        $found = Book::searchQuery()
+            ->scriptFields('final_price', [
+                'lang' => 'painless',
+                'source' => "doc['price'].value * params.factor",
+                'params' => [
+                    'factor' => 2,
+                ],
+            ])
+            ->execute();
+
+        $this->assertCount(1, $found);
+        $this->assertSame(20, $found->hits()->first()->raw()['fields']['final_price'][0]);
+    }
 }

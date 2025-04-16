@@ -656,46 +656,53 @@ final class SearchParametersBuilderTest extends TestCase
     public function test_search_parameters_with_raw_script_fields_can_be_built(): void
     {
         $rawScriptFields = [
-            'title_length' => [
+            'final_price' => [
                 'script' => [
                     'lang' => 'painless',
-                    'source' => "doc['title'].value.length()",
+                    'source' => "doc['price'].value * params.factor",
+                    'params' => [
+                        'factor' => 2,
+                    ],
                 ],
             ],
         ];
 
         $expected = (new SearchParameters())
-          ->indices([(new Book())->searchableAs()])
-          ->scriptFields($rawScriptFields);
+            ->indices([(new Book())->searchableAs()])
+            ->scriptFields($rawScriptFields);
 
         $actual = (new SearchParametersBuilder(new Book()))
-          ->scriptFieldsRaw($rawScriptFields)
-          ->buildSearchParameters();
+            ->scriptFieldsRaw($rawScriptFields)
+            ->buildSearchParameters();
 
         $this->assertEquals($expected, $actual);
     }
 
     public function test_search_parameters_with_script_fields_can_be_built(): void
     {
-        $scriptFields = [
-            'title_length' => [
-                'script' => [
-                    'lang' => 'painless',
-                    'source' => "doc['title'].value.length()",
-                ],
-            ],
-        ];
-
         $expected = (new SearchParameters())
-          ->indices([(new Book())->searchableAs()])
-          ->scriptFields($scriptFields);
+            ->indices([(new Book())->searchableAs()])
+            ->scriptFields([
+                'final_price' => [
+                    'script' => [
+                        'lang' => 'painless',
+                        'source' => "doc['price'].value * params.factor",
+                        'params' => [
+                            'factor' => 2,
+                        ],
+                    ],
+                ],
+            ]);
 
         $actual = (new SearchParametersBuilder(new Book()))
-          ->scriptFields('title_length', [
-              'lang' => 'painless',
-              'source' => "doc['title'].value.length()",
-          ])
-          ->buildSearchParameters();
+            ->scriptFields('final_price', [
+                'lang' => 'painless',
+                'source' => "doc['price'].value * params.factor",
+                'params' => [
+                    'factor' => 2,
+                ],
+            ])
+            ->buildSearchParameters();
 
         $this->assertEquals($expected, $actual);
     }
