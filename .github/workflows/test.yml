@@ -11,9 +11,9 @@ jobs:
         include:
           - php: 8.2
             scout: 10.0
-            testbench: 9.0
+            testbench: 10.0
             phpunit: 11.0
-            elastic-search: 8.6.2
+            elastic-search: 9.2.1
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
