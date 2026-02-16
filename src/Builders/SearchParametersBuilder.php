@@ -64,6 +64,8 @@ class SearchParametersBuilder
     private ?int $terminateAfter;
     private ?bool $requestCache;
     private array $scriptFields = [];
+    private array $runtimeMappings = [];
+    private array $fields = [];
 
     public function __construct(Model $model)
     {
@@ -334,6 +336,23 @@ class SearchParametersBuilder
         return $this;
     }
 
+    public function runtimeMappings(string $field, string|array $type, array $parameters): self
+    {
+        if (is_array($type)) {
+            $this->runtimeMappings[$field] = [...$type, 'script' => $parameters];
+        } else {
+            $this->runtimeMappings[$field] = ['type' => $type, 'script' => $parameters];
+        }
+
+        return $this;
+    }
+
+    public function fields(array $fields): self
+    {
+        $this->fields[] = $fields;
+        return $this;
+    }
+
     public function buildSearchParameters(): SearchParameters
     {
         $searchParameters = new SearchParameters();
@@ -434,6 +453,14 @@ class SearchParametersBuilder
 
         if (!empty($this->scriptFields)) {
             $searchParameters->scriptFields($this->scriptFields);
+        }
+
+        if (!empty($this->runtimeMappings)) {
+            $searchParameters->runtimeMappings($this->runtimeMappings);
+        }
+
+        if (!empty($this->fields)) {
+            $searchParameters->fields($this->fields);
         }
 
         return $searchParameters;
