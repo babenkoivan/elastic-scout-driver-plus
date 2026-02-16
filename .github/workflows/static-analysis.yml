@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   static-analysis:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
