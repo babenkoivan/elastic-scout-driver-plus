@@ -26,6 +26,12 @@ jobs:
             testbench: 6.0
             phpunit: 9.5
             elastic-search: 7.10.1
+
+          - php: 8.4
+            scout: 9.0
+            testbench: 6.0
+            phpunit: 9.5
+            elastic-search: 7.10.1
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

@@ -239,13 +239,13 @@ class SearchRequestBuilder
         return $this;
     }
 
-    public function load(array $relations, string $modelClass = null): self
+    public function load(array $relations, ?string $modelClass = null): self
     {
         $this->modelScope->with($relations, $modelClass);
         return $this;
     }
 
-    public function refineModels(callable $callback, string $modelClass = null): self
+    public function refineModels(callable $callback, ?string $modelClass = null): self
     {
         $this->modelScope->modifyQuery($callback, $modelClass);
         return $this;
@@ -398,7 +398,7 @@ class SearchRequestBuilder
     public function paginate(
         int $perPage = self::DEFAULT_PAGE_SIZE,
         string $pageName = 'page',
-        int $page = null
+        ?int $page = null
     ): Paginator {
         $page = $page ?? Paginator::resolveCurrentPage($pageName);
 
