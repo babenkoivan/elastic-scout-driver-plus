@@ -674,4 +674,30 @@ final class RawQueryTest extends TestCase
         $this->assertCount(1, $found);
         $this->assertSame(20, $found->hits()->first()->raw()['fields']['final_price'][0]);
     }
+
+    public function test_models_can_be_found_with_runtime_mappings_and_fields(): void
+    {
+        factory(Book::class)
+            ->state('belongs_to_author')
+            ->create(['price' => 10]);
+
+        $found = Book::searchQuery()
+            ->runtimeMappings('final_price', 'double', [
+                'lang' => 'painless',
+                'source' => 'emit(doc[params.field].value * params.multiplier)',
+                'params' => [
+                    'field' => 'price',
+                    'multiplier' => 2,
+                ],
+            ])
+            ->fields([
+                [
+                    'field' => 'final_price',
+                ]
+            ])
+            ->execute();
+
+        $this->assertCount(1, $found);
+        $this->assertSame(20.0, $found->hits()->first()->raw()['fields']['final_price'][0]);
+    }
 }
