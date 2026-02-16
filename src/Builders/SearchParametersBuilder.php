@@ -350,7 +350,7 @@ class SearchParametersBuilder
 
     public function fields(array $fields): self
     {
-        $this->fields[] = $fields;
+        $this->fields = $fields;
         return $this;
     }
 
