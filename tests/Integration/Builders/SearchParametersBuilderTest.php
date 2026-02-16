@@ -706,4 +706,64 @@ final class SearchParametersBuilderTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_search_parameters_with_raw_runtime_mappings_can_be_built(): void
+    {
+        $rawRuntimeMappings = [
+            'final_price' => [
+                'type' => 'double',
+                'script' => [
+                    'lang' => 'painless',
+                    'source' => 'doc[params.field] * params.multiplier',
+                    'params' => [
+                        'field' => 'my_field',
+                        'multiplier' => 2,
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = (new SearchParameters())
+            ->indices([(new Book())->searchableAs()])
+            ->runtimeMappings($rawRuntimeMappings);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->runtimeMappingsRaw($rawRuntimeMappings)
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_search_parameters_with_runtime_mappings_can_be_built(): void
+    {
+        $expected = (new SearchParameters())
+            ->indices([(new Book())->searchableAs()])
+            ->runtimeMappings([
+                'final_price' => [
+                    'type' => 'double',
+                    'script' => [
+                        'lang' => 'painless',
+                        'source' => 'doc[params.field] * params.multiplier',
+                        'params' => [
+                            'field' => 'my_field',
+                            'multiplier' => 2,
+                        ],
+                    ],
+                ],
+            ]);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->runtimeMappings('final_price', 'double', [
+                'lang' => 'painless',
+                'source' => 'doc[params.field] * params.multiplier',
+                'params' => [
+                    'field' => 'my_field',
+                    'multiplier' => 2,
+                ],
+            ])
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
+
 }
