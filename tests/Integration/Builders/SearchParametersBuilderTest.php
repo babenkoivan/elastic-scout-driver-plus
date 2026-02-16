@@ -766,4 +766,25 @@ final class SearchParametersBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_search_parameters_with_fields_can_be_built(): void
+    {
+        $expected = (new SearchParameters())
+            ->indices([(new Book())->searchableAs()])
+            ->fields([
+                [
+                    'field' => 'final_price',
+                ],
+            ]);
+
+        $actual = (new SearchParametersBuilder(new Book()))
+            ->fields([
+                [
+                    'field' => 'final_price',
+                ]
+            ])
+            ->buildSearchParameters();
+
+        $this->assertEquals($expected, $actual);
+    }
+
 }
