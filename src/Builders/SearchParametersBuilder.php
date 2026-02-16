@@ -336,14 +336,15 @@ class SearchParametersBuilder
         return $this;
     }
 
-    public function runtimeMappings(string $field, string|array $type, array $parameters): self
+    public function runtimeMappingsRaw(array $parameters): self
     {
-        if (is_array($type)) {
-            $this->runtimeMappings[$field] = [...$type, 'script' => $parameters];
-        } else {
-            $this->runtimeMappings[$field] = ['type' => $type, 'script' => $parameters];
-        }
+        $this->runtimeMappings = $parameters;
+        return $this;
+    }
 
+    public function runtimeMappings(string $field, string $type, array $script): self
+    {
+        $this->runtimeMappings[$field] = ['type' => $type, 'script' => $script];
         return $this;
     }
 
