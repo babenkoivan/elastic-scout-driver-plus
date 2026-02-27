@@ -780,7 +780,7 @@ final class SearchParametersBuilderTest extends TestCase
             ->fields([
                 [
                     'field' => 'final_price',
-                ]
+                ],
             ])
             ->buildSearchParameters();
 

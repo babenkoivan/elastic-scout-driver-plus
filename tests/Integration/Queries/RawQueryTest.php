@@ -693,7 +693,7 @@ final class RawQueryTest extends TestCase
             ->fields([
                 [
                     'field' => 'final_price',
-                ]
+                ],
             ])
             ->execute();
 
