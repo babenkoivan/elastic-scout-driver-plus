@@ -432,7 +432,7 @@ $searchResult = Book::searchQuery()
     ->execute();
 ```
 
-You can also make use of the scriptFieldsRaw method:
+You can also make use of the runtimeMappingsRaw method:
 
 ```php
 $searchResult = Book::searchQuery()
