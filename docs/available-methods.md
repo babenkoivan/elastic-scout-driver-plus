@@ -16,6 +16,8 @@
 * [rescore](#rescore)
 * [routing](#routing)
 * [scriptFields](#scriptfields)
+* [runtimeMappings](#runtimemappings)
+* [fields](#fields)
 * [searchAfter](#searchafter)
 * [searchType](#searchtype)
 * [size](#size)
@@ -403,7 +405,7 @@ You can access evaluated values as follows:
 $finalPrice = $searchResult->hits()->first()->raw()['fields']['final_price'];
 ```
 
-### runtimeMappings & fields
+### runtimeMappings
 
 This method allows you to [define runtime fields](https://www.elastic.co/docs/manage-data/data-store/mapping/define-runtime-fields-in-search-request):
 
@@ -457,6 +459,23 @@ You can access evaluated values as follows:
 
 ```php
 $finalPrice = $searchResult->hits()->first()->raw()['fields']['final_price'];
+```
+
+### fields
+This method allows you to [Retrieve selected fields from a search](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/retrieve-selected-fields):
+```php
+$searchResult = Book::searchQuery()
+    // include field in the results
+    ->fields([
+        'final_price',
+    ])
+    // or
+    // ->fields([
+    //     [
+    //         'field' => 'final_price',
+    //     ]
+    // ])
+    ->execute();
 ```
 
 ### searchAfter
