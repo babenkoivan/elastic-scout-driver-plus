@@ -16,6 +16,8 @@
 * [rescore](#rescore)
 * [routing](#routing)
 * [scriptFields](#scriptfields)
+* [runtimeMappings](#runtimemappings)
+* [fields](#fields)
 * [searchAfter](#searchafter)
 * [searchType](#searchtype)
 * [size](#size)
@@ -401,6 +403,79 @@ You can access evaluated values as follows:
 
 ```php
 $finalPrice = $searchResult->hits()->first()->raw()['fields']['final_price'];
+```
+
+### runtimeMappings
+
+This method allows you to [define runtime fields](https://www.elastic.co/docs/manage-data/data-store/mapping/define-runtime-fields-in-search-request):
+
+```php
+$searchResult = Book::searchQuery()
+    ->runtimeMappings('final_price', 'double', [
+        'lang' => 'painless',
+        'source' => 'emit(doc[params.field].value * params.multiplier)',
+        'params' => [
+            'field' => 'price',
+            'multiplier' => 2,
+        ],
+    ])
+    // include field in the results
+    ->fields([
+        'final_price',
+    ])
+    // or
+    // ->fields([
+    //     [
+    //         'field' => 'final_price',
+    //     ]
+    // ])
+    ->execute();
+```
+
+You can also make use of the runtimeMappingsRaw method:
+
+```php
+$searchResult = Book::searchQuery()
+    ->runtimeMappingsRaw([
+         'final_price' => [
+                'type' => 'double',
+                'script' => [
+                    'lang' => 'painless',
+                    'source' => 'doc[params.field] * params.multiplier',
+                    'params' => [
+                        'field' => 'my_field',
+                        'multiplier' => 2,
+                    ],
+                ],
+            ],
+    ])
+    ->fields([
+        'final_price',
+    ])
+    ->execute();
+```
+
+You can access evaluated values as follows:
+
+```php
+$finalPrice = $searchResult->hits()->first()->raw()['fields']['final_price'];
+```
+
+### fields
+This method allows you to [Retrieve selected fields from a search](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/retrieve-selected-fields):
+```php
+$searchResult = Book::searchQuery()
+    // include field in the results
+    ->fields([
+        'final_price',
+    ])
+    // or
+    // ->fields([
+    //     [
+    //         'field' => 'final_price',
+    //     ]
+    // ])
+    ->execute();
 ```
 
 ### searchAfter
