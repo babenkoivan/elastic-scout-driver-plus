@@ -35,6 +35,6 @@ final class ServiceProvider extends AbstractServiceProvider
             Scout::removeFromSearchUsing(RemoveFromSearch::class);
         }
 
-        resolve(EngineManager::class)->extend('null', static fn () => resolve(NullEngine::class));
+        resolve(EngineManager::class)->extend('null', fn () => resolve(NullEngine::class));
     }
 }
