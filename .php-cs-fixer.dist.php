@@ -6,7 +6,8 @@ use PhpCsFixer\Finder;
 $finder = Finder::create()
     ->in(__DIR__ . '/src')
     ->in(__DIR__ . '/tests')
-    ->name('*.php');
+    ->name('*.php')
+    ->notPath('ServiceProvider.php');
 
 $config = new Config();
 
