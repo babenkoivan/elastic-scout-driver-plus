@@ -79,7 +79,7 @@ return $config
         'trim_array_spaces' => true,
         'array_indentation' => true,
         'trailing_comma_in_multiline' => true,
-        'visibility_required' => true,
+        'modifier_keywords' => true,
         'yoda_style' => false,
         'use_arrow_functions' => true,
         'phpdoc_to_property_type' => ['scalar_types' => true, 'union_types' => false],
