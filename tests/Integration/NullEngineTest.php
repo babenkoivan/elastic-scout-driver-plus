@@ -162,6 +162,21 @@ final class NullEngineTest extends TestCase
         $this->assertSame(0, $searchResult->total());
     }
 
+    public function test_search_many_with_parameters_returns_one_empty_result_per_input(): void
+    {
+        $model = factory(Author::class)->create();
+        $searchParameters = (new SearchParametersBuilder($model))->buildSearchParameters();
+
+        $results = $this->engine->searchManyWithParameters([$searchParameters, $searchParameters]);
+
+        $this->assertCount(2, $results);
+
+        $results->each(function ($searchResult) {
+            $this->assertCount(0, $searchResult->hits());
+            $this->assertSame(0, $searchResult->total());
+        });
+    }
+
     public function test_connection_index_does_nothing(): void
     {
         $this->assertSame($this->engine, $this->engine->connection('test-connection'));

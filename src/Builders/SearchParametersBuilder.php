@@ -467,11 +467,20 @@ class SearchParametersBuilder
         return $searchParameters;
     }
 
+    public function buildModelFactory(): ModelFactory
+    {
+        return new ModelFactory($this->databaseQueryBuilders);
+    }
+
+    public function engine(): Engine
+    {
+        return $this->engine;
+    }
+
     public function execute(): SearchResult
     {
         $baseSearchResult = $this->engine->searchWithParameters($this->buildSearchParameters());
-        $modelFactory = new ModelFactory($this->databaseQueryBuilders);
-        return new SearchResult($baseSearchResult, $modelFactory);
+        return new SearchResult($baseSearchResult, $this->buildModelFactory());
     }
 
     public function paginate(

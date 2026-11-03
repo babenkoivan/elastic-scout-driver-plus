@@ -7,6 +7,7 @@ use Elastic\ScoutDriverPlus\Builders\DatabaseQueryBuilder;
 use Elastic\ScoutDriverPlus\Builders\SearchParametersBuilder;
 use Elastic\ScoutDriverPlus\Engine;
 use Elastic\ScoutDriverPlus\Exceptions\NotSearchableModelException;
+use Elastic\ScoutDriverPlus\Factories\ModelFactory;
 use Elastic\ScoutDriverPlus\Factories\ParameterFactory;
 use Elastic\ScoutDriverPlus\Searchable;
 use Elastic\ScoutDriverPlus\Support\Conditionable;
@@ -22,10 +23,29 @@ use stdClass;
 #[CoversClass(Conditionable::class)]
 #[UsesClass(DatabaseQueryBuilder::class)]
 #[UsesClass(Engine::class)]
+#[UsesClass(ModelFactory::class)]
 #[UsesClass(ParameterFactory::class)]
 #[UsesClass(Searchable::class)]
 final class SearchParametersBuilderTest extends TestCase
 {
+    public function test_model_factory_can_be_built(): void
+    {
+        $model = new Book();
+        $builder = new SearchParametersBuilder($model);
+
+        $expected = new ModelFactory([$model->searchableAs() => new DatabaseQueryBuilder($model)]);
+
+        $this->assertEquals($expected, $builder->buildModelFactory());
+    }
+
+    public function test_engine_can_be_retrieved(): void
+    {
+        $model = new Book();
+        $builder = new SearchParametersBuilder($model);
+
+        $this->assertEquals($model->searchableUsing(), $builder->engine());
+    }
+
     public function test_search_parameters_with_query_can_be_built(): void
     {
         $matchAllQuery = ['match_all' => new stdClass()];

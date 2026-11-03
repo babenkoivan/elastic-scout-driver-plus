@@ -13,11 +13,13 @@ use Elastic\ScoutDriver\Factories\ModelFactoryInterface;
 use Elastic\ScoutDriver\Factories\SearchParametersFactoryInterface;
 use Elastic\ScoutDriverPlus\Factories\RoutingFactoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Engine extends BaseEngine
 {
     private RoutingFactoryInterface $routingFactory;
     private PointInTimeManager $pointInTimeManager;
+    private ?string $connectionName = null;
 
     public function __construct(
         DocumentManager $documentManager,
@@ -71,12 +73,28 @@ class Engine extends BaseEngine
         return $this->documentManager->search($searchParameters);
     }
 
+    /**
+     * @param array<SearchParameters> $searchParameters
+     *
+     * @return Collection<SearchResult>
+     */
+    public function searchManyWithParameters(array $searchParameters): Collection
+    {
+        return $this->documentManager->searchMany($searchParameters);
+    }
+
     public function connection(string $connection): self
     {
         $self = clone $this;
+        $self->connectionName = $connection;
         $self->documentManager = $self->documentManager->connection($connection);
         $self->indexManager = $self->indexManager->connection($connection);
         return $self;
+    }
+
+    public function connectionName(): string
+    {
+        return $this->connectionName ?? config()->string('elastic.client.default');
     }
 
     public function openPointInTime(string $indexName, ?string $keepAlive = null): string

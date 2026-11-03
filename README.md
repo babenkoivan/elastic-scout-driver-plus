@@ -40,6 +40,7 @@ Elastic Scout Driver Plus supports:
 * [Aggregations](docs/available-methods.md#aggregate)
 * [Custom routing](#custom-routing)
 * [Highlighting](docs/available-methods.md#highlight)
+* [Multi search](docs/multi-search.md)
 * [Multiple connections](#multiple-connections)
 * [Search across multiple indices](docs/available-methods.md#join)
 * [Search after](docs/available-methods.md#searchafter)

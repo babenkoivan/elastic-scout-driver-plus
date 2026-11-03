@@ -12,6 +12,7 @@ use Elastic\ScoutDriver\Factories\ModelFactoryInterface;
 use Elastic\ScoutDriver\Factories\SearchParametersFactoryInterface;
 use Elastic\ScoutDriverPlus\Factories\RoutingFactoryInterface;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Laravel\Scout\Builder;
 
@@ -116,6 +117,16 @@ final class NullEngine extends Engine
     public function searchWithParameters(SearchParameters $searchParameters): BaseSearchResult
     {
         return $this->emptySearchResult;
+    }
+
+    /**
+     * @param array<SearchParameters> $searchParameters
+     *
+     * @return Collection<BaseSearchResult>
+     */
+    public function searchManyWithParameters(array $searchParameters): Collection
+    {
+        return collect($searchParameters)->map(fn () => $this->emptySearchResult);
     }
 
     public function connection(string $connection): self
