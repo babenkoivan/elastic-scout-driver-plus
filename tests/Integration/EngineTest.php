@@ -8,7 +8,6 @@ use Elastic\ScoutDriverPlus\Factories\DocumentFactory;
 use Elastic\ScoutDriverPlus\Factories\RoutingFactory;
 use Elastic\ScoutDriverPlus\Jobs\RemoveFromSearch;
 use Elastic\ScoutDriverPlus\Searchable;
-use Elastic\ScoutDriverPlus\Tests\App\Author;
 use Elastic\ScoutDriverPlus\Tests\App\Book;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -114,12 +113,18 @@ final class EngineTest extends TestCase
         $this->assertSame(1, $results->get(1)->total());
     }
 
-    public function test_connection_name_is_null_by_default(): void
+    public function test_connection_name_falls_back_to_the_default_connection(): void
     {
+        $this->config->set(
+            'elastic.client.connections.secondary',
+            $this->config->get('elastic.client.connections.default')
+        );
+        $this->config->set('elastic.client.default', 'secondary');
+
         /** @var Engine $engine */
         $engine = (new Book())->searchableUsing();
 
-        $this->assertNull($engine->connectionName());
+        $this->assertSame('secondary', $engine->connectionName());
     }
 
     public function test_connection_name_reflects_the_value_passed_to_connection(): void

@@ -98,6 +98,32 @@ final class MultiSearchBuilderTest extends TestCase
             ->execute();
     }
 
+    public function test_exception_is_thrown_when_default_connection_is_not_named_default(): void
+    {
+        $this->config->set(
+            'elastic.client.connections.eu',
+            $this->config->get('elastic.client.connections.default')
+        );
+        $this->config->set('elastic.client.default', 'eu');
+
+        $implicitBuilder = Book::searchQuery(['match_all' => new stdClass()]);
+        $explicitBuilder = Book::searchQuery(['match_all' => new stdClass()]);
+
+        // simulate a model whose searchableConnection() explicitly returns "default",
+        // while the actual default connection is "eu"
+        $explicitEngine = (new Book())->searchableUsing()->connection('default');
+        (function () use ($explicitEngine) {
+            $this->engine = $explicitEngine;
+        })->call($explicitBuilder);
+
+        $this->expectException(ConnectionMismatchException::class);
+
+        (new MultiSearchBuilder())
+            ->add($implicitBuilder)
+            ->add($explicitBuilder)
+            ->execute();
+    }
+
     public function test_empty_collection_is_returned_when_no_search_was_added(): void
     {
         $builder = new MultiSearchBuilder();

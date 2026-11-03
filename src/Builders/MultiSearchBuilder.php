@@ -16,8 +16,6 @@ class MultiSearchBuilder
     use Conditionable;
     use Macroable;
 
-    public const DEFAULT_CONNECTION_NAME = 'default';
-
     /**
      * @var array<int|string, SearchParametersBuilder>
      */
@@ -96,7 +94,7 @@ class MultiSearchBuilder
         );
 
         $connectionNames = array_unique(array_map(
-            static fn (Engine $engine) => $engine->connectionName() ?? self::DEFAULT_CONNECTION_NAME,
+            static fn (Engine $engine) => $engine->connectionName(),
             $engines
         ));
 

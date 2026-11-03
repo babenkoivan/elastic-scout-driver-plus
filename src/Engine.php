@@ -92,9 +92,9 @@ class Engine extends BaseEngine
         return $self;
     }
 
-    public function connectionName(): ?string
+    public function connectionName(): string
     {
-        return $this->connectionName;
+        return $this->connectionName ?? config()->string('elastic.client.default');
     }
 
     public function openPointInTime(string $indexName, ?string $keepAlive = null): string
